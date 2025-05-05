@@ -43,14 +43,15 @@ HRESULT CLevel_Logo::Render()
 
 HRESULT CLevel_Logo::Ready_Layer_BackGround(const _wstring& strLayerTag)
 {
-	CBackGround::BACKGROUND_DESC tDesc{};
+	CBackGround::DESC tDesc{};
 	tDesc.fSizeX = g_iWinSizeX;
 	tDesc.fSizeY = g_iWinSizeY;
 	tDesc.fX = g_iWinSizeX * 0.5f;
 	tDesc.fY = g_iWinSizeY * 0.5f;
+	tDesc.eLevelID = LEVEL::LOGO;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::LOGO), TEXT("Prototype_GameObject_BackGround"),
-		ENUM_CLASS(LEVEL::LOGO), strLayerTag, &tDesc)))
+		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
 		return E_FAIL;
 
 	return S_OK;

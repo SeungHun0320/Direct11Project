@@ -1,5 +1,6 @@
 #include "Level_GamePlay.h"
 #include "GameInstance.h"
+#include "Level_Loading.h"
 
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 		: CLevel { pDevice, pContext }
@@ -15,7 +16,12 @@ HRESULT CLevel_GamePlay::Initialize()
 
 void CLevel_GamePlay::Update(_float fTimeDelta)
 {
-	int a = 10;
+	if (KEY_DOWN(DIK_RETURN))
+	{
+		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
+			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::LOGO))))
+			return;
+	}
 }
 
 HRESULT CLevel_GamePlay::Render()

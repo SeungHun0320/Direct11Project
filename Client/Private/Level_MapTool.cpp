@@ -1,4 +1,5 @@
 #include "Level_MapTool.h"
+#include "Level_Loading.h"
 
 CLevel_MapTool::CLevel_MapTool(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel{ pDevice, pContext }
@@ -18,6 +19,7 @@ HRESULT CLevel_MapTool::Initialize()
 
 void CLevel_MapTool::Update(_float fTimeDelta)
 {
+
 }
 
 HRESULT CLevel_MapTool::Render()

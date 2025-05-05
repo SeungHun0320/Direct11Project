@@ -14,10 +14,11 @@ BEGIN(Client)
 class CBackGround final : public CUIObject
 {
 public:
-	typedef struct tagBackGroundDesc : public CUIObject::UIOBJECT_DESC
+	typedef struct tagBackGroundDesc : public CUIObject::DESC
 	{
+		LEVEL eLevelID{};
 
-	}BACKGROUND_DESC;
+	}DESC;
 
 private:
 	CBackGround(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

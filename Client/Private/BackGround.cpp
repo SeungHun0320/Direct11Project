@@ -21,7 +21,9 @@ HRESULT CBackGround::Initialize_Prototype()
 
 HRESULT CBackGround::Initialize(void* pArg)
 {
-	BACKGROUND_DESC* pDesc = static_cast<BACKGROUND_DESC*>(pArg);
+	CBackGround::DESC* pDesc = static_cast<DESC*>(pArg);
+
+	m_eLevelID = pDesc->eLevelID;
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -87,7 +89,7 @@ HRESULT CBackGround::Ready_Components()
 		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
 		return E_FAIL;
 	/* For.Com_Texture */
-	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::LOGO), TEXT("Prototype_Component_Texture_BackGround"),
+	if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Texture_BackGround"),
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
 
