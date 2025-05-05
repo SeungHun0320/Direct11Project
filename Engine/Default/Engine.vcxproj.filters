@@ -1,0 +1,258 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="..\Public\Engine_Defines.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Engine_Enum.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Engine_Function.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Engine_Macro.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Engine_Struct.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Engine_Typedef.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Timer.h">
+      <Filter>00.System\00.Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Timer_Manager.h">
+      <Filter>00.System\00.Timer\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\GameInstance.h">
+      <Filter>01.Utility\00.GameInstance</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level.h">
+      <Filter>01.Utility\01.Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Manager.h">
+      <Filter>01.Utility\01.Levels\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Base.h">
+      <Filter>01.Utility\99.SuperClass</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\GameObject.h">
+      <Filter>01.Utility\03.GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Component.h">
+      <Filter>01.Utility\04.Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Transform.h">
+      <Filter>01.Utility\04.Components\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Prototype_Manager.h">
+      <Filter>01.Utility\02.Prototype\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Object_Manager.h">
+      <Filter>01.Utility\03.GameObject\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Layer.h">
+      <Filter>01.Utility\03.GameObject\Manager\Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UIObject.h">
+      <Filter>01.Utility\03.GameObject\Objects\UIObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Renderer.h">
+      <Filter>01.Utility\05.Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Texture.h">
+      <Filter>01.Utility\04.Components\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\VIBuffer.h">
+      <Filter>01.Utility\04.Components\VIBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Rect.h">
+      <Filter>01.Utility\04.Components\VIBuffer\Rect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Shader.h">
+      <Filter>01.Utility\04.Components\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Graphic_Device.h">
+      <Filter>00.System\01.Device\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Input_Device.h">
+      <Filter>00.System\01.Device\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Sound_Core.h">
+      <Filter>00.System\01.Device\Sound\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Sound_Device.h">
+      <Filter>00.System\01.Device\Sound</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Private\Timer.cpp">
+      <Filter>00.System\00.Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Timer_Manager.cpp">
+      <Filter>00.System\00.Timer\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\GameInstance.cpp">
+      <Filter>01.Utility\00.GameInstance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level.cpp">
+      <Filter>01.Utility\01.Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Manager.cpp">
+      <Filter>01.Utility\01.Levels\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Base.cpp">
+      <Filter>01.Utility\99.SuperClass</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\GameObject.cpp">
+      <Filter>01.Utility\03.GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Component.cpp">
+      <Filter>01.Utility\04.Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Transform.cpp">
+      <Filter>01.Utility\04.Components\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Prototype_Manager.cpp">
+      <Filter>01.Utility\02.Prototype\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Object_Manager.cpp">
+      <Filter>01.Utility\03.GameObject\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Layer.cpp">
+      <Filter>01.Utility\03.GameObject\Manager\Layer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UIObject.cpp">
+      <Filter>01.Utility\03.GameObject\Objects\UIObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Renderer.cpp">
+      <Filter>01.Utility\05.Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Texture.cpp">
+      <Filter>01.Utility\04.Components\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer.cpp">
+      <Filter>01.Utility\04.Components\VIBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Rect.cpp">
+      <Filter>01.Utility\04.Components\VIBuffer\Rect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Shader.cpp">
+      <Filter>01.Utility\04.Components\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Graphic_Device.cpp">
+      <Filter>00.System\01.Device\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Input_Device.cpp">
+      <Filter>00.System\01.Device\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Sound_Core.cpp">
+      <Filter>00.System\01.Device\Sound\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Sound_Device.cpp">
+      <Filter>00.System\01.Device\Sound</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="00.System">
+      <UniqueIdentifier>{77e8400c-7e49-43b9-b7f2-4012b62e40af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Defines">
+      <UniqueIdentifier>{87b361cb-36f4-4de0-b2de-23437e26b1b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility">
+      <UniqueIdentifier>{fed3992d-9937-48d1-8232-e91946b44a26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\00.Timer">
+      <UniqueIdentifier>{946ea1bd-a6ad-4124-9a42-7ea12e8c54a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\01.Device">
+      <UniqueIdentifier>{4c9717d9-4552-4b0f-8fd1-ee87f7864556}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\00.Timer\Manager">
+      <UniqueIdentifier>{ec7cea28-6755-4dff-8dc7-3ce238408752}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\00.GameInstance">
+      <UniqueIdentifier>{646a5b9e-b195-441c-b825-3c86f314f568}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\01.Levels">
+      <UniqueIdentifier>{d21271cb-09a3-42be-af80-9dcf2c19aff6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\01.Levels\Manager">
+      <UniqueIdentifier>{234015e5-16ad-46c6-b584-e43a2fb240bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\99.SuperClass">
+      <UniqueIdentifier>{c5c38433-b538-4e7b-891b-4809c69188f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.GameObject">
+      <UniqueIdentifier>{8542546c-1517-43a4-a3ed-c7e1ed5245ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components">
+      <UniqueIdentifier>{c8ff5966-2bbf-4633-88d4-dec210ad2207}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\Transform">
+      <UniqueIdentifier>{6b3d22a0-5c82-4ff4-a7fe-543e619d38f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\02.Prototype">
+      <UniqueIdentifier>{f2003fec-d67f-4dfa-9d00-37f2cc5ae785}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\02.Prototype\Manager">
+      <UniqueIdentifier>{83939bfb-3b9e-4816-a862-823cc6587eaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.GameObject\Manager">
+      <UniqueIdentifier>{e17836e9-69e8-4dbc-b7d8-d1f3c6833de2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.GameObject\Manager\Layer">
+      <UniqueIdentifier>{6df43e77-90d3-457a-aa0d-aa49508dd202}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\05.Renderer">
+      <UniqueIdentifier>{0d3832bd-5ebb-4fd0-905d-86be2cb9312e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\VIBuffer">
+      <UniqueIdentifier>{9f19e31d-3f3f-48d9-86e0-6f57cdfc5f51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\Shader">
+      <UniqueIdentifier>{0060f3ae-96f6-4e24-8200-669951a3dd64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\Texture">
+      <UniqueIdentifier>{76fc654f-bc05-406b-aef7-f4d10b5b03e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\VIBuffer\Rect">
+      <UniqueIdentifier>{53af95e2-85f3-423b-9f68-e44fb8699b33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\VIBuffer\Terrain">
+      <UniqueIdentifier>{fa1e61c2-9a46-4e5e-85bb-792ce9cc1bdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.GameObject\Objects">
+      <UniqueIdentifier>{f0653b6c-d07d-40f2-b0cd-d44ef142df4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.GameObject\Objects\AlphaObject">
+      <UniqueIdentifier>{92c16ed6-c8f2-4ced-9d55-8a49f6fa9443}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.GameObject\Objects\ContainerObject">
+      <UniqueIdentifier>{10b3f85d-b644-4321-94f2-2fe6bbe2a0c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.GameObject\Objects\LandObject">
+      <UniqueIdentifier>{3246c33d-9263-4009-8913-8f1e140c9141}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.GameObject\Objects\PartObject">
+      <UniqueIdentifier>{9f6731d3-813b-4d38-8f21-643026cac9c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.GameObject\Objects\UIObject">
+      <UniqueIdentifier>{6f517254-be23-4dbb-83de-90812423edc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\01.Device\Graphic">
+      <UniqueIdentifier>{9d5f0171-0d19-4887-bda6-c437406bed1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\01.Device\Input">
+      <UniqueIdentifier>{ac403eaa-9d76-4719-a883-e59600d35761}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\01.Device\Sound">
+      <UniqueIdentifier>{09496aba-8fcb-4310-8d83-afa2bd8a62e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\01.Device\Sound\Core">
+      <UniqueIdentifier>{1c769975-542f-4d16-a9f2-ee231511e1ab}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
