@@ -166,8 +166,6 @@ HRESULT CGraphic_Device::Ready_BackBufferRenderTargetView()
 	if (nullptr == m_pDevice)
 		return E_FAIL;
 
-	
-
 	/* 내가 앞으로 사용 하기위한 용도의 텍스쳐를 생성하기위한 베이스 데이터를 가지고 있는 객체이다. */
 	/* 내가 앞으로 사용 하기위한 용도의 텍스쳐 : ID3D11RenderTargetView, ID3D11ShaderResoureView, ID3D11DepthStencilView */
 	ID3D11Texture2D*		pBackBufferTexture = nullptr;
@@ -229,7 +227,7 @@ HRESULT CGraphic_Device::Ready_DepthStencilView(_uint iWinCX, _uint iWinCY)
 	return S_OK;
 }
 
-CGraphic_Device * CGraphic_Device::Create(HWND hWnd, _bool isWindowed, _uint iWinSizeX, _uint iWinSizeY, ID3D11Device ** ppDevice, ID3D11DeviceContext ** ppDeviceContextOut)
+CGraphic_Device * CGraphic_Device::Create(HWND hWnd, _bool isWindowed, _uint iWinSizeX, _uint iWinSizeY, ID3D11Device** ppDevice, ID3D11DeviceContext** ppDeviceContextOut)
 {
 	CGraphic_Device*		pInstance = new CGraphic_Device();
 

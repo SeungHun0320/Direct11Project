@@ -2,6 +2,7 @@
 
 //#include "Picking.h"
 #include "Renderer.h"
+#include "Sound_Device.h"
 #include "Input_Device.h"
 #include "Level_Manager.h"
 #include "Timer_Manager.h"
@@ -23,6 +24,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ ID
 
 	m_pInputDevice = CInput_Device::Create(EngineDesc.hInst, EngineDesc.hWnd);
 	if (nullptr == m_pInputDevice)
+		return E_FAIL;
+
+	m_pSound_Device = CSound_Device::Create();
+	if (nullptr == m_pSound_Device)
 		return E_FAIL;
 
 	m_pTimer_Manager = CTimer_Manager::Create();
@@ -233,7 +238,6 @@ _bool CGameInstance::Mouse_Up(_ubyte eKeyID)
 {
 	return m_pInputDevice->Mouse_Up(eKeyID);
 }
-#pragma endregion
 
 _bool CGameInstance::Key_Pressing(_ubyte eKeyID)
 {
@@ -250,6 +254,33 @@ _bool CGameInstance::Key_Down(_ubyte eKeyID)
 	return m_pInputDevice->Key_Down(eKeyID);
 }
 
+#pragma endregion
+
+#pragma region SOUND_DEVICE
+
+FORCEINLINE
+HRESULT CGameInstance::LoadSound(const string& Path, _bool is3D, _bool loop, _bool stream, unordered_map<string, class CSound_Core*>* _Out_ pOut)
+{
+	return m_pSound_Device->LoadSound(Path, is3D, loop, stream, pOut);
+}
+
+FORCEINLINE
+CSound_Core* CGameInstance::Get_Single_Sound(const string& strKey)
+{
+	return m_pSound_Device->Get_Single_Sound(strKey);
+}
+
+FORCEINLINE
+void CGameInstance::Set_Listener_Position(_fmatrix Matrix, _fvector vel)
+{
+	m_pSound_Device->Set_Listener_Position(Matrix, vel);
+}
+
+FORCEINLINE
+void CGameInstance::Set_Master_Volume(_float volume)
+{
+	m_pSound_Device->Set_Master_Volume(volume);
+}
 #pragma endregion
 
 void CGameInstance::Release_Engine()

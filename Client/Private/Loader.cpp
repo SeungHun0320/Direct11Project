@@ -97,7 +97,8 @@ HRESULT CLoader::Loading_For_Logo()
 
 
 	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
-	
+
+	m_pGameInstance->LoadSound("../Bin/Resources/Sounds/BGM", false, true);
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
 

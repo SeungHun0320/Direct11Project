@@ -16,6 +16,10 @@ HRESULT CLevel_Logo::Initialize()
 	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
 		return E_FAIL;
 
+	m_pBGM = m_pGameInstance->Get_Single_Sound("Logo");
+	m_pBGM->Set_Volume(0.5f);
+	m_pBGM->Play();
+
 	return S_OK;
 }
 
@@ -70,5 +74,6 @@ CLevel_Logo* CLevel_Logo::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pCo
 void CLevel_Logo::Free()
 {
 	__super::Free();
-
+	m_pBGM->Stop();
+	Safe_Release(m_pBGM);
 }

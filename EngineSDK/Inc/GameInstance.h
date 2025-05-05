@@ -70,6 +70,17 @@ public:
 	_bool Key_Down(_ubyte eKeyID);
 #pragma endregion
 
+#pragma region SOUND_DEVICE
+	// Out에 nullptr 넣으면 싱글사운드로 등록됨
+	HRESULT LoadSound(const string& Path, _bool is3D = FALSE, _bool loop = FALSE, _bool stream = FALSE, unordered_map<string, class CSound_Core*>* _Out_ pOut = nullptr);
+	// 난 에드래퍼 올릴거다 분명히 말했다 래퍼 올린다 릴리즈 시키시오
+	class CSound_Core* Get_Single_Sound(const string& strKey);
+	// 리스너 포지션 제어(업룩포 요구해서 트랜스폼 받았음)
+	void Set_Listener_Position(_fmatrix Matrix, _fvector vel);
+	// 전체 볼륨 제어
+	void Set_Master_Volume(_float volume);
+#pragma endregion
+
 private:
 	class CGraphic_Device*		m_pGraphic_Device = { nullptr };
 	class CInput_Device*		m_pInputDevice = { nullptr };
@@ -78,6 +89,7 @@ private:
 	class CObject_Manager*		m_pObject_Manager = { nullptr };
 	class CRenderer*			m_pRenderer = { nullptr };
 	class CTimer_Manager*		m_pTimer_Manager = { nullptr };
+	class CSound_Device*		m_pSound_Device = { nullptr };
 	// class CPicking*				m_pPicking = { nullptr };
 
 public:
