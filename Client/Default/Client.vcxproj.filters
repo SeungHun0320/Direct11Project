@@ -37,8 +37,29 @@
     <Filter Include="02.GameObjects">
       <UniqueIdentifier>{20fdda87-6d06-4fb1-94f1-5b9d3e443aa5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.BackGround">
+    <Filter Include="02.GameObjects\00.UI">
+      <UniqueIdentifier>{cee8699e-142b-4541-9af4-e12332fd0eb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\00.BackGround">
       <UniqueIdentifier>{517eb494-a7a3-40c2-95e0-858f13d8d0a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\01. PlayerState">
+      <UniqueIdentifier>{acdd028d-888d-43d1-96ea-514ea2c6ee04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\01. PlayerState\00. Hp_Bar">
+      <UniqueIdentifier>{60c9200d-6118-4587-9ee0-1bcb3f52c367}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\01. PlayerState\01. Stamina_Bar">
+      <UniqueIdentifier>{fa8a6485-6e60-4186-aec4-b9d0b8a4e8ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\01. PlayerState\02. Mana_Bar">
+      <UniqueIdentifier>{76ade142-3387-45f1-8a26-dffaefe60af0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\01. PlayerState\03. Using_Item">
+      <UniqueIdentifier>{236863ca-b3a3-4988-bc0e-547467f75ba8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\01. PlayerState\04. Potion">
+      <UniqueIdentifier>{e0a56d88-4553-40f7-b364-a16b07c8efe4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -79,7 +100,7 @@
       <Filter>01.Levels\MapTool</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\BackGround.h">
-      <Filter>02.GameObjects\00.BackGround</Filter>
+      <Filter>02.GameObjects\00.UI\00.BackGround</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imconfig.h">
       <Filter>98.Default\ImGui</Filter>
@@ -110,6 +131,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\Client_Macro.h">
       <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI.h">
+      <Filter>02.GameObjects\00.UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -148,7 +172,7 @@
       <Filter>01.Levels\MapTool</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BackGround.cpp">
-      <Filter>02.GameObjects\00.BackGround</Filter>
+      <Filter>02.GameObjects\00.UI\00.BackGround</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui.cpp">
       <Filter>98.Default\ImGui</Filter>
@@ -173,6 +197,9 @@
     </ClCompile>
     <ClCompile Include="ImGui\ImGuizmo.cpp">
       <Filter>98.Default\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI.cpp">
+      <Filter>02.GameObjects\00.UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

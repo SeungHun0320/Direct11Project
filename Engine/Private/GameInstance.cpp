@@ -111,7 +111,7 @@ void CGameInstance::Clear(_uint iLevelIndex)
 	/* 특정 레벨의 객체을 삭제한다. */
 	m_pObject_Manager->Clear(iLevelIndex);
 
-	/* 특정 레벨의 원형객을 삭제한다. */
+	/* 특정 레벨의 원형객체를 삭제한다. */
 	m_pPrototype_Manager->Clear(iLevelIndex);
 }
 
@@ -300,6 +300,8 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pGraphic_Device);
 
 	Safe_Release(m_pInputDevice);
+
+	Safe_Release(m_pSound_Device);
 
 	Destroy_Instance();
 }

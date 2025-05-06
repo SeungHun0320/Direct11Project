@@ -42,7 +42,7 @@ HRESULT CGameObject::Initialize(void* pArg)
 	if (nullptr == pArg)
 		return S_OK;
 
-	GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
+	DESC* pDesc = static_cast<DESC*>(pArg);
 
 	m_pTransformCom = CTransform::Create(m_pDevice, m_pContext);
 	if (nullptr == m_pTransformCom)

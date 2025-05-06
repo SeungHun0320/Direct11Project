@@ -20,7 +20,7 @@ HRESULT CUIObject::Initialize(void* pArg)
 	if (nullptr == pArg)
 		return S_OK;
 
-	UIOBJECT_DESC* pDesc = static_cast<UIOBJECT_DESC*>(pArg);
+	DESC* pDesc = static_cast<DESC*>(pArg);
 
 	m_fX = pDesc->fX;
 	m_fY = pDesc->fY;

@@ -11,7 +11,7 @@ public:
 	{
 		_float			fSpeedPerSec;
 		_float			fRotationPerSec;
-	}TRANSFORM_DESC;
+	}DESC;
 
 protected:
 	CTransform(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
