@@ -1,27 +1,19 @@
 #pragma once
-
 #include "UI.h"
 
-BEGIN(Engine)
-class CShader;
-class CTexture;
-class CVIBuffer_Rect;
-END
-
-BEGIN(Client)
-
-class CBackGround final : public CUI
+class CButton : public CUI
 {
 public:
-	typedef struct tagBackGroundDesc : public CUI::DESC
+	typedef struct tagButtonDesc : public CUI::DESC
 	{
-		
+		_float3 vScale{};
+
 	}DESC;
 
 private:
-	CBackGround(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CBackGround(const CBackGround& Prototype);
-	virtual ~CBackGround() = default;
+	CButton(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CButton(const CButton& Prototype);
+	virtual ~CButton() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -35,10 +27,8 @@ private:
 	virtual HRESULT Ready_Components(void* pArg) override;
 
 public:
-	static CBackGround* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CButton* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
-
 };
 
-END

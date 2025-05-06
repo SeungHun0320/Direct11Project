@@ -43,23 +43,26 @@
     <Filter Include="02.GameObjects\00.UI\00.BackGround">
       <UniqueIdentifier>{517eb494-a7a3-40c2-95e0-858f13d8d0a9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.UI\01. PlayerState">
+    <Filter Include="02.GameObjects\00.UI\02. PlayerState">
       <UniqueIdentifier>{acdd028d-888d-43d1-96ea-514ea2c6ee04}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.UI\01. PlayerState\00. Hp_Bar">
+    <Filter Include="02.GameObjects\00.UI\02. PlayerState\00. Hp_Bar">
       <UniqueIdentifier>{60c9200d-6118-4587-9ee0-1bcb3f52c367}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.UI\01. PlayerState\01. Stamina_Bar">
+    <Filter Include="02.GameObjects\00.UI\02. PlayerState\01. Stamina_Bar">
       <UniqueIdentifier>{fa8a6485-6e60-4186-aec4-b9d0b8a4e8ce}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.UI\01. PlayerState\02. Mana_Bar">
+    <Filter Include="02.GameObjects\00.UI\02. PlayerState\02. Mana_Bar">
       <UniqueIdentifier>{76ade142-3387-45f1-8a26-dffaefe60af0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.UI\01. PlayerState\03. Using_Item">
+    <Filter Include="02.GameObjects\00.UI\02. PlayerState\03. Using_Item">
       <UniqueIdentifier>{236863ca-b3a3-4988-bc0e-547467f75ba8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.UI\01. PlayerState\04. Potion">
+    <Filter Include="02.GameObjects\00.UI\02. PlayerState\04. Potion">
       <UniqueIdentifier>{e0a56d88-4553-40f7-b364-a16b07c8efe4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\01. Button">
+      <UniqueIdentifier>{e8dd86c2-6ab2-4d41-ad8a-a62041ad8fbb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -135,6 +138,9 @@
     <ClInclude Include="..\Public\UI.h">
       <Filter>02.GameObjects\00.UI</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Button.h">
+      <Filter>02.GameObjects\00.UI\01. Button</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -200,6 +206,9 @@
     </ClCompile>
     <ClCompile Include="..\private\UI.cpp">
       <Filter>02.GameObjects\00.UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Button.cpp">
+      <Filter>02.GameObjects\00.UI\01. Button</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
