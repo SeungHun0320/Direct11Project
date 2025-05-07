@@ -88,6 +88,15 @@
     <ClInclude Include="..\public\SoundController.h">
       <Filter>01.Utility\04.Components\SoundController</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Terrain.h">
+      <Filter>01.Utility\04.Components\VIBuffer\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\PipeLine.h">
+      <Filter>01.Utility\06.PipeLine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Picking.h">
+      <Filter>01.Utility\07.Picking</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Timer.cpp">
@@ -158,6 +167,18 @@
     </ClCompile>
     <ClCompile Include="..\private\SoundController.cpp">
       <Filter>01.Utility\04.Components\SoundController</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Terrain.cpp">
+      <Filter>01.Utility\04.Components\VIBuffer\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Engine_Struct.cpp">
+      <Filter>99.Defines</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\PipeLine.cpp">
+      <Filter>01.Utility\06.PipeLine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Picking.cpp">
+      <Filter>01.Utility\07.Picking</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -262,6 +283,12 @@
     </Filter>
     <Filter Include="01.Utility\04.Components\SoundController">
       <UniqueIdentifier>{77182893-bd9f-4cd2-a848-d47ebd55e32d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\06.PipeLine">
+      <UniqueIdentifier>{dddb0da1-4f9b-4a2c-ae79-4752dfd1ee79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\07.Picking">
+      <UniqueIdentifier>{5d7692f8-6625-438d-8ff1-99fd3e888c25}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

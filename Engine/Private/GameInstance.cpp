@@ -1,7 +1,8 @@
 #include "GameInstance.h"
 
-//#include "Picking.h"
+#include "Picking.h"
 #include "Renderer.h"
+#include "PipeLine.h"
 #include "Sound_Device.h"
 #include "Input_Device.h"
 #include "Level_Manager.h"
@@ -50,9 +51,13 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ ID
 	if (nullptr == m_pRenderer)
 		return E_FAIL;
 
-	//m_pPicking = CPicking::Create(*ppOut, EngineDesc.hWnd, EngineDesc.iWinSizeX, EngineDesc.iWinSizeY);
-	//if (nullptr == m_pPicking)
-	//	return E_FAIL;
+	m_pPipeLine = CPipeLine::Create();
+	if (nullptr == m_pPipeLine)
+		return E_FAIL;
+
+	m_pPicking = CPicking::Create(*ppDeviceOut, *ppContextOut, EngineDesc.hWnd, EngineDesc.iWinSizeX, EngineDesc.iWinSizeY);
+	if (nullptr == m_pPicking)
+		return E_FAIL;
 
 
 
@@ -65,6 +70,7 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 	m_pInputDevice->Update();
 	m_pObject_Manager->Priority_Update(fTimeDelta);
 
+	m_pPipeLine->Update();
 	//m_pPicking->Update();
 
 	m_pObject_Manager->Update(fTimeDelta);	
@@ -283,6 +289,25 @@ void CGameInstance::Set_Master_Volume(_float volume)
 }
 #pragma endregion
 
+#pragma region PIPELINE
+void CGameInstance::Set_Transform(D3DTS eState, _fmatrix TransformMatrix)
+{
+	m_pPipeLine->Set_Transform(eState, TransformMatrix);
+}
+const _float4x4* CGameInstance::Get_Transform_Float4x4(D3DTS eState) const
+{
+	return m_pPipeLine->Get_Transform_Float4x4(eState);
+}
+_matrix CGameInstance::Get_Transform_Matrix(D3DTS eState) const
+{
+	return m_pPipeLine->Get_Transform_Matrix(eState);
+}
+const _float4* CGameInstance::Get_CamPosition() const
+{
+	return m_pPipeLine->Get_CamPosition();
+}
+#pragma endregion
+
 void CGameInstance::Release_Engine()
 {
 	//Safe_Release(m_pPicking);
@@ -302,6 +327,8 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pInputDevice);
 
 	Safe_Release(m_pSound_Device);
+
+	Safe_Release(m_pPipeLine);
 
 	Destroy_Instance();
 }

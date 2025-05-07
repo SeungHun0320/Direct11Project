@@ -19,7 +19,12 @@ HRESULT CLevel_MapTool::Initialize()
 
 void CLevel_MapTool::Update(_float fTimeDelta)
 {
-
+	if (KEY_DOWN(DIK_RETURN))
+	{
+		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
+			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::LOGO))))
+			return;
+	}
 }
 
 HRESULT CLevel_MapTool::Render()

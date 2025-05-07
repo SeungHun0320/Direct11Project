@@ -6,7 +6,9 @@ namespace Engine
 
 	enum class RENDERGROUP { RG_PRIORITY, RG_NONBLEND, RG_BLEND, RG_UI, RG_END };
 
-	enum class STATE { RIGHT, UP, LOOK, POSITION, END };
+	enum class STATE { RIGHT, UP, LOOK, POSITION, ST_END };
+
+	enum class D3DTS { VIEW, PROJ, TS_END };
 	
 	enum class DIMK { LBUTTON, RBUTTON, WHEEL, DIMK_END };
 

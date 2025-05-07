@@ -64,6 +64,9 @@
     <Filter Include="02.GameObjects\00.UI\01. Button">
       <UniqueIdentifier>{e8dd86c2-6ab2-4d41-ad8a-a62041ad8fbb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\01.Terrain">
+      <UniqueIdentifier>{78620c5c-7bbf-48ed-83e1-2b4beaeb7d27}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -141,6 +144,9 @@
     <ClInclude Include="..\public\Button.h">
       <Filter>02.GameObjects\00.UI\01. Button</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Terrain.h">
+      <Filter>02.GameObjects\01.Terrain</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -210,9 +216,15 @@
     <ClCompile Include="..\private\Button.cpp">
       <Filter>02.GameObjects\00.UI\01. Button</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\Terrain.cpp">
+      <Filter>02.GameObjects\01.Terrain</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

@@ -81,6 +81,13 @@ public:
 	void Set_Master_Volume(_float volume);
 #pragma endregion
 
+#pragma region PIPELINE
+	void Set_Transform(D3DTS eState, _fmatrix TransformMatrix);
+	const _float4x4* Get_Transform_Float4x4(D3DTS eState) const;
+	_matrix Get_Transform_Matrix(D3DTS eState) const;
+	const _float4* Get_CamPosition() const;
+#pragma endregion
+
 private:
 	class CGraphic_Device*		m_pGraphic_Device = { nullptr };
 	class CInput_Device*		m_pInputDevice = { nullptr };
@@ -90,7 +97,8 @@ private:
 	class CRenderer*			m_pRenderer = { nullptr };
 	class CTimer_Manager*		m_pTimer_Manager = { nullptr };
 	class CSound_Device*		m_pSound_Device = { nullptr };
-	// class CPicking*				m_pPicking = { nullptr };
+	class CPipeLine*			m_pPipeLine = { nullptr };
+	class CPicking*				m_pPicking = { nullptr };
 
 public:
 	void Release_Engine();

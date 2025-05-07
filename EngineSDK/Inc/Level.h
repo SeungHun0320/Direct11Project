@@ -17,10 +17,17 @@ public:
 	virtual void Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
+	void Change_Level(_uint iLevelIndex) {
+		m_iNextLevel = iLevelIndex;
+	}
+
 protected:
 	ID3D11Device*			m_pDevice = { nullptr };
 	ID3D11DeviceContext*	m_pContext = { nullptr };
 	class CGameInstance*	m_pGameInstance = { nullptr };
+
+protected:
+	_uint					m_iNextLevel{};
 
 public:	
 	virtual void Free() override;

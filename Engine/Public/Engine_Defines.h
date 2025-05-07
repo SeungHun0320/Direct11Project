@@ -4,6 +4,7 @@
 
 #include <d3d11.h>
 #include <DirectXMath.h>
+#include "DirectXCollision.h"
 
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
@@ -23,11 +24,11 @@ using namespace DirectX;
 #include <memory>
 using namespace std;
 
+#include "Engine_Macro.h"
 #include "Engine_Struct.h"
 #include "Engine_Enum.h"
 #include "Engine_Function.h"
 #include "Engine_Typedef.h"
-#include "Engine_Macro.h"
 
 namespace Engine
 {
