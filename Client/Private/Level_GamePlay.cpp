@@ -3,6 +3,7 @@
 #include "Level_Loading.h"
 
 #include "Terrain.h"
+#include "Camera_Free.h"
 
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 		: CLevel { pDevice, pContext }
@@ -29,12 +30,7 @@ void CLevel_GamePlay::Update(_float fTimeDelta)
 			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::LOGO))))
 			return;
 	}
-	else if (KEY_DOWN(DIK_RSHIFT))
-	{
-		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
-			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::MAPTOOL))))
-			return;
-	}
+
 }
 
 HRESULT CLevel_GamePlay::Render()
@@ -51,7 +47,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Terrain(const _wstring& strLayerTag)
 	tDesc.eLevelID = LEVEL::GAMEPLAY;
 
 	if(FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_Terrain"),
-		ENUM_CLASS(LEVEL::GAMEPLAY), strLayerTag, &tDesc)))
+		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
 		return E_FAIL;
 
 	return S_OK;
@@ -59,6 +55,23 @@ HRESULT CLevel_GamePlay::Ready_Layer_Terrain(const _wstring& strLayerTag)
 
 HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& strLayerTag)
 {
+	CCamera_Free::DESC tDesc = {};
+
+	tDesc.eLevelID = LEVEL::GAMEPLAY;
+	tDesc.fSensor = 0.1f;
+
+	tDesc.vEye = _float3(0.f, 20.f, -15.f);
+	tDesc.vAt = _float3(0.f, 0.f, 0.f);
+	tDesc.fFov = XMConvertToRadians(60.f);
+	tDesc.fNear = 0.1f;
+	tDesc.fFar = 500.f;
+	tDesc.fSpeedPerSec = 10.f;
+	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_Camera_Free"),
+		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
+		return E_FAIL;
+
 	return S_OK;
 }
 

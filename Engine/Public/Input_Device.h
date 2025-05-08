@@ -11,17 +11,18 @@ private:
 	virtual ~CInput_Device() = default;
 
 public:
-	_byte Get_DIKState(_ubyte eKeyID) {
+	_byte Get_DIKeyState(_ubyte eKeyID) {
 		return m_byKeyState[eKeyID];
 	}
 
-	_byte Get_DIMKeyState(DIMK eMouseKeyID) {
+	_byte Get_DIMouseState(DIMK eMouseKeyID) {
 		return m_MouseState.rgbButtons[ENUM_CLASS(eMouseKeyID)];
 	}
 
-	_long Get_DIMMoveState(DIMM eMouseMoveID) {
-		// return *(((_long*)&m_MouseState) + eMouseMoveID);
-		return ((_long*)&m_MouseState)[ENUM_CLASS(eMouseMoveID)];
+	// 현재 마우스의 특정 축 좌표를 반환
+	_long	Get_DIMouseMove(DIMM eMouseState)
+	{
+		return *((reinterpret_cast<_int*>(&m_MouseState)) + static_cast<_uint>(eMouseState));
 	}
 
 	_bool Key_Down(_ubyte eKeyID)

@@ -67,6 +67,9 @@
     <Filter Include="02.GameObjects\01.Terrain">
       <UniqueIdentifier>{78620c5c-7bbf-48ed-83e1-2b4beaeb7d27}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\02.Camera">
+      <UniqueIdentifier>{f62598e1-b116-413f-9218-fbb7221cbdd0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -102,7 +105,7 @@
     <ClInclude Include="..\public\MainApp.h">
       <Filter>00.MainApp</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Level_MapTool.h">
+    <ClInclude Include="..\public\Level_Tools.h">
       <Filter>01.Levels\MapTool</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\BackGround.h">
@@ -147,6 +150,15 @@
     <ClInclude Include="..\public\Terrain.h">
       <Filter>02.GameObjects\01.Terrain</Filter>
     </ClInclude>
+    <ClInclude Include="ImGui\ImGuiFileDialog.h">
+      <Filter>98.Default\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\ImGuiFileDialogConfig.h">
+      <Filter>98.Default\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Camera_Free.h">
+      <Filter>02.GameObjects\02.Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -180,7 +192,7 @@
     <ClCompile Include="..\private\MainApp.cpp">
       <Filter>00.MainApp</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Level_MapTool.cpp">
+    <ClCompile Include="..\private\Level_Tools.cpp">
       <Filter>01.Levels\MapTool</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BackGround.cpp">
@@ -218,6 +230,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Terrain.cpp">
       <Filter>02.GameObjects\01.Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\ImGuiFileDialog.cpp">
+      <Filter>98.Default\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Camera_Free.cpp">
+      <Filter>02.GameObjects\02.Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

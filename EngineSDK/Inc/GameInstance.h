@@ -59,9 +59,9 @@ public:
 //#pragma endregion
 
 #pragma region INPUT_DEVICE
-	_byte Get_DIKState(_ubyte eKeyID);
-	_byte Get_DIMKeyState(DIMK eMouseKeyID);
-	_long Get_DIMMoveState(DIMM eMouseMoveID);
+	_byte Get_DIKeyState(_ubyte eKeyID);
+	_byte Get_DIMouseState(DIMK eMouseKeyID);
+	_long Get_DIMouseMove(DIMM eMouseMoveID);
 	_bool Mouse_Down(_ubyte eKeyID);
 	_bool Mouse_Pressing(_ubyte eKeyID);
 	_bool Mouse_Up(_ubyte eKeyID);
@@ -98,7 +98,7 @@ private:
 	class CTimer_Manager*		m_pTimer_Manager = { nullptr };
 	class CSound_Device*		m_pSound_Device = { nullptr };
 	class CPipeLine*			m_pPipeLine = { nullptr };
-	// class CPicking*				m_pPicking = { nullptr };
+	class CPicking*				m_pPicking = { nullptr };
 
 public:
 	void Release_Engine();

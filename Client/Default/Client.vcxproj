@@ -159,6 +159,7 @@
   <ItemGroup>
     <ClInclude Include="..\Public\BackGround.h" />
     <ClInclude Include="..\public\Button.h" />
+    <ClInclude Include="..\public\Camera_Free.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Client_Enum.h" />
     <ClInclude Include="..\Public\Client_Macro.h" />
@@ -167,7 +168,7 @@
     <ClInclude Include="..\Public\Level_Logo.h" />
     <ClInclude Include="..\Public\Loader.h" />
     <ClInclude Include="..\public\MainApp.h" />
-    <ClInclude Include="..\public\Level_MapTool.h" />
+    <ClInclude Include="..\public\Level_Tools.h" />
     <ClInclude Include="..\public\Terrain.h" />
     <ClInclude Include="..\Public\UI.h" />
     <ClInclude Include="Client.h" />
@@ -176,6 +177,8 @@
     <ClInclude Include="ImGui\backends\imgui_impl_win32.h" />
     <ClInclude Include="ImGui\imconfig.h" />
     <ClInclude Include="ImGui\imgui.h" />
+    <ClInclude Include="ImGui\ImGuiFileDialog.h" />
+    <ClInclude Include="ImGui\ImGuiFileDialogConfig.h" />
     <ClInclude Include="ImGui\ImGuizmo.h" />
     <ClInclude Include="ImGui\imgui_internal.h" />
     <ClInclude Include="ImGui\imstb_rectpack.h" />
@@ -187,18 +190,20 @@
   <ItemGroup>
     <ClCompile Include="..\Private\BackGround.cpp" />
     <ClCompile Include="..\private\Button.cpp" />
+    <ClCompile Include="..\private\Camera_Free.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />
     <ClCompile Include="..\Private\Level_Logo.cpp" />
     <ClCompile Include="..\Private\Loader.cpp" />
     <ClCompile Include="..\private\MainApp.cpp" />
-    <ClCompile Include="..\private\Level_MapTool.cpp" />
+    <ClCompile Include="..\private\Level_Tools.cpp" />
     <ClCompile Include="..\private\Terrain.cpp" />
     <ClCompile Include="..\private\UI.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="ImGui\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="ImGui\backends\imgui_impl_win32.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
+    <ClCompile Include="ImGui\ImGuiFileDialog.cpp" />
     <ClCompile Include="ImGui\ImGuizmo.cpp" />
     <ClCompile Include="ImGui\imgui_demo.cpp" />
     <ClCompile Include="ImGui\imgui_draw.cpp" />

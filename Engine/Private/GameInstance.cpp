@@ -71,7 +71,7 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 	m_pObject_Manager->Priority_Update(fTimeDelta);
 
 	m_pPipeLine->Update();
-	//m_pPicking->Update();
+	m_pPicking->Update();
 
 	m_pObject_Manager->Update(fTimeDelta);	
 
@@ -214,20 +214,20 @@ void CGameInstance::Update_Timer(const _wstring& strTimerTag)
 #pragma region INPUT_DEVICE
 
 
-_byte CGameInstance::Get_DIKState(_ubyte eKeyID)
+_byte CGameInstance::Get_DIKeyState(_ubyte eKeyID)
 {
-	return m_pInputDevice->Get_DIKState(eKeyID);
+	return m_pInputDevice->Get_DIKeyState(eKeyID);
 }
 
 
-_byte CGameInstance::Get_DIMKeyState(DIMK eMouseKeyID)
+_byte CGameInstance::Get_DIMouseState(DIMK eMouseKeyID)
 {
-	return m_pInputDevice->Get_DIMKeyState(eMouseKeyID);
+	return m_pInputDevice->Get_DIMouseState(eMouseKeyID);
 }
 
-_long CGameInstance::Get_DIMMoveState(DIMM eMouseMoveID)
+_long CGameInstance::Get_DIMouseMove(DIMM eMouseMoveID)
 {
-	return m_pInputDevice->Get_DIMMoveState(eMouseMoveID);
+	return m_pInputDevice->Get_DIMouseMove(eMouseMoveID);
 }
 
 _bool CGameInstance::Mouse_Down(_ubyte eKeyID)
@@ -310,7 +310,7 @@ const _float4* CGameInstance::Get_CamPosition() const
 
 void CGameInstance::Release_Engine()
 {
-	//Safe_Release(m_pPicking);
+	Safe_Release(m_pPicking);
 
 	Safe_Release(m_pTimer_Manager);
 

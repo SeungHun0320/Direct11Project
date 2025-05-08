@@ -31,6 +31,12 @@ void CLevel_Logo::Update(_float fTimeDelta)
 			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::GAMEPLAY))))
 			return;
 	}
+	else if (KEY_DOWN(DIK_RSHIFT))
+	{
+		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
+			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::TOOLS))))
+			return;
+	}
 }
 
 HRESULT CLevel_Logo::Render()

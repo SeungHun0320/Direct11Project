@@ -2,7 +2,7 @@
 
 
 #include "Level_GamePlay.h"
-#include "Level_MapTool.h"
+#include "Level_Tools.h"
 #include "Level_Logo.h"
 #include "Loader.h"
 
@@ -47,8 +47,8 @@ void CLevel_Loading::Update(_float fTimeDelta)
 			case LEVEL::GAMEPLAY:
 				pLevel = CLevel_GamePlay::Create(m_pDevice, m_pContext);
 				break;
-			case LEVEL::MAPTOOL:
-				pLevel = CLevel_MapTool::Create(m_pDevice, m_pContext);
+			case LEVEL::TOOLS:
+				pLevel = CLevel_Tools::Create(m_pDevice, m_pContext);
 				break;
 			}
 
