@@ -17,6 +17,10 @@ public:
 
 	virtual HRESULT Bind_Buffers();
 	virtual HRESULT Render();
+public:
+	virtual _float3 Compute_HeightPosition(const _float3& vPosition) { return vPosition; }
+	_float3 Compute_PickedPosition_Local(_fmatrix WorldMatrixInverse);
+	_float3 Compute_PickedPosition_World(const _float4x4* pWorldMatrix);
 
 protected:
 	/* 다렉 11에서는 버퍼 자료형이 같아짐 */
@@ -42,6 +46,7 @@ protected:
 	DXGI_FORMAT					m_eIndexFormat = {};
 	/* 프리미티브 토폴로지 (트라이앵글 리스트 등 ) */
 	D3D11_PRIMITIVE_TOPOLOGY	m_ePrimitiveTopology = {};
+	void*						m_pIndices = { nullptr };
 
 public:
 	virtual CComponent* Clone(void* pArg) = 0;

@@ -64,9 +64,6 @@
     <ClInclude Include="..\public\Texture.h">
       <Filter>01.Utility\04.Components\Texture</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\VIBuffer.h">
-      <Filter>01.Utility\04.Components\VIBuffer</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\VIBuffer_Rect.h">
       <Filter>01.Utility\04.Components\VIBuffer\Rect</Filter>
     </ClInclude>
@@ -99,6 +96,9 @@
     </ClInclude>
     <ClInclude Include="..\public\Camera.h">
       <Filter>01.Utility\03.GameObject\Objects\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\VIBuffer.h">
+      <Filter>01.Utility\04.Components\VIBuffer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -52,11 +52,11 @@ public:
 	void Update_Timer(const _wstring& strTimerTag);
 #pragma endregion
 //
-//#pragma region PICKING
-//	void Transform_Picking_ToLocalSpace(const _float4x4& WorldMatrixInverse);
-//	_bool Picking_InWorld(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC);
-//	_bool Picking_InLocal(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC);
-//#pragma endregion
+#pragma region PICKING
+	void Transform_Picking_ToLocalSpace(_fmatrix WorldMatrixInverse);
+	_bool Picking_InWorld(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC);
+	_bool Picking_InLocal(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC);
+#pragma endregion
 
 #pragma region INPUT_DEVICE
 	_byte Get_DIKeyState(_ubyte eKeyID);

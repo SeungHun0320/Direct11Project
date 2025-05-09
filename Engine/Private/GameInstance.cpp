@@ -195,21 +195,21 @@ void CGameInstance::Update_Timer(const _wstring& strTimerTag)
 
 #pragma endregion
 
-//#pragma region PICKING
-//void CGameInstance::Transform_Picking_ToLocalSpace(const _float4x4& WorldMatrixInverse)
-//{
-//	m_pPicking->Transform_ToLocalSpace(WorldMatrixInverse);
-//}
-//_bool CGameInstance::Picking_InWorld(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC)
-//{
-//	return m_pPicking->Picking_InWorld(vPickedPos, vPointA, vPointB, vPointC);
-//}
-//_bool CGameInstance::Picking_InLocal(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC)
-//{
-//	return m_pPicking->Picking_InLocal(vPickedPos, vPointA, vPointB, vPointC);
-//}
-//
-//#pragma endregion
+#pragma region PICKING
+void CGameInstance::Transform_Picking_ToLocalSpace(_fmatrix WorldMatrixInverse)
+{
+	m_pPicking->Transform_ToLocalSpace(WorldMatrixInverse);
+}
+_bool CGameInstance::Picking_InWorld(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC)
+{
+	return m_pPicking->Picking_InWorld(vPickedPos, vPointA, vPointB, vPointC);
+}
+_bool CGameInstance::Picking_InLocal(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC)
+{
+	return m_pPicking->Picking_InLocal(vPickedPos, vPointA, vPointB, vPointC);
+}
+
+#pragma endregion
 
 #pragma region INPUT_DEVICE
 

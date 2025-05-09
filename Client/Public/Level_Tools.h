@@ -26,8 +26,12 @@ private:
 	HRESULT Ready_DockSpace();
 
 	HRESULT MainTool();
+	HRESULT FileDialog();
 	HRESULT MapTool();
 	HRESULT CameraTool();
+
+private:
+	HRESULT Ready_Layer_Camera(const _wstring& strLayerTag);
 
 
 public:

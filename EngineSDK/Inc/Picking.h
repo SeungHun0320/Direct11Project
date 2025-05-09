@@ -14,6 +14,12 @@ public:
 	HRESULT Initialize(HWND hWnd, _uint iWinSizeX, _uint iWinSizeY);
 	void Update();
 
+	/* 기존의 그냥 피킹함수를 로컬과 월드에서 각각 해주기 위해, InWorld와 InLocal로 함수를 나눠줬다 */
+	_bool Picking_InWorld(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC);
+	_bool Picking_InLocal(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC);
+
+	/* 마우스의 방향과 좌표를 월드에서 로컬로 보내주기 위한 함수 */
+	void Transform_ToLocalSpace(_fmatrix WorldMatrixInverse);
 
 private:
 	ID3D11Device*			m_pDevice = { nullptr };
@@ -23,6 +29,13 @@ private:
 private:
 	HWND			m_hWnd = {};
 	_uint			m_iWinSizeX{}, m_iWinSizeY{};
+
+	_float3			m_vMouseRay = {};
+	_float3			m_vMousePos = {};
+
+	/* 로컬좌표로 옮겨온 마우스의 방향과 위치를 저장하기 위한 변수 */
+	_float3			m_vLocalMouseRay = {};
+	_float3			m_vLocalMousePos = {};
 
 public:
 	static CPicking* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HWND hWnd, _uint iWinSizeX, _uint iWinSizeY);

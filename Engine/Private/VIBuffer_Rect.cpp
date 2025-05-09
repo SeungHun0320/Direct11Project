@@ -66,6 +66,9 @@ HRESULT CVIBuffer_Rect::Initialize_Prototype()
 	IBBufferDesc.StructureByteStride = m_iIndexStride;
 	IBBufferDesc.MiscFlags = 0;
 
+	m_pIndices = new _uint[m_iNumIndices];
+	ZeroMemory(m_pIndices, sizeof(_uint) * m_iNumIndices);
+
 	_ushort* pIndices = new _ushort[m_iNumIndices];
 	ZeroMemory(pIndices, sizeof(_ushort) * m_iNumIndices);
 
@@ -82,6 +85,8 @@ HRESULT CVIBuffer_Rect::Initialize_Prototype()
 
 	if (FAILED(m_pDevice->CreateBuffer(&IBBufferDesc, &IBInitialData, &m_pIB)))
 		return E_FAIL;
+
+	memcpy(m_pIndices, pIndices, m_iIndexStride * m_iNumIndices);
 
 	Safe_Delete_Array(pIndices);
 

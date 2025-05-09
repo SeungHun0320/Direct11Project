@@ -1,6 +1,8 @@
 #include "Level_Tools.h"
 #include "Level_Loading.h"
 
+#include "Camera_Free.h"
+
 CLevel_Tools::CLevel_Tools(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel{ pDevice, pContext }
 {
@@ -10,6 +12,8 @@ CLevel_Tools::CLevel_Tools(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 HRESULT CLevel_Tools::Initialize()
 {
+	if(FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
+		return E_FAIL;
 
 	if (FAILED(Ready_ImGui()))
 		return E_FAIL;
@@ -38,6 +42,7 @@ HRESULT CLevel_Tools::Render()
 
 	MapTool();
 	CameraTool();
+	FileDialog();
 
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
@@ -90,34 +95,26 @@ HRESULT CLevel_Tools::Ready_DockSpace()
 	{
 		if (ImGui::BeginMenu(u8"파일"))
 		{
-			IGFD::FileDialogConfig config{};
-
-			config.path = "../../";
-
-			ImGuiFileDialog::Instance()->OpenDialog(
-				"ChooseFile",            // 다이얼로그 Key
-				"파일 선택",              // 타이틀
-				".png,.fbx,.txt",        // 필터 (여러 개 가능),
-				config                    // 시작 경로
-			);
-
-			if (ImGuiFileDialog::Instance()->Display("OpenFileDialog"))
+			if (ImGui::BeginMenu(u8"열기"))
 			{
-				if (ImGuiFileDialog::Instance()->IsOk())  // OK 눌렀다면
-				{
-					std::string path = ImGuiFileDialog::Instance()->GetFilePathName();
-					std::string name = ImGuiFileDialog::Instance()->GetCurrentFileName();
-				}
+				IGFD::FileDialogConfig config{};
 
-				ImGuiFileDialog::Instance()->Close(); // 꼭 닫아줘야 다시 열림
+				config.path = "../bin/Resources/";
+
+				ImGuiFileDialog::Instance()->OpenDialog(
+					"ChooseFile",            // 다이얼로그 Key
+					u8"파일 선택",              // 타이틀
+					".png,.fbx,.txt",        // 필터 (여러 개 가능),
+					config                    // 시작 경로
+				);
+
+				ImGui::EndMenu();
 			}
-
 			ImGui::EndMenu();
 		}
 
 		ImGui::EndMenuBar();
 	}
-
 
 	ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_PassthruCentralNode;
 	ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
@@ -155,10 +152,25 @@ HRESULT CLevel_Tools::MainTool()
 	return S_OK;
 }
 
+HRESULT CLevel_Tools::FileDialog()
+{
+	if (ImGuiFileDialog::Instance()->Display("ChooseFile"))
+	{
+		if (ImGuiFileDialog::Instance()->IsOk())  // OK 눌렀다면
+		{
+			std::string path = ImGuiFileDialog::Instance()->GetFilePathName();
+			std::string name = ImGuiFileDialog::Instance()->GetCurrentFileName();
+		}
+
+		ImGuiFileDialog::Instance()->Close(); // 꼭 닫아줘야 다시 열림
+	}
+
+	return S_OK;
+}
+
 HRESULT CLevel_Tools::CameraTool()
 {
 	ImGui::Begin(u8"카메라 툴");
-
 	ImGui::Dummy(ImVec2(0.0f, 15.0f));
 	if (ImGui::Button(u8"응애쓰"))
 	{
@@ -166,6 +178,28 @@ HRESULT CLevel_Tools::CameraTool()
 	}
 
 	ImGui::End();
+
+	return S_OK;
+}
+
+HRESULT CLevel_Tools::Ready_Layer_Camera(const _wstring& strLayerTag)
+{
+	CCamera_Free::DESC tDesc = {};
+
+	tDesc.eLevelID = LEVEL::TOOLS;
+	tDesc.fSensor = 0.1f;
+
+	tDesc.vEye = _float3(0.f, 20.f, -15.f);
+	tDesc.vAt = _float3(0.f, 0.f, 0.f);
+	tDesc.fFov = XMConvertToRadians(60.f);
+	tDesc.fNear = 0.1f;
+	tDesc.fFar = 500.f;
+	tDesc.fSpeedPerSec = 10.f;
+	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_Camera_Free"),
+		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }

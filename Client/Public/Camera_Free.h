@@ -3,6 +3,8 @@
 #include "Client_Defines.h"
 #include "Camera.h"
 
+BEGIN(Client)
+
 class CCamera_Free : public CCamera
 {
 public:
@@ -34,3 +36,4 @@ public:
 	virtual void Free()override;
 };
 
+END
