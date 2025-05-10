@@ -6,6 +6,10 @@
 #include <DirectXMath.h>
 #include "DirectXCollision.h"
 
+#include <fstream>
+#include <filesystem>
+namespace fs = std::filesystem;
+
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
 

@@ -193,7 +193,7 @@ HRESULT CLevel_Tools::Ready_Layer_Camera(const _wstring& strLayerTag)
 	tDesc.vAt = _float3(0.f, 0.f, 0.f);
 	tDesc.fFov = XMConvertToRadians(60.f);
 	tDesc.fNear = 0.1f;
-	tDesc.fFar = 500.f;
+	tDesc.fFar = 3000.f;
 	tDesc.fSpeedPerSec = 10.f;
 	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
 

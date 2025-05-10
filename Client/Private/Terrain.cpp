@@ -29,6 +29,7 @@ HRESULT CTerrain::Initialize(void* pArg)
 
 void CTerrain::Priority_Update(_float fTimeDelta)
 {
+
 }
 
 void CTerrain::Update(_float fTimeDelta)

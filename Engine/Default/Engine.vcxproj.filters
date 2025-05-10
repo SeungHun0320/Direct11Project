@@ -16,9 +16,6 @@
     <ClInclude Include="..\Public\Engine_Struct.h">
       <Filter>99.Defines</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Engine_Typedef.h">
-      <Filter>99.Defines</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Timer.h">
       <Filter>00.System\00.Timer</Filter>
     </ClInclude>
@@ -99,6 +96,15 @@
     </ClInclude>
     <ClInclude Include="..\public\VIBuffer.h">
       <Filter>01.Utility\04.Components\VIBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Mesh.h">
+      <Filter>01.Utility\04.Components\Model\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Engine_Typedef.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Model.h">
+      <Filter>01.Utility\04.Components\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -185,6 +191,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Camera.cpp">
       <Filter>01.Utility\03.GameObject\Objects\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Mesh.cpp">
+      <Filter>01.Utility\04.Components\Model\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Model.cpp">
+      <Filter>01.Utility\04.Components\Model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -298,6 +310,12 @@
     </Filter>
     <Filter Include="01.Utility\03.GameObject\Objects\Camera">
       <UniqueIdentifier>{8deeb668-8e27-4f46-83da-7a7ec29f4c2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\Model">
+      <UniqueIdentifier>{a08fc9eb-abc3-4fdb-80cb-7e0f3b4aec7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\Model\Mesh">
+      <UniqueIdentifier>{990bc2b7-956d-4818-920c-f0e9af8eeab4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
