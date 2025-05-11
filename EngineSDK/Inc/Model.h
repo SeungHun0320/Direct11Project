@@ -5,12 +5,6 @@ BEGIN(Engine)
 
 class ENGINE_DLL CModel : public CComponent
 {
-public:
-	typedef struct tagMeshDataDesc
-	{
-
-	}MESH_DESC;
-
 protected:
 	CModel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CModel(const CModel& Prototype);
@@ -28,7 +22,7 @@ private:
 	vector<class CMesh*>	m_Meshes;
 
 private:
-	HRESULT Ready_Meshes(const _wstring& strModelFilePath);
+	HRESULT Ready_Meshes(ifstream& _InFile);
 
 public:
 	static CModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _wstring& strModelFilePath);

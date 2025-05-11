@@ -24,6 +24,9 @@ public:
 private:
 	HRESULT Ready_ImGui();
 	HRESULT Ready_DockSpace();
+	void ImGui_RenderBegin();
+	void ImGui_RenderEnd();
+
 
 	HRESULT MainTool();
 	HRESULT FileDialog();
@@ -32,7 +35,6 @@ private:
 
 private:
 	HRESULT Ready_Layer_Camera(const _wstring& strLayerTag);
-
 
 public:
 	static CLevel_Tools* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

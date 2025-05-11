@@ -122,8 +122,63 @@ _float3 CVIBuffer::Compute_PickedPosition_World(const _float4x4* pWorldMatrix)
 		memcpy(&iIndices[1], pIndices + m_iIndexStride, m_iIndexStride);
 		memcpy(&iIndices[2], pIndices + m_iIndexStride * 2, m_iIndexStride);
 
-		if (true == m_pGameInstance->Picking_InWorld(vPickedPos, m_pVertexPositions[iIndices[0]], m_pVertexPositions[iIndices[1]], m_pVertexPositions[iIndices[2]]))
+		_float3 v0, v1, v2;
+		XMStoreFloat3(&v0, XMVector3TransformCoord(XMLoadFloat3(&m_pVertexPositions[iIndices[0]]), XMLoadFloat4x4(pWorldMatrix)));
+		XMStoreFloat3(&v1, XMVector3TransformCoord(XMLoadFloat3(&m_pVertexPositions[iIndices[1]]), XMLoadFloat4x4(pWorldMatrix)));
+		XMStoreFloat3(&v2, XMVector3TransformCoord(XMLoadFloat3(&m_pVertexPositions[iIndices[2]]), XMLoadFloat4x4(pWorldMatrix)));
+
+		if (true == m_pGameInstance->Picking_InWorld(vPickedPos, v0, v1, v2))
 			break;
+	}
+
+	return vPickedPos;
+}
+
+_float3 CVIBuffer::Compute_PickedPosition_World_Snap(const _float4x4* pWorldMatrix)
+{
+	_uint   iIndices[3] = {};
+	_float3 vPickedPos = {};
+
+	_uint iNumPrimitive = static_cast<_uint>(m_iNumIndices / 3.f);
+
+	for (_uint i = 0; i < iNumPrimitive; i++)
+	{
+		_byte* pIndices = static_cast<_byte*>(m_pIndices) + m_iIndexStride * i * 3;
+
+		memcpy(&iIndices[0], pIndices, m_iIndexStride);
+		memcpy(&iIndices[1], pIndices + m_iIndexStride, m_iIndexStride);
+		memcpy(&iIndices[2], pIndices + m_iIndexStride * 2, m_iIndexStride);
+
+		_float3 v0, v1, v2;
+		XMStoreFloat3(&v0, XMVector3TransformCoord(XMLoadFloat3(&m_pVertexPositions[iIndices[0]]), XMLoadFloat4x4(pWorldMatrix)));
+		XMStoreFloat3(&v1, XMVector3TransformCoord(XMLoadFloat3(&m_pVertexPositions[iIndices[1]]), XMLoadFloat4x4(pWorldMatrix)));
+		XMStoreFloat3(&v2, XMVector3TransformCoord(XMLoadFloat3(&m_pVertexPositions[iIndices[2]]), XMLoadFloat4x4(pWorldMatrix)));
+
+		/* 현재 y값은 정렬에서 제외했음 */
+		if (true == m_pGameInstance->Picking_InWorld(vPickedPos, v0, v1, v2))
+		{
+			_float fMinDistSq = FLT_MAX;
+			_float3 vSnapedPos = {};
+
+			_float3 vTest[3] = { v0, v1, v2 };
+			for (_uint j = 0; j < 3; ++j)
+			{
+				_float dx = vTest[j].x - vPickedPos.x;
+				_float dz = vTest[j].z - vPickedPos.z;
+
+				_float fDistSq = dx * dx + dz * dz;
+
+				if (fDistSq < fMinDistSq)
+				{
+					fMinDistSq = fDistSq;
+					vSnapedPos = vTest[j];
+				}
+			}
+
+			vPickedPos.x = vSnapedPos.x;
+			vPickedPos.z = vSnapedPos.z;
+			break;
+		}
 	}
 
 	return vPickedPos;

@@ -40,6 +40,7 @@ void CTerrain::Update(_float fTimeDelta)
 		/* 월드에서 피킹을 해주든, 어쨌든 지금 함수는 무조건 로컬좌표로 피킹 결과값을 반환하니 */
 		/* 유의 할 것 */
 		_float3		vTmp = m_pVIBufferCom->Compute_PickedPosition_World(m_pTransformCom->Get_WorldMatrix_Float4x4());
+		_float3     vDst = m_pVIBufferCom->Compute_PickedPosition_World_Snap(m_pTransformCom->Get_WorldMatrix_Float4x4());
 		_float3		vSrc = m_pVIBufferCom->Compute_PickedPosition_Local(m_pTransformCom->Get_WorldMatrix_Inverse());
 		_int a = 10;
 	}

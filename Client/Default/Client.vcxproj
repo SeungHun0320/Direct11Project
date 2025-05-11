@@ -169,6 +169,7 @@
     <ClInclude Include="..\Public\Loader.h" />
     <ClInclude Include="..\public\MainApp.h" />
     <ClInclude Include="..\public\Level_Tools.h" />
+    <ClInclude Include="..\public\Monster.h" />
     <ClInclude Include="..\public\Terrain.h" />
     <ClInclude Include="..\Public\UI.h" />
     <ClInclude Include="Client.h" />
@@ -197,6 +198,7 @@
     <ClCompile Include="..\Private\Loader.cpp" />
     <ClCompile Include="..\private\MainApp.cpp" />
     <ClCompile Include="..\private\Level_Tools.cpp" />
+    <ClCompile Include="..\private\Monster.cpp" />
     <ClCompile Include="..\private\Terrain.cpp" />
     <ClCompile Include="..\private\UI.cpp" />
     <ClCompile Include="Client.cpp" />

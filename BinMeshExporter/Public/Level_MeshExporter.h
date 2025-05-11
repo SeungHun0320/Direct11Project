@@ -36,8 +36,11 @@ private:
 	HRESULT Render_End_ImGui();
 
 	HRESULT FileDialog();
-	HRESULT FBXFolder_to_Bin_Exported(const string& strFilePath);
 	HRESULT FBX_to_Bin_Exproted(const string& strFilePath);
+	HRESULT Read_Model(const string& strModelPath, const string& strOutPath);
+	HRESULT Exported_Model(const string& strOutPath);
+
+	HRESULT Ready_Meshes(_uint iNumMeshes, aiMesh** ppMeshes);
 
 public:
 	static CLevel_MeshExporter* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

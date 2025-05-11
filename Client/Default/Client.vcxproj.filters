@@ -70,6 +70,9 @@
     <Filter Include="02.GameObjects\02.Camera">
       <UniqueIdentifier>{f62598e1-b116-413f-9218-fbb7221cbdd0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\03.Monster">
+      <UniqueIdentifier>{37157f77-26db-43b1-91fa-7f5d56fed923}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -159,6 +162,9 @@
     <ClInclude Include="..\public\Camera_Free.h">
       <Filter>02.GameObjects\02.Camera</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Monster.h">
+      <Filter>02.GameObjects\03.Monster</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -236,6 +242,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Camera_Free.cpp">
       <Filter>02.GameObjects\02.Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Monster.cpp">
+      <Filter>02.GameObjects\03.Monster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -17,8 +17,15 @@ CModel::CModel(const CModel& Prototype)
 
 HRESULT CModel::Initialize_Prototype(const _wstring& strModelFilePath)
 {
-    if (FAILED(Ready_Meshes(strModelFilePath)))
+    ifstream InFile(strModelFilePath, ios::binary);
+    if (!InFile.is_open())
         return E_FAIL;
+
+    if (FAILED(Ready_Meshes(InFile)))
+        return E_FAIL;
+
+
+    InFile.close();
 
     return S_OK;
 }
@@ -39,16 +46,28 @@ HRESULT CModel::Render()
     return S_OK;
 }
 
-HRESULT CModel::Ready_Meshes(const _wstring& strModelFilePath)
+HRESULT CModel::Ready_Meshes(ifstream& _InFile)
 {
     /* 이쪽에서 파일입출력해서 갯수를 먼저 받아오기  */
-    m_iNumMeshes = 0;
+    _InFile.read(reinterpret_cast<char*>(&m_iNumMeshes), sizeof(_uint));
+    m_Meshes.reserve(m_iNumMeshes);
 
-    for (size_t i = 0; i < m_iNumMeshes; i++)
+    for (_uint i = 0; i < m_iNumMeshes; i++)
     {
         /* 여기다 파일 입출력해서 정보 메쉬정보 담는 구조체 던지면 될듯?? */
+        /* 나중에 여기서 애님 / 논애님을 분기해야 할 거 같아*/
+        CMesh::MESH_DESC tDesc{};
+        _InFile.read(reinterpret_cast<char*>(&tDesc.iNumVertices), sizeof(_uint));
+        _InFile.read(reinterpret_cast<char*>(&tDesc.iNumIndices), sizeof(_uint));
 
-        CMesh* pMesh = CMesh::Create(m_pDevice, m_pContext);
+        tDesc.Vertices.resize(tDesc.iNumVertices);
+        tDesc.Indicies.resize(tDesc.iNumIndices);
+
+        _InFile.read(reinterpret_cast<char*>(&tDesc.iMaterialIndex), sizeof(_uint));
+        _InFile.read(reinterpret_cast<char*>(tDesc.Vertices.data()), sizeof(VTXMESH) * tDesc.iNumVertices);
+        _InFile.read(reinterpret_cast<char*>(tDesc.Indicies.data()), sizeof(_uint) * tDesc.iNumIndices);
+
+        CMesh* pMesh = CMesh::Create(m_pDevice, m_pContext, &tDesc);
         if (nullptr == pMesh)
             return E_FAIL;
 

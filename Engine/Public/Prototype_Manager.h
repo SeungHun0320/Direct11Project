@@ -6,6 +6,7 @@
 #include "Transform.h"
 #include "Texture.h"
 #include "Shader.h"
+#include "Model.h"
 
 #include "SoundController.h"
 #include "Sound_Core.h"

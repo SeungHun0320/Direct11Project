@@ -21,6 +21,7 @@ public:
 	virtual _float3 Compute_HeightPosition(const _float3& vPosition) { return vPosition; }
 	_float3 Compute_PickedPosition_Local(_fmatrix WorldMatrixInverse);
 	_float3 Compute_PickedPosition_World(const _float4x4* pWorldMatrix);
+	_float3 Compute_PickedPosition_World_Snap(const _float4x4* pWorldMatrix);
 
 protected:
 	/* 다렉 11에서는 버퍼 자료형이 같아짐 */

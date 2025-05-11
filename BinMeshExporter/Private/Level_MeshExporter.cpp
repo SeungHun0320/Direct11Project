@@ -75,29 +75,15 @@ HRESULT CLevel_MeshExporter::Ready_DockSpace()
 
 	if (ImGui::BeginMenuBar())
 	{
-		if (ImGui::BeginMenu(u8"열기"))
+		if (ImGui::BeginMenu(u8"폴더 열기"))
 		{ 
-			if (ImGui::MenuItem(u8"폴더를 선택해서 변환"))
-			{
-				IGFD::FileDialogConfig config{};
-
-				config.path = "../../Client/bin/Resources/Models/";
-				config.fileName = "SelectFolderName";
-
-				ImGuiFileDialog::Instance()->OpenDialog(
-					"ChooseFolder",            // 다이얼로그 Key
-					u8"폴더 선택",              // 타이틀
-					"",						  // 폴더 선택 모드래,
-					config                    // 시작 경로
-				);
-
-			}
-			if (ImGui::MenuItem(u8"파일을 선택해서 변환"))
+			if (ImGui::MenuItem(u8"선택해서 변환"))
 			{
 				IGFD::FileDialogConfig config{};
 
 				config.path = "../../Client/bin/Resources/Models/";
 				config.countSelectionMax = 0;
+				config.fileName = "SelectFolderName";
 
 				ImGuiFileDialog::Instance()->OpenDialog(
 					"ChooseFile",            // 다이얼로그 Key
@@ -141,30 +127,26 @@ HRESULT CLevel_MeshExporter::Render_End_ImGui()
 
 HRESULT CLevel_MeshExporter::FileDialog()
 {
-	if (ImGuiFileDialog::Instance()->Display("ChooseFolder"))
-	{
-		if (ImGuiFileDialog::Instance()->IsOk())  // OK 눌렀다면
-		{
-			string strSelectedFolderPath = ImGuiFileDialog::Instance()->GetCurrentPath();
-
-			FBXFolder_to_Bin_Exported(strSelectedFolderPath);
-		}
-
-		ImGuiFileDialog::Instance()->Close(); // 꼭 닫아줘야 다시 열림
-	}
-
 	if (ImGuiFileDialog::Instance()->Display("ChooseFile"))
 	{
 		if (ImGuiFileDialog::Instance()->IsOk())  // OK 눌렀다면
 		{
 			auto  SelectedFBXFiles = ImGuiFileDialog::Instance()->GetSelection();
-			for (const auto& [FileName, FilePath] : SelectedFBXFiles)
+			if (0 == SelectedFBXFiles.size())
 			{
-				string strName = FileName;
-				string strPath = FilePath;
-				// 원하는 작업 수행
+				string strSelectedFolderPath = ImGuiFileDialog::Instance()->GetCurrentPath();
+				FBX_to_Bin_Exproted(strSelectedFolderPath);
+			}
+			else
+			{
+				for (const auto& [FileName, FilePath] : SelectedFBXFiles)
+				{
+					string strName = FileName;
+					string strPath = FilePath;
+					// 원하는 작업 수행
 
-				FBX_to_Bin_Exproted(strPath);
+					FBX_to_Bin_Exproted(strPath);
+				}
 			}
 		}
 
@@ -174,42 +156,150 @@ HRESULT CLevel_MeshExporter::FileDialog()
 	return S_OK;
 }
 
-HRESULT CLevel_MeshExporter::FBXFolder_to_Bin_Exported(const string& strFilePath)
+HRESULT CLevel_MeshExporter::FBX_to_Bin_Exproted(const string& strFilePath)
 {
-	fs::path inputPath(strFilePath);
+	fs::path InputPath(strFilePath);
 
-	if (!fs::exists(inputPath))
+	if (!fs::exists(InputPath))
 	{
 		MSG_BOX("경로가 없는디,,?");
 		return E_FAIL;
 	}
 
-
-	for (const auto& entry : fs::recursive_directory_iterator(inputPath))
+	if (fs::is_directory(InputPath))
 	{
-		if (entry.is_regular_file() && entry.path().extension() == ".fbx")
+		for (const auto& entry : fs::recursive_directory_iterator(InputPath))
 		{
-			_int a = 0;
-		}
-		else
-		{
-			MSG_BOX("FBX가 아닌 다른 확장자가 선택 됐읍니다 ");
+			if (entry.is_regular_file() && entry.path().extension() == ".fbx")
+			{
+
+				fs::path fbxPath = entry.path();
+				fs::path OutputPath = fbxPath.parent_path() / (fbxPath.stem().string() + ".Model");
+
+				if (FAILED(Read_Model(fbxPath.string(), OutputPath.string())))
+				{
+					MSG_BOX("변환 실패,,,");
+					return E_FAIL;
+				}
+				_int a = 0;
+			}
 		}
 	}
+	else if (fs::is_regular_file(InputPath) && InputPath.extension() == ".fbx")
+	{
+		fs::path OutputPath = InputPath.parent_path() / (InputPath.stem().string() + ".Model");
+
+		if (FAILED(Read_Model(InputPath.string(), OutputPath.string())))
+		{
+			MSG_BOX("변환 실패,,,");
+			return E_FAIL;
+		}
+	}
+	else
+	{
+		MSG_BOX("FBX가 아닌 다른 확장자가 선택 됐읍니다 ");
+		return E_FAIL;
+	}
+
+	MSG_BOX("개같이 성공");
+	return S_OK;
+}
+
+HRESULT CLevel_MeshExporter::Read_Model(const string& strModelPath, const string& strOutPath)
+{
+	Assimp::Importer Importer;
+	const aiScene* pAIScene = { nullptr };
+
+	_uint iFlag = aiProcess_ConvertToLeftHanded | aiProcessPreset_TargetRealtime_Fast;
+
+	pAIScene = Importer.ReadFile(strModelPath, iFlag);
+
+	if (nullptr == pAIScene)
+		return E_FAIL;
+
+	if (FAILED(Ready_Meshes(pAIScene->mNumMeshes, pAIScene->mMeshes)))
+		return E_FAIL;
+
+
+	return Exported_Model(strOutPath);
+}
+
+HRESULT CLevel_MeshExporter::Exported_Model(const string& strOutPath)
+{
+	ofstream OutFile(strOutPath, ios::binary);
+	if (!OutFile.is_open())
+		return E_FAIL;
+
+	_uint iMeshCount = static_cast<_uint>(m_vecNonAnimMeshes.size());
+	OutFile.write(reinterpret_cast<const _char*>(&iMeshCount), sizeof(_uint));
+	for (auto& Mesh : m_vecNonAnimMeshes)
+	{
+		_uint iNumVertices = static_cast<_uint>(Mesh->Vertices.size());
+		_uint iNumIndices = static_cast<_uint>(Mesh->Indices.size());
+
+		OutFile.write(reinterpret_cast<const _char*>(&iNumVertices), sizeof(_uint));
+		OutFile.write(reinterpret_cast<const _char*>(&iNumIndices), sizeof(_uint));
+		OutFile.write(reinterpret_cast<const _char*>(&Mesh->iMaterialIndex), sizeof(_uint));
+		OutFile.write(reinterpret_cast<const _char*>(Mesh->Vertices.data()), sizeof(VTXMESH) * iNumVertices);
+		OutFile.write(reinterpret_cast<const _char*>(Mesh->Indices.data()), sizeof(_uint) * iNumIndices);
+	}
+
+	for (auto& Mesh : m_vecNonAnimMeshes)
+	{
+		Mesh->Vertices.clear();
+		Mesh->Indices.clear();
+		Safe_Delete(Mesh);
+	}
+
+	m_vecNonAnimMeshes.clear();
+
+	OutFile.close();
 
 	return S_OK;
 }
 
-HRESULT CLevel_MeshExporter::FBX_to_Bin_Exproted(const string& strFilePath)
+HRESULT CLevel_MeshExporter::Ready_Meshes(_uint iNumMeshes, aiMesh** ppMeshes)
 {
-	fs::path inputPath(strFilePath);
+	m_vecNonAnimMeshes.reserve(iNumMeshes);
 
-	if (!fs::exists(inputPath))
+	for (_uint i = 0; i < iNumMeshes; i++)
 	{
-		MSG_BOX("경로가 없는디,,?");
-		return E_FAIL;
-	}
+		NONANIMMESH* pMesh = new NONANIMMESH;
+		pMesh->iMaterialIndex = ppMeshes[i]->mMaterialIndex;
+		_uint iNumVertices = ppMeshes[i]->mNumVertices;
+		_uint iNumIndices = ppMeshes[i]->mNumFaces * 3;
 
+		pMesh->Vertices.reserve(iNumVertices);
+		pMesh->Indices.reserve(iNumIndices);
+
+		for (_uint j = 0; j < iNumVertices; j++)
+		{
+			VTXMESH Vertices = {};
+
+			memcpy(&Vertices.vPosition, &ppMeshes[i]->mVertices[j], sizeof(_float3));
+			memcpy(&Vertices.vNormal, &ppMeshes[i]->mNormals[j], sizeof(_float3));
+			memcpy(&Vertices.vTangent, &ppMeshes[i]->mTangents[j], sizeof(_float3));
+			if (ppMeshes[i]->HasTextureCoords(0))
+				memcpy(&Vertices.vTexcoord, &ppMeshes[i]->mTextureCoords[0][j], sizeof(_float2));
+
+			pMesh->Vertices.push_back(Vertices);
+		}
+
+
+		pMesh->Indices.resize(iNumIndices);
+		_uint iIndex = {};
+
+		for (_uint j = 0; j < ppMeshes[i]->mNumFaces; j++)
+		{
+			pMesh->Indices[iIndex++] = ppMeshes[i]->mFaces[j].mIndices[0];
+			pMesh->Indices[iIndex++] = ppMeshes[i]->mFaces[j].mIndices[1];
+			pMesh->Indices[iIndex++] = ppMeshes[i]->mFaces[j].mIndices[2];
+		}
+		
+
+		m_vecNonAnimMeshes.push_back(pMesh);
+
+	}
 	return S_OK;
 }
 
@@ -233,4 +323,13 @@ void CLevel_MeshExporter::Free()
 	ImGui_ImplDX11_Shutdown();
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
+
+	for (auto& Mesh : m_vecNonAnimMeshes)
+	{
+		Mesh->Vertices.clear();
+		Mesh->Indices.clear();
+		Safe_Delete(Mesh);
+	}
+
+	m_vecNonAnimMeshes.clear();
 }

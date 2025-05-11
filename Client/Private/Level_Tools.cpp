@@ -2,6 +2,7 @@
 #include "Level_Loading.h"
 
 #include "Camera_Free.h"
+#include "Monster.h"
 
 CLevel_Tools::CLevel_Tools(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel{ pDevice, pContext }
@@ -34,20 +35,14 @@ void CLevel_Tools::Update(_float fTimeDelta)
 HRESULT CLevel_Tools::Render()
 {
 	SetWindowText(g_hWnd, TEXT("툴 레벨입니다."));
-	ImGui_ImplDX11_NewFrame();
-	ImGui_ImplWin32_NewFrame();
-	ImGui::NewFrame();
-	ImGuizmo::BeginFrame();
+	ImGui_RenderBegin();
 	Ready_DockSpace();
 
 	MapTool();
 	CameraTool();
 	FileDialog();
 
-	ImGui::Render();
-	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-
-
+	ImGui_RenderEnd();
 	return S_OK;
 }
 
@@ -123,6 +118,20 @@ HRESULT CLevel_Tools::Ready_DockSpace()
 	ImGui::End();
 
 	return S_OK;
+}
+
+void CLevel_Tools::ImGui_RenderBegin()
+{
+	ImGui_ImplDX11_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
+	ImGuizmo::BeginFrame();
+}
+
+void CLevel_Tools::ImGui_RenderEnd()
+{
+	ImGui::Render();
+	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 }
 
 HRESULT CLevel_Tools::MainTool()

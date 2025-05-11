@@ -4,6 +4,7 @@
 
 #include "Terrain.h"
 #include "Camera_Free.h"
+#include "Monster.h"
 
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 		: CLevel { pDevice, pContext }
@@ -17,6 +18,9 @@ HRESULT CLevel_GamePlay::Initialize()
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
 		return E_FAIL;
 
 	return S_OK;
@@ -69,6 +73,21 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& strLayerTag)
 	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_Camera_Free"),
+		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& strLayerTag)
+{
+	CMonster::DESC tDesc = {};
+
+	tDesc.eLevelID = LEVEL::GAMEPLAY;
+	tDesc.fSpeedPerSec = 10.f;
+	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_Monster"),
 		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
 		return E_FAIL;
 
