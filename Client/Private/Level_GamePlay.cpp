@@ -68,8 +68,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& strLayerTag)
 	tDesc.vAt = _float3(0.f, 0.f, 0.f);
 	tDesc.fFov = XMConvertToRadians(60.f);
 	tDesc.fNear = 0.1f;
-	tDesc.fFar = 500.f;
-	tDesc.fSpeedPerSec = 10.f;
+	tDesc.fFar = 5000.f;
+	tDesc.fSpeedPerSec = 2000.f;
 	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_Camera_Free"),

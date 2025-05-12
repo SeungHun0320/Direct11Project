@@ -6,14 +6,34 @@ BEGIN(MeshExporter)
 
 class CLevel_MeshExporter final : public CLevel
 {
+	/* 논애님 메쉬 */
 public:
 	typedef struct tagNonAnimMesh
 	{
-		_uint iMaterialIndex = 0;
+		_uint iMaterialIndex = {};
 		vector<VTXMESH> Vertices;
 		vector<_uint> Indices;
 
 	}NONANIMMESH;
+
+	/* 마테리얼 */
+public:
+	typedef struct tagTexInfo
+	{
+		_wstring strTexturePath;
+		_uint    iTextureType{};
+
+	}TEX_INFO;
+
+	typedef struct tagMaterial
+	{
+		/* 텍스쳐 경로 and AI 텍스쳐 타입을 뽑아서 저장하거나, */
+		/* 어디 AI_TEXTURE_TYPE에 있는 텍스쳐인지 */
+		vector<TEX_INFO> vecTextures;
+
+	}MATERIAL;
+
+
 private:
 	CLevel_MeshExporter(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual ~CLevel_MeshExporter() = default;
@@ -27,6 +47,10 @@ private:
 	string m_strFileName;
 
 	vector<NONANIMMESH*> m_vecNonAnimMeshes;
+	vector<MATERIAL*>	 m_vecMaterials;
+
+private:
+	_int m_iType = {};
 
 private:
 	HRESULT Ready_ImGui();
@@ -37,10 +61,15 @@ private:
 
 	HRESULT FileDialog();
 	HRESULT FBX_to_Bin_Exproted(const string& strFilePath);
-	HRESULT Read_Model(const string& strModelPath, const string& strOutPath);
-	HRESULT Exported_Model(const string& strOutPath);
 
-	HRESULT Ready_Meshes(_uint iNumMeshes, aiMesh** ppMeshes);
+	HRESULT Read_Anim_Model();
+	HRESULT Exported_Anim_Model();
+
+	HRESULT Read_Non_Anim_Model(const string& strModelPath, const string& strOutPath);
+	HRESULT Exported_Non_Anim_Model(const string& strOutPath);
+
+	HRESULT Ready_Non_Anim_Meshes(_uint iNumMeshes, aiMesh** ppMeshes);
+	HRESULT Ready_Material(const _char* pModelFilePath, _uint iNumMaterial, aiMaterial** ppAIMaterial);
 
 public:
 	static CLevel_MeshExporter* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

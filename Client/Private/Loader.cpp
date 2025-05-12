@@ -151,7 +151,7 @@ HRESULT CLoader::Loading_For_GamePlay()
 
 	/*For.Prototpye_Component_Model_Librarian*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototpye_Component_Model_Librarian"),
-		CModel::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Models/FBX/Librarian_Re.Model")))))
+		CModel::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Models/FBX/Map/Fortress/Arena/Arena.Model")))))
 		return E_FAIL;
 
 	///* For.Prototype_Component_VIBuffer_Cube */

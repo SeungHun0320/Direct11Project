@@ -15,7 +15,7 @@ public:
 		vector<VTXMESH> Vertices;
 		vector<_uint> Indicies;
 
-	}MESH_DESC;
+	}MESH;
 
 private:
 	CMesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -23,11 +23,19 @@ private:
 	virtual ~CMesh() = default;
 
 public:
-	virtual HRESULT Initialize_Prototype(MESH_DESC* pDesc);
-	virtual HRESULT Initialize(void* pArg);
+	_uint Get_MaterialIndex() const {
+		return m_iMaterialIndex;
+	}
 
 public:
-	static CMesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, MESH_DESC* pDesc);
+	virtual HRESULT Initialize_Prototype(const MESH* pDesc);
+	virtual HRESULT Initialize(void* pArg);
+
+private:
+	_uint			m_iMaterialIndex = {};
+
+public:
+	static CMesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const MESH* pDesc);
 	virtual CComponent* Clone(void* pArg) override;
 	virtual void Free() override;
 

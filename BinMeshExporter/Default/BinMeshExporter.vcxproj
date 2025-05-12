@@ -144,12 +144,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Level_MeshExporter.h" />
-    <ClInclude Include="..\public\Mesh.h" />
+    <ClInclude Include="..\Public\Mesh.h" />
     <ClInclude Include="..\Public\MeshExporterApp.h" />
     <ClInclude Include="..\Public\MeshExporter_Macro.h" />
     <ClInclude Include="..\Public\MeshExporter_Defines.h" />
     <ClInclude Include="..\Public\MeshExporter_Enum.h" />
-    <ClInclude Include="..\public\Model.h" />
+    <ClInclude Include="..\Public\Model.h" />
+    <ClInclude Include="..\Public\TestMaterial.h" />
     <ClInclude Include="BinMeshExporter.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="ImGui\backends\imgui_impl_dx11.h" />
@@ -168,9 +169,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Level_MeshExporter.cpp" />
-    <ClCompile Include="..\private\Mesh.cpp" />
+    <ClCompile Include="..\Private\Mesh.cpp" />
     <ClCompile Include="..\Private\MeshExporterApp.cpp" />
-    <ClCompile Include="..\private\Model.cpp" />
+    <ClCompile Include="..\Private\Model.cpp" />
+    <ClCompile Include="..\Private\TestMaterial.cpp" />
     <ClCompile Include="BinMeshExporter.cpp" />
     <ClCompile Include="ImGui\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="ImGui\backends\imgui_impl_win32.cpp" />

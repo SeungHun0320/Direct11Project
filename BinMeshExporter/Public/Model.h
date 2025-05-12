@@ -29,6 +29,9 @@ private:
 	/* 메쉬들을 담아두는 벡터 */
 	vector<class CMesh*>	m_Meshes;
 
+	_uint						m_iNumMaterials = {};
+	vector<class CMaterial*>	m_Materials;
+
 private:
 	HRESULT Ready_Meshes();
 

@@ -106,6 +106,9 @@
     <ClInclude Include="..\public\Model.h">
       <Filter>01.Utility\04.Components\Model</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Material.h">
+      <Filter>01.Utility\04.Components\Model\Material</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Timer.cpp">
@@ -197,6 +200,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Model.cpp">
       <Filter>01.Utility\04.Components\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Material.cpp">
+      <Filter>01.Utility\04.Components\Model\Material</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -316,6 +322,9 @@
     </Filter>
     <Filter Include="01.Utility\04.Components\Model\Mesh">
       <UniqueIdentifier>{990bc2b7-956d-4818-920c-f0e9af8eeab4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\Model\Material">
+      <UniqueIdentifier>{0ea3bad4-3feb-49e8-9d4e-f2c57ea148d9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

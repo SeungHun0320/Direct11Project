@@ -150,6 +150,7 @@ _float3 CVIBuffer::Compute_PickedPosition_World_Snap(const _float4x4* pWorldMatr
 		memcpy(&iIndices[2], pIndices + m_iIndexStride * 2, m_iIndexStride);
 
 		_float3 v0, v1, v2;
+		/* 받아온 월드행렬로 정점의 위치를 월드로 변환 */
 		XMStoreFloat3(&v0, XMVector3TransformCoord(XMLoadFloat3(&m_pVertexPositions[iIndices[0]]), XMLoadFloat4x4(pWorldMatrix)));
 		XMStoreFloat3(&v1, XMVector3TransformCoord(XMLoadFloat3(&m_pVertexPositions[iIndices[1]]), XMLoadFloat4x4(pWorldMatrix)));
 		XMStoreFloat3(&v2, XMVector3TransformCoord(XMLoadFloat3(&m_pVertexPositions[iIndices[2]]), XMLoadFloat4x4(pWorldMatrix)));

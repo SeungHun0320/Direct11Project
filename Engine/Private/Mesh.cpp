@@ -10,8 +10,9 @@ CMesh::CMesh(const CMesh& Prototype)
 {
 }
 
-HRESULT CMesh::Initialize_Prototype(MESH_DESC* pDesc)
+HRESULT CMesh::Initialize_Prototype(const MESH* pDesc)
 {
+	m_iMaterialIndex = pDesc->iMaterialIndex;
 	m_iNumVertexBuffers = 1;
 	m_iNumVertices = pDesc->iNumVertices;
 
@@ -84,7 +85,7 @@ HRESULT CMesh::Initialize(void* pArg)
 	return S_OK;
 }
 
-CMesh* CMesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, MESH_DESC* pDesc)
+CMesh* CMesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const MESH* pDesc)
 {
 	CMesh* pInstance = new CMesh(pDevice, pContext);
 

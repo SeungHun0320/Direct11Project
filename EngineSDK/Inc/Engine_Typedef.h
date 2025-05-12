@@ -18,6 +18,7 @@ namespace Engine
 	typedef double						_double;
 
 
+	typedef string                      _string;
 	typedef wstring						_wstring;
 	typedef wchar_t						_tchar;
 	typedef bool						_bool;

@@ -127,6 +127,12 @@ HRESULT CLevel_MeshExporter::Render_End_ImGui()
 
 HRESULT CLevel_MeshExporter::FileDialog()
 {
+	ImGui::Begin(u8"모델 타입 선택");
+	ImGui::RadioButton("Anim", &m_iType, 0);
+	ImGui::SameLine();
+	ImGui::RadioButton("NonAnim", &m_iType, 1);
+	ImGui::End();
+
 	if (ImGuiFileDialog::Instance()->Display("ChooseFile"))
 	{
 		if (ImGuiFileDialog::Instance()->IsOk())  // OK 눌렀다면
@@ -172,16 +178,21 @@ HRESULT CLevel_MeshExporter::FBX_to_Bin_Exproted(const string& strFilePath)
 		{
 			if (entry.is_regular_file() && entry.path().extension() == ".fbx")
 			{
-
 				fs::path fbxPath = entry.path();
 				fs::path OutputPath = fbxPath.parent_path() / (fbxPath.stem().string() + ".Model");
 
-				if (FAILED(Read_Model(fbxPath.string(), OutputPath.string())))
+				if (0 == m_iType)
 				{
-					MSG_BOX("변환 실패,,,");
-					return E_FAIL;
+					/* 나중에 리드 애님 모델 추가 */
 				}
-				_int a = 0;
+				else if (1 == m_iType)
+				{
+					if (FAILED(Read_Non_Anim_Model(fbxPath.string(), OutputPath.string())))
+					{
+						MSG_BOX("변환 실패,,,");
+						return E_FAIL;
+					}
+				}
 			}
 		}
 	}
@@ -189,10 +200,17 @@ HRESULT CLevel_MeshExporter::FBX_to_Bin_Exproted(const string& strFilePath)
 	{
 		fs::path OutputPath = InputPath.parent_path() / (InputPath.stem().string() + ".Model");
 
-		if (FAILED(Read_Model(InputPath.string(), OutputPath.string())))
+		if (0 == m_iType)
 		{
-			MSG_BOX("변환 실패,,,");
-			return E_FAIL;
+			/* 나중에 리드 애님 모델 추가 */
+		}
+		else if (1 == m_iType)
+		{
+			if (FAILED(Read_Non_Anim_Model(InputPath.string(), OutputPath.string())))
+			{
+				MSG_BOX("변환 실패,,,");
+				return E_FAIL;
+			}
 		}
 	}
 	else
@@ -205,33 +223,47 @@ HRESULT CLevel_MeshExporter::FBX_to_Bin_Exproted(const string& strFilePath)
 	return S_OK;
 }
 
-HRESULT CLevel_MeshExporter::Read_Model(const string& strModelPath, const string& strOutPath)
+HRESULT CLevel_MeshExporter::Read_Anim_Model()
+{
+	return S_OK;
+}
+
+HRESULT CLevel_MeshExporter::Exported_Anim_Model()
+{
+	return S_OK;
+}
+
+HRESULT CLevel_MeshExporter::Read_Non_Anim_Model(const string& strModelPath, const string& strOutPath)
 {
 	Assimp::Importer Importer;
 	const aiScene* pAIScene = { nullptr };
 
-	_uint iFlag = aiProcess_ConvertToLeftHanded | aiProcessPreset_TargetRealtime_Fast;
+	_uint iFlag = aiProcess_PreTransformVertices | aiProcess_ConvertToLeftHanded | aiProcessPreset_TargetRealtime_Fast;
 
 	pAIScene = Importer.ReadFile(strModelPath, iFlag);
 
 	if (nullptr == pAIScene)
 		return E_FAIL;
 
-	if (FAILED(Ready_Meshes(pAIScene->mNumMeshes, pAIScene->mMeshes)))
+	if (FAILED(Ready_Non_Anim_Meshes(pAIScene->mNumMeshes, pAIScene->mMeshes)))
+		return E_FAIL;
+
+	if (FAILED(Ready_Material(strModelPath.c_str(), pAIScene->mNumMaterials, pAIScene->mMaterials)))
 		return E_FAIL;
 
 
-	return Exported_Model(strOutPath);
+	return Exported_Non_Anim_Model(strOutPath);
 }
 
-HRESULT CLevel_MeshExporter::Exported_Model(const string& strOutPath)
+HRESULT CLevel_MeshExporter::Exported_Non_Anim_Model(const string& strOutPath)
 {
 	ofstream OutFile(strOutPath, ios::binary);
 	if (!OutFile.is_open())
 		return E_FAIL;
 
-	_uint iMeshCount = static_cast<_uint>(m_vecNonAnimMeshes.size());
-	OutFile.write(reinterpret_cast<const _char*>(&iMeshCount), sizeof(_uint));
+	/* --------------------------메쉬----------------------- */
+	_uint iNumMeshes = static_cast<_uint>(m_vecNonAnimMeshes.size());
+	OutFile.write(reinterpret_cast<const _char*>(&iNumMeshes), sizeof(_uint));
 	for (auto& Mesh : m_vecNonAnimMeshes)
 	{
 		_uint iNumVertices = static_cast<_uint>(Mesh->Vertices.size());
@@ -244,21 +276,50 @@ HRESULT CLevel_MeshExporter::Exported_Model(const string& strOutPath)
 		OutFile.write(reinterpret_cast<const _char*>(Mesh->Indices.data()), sizeof(_uint) * iNumIndices);
 	}
 
+	/* ------------------------마테리얼---------------------------- */
+
+	_uint iNumMaterial = static_cast<_uint>(m_vecMaterials.size());
+	OutFile.write(reinterpret_cast<const _char*>(&iNumMaterial), sizeof(_uint));
+
+	for (auto& pMaterial : m_vecMaterials)
+	{
+		/* iNumTextures == iNumSRVs임 진짜 절대 잊지마 */
+		_uint iNumTextures = static_cast<_uint>(pMaterial->vecTextures.size());
+		OutFile.write(reinterpret_cast<const _char*>(&iNumTextures), sizeof(_uint));
+
+		for (auto& TexInfo : pMaterial->vecTextures)
+		{
+			OutFile.write(reinterpret_cast<const _char*>(&TexInfo.iTextureType), sizeof(_uint));
+			_uint istrLen = static_cast<_uint>(TexInfo.strTexturePath.length());
+			OutFile.write(reinterpret_cast<const _char*>(&istrLen), sizeof(_uint));
+			OutFile.write(reinterpret_cast<const _char*>(TexInfo.strTexturePath.c_str()), sizeof(_tchar) * istrLen);
+		}
+	}
+
+
+	/* -------------------다 썼으니 삭제----------------------- */
+
 	for (auto& Mesh : m_vecNonAnimMeshes)
 	{
 		Mesh->Vertices.clear();
 		Mesh->Indices.clear();
 		Safe_Delete(Mesh);
 	}
-
 	m_vecNonAnimMeshes.clear();
+
+	for (auto& pMaterial : m_vecMaterials)
+	{
+		pMaterial->vecTextures.clear();
+		Safe_Delete(pMaterial);
+	}
+	m_vecMaterials.clear();
 
 	OutFile.close();
 
 	return S_OK;
 }
 
-HRESULT CLevel_MeshExporter::Ready_Meshes(_uint iNumMeshes, aiMesh** ppMeshes)
+HRESULT CLevel_MeshExporter::Ready_Non_Anim_Meshes(_uint iNumMeshes, aiMesh** ppMeshes)
 {
 	m_vecNonAnimMeshes.reserve(iNumMeshes);
 
@@ -285,7 +346,6 @@ HRESULT CLevel_MeshExporter::Ready_Meshes(_uint iNumMeshes, aiMesh** ppMeshes)
 			pMesh->Vertices.push_back(Vertices);
 		}
 
-
 		pMesh->Indices.resize(iNumIndices);
 		_uint iIndex = {};
 
@@ -295,11 +355,66 @@ HRESULT CLevel_MeshExporter::Ready_Meshes(_uint iNumMeshes, aiMesh** ppMeshes)
 			pMesh->Indices[iIndex++] = ppMeshes[i]->mFaces[j].mIndices[1];
 			pMesh->Indices[iIndex++] = ppMeshes[i]->mFaces[j].mIndices[2];
 		}
-		
-
+	
 		m_vecNonAnimMeshes.push_back(pMesh);
 
 	}
+	return S_OK;
+}
+
+HRESULT CLevel_MeshExporter::Ready_Material(const _char* pModelFilePath, _uint iNumMaterial, aiMaterial** pAIMaterial)
+{
+	m_vecMaterials.reserve(iNumMaterial);
+
+	for (_uint i = 0; i < iNumMaterial; i++)
+	{
+		MATERIAL* pMaterial = new MATERIAL;
+
+		for (_uint j = 1; j < AI_TEXTURE_TYPE_MAX; j++)
+		{
+			_uint iNumSRVs = pAIMaterial[i]->GetTextureCount(static_cast<aiTextureType>(j));
+
+			TEX_INFO TexInfo{};
+			TexInfo.iTextureType = j;
+
+			for (_uint k = 0; k < iNumSRVs; k++)
+			{
+				aiString     strTexturePath;
+				if (FAILED(pAIMaterial[i]->GetTexture(static_cast<aiTextureType>(j), k, &strTexturePath)))
+					return E_FAIL;
+
+				_char       szFullPath[MAX_PATH] = {};
+				_char       szDrive[MAX_PATH] = {};
+				_char       szDir[MAX_PATH] = {};
+				_char       szFileName[MAX_PATH] = {};
+				_char       szExt[MAX_PATH] = {};
+
+				/* 경로 얻어오는 함수, strTexturePath.data를 쓴 이유는 어심프에서 독자적으로 쓰는 클래스이고, */
+				/* .data를 통해 앞주소를 가져올 수 있기 때문 */
+				_splitpath_s(pModelFilePath, szDrive, MAX_PATH, szDir, MAX_PATH, nullptr, 0, nullptr, 0);
+				_splitpath_s(strTexturePath.data, nullptr, 0, nullptr, 0, szFileName, MAX_PATH, szExt, MAX_PATH);
+
+				strcpy_s(szFullPath, szDrive);
+				strcat_s(szFullPath, szDir);
+				strcat_s(szFullPath, szFileName);
+				strcat_s(szFullPath, szExt);
+
+				_tchar      szTextureFilePath[MAX_PATH] = {};
+
+				MultiByteToWideChar(CP_ACP, 0, szFullPath, -1, szTextureFilePath, MAX_PATH);
+				
+				_wstring strTextureFilePath(szTextureFilePath);
+
+				TexInfo.strTexturePath = strTextureFilePath;
+
+				pMaterial->vecTextures.push_back(TexInfo);
+
+			}
+		}
+
+		m_vecMaterials.push_back(pMaterial);
+	}
+
 	return S_OK;
 }
 
@@ -330,6 +445,12 @@ void CLevel_MeshExporter::Free()
 		Mesh->Indices.clear();
 		Safe_Delete(Mesh);
 	}
-
 	m_vecNonAnimMeshes.clear();
+
+	for (auto& pMaterial : m_vecMaterials)
+	{
+		pMaterial->vecTextures.clear();
+		Safe_Delete(pMaterial);
+	}
+	m_vecMaterials.clear();
 }

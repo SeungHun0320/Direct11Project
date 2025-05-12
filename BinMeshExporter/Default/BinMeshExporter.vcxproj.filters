@@ -25,6 +25,9 @@
     <Filter Include="02.Model\00. Mesh">
       <UniqueIdentifier>{6f6ee178-6f8c-4f2c-b96b-c7c3c464e0b5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.Model\01. Material">
+      <UniqueIdentifier>{fdc2efb0-2ad1-46df-8192-1532461c26f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BinMeshExporter.h">
@@ -87,10 +90,13 @@
     <ClInclude Include="..\public\Level_MeshExporter.h">
       <Filter>01.Levels\MeshExporter</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Model.h">
+    <ClInclude Include="..\Public\Model.h">
       <Filter>02.Model</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Mesh.h">
+    <ClInclude Include="..\Public\TestMaterial.h">
+      <Filter>02.Model\01. Material</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Mesh.h">
       <Filter>02.Model\00. Mesh</Filter>
     </ClInclude>
   </ItemGroup>
@@ -144,11 +150,14 @@
     <ClCompile Include="..\private\Level_MeshExporter.cpp">
       <Filter>01.Levels\MeshExporter</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Model.cpp">
+    <ClCompile Include="..\Private\Mesh.cpp">
+      <Filter>02.Model\00. Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Model.cpp">
       <Filter>02.Model</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Mesh.cpp">
-      <Filter>02.Model\00. Mesh</Filter>
+    <ClCompile Include="..\Private\TestMaterial.cpp">
+      <Filter>02.Model\01. Material</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
