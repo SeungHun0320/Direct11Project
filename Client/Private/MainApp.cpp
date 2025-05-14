@@ -36,9 +36,6 @@ HRESULT CMainApp::Initialize()
 
 void CMainApp::Update(_float fTimeDelta)
 {
-	if(KEY_DOWN(DIK_ESCAPE))
-		PostQuitMessage(0);
-
 	m_pGameInstance->Update_Engine(fTimeDelta);
 }
 

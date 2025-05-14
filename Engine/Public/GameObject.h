@@ -19,12 +19,19 @@ protected:
 
 public:
 	CComponent* Get_Component(const _wstring& strComponentTag);
+	_bool Get_Dead() {
+		return m_bDead;
+	}
+	void Set_Dead(_bool bDead) {
+		m_bDead = bDead;
+	}
+		
 
 public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);
 	virtual void Priority_Update(_float fTimeDelta);
-	virtual void Update(_float fTimeDelta);
+	virtual LIFE Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
@@ -37,6 +44,9 @@ protected:
 protected:
 	map<const _wstring, class CComponent*>	m_Components;
 	class CTransform*						m_pTransformCom = { nullptr };
+
+protected:
+	_bool m_bDead = { false };
 
 protected:
 	HRESULT Add_Component(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, const _wstring& strComponentTag, CComponent** ppOut, void* pArg = nullptr);

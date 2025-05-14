@@ -340,7 +340,7 @@ HRESULT CLevel_MeshExporter::Ready_Non_Anim_Meshes(_uint iNumMeshes, aiMesh** pp
 			memcpy(&Vertices.vPosition, &ppMeshes[i]->mVertices[j], sizeof(_float3));
 			memcpy(&Vertices.vNormal, &ppMeshes[i]->mNormals[j], sizeof(_float3));
 			memcpy(&Vertices.vTangent, &ppMeshes[i]->mTangents[j], sizeof(_float3));
-			if (ppMeshes[i]->HasTextureCoords(0))
+			//if (ppMeshes[i]->HasTextureCoords(0))
 				memcpy(&Vertices.vTexcoord, &ppMeshes[i]->mTextureCoords[0][j], sizeof(_float2));
 
 			pMesh->Vertices.push_back(Vertices);

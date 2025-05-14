@@ -31,9 +31,9 @@ void CBackGround::Priority_Update(_float fTimeDelta)
 	__super::Priority_Update(fTimeDelta);
 }
 
-void CBackGround::Update(_float fTimeDelta)
+LIFE CBackGround::Update(_float fTimeDelta)
 {
-	__super::Update(fTimeDelta);
+	return __super::Update(fTimeDelta);
 }
 
 void CBackGround::Late_Update(_float fTimeDelta)

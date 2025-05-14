@@ -10,6 +10,13 @@
 //#include "Effect.h"
 //#include "Sky.h"
 
+/* 몬스터들 */
+#include "SpiderTank.h"
+
+/* 지형(통맵) */
+#include "Courtyard.h"
+#include "Arena.h"
+
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice { pDevice }
 	, m_pContext { pContext }
@@ -65,7 +72,7 @@ HRESULT CLoader::Loading()
 		break;
 
 	case LEVEL::TOOLS:
-		hr = Loading_For_MapTool();
+		hr = Loading_For_Tools();
 		break;
 	default:
 		hr = E_FAIL;
@@ -149,9 +156,18 @@ HRESULT CLoader::Loading_For_GamePlay()
 		CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Height.bmp")))))
 		return E_FAIL;
 
-	/*For.Prototpye_Component_Model_Librarian*/
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototpye_Component_Model_Librarian"),
-		CModel::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Models/FBX/Map/Fortress/Arena/Arena.Model")))))
+	_matrix		PreTransformMatrix = XMMatrixIdentity();
+
+	/*For.Prototpye_Component_Model_SpiderTank*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototpye_Component_Model_SpiderTank"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/FBX/Spidertank.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
+	/*For.Prototpye_Component_Model_Courtyard*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototpye_Component_Model_Courtyard"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/FBX/Map/Fortress/Courtyard/Courtyard.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
 	///* For.Prototype_Component_VIBuffer_Cube */
@@ -174,9 +190,14 @@ HRESULT CLoader::Loading_For_GamePlay()
 		CCamera_Free::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_Monster */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_Monster"),
-		CMonster::Create(m_pDevice, m_pContext))))
+	/* For.Prototype_GameObject_SpiderTank */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_SpiderTank"),
+		CSpiderTank::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Courtyard */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_Courtyard"),
+		CCourtyard::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	///* For.Prototype_GameObject_Player */
@@ -201,11 +222,24 @@ HRESULT CLoader::Loading_For_GamePlay()
 	return S_OK;
 }
 
-HRESULT CLoader::Loading_For_MapTool()
+HRESULT CLoader::Loading_For_Tools()
 {
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
+	_matrix		PreTransformMatrix = XMMatrixIdentity();
+
+	/*For.Prototpye_Component_Model_Courtyard*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototpye_Component_Model_Courtyard"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/FBX/Map/Fortress/Courtyard/Courtyard.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
+	/*For.Prototpye_Component_Model_Arena*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototpye_Component_Model_Arena"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/FBX/Map/Fortress/Arena/Arena.Model"), PreTransformMatrix))))
+		return E_FAIL;
 
 
 	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
@@ -216,8 +250,15 @@ HRESULT CLoader::Loading_For_MapTool()
 		CCamera_Free::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_Courtyard */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_Courtyard"),
+		CCourtyard::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
-
+	/* For.Prototype_GameObject_Courtyard */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_Arena"),
+		CArena::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 

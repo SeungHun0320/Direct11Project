@@ -16,6 +16,19 @@ CComponent* CLayer::Get_Component(const _wstring& strComponentTag, _uint iIndex)
 	return (*iter)->Get_Component(strComponentTag);
 }
 
+CGameObject* CLayer::Find_Object(_uint iIndex)
+{
+	if (iIndex >= m_GameObjects.size())
+		return nullptr;
+
+	auto Iter = m_GameObjects.begin();
+
+	for (_uint i = 0; i < iIndex; ++i)
+		Iter++;
+
+	return *Iter;
+}
+
 HRESULT CLayer::Add_GameObject(CGameObject* pGameObject)
 {
 	if (nullptr == pGameObject)
@@ -39,11 +52,21 @@ void CLayer::Priority_Update(_float fTimeDelta)
 
 void CLayer::Update(_float fTimeDelta)
 {
-	for (auto& pGameObject : m_GameObjects)
+	LIFE eLife = {};
+	for (auto Iter = m_GameObjects.begin();
+		Iter != m_GameObjects.end();)
 	{
-		if (nullptr != pGameObject)
-			pGameObject->Update(fTimeDelta);
-
+		if (nullptr != *Iter)
+		{
+			eLife = (*Iter)->Update(fTimeDelta);
+			if (LIFE::DEAD == eLife)
+			{
+				Safe_Release(*Iter);
+				Iter = m_GameObjects.erase(Iter);
+			}
+			else
+				Iter++;
+		}
 	}
 }
 
@@ -57,6 +80,14 @@ void CLayer::Late_Update(_float fTimeDelta)
 	}
 }
 
+void CLayer::Clear()
+{
+	for (auto& pGameObject : m_GameObjects)
+		Safe_Release(pGameObject);
+
+	m_GameObjects.clear();
+}
+
 CLayer* CLayer::Create()
 {
 	return new CLayer();
@@ -66,7 +97,5 @@ void CLayer::Free()
 {
 	__super::Free();
 
-	for (auto& pGameObject : m_GameObjects)
-		Safe_Release(pGameObject);
-	m_GameObjects.clear();
+	Clear();
 }

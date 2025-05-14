@@ -1,28 +1,25 @@
 #pragma once
-
 #include "Client_Defines.h"
-#include "UIObject.h"
+#include "GameObject.h"
 
 BEGIN(Engine)
 class CShader;
-class CTexture;
-class CVIBuffer_Rect;
+class CModel;
 END
 
 BEGIN(Client)
 
-class CUI : public CUIObject
+class CMap abstract : public CGameObject
 {
 public:
-	typedef struct tagUIDesc : public CUIObject::DESC
+	typedef struct tagMapDesc : public CGameObject::DESC
 	{
-		LEVEL eLevelID{};
+		LEVEL eLevelID;
 	}DESC;
-
 protected:
-	CUI(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CUI(const CUI& Prototype);
-	~CUI() = default;
+	CMap(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CMap(const CMap& Prototype);
+	virtual ~CMap() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -34,19 +31,17 @@ public:
 
 protected:
 	CShader* m_pShaderCom = { nullptr };
-	CTexture* m_pTextureCom = { nullptr };
-	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
+	CModel* m_pModelCom = { nullptr };
 
 protected:
 	LEVEL m_eLevelID = { LEVEL::LEVEL_END };
-	/* 어떤 레벨에서 쓸지 오브젝트 별로 변수 필요함 */
 
 protected:
 	virtual HRESULT Ready_Components(void* pArg);
 
 public:
-	static CUI* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual CGameObject* Clone(void* pArg)override;
+	static CMap* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual CGameObject* Clone(void* pArg) = 0;
 	virtual void Free()override;
 };
 

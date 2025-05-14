@@ -27,8 +27,6 @@ public:
 
 	typedef struct tagMaterial
 	{
-		/* 텍스쳐 경로 and AI 텍스쳐 타입을 뽑아서 저장하거나, */
-		/* 어디 AI_TEXTURE_TYPE에 있는 텍스쳐인지 */
 		vector<TEX_INFO> vecTextures;
 
 	}MATERIAL;

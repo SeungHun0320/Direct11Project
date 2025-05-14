@@ -165,6 +165,11 @@ CComponent* CGameInstance::Get_Component(_uint iLevelIndex, const _wstring& strL
 	
 }
 
+CGameObject* CGameInstance::Find_Object(_uint iLevelIndex, const _wstring& strLayerTag, _uint iIndex)
+{
+	return m_pObject_Manager->Find_Object(iLevelIndex, strLayerTag, iIndex);
+}
+
 #pragma endregion
 
 #pragma region RENDERER
@@ -230,19 +235,19 @@ _long CGameInstance::Get_DIMouseMove(DIMM eMouseMoveID)
 	return m_pInputDevice->Get_DIMouseMove(eMouseMoveID);
 }
 
-_bool CGameInstance::Mouse_Down(_ubyte eKeyID)
+_bool CGameInstance::Mouse_Down(DIMK eMouseKeyID)
 {
-	return m_pInputDevice->Mouse_Down(eKeyID);
+	return m_pInputDevice->Mouse_Down(eMouseKeyID);
 }
 
-_bool CGameInstance::Mouse_Pressing(_ubyte eKeyID)
+_bool CGameInstance::Mouse_Pressing(DIMK eMouseKeyID)
 {
-	return m_pInputDevice->Mouse_Pressing(eKeyID);
+	return m_pInputDevice->Mouse_Pressing(eMouseKeyID);
 }
 
-_bool CGameInstance::Mouse_Up(_ubyte eKeyID)
+_bool CGameInstance::Mouse_Up(DIMK eMouseKeyID)
 {
-	return m_pInputDevice->Mouse_Up(eKeyID);
+	return m_pInputDevice->Mouse_Up(eMouseKeyID);
 }
 
 _bool CGameInstance::Key_Pressing(_ubyte eKeyID)

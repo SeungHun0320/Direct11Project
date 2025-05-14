@@ -43,6 +43,7 @@ public:
 #pragma region OBJECT_MANAGER
 	HRESULT Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, void* pArg = nullptr);
 	CComponent* Get_Component(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strComponentTag, _uint iIndex = 0);
+	class CGameObject* Find_Object(_uint iLevelIndex, const _wstring& strLayerTag, _uint iIndex = 0);
 #pragma endregion
 
 #pragma region RENDERER
@@ -65,9 +66,9 @@ public:
 	_byte Get_DIKeyState(_ubyte eKeyID);
 	_byte Get_DIMouseState(DIMK eMouseKeyID);
 	_long Get_DIMouseMove(DIMM eMouseMoveID);
-	_bool Mouse_Down(_ubyte eKeyID);
-	_bool Mouse_Pressing(_ubyte eKeyID);
-	_bool Mouse_Up(_ubyte eKeyID);
+	_bool Mouse_Down(DIMK eMouseKeyID);
+	_bool Mouse_Pressing(DIMK eMouseKeyID);
+	_bool Mouse_Up(DIMK eMouseKeyID);
 	_bool Key_Pressing(_ubyte eKeyID);
 	_bool Key_Up(_ubyte eKeyID);
 	_bool Key_Down(_ubyte eKeyID);

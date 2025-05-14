@@ -1,19 +1,21 @@
 #pragma once
-#include "UI.h"
 
-class CButton : public CUI
+#include "Boss.h"
+
+BEGIN(Client)
+
+class CSpiderTank final : public CBoss
 {
 public:
-	typedef struct tagButtonDesc : public CUI::DESC
+	typedef struct tagSpiderTank : public CBoss::DESC
 	{
-		_float3 vScale{};
 
 	}DESC;
 
 private:
-	CButton(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CButton(const CButton& Prototype);
-	virtual ~CButton() = default;
+	CSpiderTank(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CSpiderTank(const CSpiderTank& Prototype);
+	virtual ~CSpiderTank() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -27,8 +29,10 @@ private:
 	virtual HRESULT Ready_Components(void* pArg) override;
 
 public:
-	static CButton* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CSpiderTank* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
+
 };
 
+END

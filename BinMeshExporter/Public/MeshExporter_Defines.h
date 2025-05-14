@@ -24,6 +24,8 @@ extern HINSTANCE g_hInst;
 
 using namespace MeshExporter;
 
+#define _CONSOL
+
 #ifdef _DEBUG            // 메모리 누수 체크 매크로
 
 #define _CRTDBG_MAP_ALLOC

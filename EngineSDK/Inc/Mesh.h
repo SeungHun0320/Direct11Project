@@ -28,14 +28,18 @@ public:
 	}
 
 public:
-	virtual HRESULT Initialize_Prototype(const MESH* pDesc);
+	virtual HRESULT Initialize_Prototype(MODEL eType, const MESH* pDesc, _fmatrix PreTransformMatrix);
 	virtual HRESULT Initialize(void* pArg);
 
 private:
 	_uint			m_iMaterialIndex = {};
 
+private:
+	HRESULT Ready_NonAnim_Mesh(const MESH* pDesc, _fmatrix PreTransformMatrix);
+	HRESULT Ready_Anim_Mesh(const MESH* pDesc);
+
 public:
-	static CMesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const MESH* pDesc);
+	static CMesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, MODEL eType, const MESH* pDesc, _fmatrix PreTransformMatrix);
 	virtual CComponent* Clone(void* pArg) override;
 	virtual void Free() override;
 

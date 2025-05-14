@@ -49,8 +49,9 @@ void CUIObject::Priority_Update(_float fTimeDelta)
 {
 }
 
-void CUIObject::Update(_float fTimeDelta)
+LIFE CUIObject::Update(_float fTimeDelta)
 {
+	return LIFE::NONE;
 }
 
 void CUIObject::Late_Update(_float fTimeDelta)

@@ -18,11 +18,16 @@ public:
 	HRESULT Bind_Material(class CShader* pShader, const _char* pConstantName, _uint iMeshIndex, TEX_TYPE eType, _uint iTextureIndex = 0);
 
 public:
-	virtual HRESULT Initialize_Prototype(const _wstring& strModelFilePath);
+	virtual HRESULT Initialize_Prototype(MODEL eType, const _wstring& strModelFilePath, _fmatrix PreTransformMatrix);
 	virtual HRESULT Initialize(void* pArg);
 	virtual HRESULT Render(_uint iMeshIndex);
 
 private:
+	/* 어떤 모델인지 분기 해 줄 타입 (NONANIM, ANIM) */
+	MODEL					m_eType = {};
+	/* 로컬좌표에서의 초기 상태를 정해주기 위한 매트릭스 */
+	_float4x4				m_PreTransformMatrix = {};
+
 	/* 메쉬 갯수, 메쉬들을 담아두는 벡터 */
 	_uint					m_iNumMeshes = {};
 	vector<class CMesh*>	m_Meshes;
@@ -36,7 +41,7 @@ private:
 	HRESULT Ready_Material(ifstream& _InFile);
 
 public:
-	static CModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _wstring& strModelFilePath);
+	static CModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, MODEL eType, const _wstring& strModelFilePath, _fmatrix PreTransformMatrix = XMMatrixIdentity());
 	virtual CComponent* Clone(void* pArg) override;
 	virtual void Free() override;
 };

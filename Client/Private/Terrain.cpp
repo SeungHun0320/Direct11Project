@@ -32,18 +32,17 @@ void CTerrain::Priority_Update(_float fTimeDelta)
 
 }
 
-void CTerrain::Update(_float fTimeDelta)
+LIFE CTerrain::Update(_float fTimeDelta)
 {
-	if (MOUSE_DOWN(ENUM_CLASS(DIMK::LBUTTON)))
+	if (MOUSE_DOWN(DIMK::LBUTTON))
 	{
-		/* 여기서 월드 변환을 하든, 아님 함수를 따로 빼서 */
-		/* 월드에서 피킹을 해주든, 어쨌든 지금 함수는 무조건 로컬좌표로 피킹 결과값을 반환하니 */
-		/* 유의 할 것 */
 		_float3		vTmp = m_pVIBufferCom->Compute_PickedPosition_World(m_pTransformCom->Get_WorldMatrix_Float4x4());
 		_float3     vDst = m_pVIBufferCom->Compute_PickedPosition_World_Snap(m_pTransformCom->Get_WorldMatrix_Float4x4());
 		_float3		vSrc = m_pVIBufferCom->Compute_PickedPosition_Local(m_pTransformCom->Get_WorldMatrix_Inverse());
 		_int a = 10;
 	}
+
+	return LIFE::NONE;
 }
 
 void CTerrain::Late_Update(_float fTimeDelta)

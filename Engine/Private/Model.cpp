@@ -35,11 +35,14 @@ HRESULT CModel::Bind_Material(CShader* pShader, const _char* pConstantName, _uin
     return m_Materials[iMaterialIndex]->Bind_ShaderResource(pShader, pConstantName, eType, iTextureIndex);
 }
 
-HRESULT CModel::Initialize_Prototype(const _wstring& strModelFilePath)
+HRESULT CModel::Initialize_Prototype(MODEL eType, const _wstring& strModelFilePath, _fmatrix PreTransformMatrix)
 {
     ifstream InFile(strModelFilePath, ios::binary);
     if (!InFile.is_open())
         return E_FAIL;
+
+    XMStoreFloat4x4(&m_PreTransformMatrix, PreTransformMatrix);
+    m_eType = eType;
 
     if (FAILED(Ready_Meshes(InFile)))
         return E_FAIL;
@@ -86,7 +89,7 @@ HRESULT CModel::Ready_Meshes(ifstream& _InFile)
         _InFile.read(reinterpret_cast<char*>(tDesc.Vertices.data()), sizeof(VTXMESH) * tDesc.iNumVertices);
         _InFile.read(reinterpret_cast<char*>(tDesc.Indicies.data()), sizeof(_uint) * tDesc.iNumIndices);
 
-        CMesh* pMesh = CMesh::Create(m_pDevice, m_pContext, &tDesc);
+        CMesh* pMesh = CMesh::Create(m_pDevice, m_pContext, m_eType, &tDesc, XMLoadFloat4x4(&m_PreTransformMatrix));
         if (nullptr == pMesh)
             return E_FAIL;
 
@@ -107,6 +110,9 @@ HRESULT CModel::Ready_Material(ifstream& _InFile)
         _uint iNumSRVs{};
         _InFile.read(reinterpret_cast<_char*>(&iNumSRVs), sizeof(_uint));
 
+        //if (0 == iNumSRVs)
+        //    continue;
+
         CMaterial::MATERIAL tDesc{};
 
         for (_uint j = 0; j < iNumSRVs; j++)
@@ -116,7 +122,7 @@ HRESULT CModel::Ready_Material(ifstream& _InFile)
             _InFile.read(reinterpret_cast<_char*>(&tTexInfo.eTextureType), sizeof(_uint));
             _uint istrLen{};
             _InFile.read(reinterpret_cast<_char*>(&istrLen), sizeof(_uint));
-            tTexInfo.strTexturePath.resize(istrLen);
+             tTexInfo.strTexturePath.resize(istrLen);
             _InFile.read(reinterpret_cast<_char*>(tTexInfo.strTexturePath.data()), sizeof(_tchar) * istrLen);
 
             tDesc.vecTextures.push_back(tTexInfo);
@@ -132,11 +138,11 @@ HRESULT CModel::Ready_Material(ifstream& _InFile)
     return S_OK;
 }
 
-CModel* CModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _wstring& strModelFilePath)
+CModel* CModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, MODEL eType, const _wstring& strModelFilePath, _fmatrix PreTransformMatrix)
 {
     CModel* pInstance = new CModel(pDevice, pContext);
 
-    if (FAILED(pInstance->Initialize_Prototype(strModelFilePath)))
+    if (FAILED(pInstance->Initialize_Prototype(eType, strModelFilePath, PreTransformMatrix)))
     {
         MSG_BOX("Failed to Created : CModel");
         Safe_Release(pInstance);

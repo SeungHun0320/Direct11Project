@@ -1,8 +1,8 @@
 #include "Level_Tools.h"
 #include "Level_Loading.h"
 
+#include "MapTool.h"
 #include "Camera_Free.h"
-#include "Monster.h"
 
 CLevel_Tools::CLevel_Tools(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel{ pDevice, pContext }
@@ -19,17 +19,20 @@ HRESULT CLevel_Tools::Initialize()
 	if (FAILED(Ready_ImGui()))
 		return E_FAIL;
 
+	if (FAILED(Ready_Tools()))
+		return E_FAIL;
+
 	return S_OK;
 }
 
 void CLevel_Tools::Update(_float fTimeDelta)
 {
-	if (KEY_DOWN(DIK_RETURN))
-	{
-		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
-			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::LOGO))))
-			return;
-	}
+	//if (KEY_DOWN(DIK_RETURN))
+	//{
+	//	if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
+	//		CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::LOGO))))
+	//		return;
+	//}
 }
 
 HRESULT CLevel_Tools::Render()
@@ -38,9 +41,8 @@ HRESULT CLevel_Tools::Render()
 	ImGui_RenderBegin();
 	Ready_DockSpace();
 
-	MapTool();
-	CameraTool();
 	FileDialog();
+	m_pMapTool->Render();
 
 	ImGui_RenderEnd();
 	return S_OK;
@@ -86,30 +88,30 @@ HRESULT CLevel_Tools::Ready_DockSpace()
 	ImGui::Begin("DockSpace", nullptr, window_flags);
 	ImGui::PopStyleVar(2);
 
-	if (ImGui::BeginMenuBar())
-	{
-		if (ImGui::BeginMenu(u8"파일"))
-		{
-			if (ImGui::BeginMenu(u8"열기"))
-			{
-				IGFD::FileDialogConfig config{};
+	//if (ImGui::BeginMenuBar())
+	//{
+	//	if (ImGui::BeginMenu(u8"파일"))
+	//	{
+	//		if (ImGui::BeginMenu(u8"열기"))
+	//		{
+	//			IGFD::FileDialogConfig config{};
 
-				config.path = "../bin/Resources/";
+	//			config.path = "../bin/Resources/";
 
-				ImGuiFileDialog::Instance()->OpenDialog(
-					"ChooseFile",            // 다이얼로그 Key
-					u8"파일 선택",              // 타이틀
-					".png,.fbx,.txt",        // 필터 (여러 개 가능),
-					config                    // 시작 경로
-				);
+	//			ImGuiFileDialog::Instance()->OpenDialog(
+	//				"ChooseFile",            // 다이얼로그 Key
+	//				u8"파일 선택",              // 타이틀
+	//				".png,.fbx,.txt",        // 필터 (여러 개 가능),
+	//				config                    // 시작 경로
+	//			);
 
-				ImGui::EndMenu();
-			}
-			ImGui::EndMenu();
-		}
+	//			ImGui::EndMenu();
+	//		}
+	//		ImGui::EndMenu();
+	//	}
 
-		ImGui::EndMenuBar();
-	}
+	//	ImGui::EndMenuBar();
+	//}
 
 	ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_PassthruCentralNode;
 	ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
@@ -134,33 +136,6 @@ void CLevel_Tools::ImGui_RenderEnd()
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 }
 
-HRESULT CLevel_Tools::MainTool()
-{
-	ImGui::Begin(u8"툴의 왕이 되고싶다");
-
-	ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
-
-	if (ImGui::BeginTabBar(u8"툴 바"))
-	{
-		if (ImGui::BeginTabItem(u8"맵툴"))
-		{
-			MapTool();
-			ImGui::EndTabItem();
-		}
-		if (ImGui::BeginTabItem(u8"카메라툴"))
-		{
-			CameraTool();
-			ImGui::EndTabItem();
-		}
-	}
-	ImGui::SameLine();
-	ImGui::EndTabBar();
-
-	ImGui::End();
-
-	return S_OK;
-}
-
 HRESULT CLevel_Tools::FileDialog()
 {
 	if (ImGuiFileDialog::Instance()->Display("ChooseFile"))
@@ -173,20 +148,6 @@ HRESULT CLevel_Tools::FileDialog()
 
 		ImGuiFileDialog::Instance()->Close(); // 꼭 닫아줘야 다시 열림
 	}
-
-	return S_OK;
-}
-
-HRESULT CLevel_Tools::CameraTool()
-{
-	ImGui::Begin(u8"카메라 툴");
-	ImGui::Dummy(ImVec2(0.0f, 15.0f));
-	if (ImGui::Button(u8"응애쓰"))
-	{
-		int a = 0;
-	}
-
-	ImGui::End();
 
 	return S_OK;
 }
@@ -213,20 +174,15 @@ HRESULT CLevel_Tools::Ready_Layer_Camera(const _wstring& strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_Tools::MapTool()
+HRESULT CLevel_Tools::Ready_Tools()
 {
-	ImGui::Begin(u8"맵 툴");
-
-	ImGui::Dummy(ImVec2(0.0f, 15.0f));
-	if (ImGui::Button(u8"지형 생성"))
-	{
-		int a = 0;
-	}
-
-	ImGui::End();
+	m_pMapTool = CMapTool::Create(m_pDevice, m_pContext);
+	if (nullptr == m_pMapTool)
+		return E_FAIL;
 
 	return S_OK;
 }
+
 
 CLevel_Tools* CLevel_Tools::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
@@ -248,6 +204,8 @@ void CLevel_Tools::Free()
 	ImGui_ImplDX11_Shutdown();
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
+
+	Safe_Release(m_pMapTool);
 }
 
 #endif // _IMGUI

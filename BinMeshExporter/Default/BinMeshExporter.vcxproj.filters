@@ -19,13 +19,13 @@
     <Filter Include="01.Levels\MeshExporter">
       <UniqueIdentifier>{ef519166-652f-46fd-bb89-9a0354bbae9d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.Model">
+    <Filter Include="02.Model %28추후 삭제%29">
       <UniqueIdentifier>{b7d3fa7e-aadc-4a56-a716-a600ad5bbe01}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.Model\00. Mesh">
+    <Filter Include="02.Model %28추후 삭제%29\00. Mesh">
       <UniqueIdentifier>{6f6ee178-6f8c-4f2c-b96b-c7c3c464e0b5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.Model\01. Material">
+    <Filter Include="02.Model %28추후 삭제%29\01. Material">
       <UniqueIdentifier>{fdc2efb0-2ad1-46df-8192-1532461c26f2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -91,13 +91,13 @@
       <Filter>01.Levels\MeshExporter</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Model.h">
-      <Filter>02.Model</Filter>
+      <Filter>02.Model %28추후 삭제%29</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\TestMaterial.h">
-      <Filter>02.Model\01. Material</Filter>
+      <Filter>02.Model %28추후 삭제%29\01. Material</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Mesh.h">
-      <Filter>02.Model\00. Mesh</Filter>
+      <Filter>02.Model %28추후 삭제%29\00. Mesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -151,13 +151,13 @@
       <Filter>01.Levels\MeshExporter</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Mesh.cpp">
-      <Filter>02.Model\00. Mesh</Filter>
+      <Filter>02.Model %28추후 삭제%29\00. Mesh</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Model.cpp">
-      <Filter>02.Model</Filter>
+      <Filter>02.Model %28추후 삭제%29</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\TestMaterial.cpp">
-      <Filter>02.Model\01. Material</Filter>
+      <Filter>02.Model %28추후 삭제%29\01. Material</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

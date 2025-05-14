@@ -64,9 +64,9 @@ void CGameObject::Priority_Update(_float fTimeDelta)
 
 }
 
-void CGameObject::Update(_float fTimeDelta)
+LIFE CGameObject::Update(_float fTimeDelta)
 {
-
+	return LIFE::NONE;
 }
 
 void CGameObject::Late_Update(_float fTimeDelta)

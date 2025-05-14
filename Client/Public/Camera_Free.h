@@ -22,9 +22,12 @@ public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);
 	virtual void Priority_Update(_float fTimeDelta);
-	virtual void Update(_float fTimeDelta);
+	virtual LIFE Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
+
+private:
+	void Key_Input(_float fTimeDelta);
 
 private:
 	_float				m_fSensor{};

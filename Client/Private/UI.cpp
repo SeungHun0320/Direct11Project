@@ -35,8 +35,9 @@ void CUI::Priority_Update(_float fTimeDelta)
 {
 }
 
-void CUI::Update(_float fTimeDelta)
+LIFE CUI::Update(_float fTimeDelta)
 {
+	return LIFE::NONE;
 }
 
 void CUI::Late_Update(_float fTimeDelta)

@@ -1,25 +1,23 @@
-#include "Monster.h"
+#include "Map.h"
 
 #include "GameInstance.h"
 
-CMonster::CMonster(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CGameObject{ pDevice, pContext }
+CMap::CMap(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+    : CGameObject{pDevice, pContext}
 {
-
 }
 
-CMonster::CMonster(const CMonster& Prototype)
-	: CGameObject( Prototype )
+CMap::CMap(const CMap& Prototype)
+    : CGameObject(Prototype)
 {
-
 }
 
-HRESULT CMonster::Initialize_Prototype()
+HRESULT CMap::Initialize_Prototype()
 {
-	return S_OK;
+    return S_OK;
 }
 
-HRESULT CMonster::Initialize(void* pArg)
+HRESULT CMap::Initialize(void* pArg)
 {
 	DESC* pDesc = static_cast<DESC*>(pArg);
 
@@ -34,22 +32,21 @@ HRESULT CMonster::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CMonster::Priority_Update(_float fTimeDelta)
+void CMap::Priority_Update(_float fTimeDelta)
 {
-
 }
 
-LIFE CMonster::Update(_float fTimeDelta)
+LIFE CMap::Update(_float fTimeDelta)
 {
 	return LIFE::NONE;
 }
 
-void CMonster::Late_Update(_float fTimeDelta)
+void CMap::Late_Update(_float fTimeDelta)
 {
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 }
 
-HRESULT CMonster::Render()
+HRESULT CMap::Render()
 {
 	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
@@ -81,7 +78,7 @@ HRESULT CMonster::Render()
 	return S_OK;
 }
 
-HRESULT CMonster::Ready_Components(void* pArg)
+HRESULT CMap::Ready_Components(void* pArg)
 {
 	/* For.Com_Shader */
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxMesh"),
@@ -91,7 +88,7 @@ HRESULT CMonster::Ready_Components(void* pArg)
 	return S_OK;
 }
 
-void CMonster::Free()
+void CMap::Free()
 {
 	__super::Free();
 
