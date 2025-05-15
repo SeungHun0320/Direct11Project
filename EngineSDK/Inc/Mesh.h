@@ -7,15 +7,25 @@ BEGIN(Engine)
 class ENGINE_DLL CMesh final : public CVIBuffer
 {
 public:
-	typedef struct tagMeshDesc
-	{
+	typedef struct tagMeshDesc {
 		_uint iNumVertices{};
 		_uint iNumIndices{};
 		_uint iMaterialIndex{};
-		vector<VTXMESH> Vertices;
 		vector<_uint> Indicies;
+	}COMMON;
 
-	}MESH;
+	typedef struct tagNonAnimMeshDesc : public COMMON
+	{
+		vector<VTXMESH> Vertices;
+	}NONANIMMESH;
+
+	typedef struct tagAnimMeshDesc : public COMMON
+	{
+		_uint iNumBoneIndices{};
+		vector<_uint> BoneIndices;
+		vector<VTXANIMMESH> Vertices;
+
+	}ANIMMESH;
 
 private:
 	CMesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -28,18 +38,18 @@ public:
 	}
 
 public:
-	virtual HRESULT Initialize_Prototype(MODEL eType, const MESH* pDesc, _fmatrix PreTransformMatrix);
+	virtual HRESULT Initialize_Prototype(MODEL eType, const COMMON* pDesc, _fmatrix PreTransformMatrix);
 	virtual HRESULT Initialize(void* pArg);
 
 private:
 	_uint			m_iMaterialIndex = {};
 
 private:
-	HRESULT Ready_NonAnim_Mesh(const MESH* pDesc, _fmatrix PreTransformMatrix);
-	HRESULT Ready_Anim_Mesh(const MESH* pDesc);
+	HRESULT Ready_NonAnim_Mesh(const COMMON* pDesc, _fmatrix PreTransformMatrix);
+	HRESULT Ready_Anim_Mesh(const COMMON* pDesc);
 
 public:
-	static CMesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, MODEL eType, const MESH* pDesc, _fmatrix PreTransformMatrix);
+	static CMesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, MODEL eType, const COMMON* pDesc, _fmatrix PreTransformMatrix);
 	virtual CComponent* Clone(void* pArg) override;
 	virtual void Free() override;
 

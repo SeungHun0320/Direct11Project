@@ -9,6 +9,14 @@ class CPicking final : public CBase
 private:
 	CPicking(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	~CPicking() = default;
+public:
+	const _float3& Get_MousePos() {
+		return m_vMousePos;
+	}
+	
+	const _float3& Get_LocalMousePos() {
+		return m_vLocalMousePos;
+	}
 
 public:
 	HRESULT Initialize(HWND hWnd, _uint iWinSizeX, _uint iWinSizeY);

@@ -1,0 +1,45 @@
+#pragma once
+
+#include "Base.h"
+
+/* 뼈. (aiNode, aiBone, aiNodeAnim) */
+/* aiNode를 이용해서 셋팅한 뼈 정보. */
+
+BEGIN(Engine)
+
+class CBone final : public CBase
+{
+public:
+	typedef struct tagBoneDesc
+	{
+		_string strName;
+		XMFLOAT4X4 TransformationMatrix;
+		_int iParentBoneIndex;
+
+	}BONE;
+private:
+	CBone();
+	virtual ~CBone() = default;
+
+public:
+	HRESULT Initialize(const BONE* pDesc, _int iParentBoneIndex);
+	void Update_TransformationMatrix(_fmatrix TransformationMartix);
+	void Update_CombinedTransformationMatrix(const vector<CBone*>& Bones);
+
+private:
+	_string m_strName;
+
+	/* (A : 이 뼈 자체의 원점기준 변환정보를 표현한 행렬) */
+	_float4x4				m_TransformationMatrix = {};
+
+	/* (A : 이 뼈 자체의 원점기준 변환정보를 표현한 행렬) * 부모행렬. = A: 부모를 기준으로 회전한다. */
+	_float4x4				m_CombinedTransformationMatrix = {};
+
+	_int					m_iParentBoneIndex = { -1 };
+
+public:
+	static CBone* Create(const BONE* pDesc, _int iParentBoneIndex);
+	virtual void Free() override;
+};
+
+END

@@ -21,6 +21,8 @@ public:
 
 	typedef struct tagAnimMeshDesc : public COMMON
 	{
+		_uint iNumBoneIndices{};
+		vector<_uint> BoneIndices;
 		vector<VTXANIMMESH> Vertices;
 
 	}ANIMMESH;

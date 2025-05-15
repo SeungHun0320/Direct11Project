@@ -214,6 +214,16 @@ _bool CGameInstance::Picking_InLocal(_float3& vPickedPos, const _float3& vPointA
 	return m_pPicking->Picking_InLocal(vPickedPos, vPointA, vPointB, vPointC);
 }
 
+const _float3& CGameInstance::Get_MousePos()
+{
+	return m_pPicking->Get_MousePos();
+}
+
+const _float3& CGameInstance::Get_LocalMousePos()
+{
+	return m_pPicking->Get_LocalMousePos();
+}
+
 #pragma endregion
 
 #pragma region INPUT_DEVICE

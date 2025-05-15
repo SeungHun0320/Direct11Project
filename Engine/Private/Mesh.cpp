@@ -32,6 +32,8 @@ HRESULT CMesh::Initialize_Prototype(MODEL eType, const COMMON* pDesc, _fmatrix P
 	IBBufferDesc.StructureByteStride = m_iIndexStride;
 	IBBufferDesc.MiscFlags = 0;
 
+	m_pIndices = new _uint[m_iNumIndices];
+	ZeroMemory(m_pIndices, sizeof(_uint) * m_iNumIndices);
 	_uint* pIndices = new _uint[m_iNumIndices];
 	ZeroMemory(pIndices, sizeof(_uint) * m_iNumIndices);
 
@@ -39,6 +41,8 @@ HRESULT CMesh::Initialize_Prototype(MODEL eType, const COMMON* pDesc, _fmatrix P
 
 	D3D11_SUBRESOURCE_DATA		IBInitialData{};
 	IBInitialData.pSysMem = pIndices;
+
+	memcpy(m_pIndices, pIndices, m_iIndexStride * m_iNumIndices);
 
 	if (FAILED(m_pDevice->CreateBuffer(&IBBufferDesc, &IBInitialData, &m_pIB)))
 		return E_FAIL;
@@ -74,7 +78,7 @@ HRESULT CMesh::Ready_NonAnim_Mesh(const COMMON* pDesc, _fmatrix PreTransformMatr
 	m_pVertexPositions = new _float3[m_iNumVertices];
 	ZeroMemory(m_pVertexPositions, sizeof(_float3) * m_iNumVertices);
 
-	for (size_t i = 0; i < m_iNumVertices; i++)
+	for (_uint i = 0; i < m_iNumVertices; i++)
 	{
 		memcpy(&pVertices[i].vPosition, &pNonAnimMeshDesc->Vertices[i].vPosition, sizeof(_float3));
 		XMStoreFloat3(&pVertices[i].vPosition, XMVector3TransformCoord(XMLoadFloat3(&pVertices[i].vPosition), PreTransformMatrix));
@@ -120,7 +124,7 @@ HRESULT CMesh::Ready_Anim_Mesh(const COMMON* pDesc)
 	m_pVertexPositions = new _float3[m_iNumVertices];
 	ZeroMemory(m_pVertexPositions, sizeof(_float3) * m_iNumVertices);
 
-	for (size_t i = 0; i < m_iNumVertices; i++)
+	for (_uint i = 0; i < m_iNumVertices; i++)
 	{
 		memcpy(&pVertices[i].vPosition, &pAnimMeshDesc->Vertices[i].vPosition, sizeof(_float3));
 		memcpy(&pVertices[i].vNormal, &pAnimMeshDesc->Vertices[i].vNormal, sizeof(_float3));

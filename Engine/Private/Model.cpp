@@ -1,21 +1,28 @@
 #include "Model.h"
 
+#include "GameInstance.h"
+
 #include "Bone.h"
 #include "Mesh.h"
 #include "Material.h"
 
 CModel::CModel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : CComponent{ pDevice, pContext }
+    , m_pGameInstance{ CGameInstance::Get_Instance() }
 {
+    Safe_AddRef(m_pGameInstance);
 }
 
 CModel::CModel(const CModel& Prototype)
-    : CComponent(Prototype),
-    m_iNumMeshes{ Prototype.m_iNumMeshes },
-    m_Meshes{ Prototype.m_Meshes },
-    m_iNumMaterials{ Prototype.m_iNumMaterials },
-    m_Materials{ Prototype.m_Materials }
+    : CComponent(Prototype)
+    , m_iNumMeshes{ Prototype.m_iNumMeshes }
+    , m_Meshes{ Prototype.m_Meshes }
+    , m_iNumMaterials{ Prototype.m_iNumMaterials }
+    , m_Materials{ Prototype.m_Materials }
+    , m_pGameInstance{ CGameInstance::Get_Instance() }
 {
+    Safe_AddRef(m_pGameInstance);
+
     for (auto& pMesh : m_Meshes)
         Safe_AddRef(pMesh);
 
@@ -73,6 +80,75 @@ HRESULT CModel::Render(_uint iMeshIndex)
     return S_OK;
 }
 
+_float3 CModel::Compute_PickedPosition_Local(_fmatrix WorldMatrixInverse)
+{
+    _float3 vResultPos{};
+    _float fMinDist = FLT_MAX;
+
+    const _float3 vRayOrigin = m_pGameInstance->Get_LocalMousePos();
+
+    for (_int i = 0; i < m_Meshes.size(); i++)
+    {
+        _float3 vPickedPos = m_Meshes[i]->Compute_PickedPosition_Local(WorldMatrixInverse);
+
+        _float fDist = XMVectorGetX(XMVector3LengthSq(XMLoadFloat3(&vRayOrigin) - XMLoadFloat3(&vPickedPos)));
+
+        if (fDist < fMinDist)
+        {
+            fMinDist = fDist;
+            vResultPos = vPickedPos;
+        }
+    }
+
+    return vResultPos;
+}
+
+_float3 CModel::Compute_PickedPosition_World(const _float4x4* pWorldMatrix)
+{
+    _float3 vResultPos{};
+    _float fMinDist = FLT_MAX;
+
+    const _float3 vRayOrigin = m_pGameInstance->Get_MousePos();
+
+    for (_int i = 0; i < m_Meshes.size(); i++)
+    {
+        _float3 vPickedPos = m_Meshes[i]->Compute_PickedPosition_World(pWorldMatrix);
+
+        _float fDist = XMVectorGetX(XMVector3LengthSq(XMLoadFloat3(&vRayOrigin) - XMLoadFloat3(&vPickedPos)));
+
+        if (fDist < fMinDist)
+        {
+            fMinDist = fDist;
+            vResultPos = vPickedPos;
+        }
+    }
+
+    return vResultPos;
+}
+
+_float3 CModel::Compute_PickedPosition_World_Snap(const _float4x4* pWorldMatrix)
+{
+    _float3 vResultPos{};
+    _float fMinDist = FLT_MAX;
+
+    const _float3 vRayOrigin = m_pGameInstance->Get_MousePos();
+
+    for (_int i = 0; i < m_Meshes.size(); i++)
+    {
+        _float3 vPickedPos = m_Meshes[i]->Compute_PickedPosition_World_Snap(pWorldMatrix);
+
+        _float fDist = XMVectorGetX(XMVector3LengthSq(XMLoadFloat3(&vRayOrigin) - XMLoadFloat3(&vPickedPos)));
+
+        if (fDist < fMinDist)
+        {
+            fMinDist = fDist;
+            vResultPos = vPickedPos;
+        }
+    }
+
+    return vResultPos;
+}
+
 HRESULT CModel::Ready_Bones(ifstream& _InFile)
 {
     /* 이쪽에서 파일 입출력해서 본 생성 */
@@ -88,17 +164,16 @@ HRESULT CModel::Ready_NonAnim_Meshes(ifstream& _InFile)
     for (_uint i = 0; i < m_iNumMeshes; i++)
     {
         /* 여기다 파일 입출력해서 정보 메쉬정보 담는 구조체 던지면 될듯?? */
-        /* 나중에 여기서 애님 / 논애님을 분기해야 할 거 같아*/
         CMesh::NONANIMMESH tDesc{};
-        _InFile.read(reinterpret_cast<char*>(&tDesc.iNumVertices), sizeof(_uint));
-        _InFile.read(reinterpret_cast<char*>(&tDesc.iNumIndices), sizeof(_uint));
+        _InFile.read(reinterpret_cast<_char*>(&tDesc.iNumVertices), sizeof(_uint));
+        _InFile.read(reinterpret_cast<_char*>(&tDesc.iNumIndices), sizeof(_uint));
 
         tDesc.Vertices.resize(tDesc.iNumVertices);
         tDesc.Indicies.resize(tDesc.iNumIndices);
 
-        _InFile.read(reinterpret_cast<char*>(&tDesc.iMaterialIndex), sizeof(_uint));
-        _InFile.read(reinterpret_cast<char*>(tDesc.Vertices.data()), sizeof(VTXMESH) * tDesc.iNumVertices);
-        _InFile.read(reinterpret_cast<char*>(tDesc.Indicies.data()), sizeof(_uint) * tDesc.iNumIndices);
+        _InFile.read(reinterpret_cast<_char*>(&tDesc.iMaterialIndex), sizeof(_uint));
+        _InFile.read(reinterpret_cast<_char*>(tDesc.Vertices.data()), sizeof(VTXMESH) * tDesc.iNumVertices);
+        _InFile.read(reinterpret_cast<_char*>(tDesc.Indicies.data()), sizeof(_uint) * tDesc.iNumIndices);
 
         CMesh* pMesh = CMesh::Create(m_pDevice, m_pContext, m_eType, &tDesc, XMLoadFloat4x4(&m_PreTransformMatrix));
         if (nullptr == pMesh)
@@ -119,17 +194,18 @@ HRESULT CModel::Ready_Anim_Meshes(ifstream& _InFile)
     for (_uint i = 0; i < m_iNumMeshes; i++)
     {
         /* 여기다 파일 입출력해서 정보 메쉬정보 담는 구조체 던지면 될듯?? */
-        /* 나중에 여기서 애님 / 논애님을 분기해야 할 거 같아*/
         CMesh::ANIMMESH tDesc{};
-        _InFile.read(reinterpret_cast<char*>(&tDesc.iNumVertices), sizeof(_uint));
-        _InFile.read(reinterpret_cast<char*>(&tDesc.iNumIndices), sizeof(_uint));
+        _InFile.read(reinterpret_cast<_char*>(&tDesc.iNumVertices), sizeof(_uint));
+        _InFile.read(reinterpret_cast<_char*>(&tDesc.iNumIndices), sizeof(_uint));
+        _InFile.read(reinterpret_cast<_char*>(&tDesc.iNumBoneIndices), sizeof(_uint));
 
         tDesc.Vertices.resize(tDesc.iNumVertices);
         tDesc.Indicies.resize(tDesc.iNumIndices);
 
-        _InFile.read(reinterpret_cast<char*>(&tDesc.iMaterialIndex), sizeof(_uint));
-        _InFile.read(reinterpret_cast<char*>(tDesc.Vertices.data()), sizeof(VTXMESH) * tDesc.iNumVertices);
-        _InFile.read(reinterpret_cast<char*>(tDesc.Indicies.data()), sizeof(_uint) * tDesc.iNumIndices);
+        _InFile.read(reinterpret_cast<_char*>(&tDesc.iMaterialIndex), sizeof(_uint));
+        _InFile.read(reinterpret_cast<_char*>(tDesc.Vertices.data()), sizeof(VTXMESH) * tDesc.iNumVertices);
+        _InFile.read(reinterpret_cast<_char*>(tDesc.Indicies.data()), sizeof(_uint) * tDesc.iNumIndices);
+        _InFile.read(reinterpret_cast<_char*>(tDesc.BoneIndices.data()), sizeof(_uint) * tDesc.iNumBoneIndices);
 
         CMesh* pMesh = CMesh::Create(m_pDevice, m_pContext, m_eType, &tDesc, XMLoadFloat4x4(&m_PreTransformMatrix));
         if (nullptr == pMesh)
@@ -209,6 +285,8 @@ CComponent* CModel::Clone(void* pArg)
 void CModel::Free()
 {
     __super::Free();
+
+    Safe_Release(m_pGameInstance);
 
     for (auto& pMesh : m_Meshes)
         Safe_Release(pMesh);

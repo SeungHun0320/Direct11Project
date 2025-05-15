@@ -22,6 +22,14 @@ public:
 	virtual HRESULT Initialize(void* pArg);
 	virtual HRESULT Render(_uint iMeshIndex);
 
+public: /* 맵툴용,,,? */
+	_float3 Compute_PickedPosition_Local(_fmatrix WorldMatrixInverse);
+	_float3 Compute_PickedPosition_World(const _float4x4* pWorldMatrix);
+	_float3 Compute_PickedPosition_World_Snap(const _float4x4* pWorldMatrix);
+
+private:
+	class CGameInstance* m_pGameInstance = { nullptr };
+
 private:
 	/* 어떤 모델인지 분기 해 줄 타입 (NONANIM, ANIM) */
 	MODEL					m_eType = {};
