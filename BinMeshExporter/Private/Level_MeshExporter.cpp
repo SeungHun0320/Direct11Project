@@ -26,7 +26,6 @@ HRESULT CLevel_MeshExporter::Render()
 	Render_Begin_ImGui();
 	Ready_DockSpace();
 
-
 	FileDialog();
 
 	Render_End_ImGui();
@@ -223,13 +222,119 @@ HRESULT CLevel_MeshExporter::FBX_to_Bin_Exproted(const string& strFilePath)
 	return S_OK;
 }
 
-HRESULT CLevel_MeshExporter::Read_Anim_Model()
+HRESULT CLevel_MeshExporter::Read_Anim_Model(const string& strModelPath, const string& strOutPath)
 {
-	return S_OK;
+	Assimp::Importer Importer;
+	const aiScene* pAIScene = { nullptr };
+
+	_uint iFlag = aiProcess_PreTransformVertices | aiProcess_ConvertToLeftHanded | aiProcessPreset_TargetRealtime_Fast;
+
+	pAIScene = Importer.ReadFile(strModelPath, iFlag);
+
+	if (nullptr == pAIScene)
+		return E_FAIL;
+
+	if (FAILED(Ready_Bones(-1, pAIScene->mRootNode)))
+		return E_FAIL;
+
+	if (FAILED(Ready_Anim_Meshes(pAIScene->mNumMeshes, pAIScene->mMeshes)))
+		return E_FAIL;
+
+	if (FAILED(Ready_Material(strModelPath.c_str(), pAIScene->mNumMaterials, pAIScene->mMaterials)))
+		return E_FAIL;
+
+
+	return Exported_Anim_Model(strOutPath);
+
 }
 
-HRESULT CLevel_MeshExporter::Exported_Anim_Model()
+HRESULT CLevel_MeshExporter::Exported_Anim_Model(const string& strOutPath)
 {
+	ofstream OutFile(strOutPath, ios::binary);
+	if (!OutFile.is_open())
+		return E_FAIL;
+
+	/* ---------------------------본----------------------------- */
+	_uint iNumBones = static_cast<_uint>(m_vecBones.size());
+	OutFile.write(reinterpret_cast<const _char*>(&iNumBones), sizeof(_uint));
+	for (auto& pBone : m_vecBones)
+	{
+		OutFile.write(reinterpret_cast<const _char*>(&pBone->iParentBoneIndex), sizeof(_uint));
+		_uint istrLen = static_cast<_uint>(pBone->strName.length());
+		OutFile.write(reinterpret_cast<const _char*>(&istrLen), sizeof(_uint));
+		OutFile.write(reinterpret_cast<const _char*>(pBone->strName.c_str()), sizeof(_char) * istrLen);
+		OutFile.write(reinterpret_cast<const _char*>(&pBone->TransformationMatrix), sizeof(XMFLOAT4X4));
+	}
+
+	/* ---------------------------메쉬----------------------------- */
+	_uint iNumMeshes = static_cast<_uint>(m_vecAnimMeshes.size());
+	OutFile.write(reinterpret_cast<const _char*>(&iNumMeshes), sizeof(_uint));
+	for (auto& Mesh : m_vecAnimMeshes)
+	{
+		_uint iNumVertices = static_cast<_uint>(Mesh->Vertices.size());
+		_uint iNumIndices = static_cast<_uint>(Mesh->Indices.size());
+		_uint iNumBoneIndices = static_cast<_uint>(Mesh->BoneIndices.size());
+
+		OutFile.write(reinterpret_cast<const _char*>(&iNumVertices), sizeof(_uint));
+		OutFile.write(reinterpret_cast<const _char*>(&iNumIndices), sizeof(_uint));
+		OutFile.write(reinterpret_cast<const _char*>(&iNumBoneIndices), sizeof(_uint));
+		OutFile.write(reinterpret_cast<const _char*>(&Mesh->iMaterialIndex), sizeof(_uint));
+		OutFile.write(reinterpret_cast<const _char*>(Mesh->Vertices.data()), sizeof(VTXANIMMESH) * iNumVertices);
+		OutFile.write(reinterpret_cast<const _char*>(Mesh->Indices.data()), sizeof(_uint) * iNumIndices);
+		OutFile.write(reinterpret_cast<const _char*>(Mesh->BoneIndices.data()), sizeof(_uint) * iNumBoneIndices);
+	}
+
+	/* ------------------------마테리얼---------------------------- */
+	_uint iNumMaterial = static_cast<_uint>(m_vecMaterials.size());
+	OutFile.write(reinterpret_cast<const _char*>(&iNumMaterial), sizeof(_uint));
+
+	for (auto& pMaterial : m_vecMaterials)
+	{
+		/* iNumTextures == iNumSRVs임 진짜 절대 잊지마 */
+		_uint iNumTextures = static_cast<_uint>(pMaterial->vecTextures.size());
+		OutFile.write(reinterpret_cast<const _char*>(&iNumTextures), sizeof(_uint));
+
+		for (auto& TexInfo : pMaterial->vecTextures)
+		{
+			OutFile.write(reinterpret_cast<const _char*>(&TexInfo.iTextureType), sizeof(_uint));
+			_uint istrLen = static_cast<_uint>(TexInfo.strTexturePath.length());
+			OutFile.write(reinterpret_cast<const _char*>(&istrLen), sizeof(_uint));
+			OutFile.write(reinterpret_cast<const _char*>(TexInfo.strTexturePath.c_str()), sizeof(_tchar) * istrLen);
+		}
+	}
+
+
+	/* -------------------다 썼으니 삭제----------------------- */
+	for (auto& pBone : m_vecBones)
+		Safe_Delete(pBone);
+	m_vecBones.clear();
+
+	for (auto& pAnimMesh : m_vecAnimMeshes)
+	{
+		pAnimMesh->BoneIndices.clear();
+		pAnimMesh->Indices.clear();
+		pAnimMesh->Vertices.clear();
+		Safe_Delete(pAnimMesh);
+	}
+	m_vecAnimMeshes.clear();
+
+	for (auto& pNonAnimMesh : m_vecNonAnimMeshes)
+	{
+		pNonAnimMesh->Vertices.clear();
+		pNonAnimMesh->Indices.clear();
+		Safe_Delete(pNonAnimMesh);
+	}
+	m_vecNonAnimMeshes.clear();
+
+	for (auto& pMaterial : m_vecMaterials)
+	{
+		pMaterial->vecTextures.clear();
+		Safe_Delete(pMaterial);
+	}
+	m_vecMaterials.clear();
+
+	OutFile.close();
+
 	return S_OK;
 }
 
@@ -296,14 +401,13 @@ HRESULT CLevel_MeshExporter::Exported_Non_Anim_Model(const string& strOutPath)
 		}
 	}
 
-
 	/* -------------------다 썼으니 삭제----------------------- */
 
-	for (auto& Mesh : m_vecNonAnimMeshes)
+	for (auto& pNonAnimMesh : m_vecNonAnimMeshes)
 	{
-		Mesh->Vertices.clear();
-		Mesh->Indices.clear();
-		Safe_Delete(Mesh);
+		pNonAnimMesh->Vertices.clear();
+		pNonAnimMesh->Indices.clear();
+		Safe_Delete(pNonAnimMesh);
 	}
 	m_vecNonAnimMeshes.clear();
 
@@ -315,6 +419,117 @@ HRESULT CLevel_MeshExporter::Exported_Non_Anim_Model(const string& strOutPath)
 	m_vecMaterials.clear();
 
 	OutFile.close();
+
+	return S_OK;
+}
+
+HRESULT CLevel_MeshExporter::Ready_Bones(_int iParentBoneIndex, const aiNode* pAINode)
+{
+	BONE* pBone = new BONE;
+
+	pBone->strName = pAINode->mName.C_Str();
+
+	memcpy(&pBone->TransformationMatrix, &pAINode->mTransformation, sizeof(_float4x4));
+
+	XMStoreFloat4x4(&pBone->TransformationMatrix, XMMatrixTranspose(XMLoadFloat4x4(&pBone->TransformationMatrix)));
+
+	pBone->iParentBoneIndex = iParentBoneIndex;
+
+	m_vecBones.push_back(pBone);
+
+	_int	iParentIndex = static_cast<_int>(m_vecBones.size()) - 1;
+
+	for (_uint i = 0; i < pAINode->mNumChildren; i++)
+	{
+		Ready_Bones(iParentIndex, pAINode->mChildren[i]);
+	}
+
+	return S_OK;
+}
+
+HRESULT CLevel_MeshExporter::Ready_Anim_Meshes(_uint iNumMeshes, aiMesh** ppMeshes)
+{
+	m_vecAnimMeshes.reserve(iNumMeshes);
+
+	for (_uint i = 0; i < iNumMeshes; i++)
+	{
+		ANIMMESH* pMesh = new ANIMMESH;
+		pMesh->iMaterialIndex = ppMeshes[i]->mMaterialIndex;
+		_uint iNumVertices = ppMeshes[i]->mNumVertices;
+		_uint iNumIndices = ppMeshes[i]->mNumFaces * 3;
+
+		pMesh->Vertices.reserve(iNumVertices);
+		pMesh->Indices.reserve(iNumIndices);
+
+		for (_uint j = 0; j < iNumVertices; j++)
+		{
+			VTXANIMMESH Vertices = {};
+
+			memcpy(&Vertices.vPosition, &ppMeshes[i]->mVertices[j], sizeof(_float3));
+			memcpy(&Vertices.vNormal, &ppMeshes[i]->mNormals[j], sizeof(_float3));
+			memcpy(&Vertices.vTangent, &ppMeshes[i]->mTangents[j], sizeof(_float3));
+			//if (ppMeshes[i]->HasTextureCoords(0))
+			memcpy(&Vertices.vTexcoord, &ppMeshes[i]->mTextureCoords[0][j], sizeof(_float2));
+
+			pMesh->Vertices.push_back(Vertices);
+		}
+
+		pMesh->Indices.resize(iNumIndices);
+		_uint iIndex = {};
+
+		for (_uint j = 0; j < ppMeshes[i]->mNumFaces; j++)
+		{
+			pMesh->Indices[iIndex++] = ppMeshes[i]->mFaces[j].mIndices[0];
+			pMesh->Indices[iIndex++] = ppMeshes[i]->mFaces[j].mIndices[1];
+			pMesh->Indices[iIndex++] = ppMeshes[i]->mFaces[j].mIndices[2];
+		}
+
+		m_vecAnimMeshes.push_back(pMesh);
+
+		_uint iNumBones = ppMeshes[i]->mNumBones;
+
+		for (_uint j = 0; j < iNumBones; j++)
+		{
+			/* 부모 자식등의 뼈의 관계성을 표현(x) -> aiNode */
+			/* 이 메시의 어떤 정점들에게 영향을 줍니다. and 얼마나 영향을 줍니다. -> mBones */
+			aiBone* pAIBone = ppMeshes[i]->mBones[j];
+
+			/* i번째 뼈가 몇개 정점에게 영향을 주는데?*/
+			_uint		iNumWeights = pAIBone->mNumWeights;
+
+			for (size_t k = 0; k < iNumWeights; k++)
+			{
+				/* i번째 뼈가 영향을 주는 j번째 정점의 정보 */
+				aiVertexWeight	AIWeight = pAIBone->mWeights[j];
+
+				/* 가중치를 비교해서 0.f라면 비어있다는 뜻, 채워주기 */
+				if (0.f == pMesh->Vertices[AIWeight.mVertexId].vBlendWeights.x)
+				{
+					pMesh->Vertices[AIWeight.mVertexId].vBlendIndices.x = i;
+					pMesh->Vertices[AIWeight.mVertexId].vBlendWeights.x = AIWeight.mWeight;
+				}
+
+				else if (0.f == pMesh->Vertices[AIWeight.mVertexId].vBlendWeights.y)
+				{
+					pMesh->Vertices[AIWeight.mVertexId].vBlendIndices.y = i;
+					pMesh->Vertices[AIWeight.mVertexId].vBlendWeights.y = AIWeight.mWeight;
+				}
+
+				else if (0.f == pMesh->Vertices[AIWeight.mVertexId].vBlendWeights.z)
+				{
+					pMesh->Vertices[AIWeight.mVertexId].vBlendIndices.z = i;
+					pMesh->Vertices[AIWeight.mVertexId].vBlendWeights.z = AIWeight.mWeight;
+				}
+
+				else if (0.f == pMesh->Vertices[AIWeight.mVertexId].vBlendWeights.w)
+				{
+					pMesh->Vertices[AIWeight.mVertexId].vBlendIndices.w = i;
+					pMesh->Vertices[AIWeight.mVertexId].vBlendWeights.w = AIWeight.mWeight;
+				}
+			}
+		}
+
+	}
 
 	return S_OK;
 }
@@ -341,7 +556,7 @@ HRESULT CLevel_MeshExporter::Ready_Non_Anim_Meshes(_uint iNumMeshes, aiMesh** pp
 			memcpy(&Vertices.vNormal, &ppMeshes[i]->mNormals[j], sizeof(_float3));
 			memcpy(&Vertices.vTangent, &ppMeshes[i]->mTangents[j], sizeof(_float3));
 			//if (ppMeshes[i]->HasTextureCoords(0))
-				memcpy(&Vertices.vTexcoord, &ppMeshes[i]->mTextureCoords[0][j], sizeof(_float2));
+			memcpy(&Vertices.vTexcoord, &ppMeshes[i]->mTextureCoords[0][j], sizeof(_float2));
 
 			pMesh->Vertices.push_back(Vertices);
 		}
@@ -355,7 +570,7 @@ HRESULT CLevel_MeshExporter::Ready_Non_Anim_Meshes(_uint iNumMeshes, aiMesh** pp
 			pMesh->Indices[iIndex++] = ppMeshes[i]->mFaces[j].mIndices[1];
 			pMesh->Indices[iIndex++] = ppMeshes[i]->mFaces[j].mIndices[2];
 		}
-	
+
 		m_vecNonAnimMeshes.push_back(pMesh);
 
 	}
@@ -438,12 +653,25 @@ void CLevel_MeshExporter::Free()
 	ImGui_ImplDX11_Shutdown();
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
+	
+	for (auto& pBone : m_vecBones)
+		Safe_Delete(pBone);
+	m_vecBones.clear();
 
-	for (auto& Mesh : m_vecNonAnimMeshes)
+	for (auto& pAnimMesh : m_vecAnimMeshes)
 	{
-		Mesh->Vertices.clear();
-		Mesh->Indices.clear();
-		Safe_Delete(Mesh);
+		pAnimMesh->BoneIndices.clear();
+		pAnimMesh->Indices.clear();
+		pAnimMesh->Vertices.clear();
+		Safe_Delete(pAnimMesh);
+	}
+	m_vecAnimMeshes.clear();
+
+	for (auto& pNonAnimMesh : m_vecNonAnimMeshes)
+	{
+		pNonAnimMesh->Vertices.clear();
+		pNonAnimMesh->Indices.clear();
+		Safe_Delete(pNonAnimMesh);
 	}
 	m_vecNonAnimMeshes.clear();
 

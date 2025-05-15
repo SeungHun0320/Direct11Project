@@ -238,7 +238,7 @@ HRESULT CLoader::Loading_For_Tools()
 	/*For.Prototpye_Component_Model_Arena*/
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototpye_Component_Model_Arena"),
-		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/FBX/Map/Fortress/Arena/Arena.Model"), PreTransformMatrix))))
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/FBX/Map/Fortress/Main/Main.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
 

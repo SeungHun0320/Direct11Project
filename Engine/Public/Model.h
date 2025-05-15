@@ -36,8 +36,13 @@ private:
 	_uint						m_iNumMaterials = {};
 	vector<class CMaterial*>	m_Materials;
 
+	/* 본들을 담는 벡터 */
+	vector<class CBone*>			m_Bones;
+
 private:
-	HRESULT Ready_Meshes(ifstream& _InFile);
+	HRESULT Ready_Bones(ifstream& _InFile);
+	HRESULT Ready_NonAnim_Meshes(ifstream& _InFile);
+	HRESULT Ready_Anim_Meshes(ifstream& _InFile);
 	HRESULT Ready_Material(ifstream& _InFile);
 
 public:

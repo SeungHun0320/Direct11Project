@@ -1,5 +1,6 @@
 #include "Model.h"
 
+#include "Bone.h"
 #include "Mesh.h"
 #include "Material.h"
 
@@ -44,7 +45,11 @@ HRESULT CModel::Initialize_Prototype(MODEL eType, const _wstring& strModelFilePa
     XMStoreFloat4x4(&m_PreTransformMatrix, PreTransformMatrix);
     m_eType = eType;
 
-    if (FAILED(Ready_Meshes(InFile)))
+    if (m_eType == MODEL::ANIM)
+        if (FAILED(Ready_Bones(InFile)))
+            return E_FAIL;
+
+    if (FAILED(Ready_NonAnim_Meshes(InFile)))
         return E_FAIL;
 
     if (FAILED(Ready_Material(InFile)))
@@ -68,7 +73,13 @@ HRESULT CModel::Render(_uint iMeshIndex)
     return S_OK;
 }
 
-HRESULT CModel::Ready_Meshes(ifstream& _InFile)
+HRESULT CModel::Ready_Bones(ifstream& _InFile)
+{
+    /* 이쪽에서 파일 입출력해서 본 생성 */
+    return S_OK;
+}
+
+HRESULT CModel::Ready_NonAnim_Meshes(ifstream& _InFile)
 {
     /* 이쪽에서 파일입출력해서 갯수를 먼저 받아오기  */
     _InFile.read(reinterpret_cast<char*>(&m_iNumMeshes), sizeof(_uint));
@@ -78,7 +89,38 @@ HRESULT CModel::Ready_Meshes(ifstream& _InFile)
     {
         /* 여기다 파일 입출력해서 정보 메쉬정보 담는 구조체 던지면 될듯?? */
         /* 나중에 여기서 애님 / 논애님을 분기해야 할 거 같아*/
-        CMesh::MESH tDesc{};
+        CMesh::NONANIMMESH tDesc{};
+        _InFile.read(reinterpret_cast<char*>(&tDesc.iNumVertices), sizeof(_uint));
+        _InFile.read(reinterpret_cast<char*>(&tDesc.iNumIndices), sizeof(_uint));
+
+        tDesc.Vertices.resize(tDesc.iNumVertices);
+        tDesc.Indicies.resize(tDesc.iNumIndices);
+
+        _InFile.read(reinterpret_cast<char*>(&tDesc.iMaterialIndex), sizeof(_uint));
+        _InFile.read(reinterpret_cast<char*>(tDesc.Vertices.data()), sizeof(VTXMESH) * tDesc.iNumVertices);
+        _InFile.read(reinterpret_cast<char*>(tDesc.Indicies.data()), sizeof(_uint) * tDesc.iNumIndices);
+
+        CMesh* pMesh = CMesh::Create(m_pDevice, m_pContext, m_eType, &tDesc, XMLoadFloat4x4(&m_PreTransformMatrix));
+        if (nullptr == pMesh)
+            return E_FAIL;
+
+        m_Meshes.push_back(pMesh);
+    }
+
+    return S_OK;
+}
+
+HRESULT CModel::Ready_Anim_Meshes(ifstream& _InFile)
+{
+    /* 이쪽에서 파일입출력해서 갯수를 먼저 받아오기  */
+    _InFile.read(reinterpret_cast<char*>(&m_iNumMeshes), sizeof(_uint));
+    m_Meshes.reserve(m_iNumMeshes);
+
+    for (_uint i = 0; i < m_iNumMeshes; i++)
+    {
+        /* 여기다 파일 입출력해서 정보 메쉬정보 담는 구조체 던지면 될듯?? */
+        /* 나중에 여기서 애님 / 논애님을 분기해야 할 거 같아*/
+        CMesh::ANIMMESH tDesc{};
         _InFile.read(reinterpret_cast<char*>(&tDesc.iNumVertices), sizeof(_uint));
         _InFile.read(reinterpret_cast<char*>(&tDesc.iNumIndices), sizeof(_uint));
 
