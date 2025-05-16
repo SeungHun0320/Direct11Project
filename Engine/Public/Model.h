@@ -16,11 +16,15 @@ public:
 	}
 
 	HRESULT Bind_Material(class CShader* pShader, const _char* pConstantName, _uint iMeshIndex, TEX_TYPE eType, _uint iTextureIndex = 0);
+	HRESULT Bind_Bone_Matrices(class CShader* pShader, const _char* pConstantName, _uint iMeshIndex);
 
 public:
 	virtual HRESULT Initialize_Prototype(MODEL eType, const _wstring& strModelFilePath, _fmatrix PreTransformMatrix);
 	virtual HRESULT Initialize(void* pArg);
 	virtual HRESULT Render(_uint iMeshIndex);
+
+public:
+	HRESULT Play_Animation(_float fTimeDelta);
 
 public: /* ¸ÊÅø¿ë,,,? */
 	_float3 Compute_PickedPosition_Local(_fmatrix WorldMatrixInverse);

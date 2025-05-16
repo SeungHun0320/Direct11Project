@@ -15,17 +15,17 @@ CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pCo
 
 HRESULT CLevel_GamePlay::Initialize()
 {
-	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
+	//	return E_FAIL;
 
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
-	//if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
-	//	return E_FAIL;
-
-	if (FAILED(Ready_Layer_Map(TEXT("Layer_Map"))))
+	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
 		return E_FAIL;
+
+	//if (FAILED(Ready_Layer_Map(TEXT("Layer_Map"))))
+	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -73,7 +73,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& strLayerTag)
 	tDesc.fFov = XMConvertToRadians(60.f);
 	tDesc.fNear = 0.1f;
 	tDesc.fFar = 5000.f;
-	tDesc.fSpeedPerSec = 100.f;
+	tDesc.fSpeedPerSec = 30.f;
 	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_Camera_Free"),

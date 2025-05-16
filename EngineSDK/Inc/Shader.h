@@ -20,6 +20,8 @@ public:
 	HRESULT Begin(_uint iPassIndex);
 	/* 쉐이더에게 매트릭스를 전달해주기 위해서 */
 	HRESULT Bind_Matrix(const _char* pConstantName, const _float4x4* pMatrix);
+	/* 쉐이더에게 매트릭스'들'을 전달해주기 위해서 */
+	HRESULT Bind_Matrices(const _char* pConstantName, const _float4x4* pMatrix, _uint iNumMatrices);
 	/* 쉐이더에게 리소스뷰를 전달해주기 위해서 */
 	HRESULT Bind_SRV(const _char* pConstantName, ID3D11ShaderResourceView* pSRV);
 

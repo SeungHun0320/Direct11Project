@@ -19,9 +19,15 @@ CModel::CModel(const CModel& Prototype)
     , m_Meshes{ Prototype.m_Meshes }
     , m_iNumMaterials{ Prototype.m_iNumMaterials }
     , m_Materials{ Prototype.m_Materials }
+    , m_eType{ Prototype.m_eType }
+    , m_PreTransformMatrix{ Prototype.m_PreTransformMatrix }
+    , m_Bones{ Prototype.m_Bones }
     , m_pGameInstance{ CGameInstance::Get_Instance() }
 {
     Safe_AddRef(m_pGameInstance);
+
+    for (auto& pBone : m_Bones)
+        Safe_AddRef(pBone);
 
     for (auto& pMesh : m_Meshes)
         Safe_AddRef(pMesh);
@@ -43,6 +49,11 @@ HRESULT CModel::Bind_Material(CShader* pShader, const _char* pConstantName, _uin
     return m_Materials[iMaterialIndex]->Bind_ShaderResource(pShader, pConstantName, eType, iTextureIndex);
 }
 
+HRESULT CModel::Bind_Bone_Matrices(CShader* pShader, const _char* pConstantName, _uint iMeshIndex)
+{
+    return m_Meshes[iMeshIndex]->Bind_Bone_Matrices(pShader, pConstantName, m_Bones);
+}
+
 HRESULT CModel::Initialize_Prototype(MODEL eType, const _wstring& strModelFilePath, _fmatrix PreTransformMatrix)
 {
     ifstream InFile(strModelFilePath, ios::binary);
@@ -53,11 +64,18 @@ HRESULT CModel::Initialize_Prototype(MODEL eType, const _wstring& strModelFilePa
     m_eType = eType;
 
     if (m_eType == MODEL::ANIM)
+    {
         if (FAILED(Ready_Bones(InFile)))
             return E_FAIL;
 
-    if (FAILED(Ready_NonAnim_Meshes(InFile)))
-        return E_FAIL;
+        if (FAILED(Ready_Anim_Meshes(InFile)))
+            return E_FAIL;
+    }
+    else
+    {
+        if (FAILED(Ready_NonAnim_Meshes(InFile)))
+            return E_FAIL;
+    }
 
     if (FAILED(Ready_Material(InFile)))
         return E_FAIL;
@@ -80,6 +98,20 @@ HRESULT CModel::Render(_uint iMeshIndex)
     return S_OK;
 }
 
+HRESULT CModel::Play_Animation(_float fTimeDelta)
+{
+    /* 1. ㅎ녀재 애니메이션에 맞는 뼈의 상태를 읽어와서 뼈의 TrnasformationMatrix를 갱신해준다. */
+
+
+    /* 2. 전체 뼐르 순회하면서 뼈들의 ColmbinedTransformationMatixf를 부모에서부터 자식으로 갱신해주낟. */
+    for (auto& pBone : m_Bones)
+    {
+        pBone->Update_CombinedTransformationMatrix(m_Bones, XMLoadFloat4x4(&m_PreTransformMatrix));
+    }
+
+    return S_OK;
+}
+
 _float3 CModel::Compute_PickedPosition_Local(_fmatrix WorldMatrixInverse)
 {
     _float3 vResultPos{};
@@ -92,6 +124,11 @@ _float3 CModel::Compute_PickedPosition_Local(_fmatrix WorldMatrixInverse)
         _float3 vPickedPos = m_Meshes[i]->Compute_PickedPosition_Local(WorldMatrixInverse);
 
         _float fDist = XMVectorGetX(XMVector3LengthSq(XMLoadFloat3(&vRayOrigin) - XMLoadFloat3(&vPickedPos)));
+
+        _vector vZero = XMVectorZero();
+
+        if (XMVector3Equal(XMLoadFloat3(&vPickedPos), vZero))
+            continue;
 
         if (fDist < fMinDist)
         {
@@ -116,6 +153,11 @@ _float3 CModel::Compute_PickedPosition_World(const _float4x4* pWorldMatrix)
 
         _float fDist = XMVectorGetX(XMVector3LengthSq(XMLoadFloat3(&vRayOrigin) - XMLoadFloat3(&vPickedPos)));
 
+        _vector vZero = XMVectorZero();
+
+        if (XMVector3Equal(XMLoadFloat3(&vPickedPos), vZero))
+            continue;
+
         if (fDist < fMinDist)
         {
             fMinDist = fDist;
@@ -139,6 +181,11 @@ _float3 CModel::Compute_PickedPosition_World_Snap(const _float4x4* pWorldMatrix)
 
         _float fDist = XMVectorGetX(XMVector3LengthSq(XMLoadFloat3(&vRayOrigin) - XMLoadFloat3(&vPickedPos)));
 
+        _vector vZero = XMVectorZero();
+
+        if (XMVector3Equal(XMLoadFloat3(&vPickedPos), vZero))
+            continue;
+
         if (fDist < fMinDist)
         {
             fMinDist = fDist;
@@ -151,7 +198,26 @@ _float3 CModel::Compute_PickedPosition_World_Snap(const _float4x4* pWorldMatrix)
 
 HRESULT CModel::Ready_Bones(ifstream& _InFile)
 {
-    /* 이쪽에서 파일 입출력해서 본 생성 */
+    _uint iNumBones{};
+    _InFile.read(reinterpret_cast<_char*>(&iNumBones), sizeof(_uint));
+
+    for (_uint i = 0; i < iNumBones; i++)
+    {
+        CBone::BONE tDesc{};
+        _InFile.read(reinterpret_cast<_char*>(&tDesc.iParentBoneIndex), sizeof(_int));
+        _uint istrLen{};
+        _InFile.read(reinterpret_cast<_char*>(&istrLen), sizeof(_uint));
+        tDesc.strName.resize(istrLen);
+        _InFile.read(reinterpret_cast<_char*>(tDesc.strName.data()), sizeof(_char) * istrLen);
+        _InFile.read(reinterpret_cast<_char*>(&tDesc.TransformationMatrix), sizeof(_float4x4));
+
+        CBone* pBone = CBone::Create(&tDesc);
+        if (nullptr == pBone)
+            return E_FAIL;
+
+        m_Bones.push_back(pBone);
+    }
+
     return S_OK;
 }
 
@@ -195,17 +261,24 @@ HRESULT CModel::Ready_Anim_Meshes(ifstream& _InFile)
     {
         /* 여기다 파일 입출력해서 정보 메쉬정보 담는 구조체 던지면 될듯?? */
         CMesh::ANIMMESH tDesc{};
+
         _InFile.read(reinterpret_cast<_char*>(&tDesc.iNumVertices), sizeof(_uint));
         _InFile.read(reinterpret_cast<_char*>(&tDesc.iNumIndices), sizeof(_uint));
         _InFile.read(reinterpret_cast<_char*>(&tDesc.iNumBoneIndices), sizeof(_uint));
+        _InFile.read(reinterpret_cast<_char*>(&tDesc.iNumOffsetMatrices), sizeof(_uint));
 
         tDesc.Vertices.resize(tDesc.iNumVertices);
         tDesc.Indicies.resize(tDesc.iNumIndices);
-
+        tDesc.BoneIndices.resize(tDesc.iNumBoneIndices);
+        tDesc.OffsetMatrices.resize(tDesc.iNumOffsetMatrices);
+       
         _InFile.read(reinterpret_cast<_char*>(&tDesc.iMaterialIndex), sizeof(_uint));
-        _InFile.read(reinterpret_cast<_char*>(tDesc.Vertices.data()), sizeof(VTXMESH) * tDesc.iNumVertices);
+        _InFile.read(reinterpret_cast<_char*>(tDesc.Vertices.data()), sizeof(VTXANIMMESH) * tDesc.iNumVertices);
         _InFile.read(reinterpret_cast<_char*>(tDesc.Indicies.data()), sizeof(_uint) * tDesc.iNumIndices);
+        _InFile.read(reinterpret_cast<_char*>(&tDesc.iNumBones), sizeof(_uint));
         _InFile.read(reinterpret_cast<_char*>(tDesc.BoneIndices.data()), sizeof(_uint) * tDesc.iNumBoneIndices);
+        _InFile.read(reinterpret_cast<_char*>(tDesc.OffsetMatrices.data()), sizeof(_float4x4) * tDesc.iNumOffsetMatrices);
+
 
         CMesh* pMesh = CMesh::Create(m_pDevice, m_pContext, m_eType, &tDesc, XMLoadFloat4x4(&m_PreTransformMatrix));
         if (nullptr == pMesh)
@@ -288,11 +361,16 @@ void CModel::Free()
 
     Safe_Release(m_pGameInstance);
 
+    for (auto& pBone : m_Bones)
+        Safe_Release(pBone);
+    m_Bones.clear();
+
     for (auto& pMesh : m_Meshes)
         Safe_Release(pMesh);
     m_Meshes.clear();
 
     for (auto& pMaterial : m_Materials)
         Safe_Release(pMaterial);
+
     m_Materials.clear();
 }

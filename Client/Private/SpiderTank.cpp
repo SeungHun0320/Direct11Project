@@ -32,6 +32,8 @@ void CSpiderTank::Priority_Update(_float fTimeDelta)
 
 LIFE CSpiderTank::Update(_float fTimeDelta)
 {
+	m_pModelCom->Play_Animation(fTimeDelta);
+
 	return __super::Update(fTimeDelta);
 }
 
@@ -57,11 +59,15 @@ HRESULT CSpiderTank::Render()
 
 	for (_uint i = 0; i < iNumMesh; i++)
 	{
-		
 		//m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TEX_TYPE::DIFFUSE, 0);
 
 		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TEX_TYPE::DIFFUSE, 0)))
 			return E_FAIL;
+
+		if (3 == i)
+			int a = 0;
+
+		m_pModelCom->Bind_Bone_Matrices(m_pShaderCom, "g_BoneMatrices", i);
 
 		if (FAILED(m_pShaderCom->Begin(0)))
 			return E_FAIL;

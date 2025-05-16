@@ -22,9 +22,14 @@ private:
 	virtual ~CBone() = default;
 
 public:
-	HRESULT Initialize(const BONE* pDesc, _int iParentBoneIndex);
+	const _float4x4* Get_CombinedTransformationMatrix() const {
+		return &m_CombinedTransformationMatrix;
+	}
+
+public:
+	HRESULT Initialize(const BONE* pDesc);
 	void Update_TransformationMatrix(_fmatrix TransformationMartix);
-	void Update_CombinedTransformationMatrix(const vector<CBone*>& Bones);
+	void Update_CombinedTransformationMatrix(const vector<CBone*>& Bones, _fmatrix PreTransformMatrix);
 
 private:
 	_string m_strName;
@@ -38,7 +43,7 @@ private:
 	_int					m_iParentBoneIndex = { -1 };
 
 public:
-	static CBone* Create(const BONE* pDesc, _int iParentBoneIndex);
+	static CBone* Create(const BONE* pDesc);
 	virtual void Free() override;
 };
 

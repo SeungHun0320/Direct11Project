@@ -21,7 +21,9 @@ public: /* ¾Ö´Ô¸Þ½¬ */
 		_uint iMaterialIndex = {};
 		vector<VTXANIMMESH> Vertices;
 		vector<_uint> Indices;
+		_uint iNumBones;
 		vector<_uint> BoneIndices;
+		vector<_float4x4> OffsetMatrices;
 
 	}ANIMMESH;
 
@@ -44,7 +46,7 @@ public: /* º» */
 	{
 		string strName;
 		_int iParentBoneIndex;
-		XMFLOAT4X4 TransformationMatrix;
+		_float4x4 TransformationMatrix;
 
 	}BONE;
 
@@ -85,9 +87,12 @@ private:
 	HRESULT Exported_Non_Anim_Model(const string& strOutPath);
 
 	HRESULT Ready_Bones(_int iParentBoneIndex, const aiNode* pAINode);
-	HRESULT Ready_Anim_Meshes(_uint iNumMeshes, aiMesh** ppMeshes);
+	HRESULT Ready_Anim_Meshes(_uint iNumMeshes, aiMesh** ppMeshes, aiNode* pAiNode);
 	HRESULT Ready_Non_Anim_Meshes(_uint iNumMeshes, aiMesh** ppMeshes);
 	HRESULT Ready_Material(const _char* pModelFilePath, _uint iNumMaterial, aiMaterial** ppAIMaterial);
+
+private:
+	aiNode* Find_Node_That_UsesMeshIndex(aiNode* pNode, int meshIndex);
 
 public:
 	static CLevel_MeshExporter* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

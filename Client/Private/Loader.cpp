@@ -159,9 +159,9 @@ HRESULT CLoader::Loading_For_GamePlay()
 	_matrix		PreTransformMatrix = XMMatrixIdentity();
 
 	/*For.Prototpye_Component_Model_SpiderTank*/
-	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);// *XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototpye_Component_Model_SpiderTank"),
-		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/FBX/Spidertank.Model"), PreTransformMatrix))))
+		CModel::Create(m_pDevice, m_pContext, MODEL::ANIM, TEXT("../Bin/Resources/Models/FBX/SpiderTank.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
 	/*For.Prototpye_Component_Model_Courtyard*/

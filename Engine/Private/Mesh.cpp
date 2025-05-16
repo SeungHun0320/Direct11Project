@@ -1,5 +1,8 @@
 #include "Mesh.h"
 
+#include "Bone.h"
+#include "Shader.h"
+
 CMesh::CMesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CVIBuffer{ pDevice, pContext }
 {
@@ -56,6 +59,21 @@ HRESULT CMesh::Initialize(void* pArg)
 {
 	return S_OK;
 }
+
+HRESULT CMesh::Bind_Bone_Matrices(CShader* pShader, const _char* pConstantName, const vector<class CBone*>& Bones)
+{
+	ZeroMemory(m_BoneMatrices, sizeof(_float4x4) * g_iMaxNumBones);
+
+	for (size_t i = 0; i < m_iNumBones; i++)
+	{
+		XMStoreFloat4x4(&m_BoneMatrices[i],
+			XMLoadFloat4x4(&m_OffsetMatrices[i]) *
+			XMLoadFloat4x4(Bones[m_BoneIndices[i]]->Get_CombinedTransformationMatrix()));
+	}
+
+	return pShader->Bind_Matrices(pConstantName, m_BoneMatrices, m_iNumBones);
+}
+
 
 HRESULT CMesh::Ready_NonAnim_Mesh(const COMMON* pDesc, _fmatrix PreTransformMatrix)
 {
@@ -124,13 +142,7 @@ HRESULT CMesh::Ready_Anim_Mesh(const COMMON* pDesc)
 	m_pVertexPositions = new _float3[m_iNumVertices];
 	ZeroMemory(m_pVertexPositions, sizeof(_float3) * m_iNumVertices);
 
-	for (_uint i = 0; i < m_iNumVertices; i++)
-	{
-		memcpy(&pVertices[i].vPosition, &pAnimMeshDesc->Vertices[i].vPosition, sizeof(_float3));
-		memcpy(&pVertices[i].vNormal, &pAnimMeshDesc->Vertices[i].vNormal, sizeof(_float3));
-		memcpy(&pVertices[i].vTangent, &pAnimMeshDesc->Vertices[i].vTangent, sizeof(_float3));
-		memcpy(&pVertices[i].vTexcoord, &pAnimMeshDesc->Vertices[i].vTexcoord, sizeof(_float2));
-	}
+	memcpy(pVertices, pAnimMeshDesc->Vertices.data(), sizeof(VTXANIMMESH) * m_iNumVertices);
 
 	for (_uint i = 0; i < m_iNumVertices; ++i)
 		m_pVertexPositions[i] = pVertices[i].vPosition;
@@ -141,6 +153,14 @@ HRESULT CMesh::Ready_Anim_Mesh(const COMMON* pDesc)
 		return E_FAIL;
 
 	Safe_Delete_Array(pVertices);
+
+	m_iNumBones = pAnimMeshDesc->iNumBones;
+
+	m_BoneIndices.resize(pAnimMeshDesc->iNumBoneIndices);
+	m_OffsetMatrices.resize(pAnimMeshDesc->iNumOffsetMatrices);
+
+	memcpy(m_BoneIndices.data(), pAnimMeshDesc->BoneIndices.data(), sizeof(_uint) * pAnimMeshDesc->iNumBoneIndices);
+	memcpy(m_OffsetMatrices.data(), pAnimMeshDesc->OffsetMatrices.data(), sizeof(_float4x4) * pAnimMeshDesc->iNumOffsetMatrices);
 
 	return S_OK;
 }

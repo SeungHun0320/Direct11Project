@@ -21,9 +21,12 @@ public:
 
 	typedef struct tagAnimMeshDesc : public COMMON
 	{
+		_uint iNumOffsetMatrices{};
 		_uint iNumBoneIndices{};
+		_uint iNumBones{};
 		vector<_uint> BoneIndices;
 		vector<VTXANIMMESH> Vertices;
+		vector<_float4x4> OffsetMatrices;
 
 	}ANIMMESH;
 
@@ -41,8 +44,18 @@ public:
 	virtual HRESULT Initialize_Prototype(MODEL eType, const COMMON* pDesc, _fmatrix PreTransformMatrix);
 	virtual HRESULT Initialize(void* pArg);
 
+	HRESULT Bind_Bone_Matrices(class CShader* pShader, const _char* pConstantName, const vector<class CBone*>& Bones);
+
 private:
 	_uint			m_iMaterialIndex = {};
+
+	_uint           m_iNumBones = {};
+
+	vector<_int>			m_BoneIndices;
+
+	_float4x4				m_BoneMatrices[g_iMaxNumBones] = {};
+
+	vector<_float4x4>		m_OffsetMatrices;
 
 private:
 	HRESULT Ready_NonAnim_Mesh(const COMMON* pDesc, _fmatrix PreTransformMatrix);

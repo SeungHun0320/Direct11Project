@@ -69,6 +69,14 @@ void CCamera_Free::Key_Input(_float fTimeDelta)
 		m_pTransformCom->Go_Right(fTimeDelta);
 	}
 
+	if (LEVEL::TOOLS == m_eLevelID)
+	{
+		if (KEY_DOWN(DIK_R))
+		{
+			m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(0.f, 20.f, -15.f, 1.f));
+		}
+	}
+
 
 	if (LEVEL::TOOLS != m_eLevelID || MOUSE_PRESSING(DIMK::RBUTTON))
 	{
