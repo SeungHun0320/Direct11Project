@@ -87,7 +87,7 @@ private:
 	HRESULT Exported_Non_Anim_Model(const string& strOutPath);
 
 	HRESULT Ready_Bones(_int iParentBoneIndex, const aiNode* pAINode);
-	HRESULT Ready_Anim_Meshes(_uint iNumMeshes, aiMesh** ppMeshes, aiNode* pAiNode);
+	HRESULT Ready_Anim_Meshes(_uint iNumMeshes, aiMesh** ppMeshes);
 	HRESULT Ready_Non_Anim_Meshes(_uint iNumMeshes, aiMesh** ppMeshes);
 	HRESULT Ready_Material(const _char* pModelFilePath, _uint iNumMaterial, aiMaterial** ppAIMaterial);
 

@@ -245,7 +245,7 @@ HRESULT CLevel_MeshExporter::Read_Anim_Model(const string& strModelPath, const s
 	if (FAILED(Ready_Bones(-1, pAIScene->mRootNode)))
 		return E_FAIL;
 
-	if (FAILED(Ready_Anim_Meshes(pAIScene->mNumMeshes, pAIScene->mMeshes, pAIScene->mRootNode)))
+	if (FAILED(Ready_Anim_Meshes(pAIScene->mNumMeshes, pAIScene->mMeshes)))
 		return E_FAIL;
 
 	if (FAILED(Ready_Material(strModelPath.c_str(), pAIScene->mNumMaterials, pAIScene->mMaterials)))
@@ -440,17 +440,16 @@ HRESULT CLevel_MeshExporter::Ready_Bones(_int iParentBoneIndex, const aiNode* pA
 {
 	BONE* pBone = new BONE;
 
-	pBone->strName = pAINode->mName.C_Str();
+	pBone->strName = pAINode->mName.data;
 
 	memcpy(&pBone->TransformationMatrix, &pAINode->mTransformation, sizeof(_float4x4));
-
 	XMStoreFloat4x4(&pBone->TransformationMatrix, XMMatrixTranspose(XMLoadFloat4x4(&pBone->TransformationMatrix)));
 
 	pBone->iParentBoneIndex = iParentBoneIndex;
 
 	m_vecBones.push_back(pBone);
 
-	_int	iParentIndex = static_cast<_int>(m_vecBones.size()) - 1;
+	_int	iParentIndex = static_cast<_int>(m_vecBones.size() - 1);
 
 	for (_uint i = 0; i < pAINode->mNumChildren; i++)
 	{
@@ -460,7 +459,7 @@ HRESULT CLevel_MeshExporter::Ready_Bones(_int iParentBoneIndex, const aiNode* pA
 	return S_OK;
 }
 
-HRESULT CLevel_MeshExporter::Ready_Anim_Meshes(_uint iNumMeshes, aiMesh** ppMeshes, aiNode* pAiNode)
+HRESULT CLevel_MeshExporter::Ready_Anim_Meshes(_uint iNumMeshes, aiMesh** ppMeshes)
 {
 	m_vecAnimMeshes.reserve(iNumMeshes);
 
@@ -506,11 +505,8 @@ HRESULT CLevel_MeshExporter::Ready_Anim_Meshes(_uint iNumMeshes, aiMesh** ppMesh
 			aiBone* pAIBone = ppMeshes[i]->mBones[j];
 
 			_float4x4		OffsetMatrix;
-
 			memcpy(&OffsetMatrix, &pAIBone->mOffsetMatrix, sizeof(_float4x4));
-
 			XMStoreFloat4x4(&OffsetMatrix, XMMatrixTranspose(XMLoadFloat4x4(&OffsetMatrix)));
-
 			pMesh->OffsetMatrices.push_back(OffsetMatrix);
 
 			_uint iBoneIndex = {};
@@ -524,13 +520,13 @@ HRESULT CLevel_MeshExporter::Ready_Anim_Meshes(_uint iNumMeshes, aiMesh** ppMesh
 
 					return false;
 				});
-
+			/* 이 메시에 영향을 주는 뼈가 모델 CBone 기준 몇번째에 들어가 있었는지(iIndex)를 모아놨다. */
 			pMesh->BoneIndices.push_back(iBoneIndex);
 
 			/* i번째 뼈가 몇개 정점에게 영향을 주는데?*/
 			_uint		iNumWeights = pAIBone->mNumWeights;
 
-			for (size_t k = 0; k < iNumWeights; k++)
+			for (_uint k = 0; k < iNumWeights; k++)
 			{
 				/* i번째 뼈가 영향을 주는 j번째 정점의 정보 */
 				aiVertexWeight	AIWeight = pAIBone->mWeights[k];
@@ -538,25 +534,22 @@ HRESULT CLevel_MeshExporter::Ready_Anim_Meshes(_uint iNumMeshes, aiMesh** ppMesh
 				/* 가중치를 비교해서 0.f라면 비어있다는 뜻, 채워주기 */
 				if (0.f == pMesh->Vertices[AIWeight.mVertexId].vBlendWeights.x)
 				{
-					pMesh->Vertices[AIWeight.mVertexId].vBlendIndices.x = i;
+					pMesh->Vertices[AIWeight.mVertexId].vBlendIndices.x = j;
 					pMesh->Vertices[AIWeight.mVertexId].vBlendWeights.x = AIWeight.mWeight;
 				}
-
 				else if (0.f == pMesh->Vertices[AIWeight.mVertexId].vBlendWeights.y)
 				{
-					pMesh->Vertices[AIWeight.mVertexId].vBlendIndices.y = i;
+					pMesh->Vertices[AIWeight.mVertexId].vBlendIndices.y = j;
 					pMesh->Vertices[AIWeight.mVertexId].vBlendWeights.y = AIWeight.mWeight;
 				}
-
 				else if (0.f == pMesh->Vertices[AIWeight.mVertexId].vBlendWeights.z)
 				{
-					pMesh->Vertices[AIWeight.mVertexId].vBlendIndices.z = i;
+					pMesh->Vertices[AIWeight.mVertexId].vBlendIndices.z = j;
 					pMesh->Vertices[AIWeight.mVertexId].vBlendWeights.z = AIWeight.mWeight;
 				}
-
 				else if (0.f == pMesh->Vertices[AIWeight.mVertexId].vBlendWeights.w)
 				{
-					pMesh->Vertices[AIWeight.mVertexId].vBlendIndices.w = i;
+					pMesh->Vertices[AIWeight.mVertexId].vBlendIndices.w = j;
 					pMesh->Vertices[AIWeight.mVertexId].vBlendWeights.w = AIWeight.mWeight;
 				}
 			}
@@ -565,6 +558,9 @@ HRESULT CLevel_MeshExporter::Ready_Anim_Meshes(_uint iNumMeshes, aiMesh** ppMesh
 		/* 뼈가 없다면 */
 		if (0 == pMesh->iNumBones)
 		{
+			/* 일부러 한개 만들어 주고 */
+			pMesh->iNumBones = 1;
+
 			/* 본인덱스 선언해서 */
 			_uint	iBoneIndex = {};
 
@@ -580,21 +576,17 @@ HRESULT CLevel_MeshExporter::Ready_Anim_Meshes(_uint iNumMeshes, aiMesh** ppMesh
 				});
 
 			/* 본인디시즈에 본인덱스 넣어주기 */
-			if (iter != m_vecBones.end())
-			{
-				/* 일부러 한개 만들어 주고 */
-				pMesh->iNumBones = 1;
-
+			//if(iter == m_vecBones.end())
+			//	pMesh->BoneIndices.push_back(--iBoneIndex);
+			//else
 				pMesh->BoneIndices.push_back(iBoneIndex);
 
-				/* 뼈가 없으니까 보정행렬은 항등일 것. */
-				_float4x4		OffsetMatrix;
-				XMStoreFloat4x4(&OffsetMatrix, XMMatrixIdentity());
-				pMesh->OffsetMatrices.push_back(OffsetMatrix);
-			}
+			/* 뼈가 없으니까 보정행렬은 항등일 것. */
+			_float4x4		OffsetMatrix;
+			XMStoreFloat4x4(&OffsetMatrix, XMMatrixIdentity());
+			pMesh->OffsetMatrices.push_back(OffsetMatrix);
+
 		}
-
-
 		m_vecAnimMeshes.push_back(pMesh);
 	}
 
