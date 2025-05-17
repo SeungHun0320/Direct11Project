@@ -103,6 +103,30 @@
     <Filter Include="03.Tools\00. MapTool">
       <UniqueIdentifier>{ae8c8b7d-fa3f-4ba0-b00a-d9b3ca93886a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\05.Environment_Objects">
+      <UniqueIdentifier>{d5f68ddd-4dc1-4375-b941-64b6d6e60b6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05.Environment_Objects\01.Bush">
+      <UniqueIdentifier>{01fcf423-8e55-44eb-a414-6872db827ffb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05.Environment_Objects\00.Grass">
+      <UniqueIdentifier>{3121e689-921e-4fd9-baf6-33489b7b51e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05.Environment_Objects\02.CheckPoint">
+      <UniqueIdentifier>{2d7b8845-30fa-4f80-b368-7a9173d644e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05.Environment_Objects\03.Urn">
+      <UniqueIdentifier>{39f69328-8513-4c21-a989-c392db825a8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05.Environment_Objects\03.Urn\Urn">
+      <UniqueIdentifier>{186e6e0c-0b67-49a4-9d17-0257a67c45fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05.Environment_Objects\03.Urn\Urn_Smash">
+      <UniqueIdentifier>{fe091b8f-b404-41ff-8891-76247acf3b81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05.Environment_Objects\03.Urn\Urn_Firey">
+      <UniqueIdentifier>{45438d73-7194-460e-bcbe-e351b8bd8b64}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -216,6 +240,21 @@
     <ClInclude Include="..\public\Arena.h">
       <Filter>02.GameObjects\04.Map\02.Arena</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Main.h">
+      <Filter>02.GameObjects\04.Map\01.Main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Environment_Object.h">
+      <Filter>02.GameObjects\05.Environment_Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Grass.h">
+      <Filter>02.GameObjects\05.Environment_Objects\00.Grass</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Bush.h">
+      <Filter>02.GameObjects\05.Environment_Objects\01.Bush</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CheckPoint.h">
+      <Filter>02.GameObjects\05.Environment_Objects\02.CheckPoint</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -318,6 +357,21 @@
     <ClCompile Include="..\private\Arena.cpp">
       <Filter>02.GameObjects\04.Map\02.Arena</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\Main.cpp">
+      <Filter>02.GameObjects\04.Map\01.Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Environment_Object.cpp">
+      <Filter>02.GameObjects\05.Environment_Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Grass.cpp">
+      <Filter>02.GameObjects\05.Environment_Objects\00.Grass</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Bush.cpp">
+      <Filter>02.GameObjects\05.Environment_Objects\01.Bush</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CheckPoint.cpp">
+      <Filter>02.GameObjects\05.Environment_Objects\02.CheckPoint</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">
@@ -332,5 +386,10 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimMesh.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Bin\ShaderFiles\Engine_Shader_Defines.hlsli">
+      <Filter>97.ShaderFiles</Filter>
+    </None>
   </ItemGroup>
 </Project>

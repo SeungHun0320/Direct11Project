@@ -102,17 +102,17 @@ HRESULT CMapTool::Craete_Map(MAP iMapIdx, const _wstring& strLayerTag)
 	switch (iMapIdx)
 	{
 	case MAP::COURTYARD:
-		m_strMapFileTag = TEXT("Courtyard.map");
+		m_strMapFileTag = TEXT("Courtyard.Map");
 		strPrototypeTag = TEXT("Prototype_GameObject_Courtyard");
 		break;
 
 	case MAP::MAIN:
-		m_strMapFileTag = TEXT("Main.map");
+		m_strMapFileTag = TEXT("Main.Map");
 		strPrototypeTag = TEXT("Prototype_GameObject_Main");
 		break;
 
 	case MAP::ARENA:
-		m_strMapFileTag = TEXT("Arena.map");
+		m_strMapFileTag = TEXT("Arena.Map");
 		strPrototypeTag = TEXT("Prototype_GameObject_Arena");
 		break;
 	default:

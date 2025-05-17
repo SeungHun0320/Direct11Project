@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Client_Defines.h"
 #include "GameObject.h"
 
@@ -9,17 +10,17 @@ END
 
 BEGIN(Client)
 
-class CMap abstract : public CGameObject
+class CEnvironment_Object abstract : public CGameObject
 {
 public:
-	typedef struct tagMapDesc : public CGameObject::DESC
+	typedef struct tagEnvironmentObjectDesc : public CGameObject::DESC
 	{
 		LEVEL eLevelID;
 	}DESC;
 protected:
-	CMap(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CMap(const CMap& Prototype);
-	virtual ~CMap() = default;
+	CEnvironment_Object(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CEnvironment_Object(const CEnvironment_Object& Prototype);
+	virtual ~CEnvironment_Object() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -41,7 +42,7 @@ protected:
 
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;
-	virtual void Free()override;
+	virtual void Free() override;
 };
 
 END

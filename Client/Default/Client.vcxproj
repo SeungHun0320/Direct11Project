@@ -160,16 +160,21 @@
     <ClInclude Include="..\public\Arena.h" />
     <ClInclude Include="..\Public\BackGround.h" />
     <ClInclude Include="..\public\Boss.h" />
+    <ClInclude Include="..\public\Bush.h" />
     <ClInclude Include="..\public\Button.h" />
     <ClInclude Include="..\public\Camera_Free.h" />
+    <ClInclude Include="..\public\CheckPoint.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Client_Enum.h" />
     <ClInclude Include="..\Public\Client_Macro.h" />
     <ClInclude Include="..\public\Courtyard.h" />
+    <ClInclude Include="..\public\Environment_Object.h" />
+    <ClInclude Include="..\public\Grass.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\Public\Level_Logo.h" />
     <ClInclude Include="..\Public\Loader.h" />
+    <ClInclude Include="..\public\Main.h" />
     <ClInclude Include="..\public\MainApp.h" />
     <ClInclude Include="..\public\Level_Tools.h" />
     <ClInclude Include="..\public\Map.h" />
@@ -199,13 +204,18 @@
     <ClCompile Include="..\private\Arena.cpp" />
     <ClCompile Include="..\Private\BackGround.cpp" />
     <ClCompile Include="..\private\Boss.cpp" />
+    <ClCompile Include="..\private\Bush.cpp" />
     <ClCompile Include="..\private\Button.cpp" />
     <ClCompile Include="..\private\Camera_Free.cpp" />
+    <ClCompile Include="..\private\CheckPoint.cpp" />
     <ClCompile Include="..\private\Courtyard.cpp" />
+    <ClCompile Include="..\private\Environment_Object.cpp" />
+    <ClCompile Include="..\private\Grass.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />
     <ClCompile Include="..\Private\Level_Logo.cpp" />
     <ClCompile Include="..\Private\Loader.cpp" />
+    <ClCompile Include="..\private\Main.cpp" />
     <ClCompile Include="..\private\MainApp.cpp" />
     <ClCompile Include="..\private\Level_Tools.cpp" />
     <ClCompile Include="..\private\Map.cpp" />
@@ -238,6 +248,9 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Bin\ShaderFiles\Engine_Shader_Defines.hlsli" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

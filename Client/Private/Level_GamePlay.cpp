@@ -5,7 +5,10 @@
 #include "Terrain.h"
 #include "Camera_Free.h"
 #include "Monster.h"
+
 #include "Courtyard.h"
+
+#include "Environment_Object.h"
 
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 		: CLevel { pDevice, pContext }
@@ -21,7 +24,10 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
+	//if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
+	//	return E_FAIL;
+
+	if (FAILED(Ready_Layer_Environmnet_Object(TEXT("Layer_EnvironObject"))))
 		return E_FAIL;
 
 	//if (FAILED(Ready_Layer_Map(TEXT("Layer_Map"))))
@@ -88,7 +94,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& strLayerTag)
 	CMonster::DESC tDesc = {};
 
 	tDesc.eLevelID = LEVEL::GAMEPLAY;
-	tDesc.fSpeedPerSec = 10.f;
+	tDesc.fSpeedPerSec = 20.f;
 	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_SpiderTank"),
@@ -109,6 +115,29 @@ HRESULT CLevel_GamePlay::Ready_Layer_Map(const _wstring& strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_Courtyard"),
 		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_Environmnet_Object(const _wstring& strLayerTag)
+{
+	CEnvironment_Object::DESC tDesc = {};
+
+	tDesc.eLevelID = LEVEL::GAMEPLAY;
+	tDesc.fRotationPerSec = 0.f;
+	tDesc.fSpeedPerSec = 0.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_Grass"),
+		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
+		return E_FAIL;
+
+	//if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_Bush"),
+	//	ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
+	//	return E_FAIL;
+
+	//if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_CheckPoint"),
+	//	ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
+	//	return E_FAIL;
 
 	return S_OK;
 }

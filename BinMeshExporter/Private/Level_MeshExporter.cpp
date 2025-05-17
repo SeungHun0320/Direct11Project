@@ -182,7 +182,7 @@ HRESULT CLevel_MeshExporter::FBX_to_Bin_Exproted(const string& strFilePath)
 
 				if (0 == m_iType)
 				{
-					if (FAILED(Read_Anim_Model(InputPath.string(), OutputPath.string())))
+					if (FAILED(Read_Anim_Model(fbxPath.string(), OutputPath.string())))
 					{
 						MSG_BOX("변환 실패,,,");
 						return E_FAIL;
@@ -480,8 +480,15 @@ HRESULT CLevel_MeshExporter::Ready_Anim_Meshes(_uint iNumMeshes, aiMesh** ppMesh
 			memcpy(&Vertices.vPosition, &ppMeshes[i]->mVertices[j], sizeof(_float3));
 			memcpy(&Vertices.vNormal, &ppMeshes[i]->mNormals[j], sizeof(_float3));
 			memcpy(&Vertices.vTangent, &ppMeshes[i]->mTangents[j], sizeof(_float3));
-			if (ppMeshes[i]->HasTextureCoords(0))
-			memcpy(&Vertices.vTexcoord, &ppMeshes[i]->mTextureCoords[0][j], sizeof(_float2));
+			for (_uint k = 0; k < 8; k++)
+			{
+				if (ppMeshes[i]->HasTextureCoords(k))
+				{
+					memcpy(&Vertices.vTexcoord, &ppMeshes[i]->mTextureCoords[k][j], sizeof(_float2));
+					break;
+				}
+
+			}
 
 			pMesh->Vertices.push_back(Vertices);
 		}
@@ -520,6 +527,7 @@ HRESULT CLevel_MeshExporter::Ready_Anim_Meshes(_uint iNumMeshes, aiMesh** ppMesh
 
 					return false;
 				});
+
 			/* 이 메시에 영향을 주는 뼈가 모델 CBone 기준 몇번째에 들어가 있었는지(iIndex)를 모아놨다. */
 			pMesh->BoneIndices.push_back(iBoneIndex);
 
@@ -576,9 +584,9 @@ HRESULT CLevel_MeshExporter::Ready_Anim_Meshes(_uint iNumMeshes, aiMesh** ppMesh
 				});
 
 			/* 본인디시즈에 본인덱스 넣어주기 */
-			//if(iter == m_vecBones.end())
-			//	pMesh->BoneIndices.push_back(--iBoneIndex);
-			//else
+			if(iter == m_vecBones.end())
+				pMesh->BoneIndices.push_back(--iBoneIndex);
+			else
 				pMesh->BoneIndices.push_back(iBoneIndex);
 
 			/* 뼈가 없으니까 보정행렬은 항등일 것. */
@@ -614,8 +622,14 @@ HRESULT CLevel_MeshExporter::Ready_Non_Anim_Meshes(_uint iNumMeshes, aiMesh** pp
 			memcpy(&Vertices.vPosition, &ppMeshes[i]->mVertices[j], sizeof(_float3));
 			memcpy(&Vertices.vNormal, &ppMeshes[i]->mNormals[j], sizeof(_float3));
 			memcpy(&Vertices.vTangent, &ppMeshes[i]->mTangents[j], sizeof(_float3));
-			//if (ppMeshes[i]->HasTextureCoords(0))
-			memcpy(&Vertices.vTexcoord, &ppMeshes[i]->mTextureCoords[0][j], sizeof(_float2));
+			for (_uint k = 0; k < 8; k++)
+			{
+				if (ppMeshes[i]->HasTextureCoords(k))
+				{
+					memcpy(&Vertices.vTexcoord, &ppMeshes[i]->mTextureCoords[k][j], sizeof(_float2));
+					break;
+				}
+			}
 
 			pMesh->Vertices.push_back(Vertices);
 		}
