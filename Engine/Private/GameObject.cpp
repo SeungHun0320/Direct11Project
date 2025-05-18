@@ -38,11 +38,12 @@ HRESULT CGameObject::Initialize_Prototype()
 
 HRESULT CGameObject::Initialize(void* pArg)
 {
-
 	if (nullptr == pArg)
 		return S_OK;
 
 	DESC* pDesc = static_cast<DESC*>(pArg);
+
+	m_strName = pDesc->strName;
 
 	m_pTransformCom = CTransform::Create(m_pDevice, m_pContext);
 	if (nullptr == m_pTransformCom)

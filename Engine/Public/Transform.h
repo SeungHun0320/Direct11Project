@@ -9,8 +9,18 @@ class ENGINE_DLL CTransform final : public CComponent
 public:
 	typedef struct tagTransformDesc
 	{
-		_float			fSpeedPerSec;
-		_float			fRotationPerSec;
+		_float			fSpeedPerSec = 0.f;
+		_float			fRotationPerSec = 0.f;
+		_matrix WorldMatrix = XMMatrixIdentity();
+
+		void Set_Init_Info(_fvector vScale, _fvector vEulerAngle, _fvector vPosition) 
+		{
+			WorldMatrix = XMMatrixIdentity();
+			WorldMatrix *= XMMatrixScalingFromVector(vScale);
+			WorldMatrix *= XMMatrixRotationRollPitchYawFromVector(vEulerAngle);
+			WorldMatrix *= XMMatrixTranslationFromVector(vPosition);
+		}
+
 	}DESC;
 
 protected:
@@ -22,6 +32,12 @@ public:
 	_vector Get_State(STATE eState) {
 		return XMLoadFloat4x4(&m_WorldMatrix).r[ENUM_CLASS(eState)];
 	}
+
+	void Set_State(STATE eState, _fvector vState) {
+		XMStoreFloat4(reinterpret_cast<_float4*>(&m_WorldMatrix.m[ENUM_CLASS(eState)]), vState);
+	}
+
+	_float3 Get_Scaled();
 
 	_float4x4* Get_WorldMatrix_Float4x4() {
 		return &m_WorldMatrix;
@@ -35,14 +51,18 @@ public:
 		return XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_WorldMatrix));
 	}
 
-
-
-
-	void Set_State(STATE eState, _fvector vState) {
-		XMStoreFloat4(reinterpret_cast<_float4*>(&m_WorldMatrix.m[ENUM_CLASS(eState)]), vState);
+	_float Get_SpeedPerSec() {
+		return m_fSpeedPerSec;
 	}
 
-	_float3 Get_Scaled();
+	_float Get_RotationPerSec() {
+		return m_fRotationPerSec;
+	}
+
+	void Set_Matrix(_fmatrix WorldMatrix) {
+		XMStoreFloat4x4(&m_WorldMatrix, WorldMatrix);
+	}
+
 
 public:
 	virtual HRESULT Initialize_Prototype();

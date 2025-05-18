@@ -12,6 +12,21 @@ CMap::CMap(const CMap& Prototype)
 {
 }
 
+_float3 CMap::Get_PickedPos_World()
+{
+	return	m_pModelCom->Compute_PickedPosition_World(m_pTransformCom->Get_WorldMatrix_Float4x4());
+}
+
+_float3 CMap::Get_PickedPos_World_Snap()
+{
+	return m_pModelCom->Compute_PickedPosition_World_Snap(m_pTransformCom->Get_WorldMatrix_Float4x4());
+}
+
+_float3 CMap::Get_PickedPos_Local()
+{
+	return m_pModelCom->Compute_PickedPosition_Local(m_pTransformCom->Get_WorldMatrix_Inverse());
+}
+
 HRESULT CMap::Initialize_Prototype()
 {
     return S_OK;
@@ -23,7 +38,7 @@ HRESULT CMap::Initialize(void* pArg)
 
 	m_eLevelID = pDesc->eLevelID;
 
-	if (FAILED(__super::Initialize(&pDesc)))
+	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
 	if (FAILED(Ready_Components(pArg)))

@@ -59,8 +59,9 @@ HRESULT CLevel_GamePlay::Ready_Layer_Terrain(const _wstring& strLayerTag)
 	CTerrain::DESC tDesc = {};
 
 	tDesc.eLevelID = LEVEL::GAMEPLAY;
+	tDesc.strName = TEXT("Terrain");
 
-	if(FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_Terrain"),
+	if(FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_") + tDesc.strName,
 		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
 		return E_FAIL;
 
@@ -81,8 +82,9 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& strLayerTag)
 	tDesc.fFar = 5000.f;
 	tDesc.fSpeedPerSec = 30.f;
 	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
+	tDesc.strName = TEXT("Camera_Free");
 
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_Camera_Free"),
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_") + tDesc.strName,
 		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
 		return E_FAIL;
 
@@ -96,8 +98,9 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& strLayerTag)
 	tDesc.eLevelID = LEVEL::GAMEPLAY;
 	tDesc.fSpeedPerSec = 20.f;
 	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
+	tDesc.strName = TEXT("SpiderTank");
 
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_SpiderTank"),
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_") + tDesc.strName,
 		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
 		return E_FAIL;
 
@@ -111,8 +114,9 @@ HRESULT CLevel_GamePlay::Ready_Layer_Map(const _wstring& strLayerTag)
 	tDesc.eLevelID = LEVEL::GAMEPLAY;
 	tDesc.fRotationPerSec = XMConvertToRadians(0.f);
 	tDesc.fSpeedPerSec = 10.f;
+	tDesc.strName = TEXT("Courtyard");
 
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_Courtyard"),
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_") + tDesc.strName,
 		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
 		return E_FAIL;
 
@@ -126,16 +130,19 @@ HRESULT CLevel_GamePlay::Ready_Layer_Environmnet_Object(const _wstring& strLayer
 	tDesc.eLevelID = LEVEL::GAMEPLAY;
 	tDesc.fRotationPerSec = 0.f;
 	tDesc.fSpeedPerSec = 0.f;
+	tDesc.strName = TEXT("Grass");
 
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_Grass"),
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_") + tDesc.strName,
 		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
 		return E_FAIL;
 
-	//if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_Bush"),
+	tDesc.strName = TEXT("Bush");
+	//if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_") + tDesc.strName,
 	//	ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
 	//	return E_FAIL;
 
-	//if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_CheckPoint"),
+	tDesc.strName = TEXT("CheckPoint");
+	//if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_") + tDesc.strName,
 	//	ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
 	//	return E_FAIL;
 

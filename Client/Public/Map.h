@@ -22,6 +22,11 @@ protected:
 	virtual ~CMap() = default;
 
 public:
+	_float3 Get_PickedPos_World();
+	_float3 Get_PickedPos_World_Snap();
+	_float3 Get_PickedPos_Local();
+
+public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);
 	virtual void Priority_Update(_float fTimeDelta);

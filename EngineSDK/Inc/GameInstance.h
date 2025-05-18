@@ -20,6 +20,7 @@ public:
 	HRESULT Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ ID3D11Device** ppDeviceOut, ID3D11DeviceContext** ppContextOut);
 	void Update_Engine(_float fTimeDelta);
 	void Clear(_uint iLevelIndex);
+	void Object_Clear(_uint iLevelIndex);
 	HRESULT Begin_Draw();
 	HRESULT Draw();
 	HRESULT End_Draw();
@@ -27,8 +28,8 @@ public:
 	_float Compute_Random_Normal();
 	_float Compute_Random(_float fMin, _float fMax);
 
-	//string WStringToString(const wstring& wstr);
-	//wstring StringToWString(const string& str);
+	_string WStringToString(const _wstring& wstr);
+	_wstring StringToWString(const _string& str);
 
 #pragma region LEVEL_MANAGER
 public:
@@ -38,12 +39,16 @@ public:
 #pragma region PROTOTYPE_MANAGER
 	HRESULT Add_Prototype(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, class CBase* pPrototype);
 	CBase* Clone_Prototype(PROTOTYPE ePrototypeType, _uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, void* pArg = nullptr);
+	const map<const _wstring, class CBase*>* Get_Prototypes(_uint iLevelIndex) const;
 #pragma endregion
 
 #pragma region OBJECT_MANAGER
 	HRESULT Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, void* pArg = nullptr);
 	CComponent* Get_Component(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strComponentTag, _uint iIndex = 0);
+	/* 해당레벨의 레이어태그와 인덱스에 해당되는 오브젝트를 반환한다. */
 	class CGameObject* Find_Object(_uint iLevelIndex, const _wstring& strLayerTag, _uint iIndex = 0);
+	/* 해당레벨의 레이어태그에 해당되는 오브젝트리스트를 반환한다. */
+	list<class CGameObject*>* Find_ObjectList(_uint iLevelIndex, const _wstring& strLayerTag);
 #pragma endregion
 
 #pragma region RENDERER

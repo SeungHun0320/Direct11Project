@@ -7,6 +7,15 @@ CPrototype_Manager::CPrototype_Manager()
 {
 }
 
+const map<const _wstring, class CBase*>* CPrototype_Manager::Get_Prototypes(_uint iLevelIndex) const
+{
+	if (nullptr == m_pPrototypes ||
+		iLevelIndex >= m_iNumLevels)
+		return nullptr;
+
+	return &m_pPrototypes[iLevelIndex];
+}
+
 HRESULT CPrototype_Manager::Initialize(_uint iNumLevels)
 {
 	m_iNumLevels = iNumLevels;
@@ -18,7 +27,6 @@ HRESULT CPrototype_Manager::Initialize(_uint iNumLevels)
 
 HRESULT CPrototype_Manager::Add_Prototype(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, CBase* pPrototype)
 {
-
 	if (nullptr == m_pPrototypes ||
 		iPrototypeLevelIndex >= m_iNumLevels ||
 		nullptr != Find_Prototype(iPrototypeLevelIndex, strPrototypeTag))

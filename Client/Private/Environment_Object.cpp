@@ -23,7 +23,7 @@ HRESULT CEnvironment_Object::Initialize(void* pArg)
 
 	m_eLevelID = pDesc->eLevelID;
 
-	if (FAILED(__super::Initialize(&pDesc)))
+	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
 	if (FAILED(Ready_Components(pArg)))

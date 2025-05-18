@@ -54,8 +54,9 @@ HRESULT CLevel_Logo::Ready_Layer_BackGround(const _wstring& strLayerTag)
 	tDesc.fX = g_iWinSizeX * 0.5f;
 	tDesc.fY = g_iWinSizeY * 0.5f;
 	tDesc.eLevelID = LEVEL::LOGO;
+	tDesc.strName = TEXT("BackGround");
 
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::LOGO), TEXT("Prototype_GameObject_BackGround"),
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::LOGO), TEXT("Prototype_GameObject_") + tDesc.strName,
 		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
 		return E_FAIL;
 

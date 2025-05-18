@@ -27,12 +27,7 @@ HRESULT CLevel_Tools::Initialize()
 
 void CLevel_Tools::Update(_float fTimeDelta)
 {
-	//if (KEY_DOWN(DIK_RETURN))
-	//{
-	//	if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
-	//		CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::LOGO))))
-	//		return;
-	//}
+	m_pMapTool->Update(fTimeDelta);
 }
 
 HRESULT CLevel_Tools::Render()
@@ -41,7 +36,6 @@ HRESULT CLevel_Tools::Render()
 	ImGui_RenderBegin();
 	Ready_DockSpace();
 
-	FileDialog();
 	m_pMapTool->Render();
 
 	ImGui_RenderEnd();
@@ -88,30 +82,7 @@ HRESULT CLevel_Tools::Ready_DockSpace()
 	ImGui::Begin("DockSpace", nullptr, window_flags);
 	ImGui::PopStyleVar(2);
 
-	//if (ImGui::BeginMenuBar())
-	//{
-	//	if (ImGui::BeginMenu(u8"파일"))
-	//	{
-	//		if (ImGui::BeginMenu(u8"열기"))
-	//		{
-	//			IGFD::FileDialogConfig config{};
-
-	//			config.path = "../bin/Resources/";
-
-	//			ImGuiFileDialog::Instance()->OpenDialog(
-	//				"ChooseFile",            // 다이얼로그 Key
-	//				u8"파일 선택",              // 타이틀
-	//				".png,.fbx,.txt",        // 필터 (여러 개 가능),
-	//				config                    // 시작 경로
-	//			);
-
-	//			ImGui::EndMenu();
-	//		}
-	//		ImGui::EndMenu();
-	//	}
-
-	//	ImGui::EndMenuBar();
-	//}
+	m_pMapTool->File_Menu();
 
 	ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_PassthruCentralNode;
 	ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
@@ -136,22 +107,6 @@ void CLevel_Tools::ImGui_RenderEnd()
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 }
 
-HRESULT CLevel_Tools::FileDialog()
-{
-	if (ImGuiFileDialog::Instance()->Display("ChooseFile"))
-	{
-		if (ImGuiFileDialog::Instance()->IsOk())  // OK 눌렀다면
-		{
-			std::string path = ImGuiFileDialog::Instance()->GetFilePathName();
-			std::string name = ImGuiFileDialog::Instance()->GetCurrentFileName();
-		}
-
-		ImGuiFileDialog::Instance()->Close(); // 꼭 닫아줘야 다시 열림
-	}
-
-	return S_OK;
-}
-
 HRESULT CLevel_Tools::Ready_Layer_Camera(const _wstring& strLayerTag)
 {
 	CCamera_Free::DESC tDesc = {};
@@ -164,10 +119,11 @@ HRESULT CLevel_Tools::Ready_Layer_Camera(const _wstring& strLayerTag)
 	tDesc.fFov = XMConvertToRadians(60.f);
 	tDesc.fNear = 0.1f;
 	tDesc.fFar = 3000.f;
-	tDesc.fSpeedPerSec = 10.f;
+	tDesc.fSpeedPerSec = 30.f;
 	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
+	tDesc.strName = TEXT("Camera_Free");
 
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_Camera_Free"),
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_") + tDesc.strName,
 		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
 		return E_FAIL;
 

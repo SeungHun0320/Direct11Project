@@ -29,6 +29,14 @@ CGameObject* CLayer::Find_Object(_uint iIndex)
 	return *Iter;
 }
 
+list<class CGameObject*>* CLayer::Find_ObjectList()
+{
+	if (m_GameObjects.empty())
+		return nullptr;
+
+	return &m_GameObjects;
+}
+
 HRESULT CLayer::Add_GameObject(CGameObject* pGameObject)
 {
 	if (nullptr == pGameObject)

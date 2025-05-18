@@ -31,9 +31,6 @@
     <Filter Include="01.Levels\GamePlay">
       <UniqueIdentifier>{a3f64273-696d-4106-b58f-efef5e5d53fe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Levels\MapTool">
-      <UniqueIdentifier>{83f920ac-2c4c-4a14-9b66-269354c366cf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects">
       <UniqueIdentifier>{20fdda87-6d06-4fb1-94f1-5b9d3e443aa5}</UniqueIdentifier>
     </Filter>
@@ -127,6 +124,9 @@
     <Filter Include="02.GameObjects\05.Environment_Objects\03.Urn\Urn_Firey">
       <UniqueIdentifier>{45438d73-7194-460e-bcbe-e351b8bd8b64}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Levels\Tools">
+      <UniqueIdentifier>{83f920ac-2c4c-4a14-9b66-269354c366cf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -163,7 +163,7 @@
       <Filter>00.MainApp</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Level_Tools.h">
-      <Filter>01.Levels\MapTool</Filter>
+      <Filter>01.Levels\Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\BackGround.h">
       <Filter>02.GameObjects\00.UI\00.BackGround</Filter>
@@ -289,7 +289,7 @@
       <Filter>00.MainApp</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Level_Tools.cpp">
-      <Filter>01.Levels\MapTool</Filter>
+      <Filter>01.Levels\Tools</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BackGround.cpp">
       <Filter>02.GameObjects\00.UI\00.BackGround</Filter>

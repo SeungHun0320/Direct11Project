@@ -337,7 +337,7 @@ HRESULT CLoader::Loading_For_Tools()
 		return E_FAIL;
 
 	/* For.Prototpye_GameOjbect_CheckPoint */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototpye_GameOjbect_CheckPoint"),
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_CheckPoint"),
 		CCheckPoint::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 

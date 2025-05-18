@@ -30,8 +30,6 @@ private:
 	void ImGui_RenderBegin();
 	void ImGui_RenderEnd();
 
-	HRESULT FileDialog();
-
 private:
 	HRESULT Ready_Layer_Camera(const _wstring& strLayerTag);
 	HRESULT Ready_Tools();

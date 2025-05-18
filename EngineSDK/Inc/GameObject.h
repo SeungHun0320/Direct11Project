@@ -9,7 +9,7 @@ class ENGINE_DLL CGameObject abstract : public CBase
 public:
 	typedef struct tagGameObjectDesc : public CTransform::DESC
 	{
-
+		_wstring strName;
 	}DESC;
 
 protected:
@@ -19,9 +19,15 @@ protected:
 
 public:
 	CComponent* Get_Component(const _wstring& strComponentTag);
+
+	const _wstring& Get_Name() {
+		return m_strName;
+	}
+
 	_bool Get_Dead() {
 		return m_bDead;
 	}
+
 	void Set_Dead(_bool bDead) {
 		m_bDead = bDead;
 	}
@@ -47,6 +53,7 @@ protected:
 
 protected:
 	_bool m_bDead = { false };
+	_wstring m_strName;
 
 protected:
 	HRESULT Add_Component(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, const _wstring& strComponentTag, CComponent** ppOut, void* pArg = nullptr);

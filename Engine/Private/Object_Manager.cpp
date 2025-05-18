@@ -30,6 +30,16 @@ CGameObject* CObject_Manager::Find_Object(_uint iLevelIndex, const _wstring& str
 	return pLayer->Find_Object(iIndex);
 }
 
+list<class CGameObject*>* CObject_Manager::Find_ObjectList(_uint iLevelIndex, const _wstring& strLayerTag)
+{
+	CLayer* pLayer = Find_Layer(iLevelIndex, strLayerTag);
+
+	if (nullptr == pLayer)
+		return nullptr;
+
+	return pLayer->Find_ObjectList();
+}
+
 HRESULT CObject_Manager::Initialize(_uint iNumLevels)
 {
 	m_pLayers = new map<const _wstring, CLayer*>[iNumLevels];

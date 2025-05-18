@@ -36,6 +36,8 @@ HRESULT CTransform::Initialize(void* pArg)
 	m_fSpeedPerSec = pDesc->fSpeedPerSec;
 	m_fRotationPerSec = pDesc->fRotationPerSec;
 
+	Set_Matrix(pDesc->WorldMatrix);
+
 	return S_OK;
 }
 

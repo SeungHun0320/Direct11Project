@@ -24,6 +24,9 @@ private:
 	virtual ~CPrototype_Manager() = default;
 
 public:
+	const map<const _wstring, class CBase*>* Get_Prototypes(_uint iLevelIndex) const;
+
+public:
 	HRESULT Initialize(_uint iNumLevels);
 	HRESULT Add_Prototype(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, class CBase* pPrototype);
 	CBase* Clone_Prototype(PROTOTYPE ePrototypeType, _uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, void* pArg);

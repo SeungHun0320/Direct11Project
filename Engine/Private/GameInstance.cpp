@@ -121,6 +121,11 @@ void CGameInstance::Clear(_uint iLevelIndex)
 	m_pPrototype_Manager->Clear(iLevelIndex);
 }
 
+void CGameInstance::Object_Clear(_uint iLevelIndex)
+{
+	m_pObject_Manager->Clear(iLevelIndex);
+}
+
 
 _float CGameInstance::Compute_Random_Normal()
 {
@@ -130,6 +135,28 @@ _float CGameInstance::Compute_Random_Normal()
 _float CGameInstance::Compute_Random(_float fMin, _float fMax)
 {
 	return fMin + (fMax - fMin) * Compute_Random_Normal();	
+}
+
+_string CGameInstance::WStringToString(const _wstring& wstr)
+{
+	if (wstr.empty())
+		return {};
+
+	_int iSize = WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), -1, nullptr, 0, nullptr, nullptr);
+	_string result(iSize - 1, 0);
+	WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), -1, result.data(), iSize, nullptr, nullptr);
+	return result;
+}
+
+_wstring CGameInstance::StringToWString(const _string& str)
+{
+	if (str.empty())
+		return {};
+
+	_int iSize = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, nullptr, 0);
+	_wstring result(iSize - 1, 0); // -1: null terminator Á¦°Å
+	MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, result.data(), iSize);
+	return result;
 }
 
 #pragma region LEVEL_MANAGER
@@ -151,6 +178,10 @@ CBase* CGameInstance::Clone_Prototype(PROTOTYPE ePrototypeType, _uint iPrototype
 {
 	return m_pPrototype_Manager->Clone_Prototype(ePrototypeType, iPrototypeLevelIndex, strPrototypeTag, pArg);
 }
+const map<const _wstring, class CBase*>* CGameInstance::Get_Prototypes(_uint iLevelIndex) const
+{
+	return m_pPrototype_Manager->Get_Prototypes(iLevelIndex);
+}
 #pragma endregion
 
 #pragma region OBJECT_MANAGER
@@ -168,6 +199,11 @@ CComponent* CGameInstance::Get_Component(_uint iLevelIndex, const _wstring& strL
 CGameObject* CGameInstance::Find_Object(_uint iLevelIndex, const _wstring& strLayerTag, _uint iIndex)
 {
 	return m_pObject_Manager->Find_Object(iLevelIndex, strLayerTag, iIndex);
+}
+
+list<class CGameObject*>* CGameInstance::Find_ObjectList(_uint iLevelIndex, const _wstring& strLayerTag)
+{
+	return m_pObject_Manager->Find_ObjectList(iLevelIndex, strLayerTag);
 }
 
 #pragma endregion
