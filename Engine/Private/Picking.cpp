@@ -1,5 +1,8 @@
 #include "Picking.h"
 #include "GameInstance.h"
+
+#include "GameObject.h"
+
 CPicking::CPicking(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice {pDevice}
 	, m_pContext {pContext}
@@ -52,31 +55,57 @@ void CPicking::Update()
 	XMStoreFloat3(&m_vMousePos, XMVector3TransformCoord(XMLoadFloat3(&m_vMousePos), ViewMatrix));
 	XMStoreFloat3(&m_vMouseRay, XMVector3TransformNormal(XMLoadFloat3(&m_vMouseRay), ViewMatrix));
 
-	XMStoreFloat3(&m_vMouseRay, XMVector3Normalize(XMLoadFloat3(&m_vMouseRay)));
+ 	XMStoreFloat3(&m_vMouseRay, XMVector3Normalize(XMLoadFloat3(&m_vMouseRay)));
 }
 
 _bool CPicking::Picking_InWorld(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC)
 {
-	_float		fDist;
+	_float		fDist{};
 
 	_bool		isPicked = TriangleTests::Intersects(XMLoadFloat3(&m_vMousePos), XMLoadFloat3(&m_vMouseRay), XMLoadFloat3(&vPointA), XMLoadFloat3(&vPointB), XMLoadFloat3(&vPointC), fDist);
 	/* 월드에 있는 마우스와 마우스 방향으로 피킹된 위치를 구해줌 */
-	_vector vPickedPosVector = XMLoadFloat3(&vPickedPos);
-	vPickedPosVector = XMLoadFloat3(&m_vMousePos) + XMLoadFloat3(&m_vMouseRay) * fDist;
-	XMStoreFloat3(&vPickedPos, vPickedPosVector);
+	XMStoreFloat3(&vPickedPos, XMLoadFloat3(&m_vMousePos) + XMLoadFloat3(&m_vMouseRay) * fDist);
 
 	return isPicked;
 }
 
 _bool CPicking::Picking_InLocal(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC)
 {
-	_float		fDist;
+	_float		fDist{};
 
 	_bool		isPicked = TriangleTests::Intersects(XMLoadFloat3(&m_vLocalMousePos), XMLoadFloat3(&m_vLocalMouseRay), XMLoadFloat3(&vPointA), XMLoadFloat3(&vPointB), XMLoadFloat3(&vPointC), fDist);
 	/* 로컬에 있는 마우스와 마우스 방향으로 피킹된 위치를 구해줌 */
-	_vector vPickedPosVector = XMLoadFloat3(&vPickedPos);
-	vPickedPosVector = XMLoadFloat3(&m_vLocalMousePos) + XMLoadFloat3(&m_vLocalMouseRay) * fDist;
-	XMStoreFloat3(&vPickedPos, vPickedPosVector);
+	XMStoreFloat3(&vPickedPos, XMLoadFloat3(&m_vLocalMousePos) + XMLoadFloat3(&m_vLocalMouseRay) * fDist);
+
+	return isPicked;
+}
+
+_bool CPicking::Picking_InWorldEx(_float3& vPickedPos, _float& fDist, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC)
+{
+	_float		fDistance{};
+
+	_bool		isPicked = TriangleTests::Intersects(XMLoadFloat3(&m_vMousePos), XMLoadFloat3(&m_vMouseRay), XMLoadFloat3(&vPointA), XMLoadFloat3(&vPointB), XMLoadFloat3(&vPointC), fDistance);
+	/* 월드에 있는 마우스와 마우스 방향으로 피킹된 위치를 구해줌 */
+	if (isPicked)
+	{
+		XMStoreFloat3(&vPickedPos, XMLoadFloat3(&m_vMousePos) + XMLoadFloat3(&m_vMouseRay) * fDistance);
+		fDist = fDistance;
+	}
+
+	return isPicked;
+}
+
+_bool CPicking::Picking_InLocalEx(_float3& vPickedPos, _float& fDist, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC)
+{
+	_float		fDistance{};
+
+	_bool		isPicked = TriangleTests::Intersects(XMLoadFloat3(&m_vLocalMousePos), XMLoadFloat3(&m_vLocalMouseRay), XMLoadFloat3(&vPointA), XMLoadFloat3(&vPointB), XMLoadFloat3(&vPointC), fDist);
+	/* 로컬에 있는 마우스와 마우스 방향으로 피킹된 위치를 구해줌 */
+	if (isPicked)
+	{
+		XMStoreFloat3(&vPickedPos, XMLoadFloat3(&m_vLocalMousePos) + XMLoadFloat3(&m_vLocalMouseRay) * fDistance);
+		fDist = fDistance;
+	}
 
 	return isPicked;
 }

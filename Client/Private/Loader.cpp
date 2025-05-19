@@ -16,6 +16,7 @@
 #include "Courtyard.h"
 #include "Arena.h"
 #include "Main.h"
+#include "Shop.h"
 
 /* 지형(각종 환경오브젝트 / 상호작용 오브젝트 ) */
 #include "Grass.h"
@@ -163,6 +164,7 @@ HRESULT CLoader::Loading_For_GamePlay()
 
 	_matrix		PreTransformMatrix = XMMatrixIdentity();
 
+	/*For.Prototpye_Component_Model_SpiderTank*/
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototpye_Component_Model_SpiderTank"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::ANIM, TEXT("../Bin/Resources/Models/Anim/Monster/Spidertank/Spidertank.Model"), PreTransformMatrix))))
@@ -284,6 +286,12 @@ HRESULT CLoader::Loading_For_Tools()
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Map/Fortress/Main/Main.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
+	/*For.Prototpye_Component_Model_Shop*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototpye_Component_Model_Shop"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Map/Shop/Shop.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
 	/*For.Prototpye_Component_Model_Bush*/
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototpye_Component_Model_Bush"),
@@ -324,6 +332,11 @@ HRESULT CLoader::Loading_For_Tools()
 	/* For.Prototype_GameObject_Main */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_Main"),
 		CMain::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Shop */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_Shop"),
+		CShop::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Bush */

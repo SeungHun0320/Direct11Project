@@ -5,11 +5,11 @@
 
 BEGIN(Client)
 
-class CLevel_GamePlay final : public CLevel
+class CLevel_Courtyard final : public CLevel
 {
 private:
-	CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual ~CLevel_GamePlay() = default;
+	CLevel_Courtyard(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual ~CLevel_Courtyard() = default;
 
 public:
 	virtual HRESULT Initialize() override;
@@ -24,7 +24,7 @@ public:
 	HRESULT Ready_Layer_Environmnet_Object(const _wstring& strLayerTag);
 
 public:
-	static CLevel_GamePlay* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CLevel_Courtyard* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual void Free() override;
 };
 

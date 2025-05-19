@@ -34,7 +34,11 @@ HRESULT CMaterial::Initialize(const MATERIAL* pMaterial)
         }
 
         if (FAILED(hr))
+        {
+            MSG_BOX("텍스쳐가 없어요");
             return E_FAIL;
+        }
+
 
         m_SRVs[ENUM_CLASS(TexInfo.eTextureType)].push_back(pSRV);
     }

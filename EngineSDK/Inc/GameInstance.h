@@ -49,6 +49,8 @@ public:
 	class CGameObject* Find_Object(_uint iLevelIndex, const _wstring& strLayerTag, _uint iIndex = 0);
 	/* 해당레벨의 레이어태그에 해당되는 오브젝트리스트를 반환한다. */
 	list<class CGameObject*>* Find_ObjectList(_uint iLevelIndex, const _wstring& strLayerTag);
+	/* 피킹된 오브젝트를 반환한다. */
+	class CGameObject* Find_Picked_Object(_uint iLevelIndex, const _wstring& strLayerTag);
 #pragma endregion
 
 #pragma region RENDERER
@@ -65,6 +67,8 @@ public:
 	void Transform_Picking_ToLocalSpace(_fmatrix WorldMatrixInverse);
 	_bool Picking_InWorld(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC);
 	_bool Picking_InLocal(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC);
+	_bool Picking_InWorldEx(_float3& vPickedPos, _float& fDist, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC);
+	_bool Picking_InLocalEx(_float3& vPickedPos, _float& fDist, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC);
 	const _float3& Get_MousePos();
 	const _float3& Get_LocalMousePos();
 #pragma endregion

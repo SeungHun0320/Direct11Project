@@ -127,6 +127,21 @@
     <Filter Include="01.Levels\Tools">
       <UniqueIdentifier>{83f920ac-2c4c-4a14-9b66-269354c366cf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\04.Map\03.Shop">
+      <UniqueIdentifier>{de916087-4383-40af-97a1-a29776f147fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\01.Main">
+      <UniqueIdentifier>{0b6efbed-7531-4b59-950d-fdf544f349ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\00.Courtyard">
+      <UniqueIdentifier>{f3dfb631-d45a-48ca-8e5f-c4776009a0f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\02.Arena">
+      <UniqueIdentifier>{75bdb590-860d-44a4-81df-40fed26ccf41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\03.Shop">
+      <UniqueIdentifier>{761424b8-9ac0-46f5-b977-1d3a3173d8c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -255,6 +270,9 @@
     <ClInclude Include="..\public\CheckPoint.h">
       <Filter>02.GameObjects\05.Environment_Objects\02.CheckPoint</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Shop.h">
+      <Filter>02.GameObjects\04.Map\03.Shop</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -371,6 +389,9 @@
     </ClCompile>
     <ClCompile Include="..\private\CheckPoint.cpp">
       <Filter>02.GameObjects\05.Environment_Objects\02.CheckPoint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Shop.cpp">
+      <Filter>02.GameObjects\04.Map\03.Shop</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

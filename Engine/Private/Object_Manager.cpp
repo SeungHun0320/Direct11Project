@@ -3,6 +3,7 @@
 
 #include "GameInstance.h"
 #include "GameObject.h"
+#include "Mesh.h"
 
 CObject_Manager::CObject_Manager()
 	: m_pGameInstance { CGameInstance::Get_Instance() }
@@ -28,6 +29,36 @@ CGameObject* CObject_Manager::Find_Object(_uint iLevelIndex, const _wstring& str
 		return nullptr;
 
 	return pLayer->Find_Object(iIndex);
+}
+
+CGameObject* CObject_Manager::Find_Picked_Object(_uint iLevelIndex, const _wstring& strLayerTag)
+{
+	list<CGameObject*>* pGameObjects = Find_ObjectList(iLevelIndex, strLayerTag);
+	if (nullptr == pGameObjects || pGameObjects->empty())
+		return nullptr;
+
+	_float fMinDist = FLT_MAX;
+	CGameObject* pReturnObject = { nullptr };
+
+	for (auto& pGameObj : *pGameObjects)
+	{
+		CModel* pModelCom = static_cast<CModel*>(pGameObj->Get_Component(TEXT("Com_Model")));
+		CTransform* pTransform = static_cast<CTransform*>(pGameObj->Get_Component(TEXT("Com_Transform")));
+
+		if (nullptr == pModelCom || nullptr == pTransform)
+			continue;
+
+		_float fDist{};
+		pModelCom->Compute_PickedPosition_World(pTransform->Get_WorldMatrix_Float4x4(), fDist);
+
+		if (fDist < fMinDist) // 가장 가까운 객체 선택
+		{
+			fMinDist = fDist;
+			pReturnObject = pGameObj;
+		}
+	}
+
+	return pReturnObject;
 }
 
 list<class CGameObject*>* CObject_Manager::Find_ObjectList(_uint iLevelIndex, const _wstring& strLayerTag)

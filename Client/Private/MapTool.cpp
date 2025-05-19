@@ -6,6 +6,9 @@
 #include "Camera_Free.h"
 #include "Bush.h"
 
+#define MAX_SCALE 100.f
+#define MIN_ANGLE -180.f
+#define MAX_ANGLE 180.f
 
 CMapTool::CMapTool(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CTool{pDevice, pContext}
@@ -32,15 +35,46 @@ HRESULT CMapTool::Initialize()
 		}
 	}
 
+	/* 처음 켰을때 수정모드 켜져 있도록 */
+	m_bMode[MODIFY] = true;
+
 	return S_OK;
 }
 
 void CMapTool::Update(_float fTimeDelta)
 {
-	if (nullptr == m_pMap)
+	Key_Input();
+	if (nullptr == m_pMap || m_bMode[NORMAL])
 		return;
 
-	if (MOUSE_DOWN(DIMK::LBUTTON))
+	if (m_bMode[MODIFY])
+	{
+		if (MOUSE_DOWN(DIMK::LBUTTON))
+		{
+			CGameObject* pGameObject = m_pGameInstance->Find_Picked_Object(ENUM_CLASS(LEVEL::TOOLS), TEXT("Layer_MapTool_Object"));
+			if (nullptr == pGameObject)
+				return;
+
+			if (nullptr != m_pModifyObject)
+				Safe_Release(m_pModifyObject);
+
+			m_pModifyObject = pGameObject;
+			Safe_AddRef(m_pModifyObject);
+			m_bFirst = true;
+		}
+
+		if (MOUSE_DOWN(DIMK::RBUTTON))
+		{
+			CGameObject* pGameObject = m_pGameInstance->Find_Picked_Object(ENUM_CLASS(LEVEL::TOOLS), TEXT("Layer_MapTool_Object"));
+			if (nullptr == pGameObject)
+				return;
+
+			pGameObject->Set_Dead(true);
+		}
+
+	}
+
+	if (m_bMode[CREATE] && MOUSE_DOWN(DIMK::LBUTTON))
 	{
 		_float3 vInitPos = m_pMap->Get_PickedPos_World();
 
@@ -60,8 +94,28 @@ void CMapTool::Update(_float fTimeDelta)
 HRESULT CMapTool::Render()
 {
 	MapTool();
+	On_Modify_Object();
 
 	return S_OK;
+}
+
+void CMapTool::Key_Input()
+{
+	if (KEY_DOWN(DIK_V))
+	{
+		m_bMode[CREATE] = !m_bMode[CREATE];
+		m_bMode[MODIFY] = !m_bMode[MODIFY];
+	}
+	if (KEY_DOWN(DIK_B))
+		m_bMode[NORMAL] = !m_bMode[NORMAL];
+
+	if (KEY_DOWN(DIK_Z))
+	{
+		if (ImGuizmo::TRANSLATE == m_eGizmoOp)
+			m_eGizmoOp = ImGuizmo::ROTATE;
+		else if (ImGuizmo::ROTATE == m_eGizmoOp)
+			m_eGizmoOp = ImGuizmo::TRANSLATE;
+	}
 }
 
 HRESULT CMapTool::MapTool()
@@ -70,6 +124,7 @@ HRESULT CMapTool::MapTool()
 
 	Map_Menu();
 	Load_Map_Menu();
+	Change_Mode();
 
 	ImGui::Dummy(ImVec2(0.0f, 20.0f));
 	ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
@@ -79,15 +134,19 @@ HRESULT CMapTool::MapTool()
 		if (ImGui::BeginTabItem(u8"환경"))
 		{
 			Environment_ListBox();
-			if (ImGui::Button(u8"생성"))
-			{
 
-			}
-			ImGui::SameLine();
-			if(ImGui::Button(u8"삭제"))
-			{
+			ImGui::EndTabItem();
+		}
+		if (ImGui::BeginTabItem(u8"아이템"))
+		{
+			Item_ListBox();
 
-			}
+			ImGui::EndTabItem();
+		}
+		if (ImGui::BeginTabItem(u8"상자"))
+		{
+			Chest_ListBox();
+
 			ImGui::EndTabItem();
 		}
 		if (ImGui::BeginTabItem(u8"적"))
@@ -109,7 +168,7 @@ void CMapTool::Map_Menu()
 {
 	static MAP eCurrntMap = { MAP_END };
 	static MAP ePreMap = { MAP_END };
-	const _char* szMaps[] = { "CourtYard", "Main", "Arena" };
+	const _char* szMaps[] = { "CourtYard", "Main", "Arena", "Shop"};
 
 	if (ImGui::BeginCombo(u8"맵 선택", eCurrntMap == MAP_END ? u8"선택" : szMaps[eCurrntMap]))
 	{
@@ -191,6 +250,11 @@ HRESULT CMapTool::Craete_Map(MAP iMapIdx, const _wstring& strLayerTag)
 		m_strMapFileTag = "Arena.Map";
 		strName = TEXT("Arena");
 		break;
+
+	case MAP::SHOP:
+		m_strMapFileTag = "Shop.Map";
+		strName = TEXT("Shop");
+		break;
 	default:
 		break;
 	}
@@ -199,10 +263,15 @@ HRESULT CMapTool::Craete_Map(MAP iMapIdx, const _wstring& strLayerTag)
 	if (nullptr != pMap)
 	{
 		Safe_Release(m_pMap);
+		m_pGameInstance->Object_Clear(ENUM_CLASS(LEVEL::TOOLS));
+		if (FAILED(Craete_Camera(TEXT("Layer_Camera"))))
+		{
+			MSG_BOX("저는 카메라도 어쩌구,,,");
+			return E_FAIL;
+		}
 		pMap->Set_Dead(true);
 	}
 		
-	
 	CMap::DESC tDesc = {};
 	tDesc.eLevelID = LEVEL::TOOLS;
 	tDesc.fRotationPerSec = 0.f;
@@ -218,6 +287,92 @@ HRESULT CMapTool::Craete_Map(MAP iMapIdx, const _wstring& strLayerTag)
 		Safe_AddRef(m_pMap);
 
 	return S_OK;
+}
+
+HRESULT CMapTool::On_Modify_Object()
+{
+	if (nullptr == m_pModifyObject)
+		return E_FAIL;
+	ImGui::Begin(u8"수정 창");
+
+	CTransform* pTransform = dynamic_cast<CTransform*>(m_pModifyObject->Get_Component(TEXT("Com_Transform")));
+	if (nullptr == pTransform)
+		return E_FAIL;
+
+	ImGuizmo::SetRect(0, 0, ImGui::GetIO().DisplaySize.x, ImGui::GetIO().DisplaySize.y);
+
+	_float4x4  ViewMatrix{}, ProjMatrix{};
+
+	ViewMatrix = *m_pGameInstance->Get_Transform_Float4x4(D3DTS::VIEW);
+	ProjMatrix = *m_pGameInstance->Get_Transform_Float4x4(D3DTS::PROJ);
+
+	ImGuizmo::SetRect(0, 0, ImGui::GetIO().DisplaySize.x, ImGui::GetIO().DisplaySize.y);
+
+	if (ImGuizmo::Manipulate(
+		reinterpret_cast<_float*>(&ViewMatrix),
+		reinterpret_cast<_float*>(&ProjMatrix),
+		m_eGizmoOp,
+		ImGuizmo::LOCAL,
+		reinterpret_cast<_float*>(pTransform->Get_WorldMatrix_Float4x4())))
+	{
+
+	}
+
+
+	ImGui::End();
+	return S_OK;
+}
+
+void CMapTool::Adj_Scale_Angle()
+{
+	if (ImGui::RadioButton(u8"전체 스케일 변경", !m_bAllScale))
+	{
+		m_bAllScale = !m_bAllScale;
+	}
+	ImGui::PushItemWidth(130.f);
+
+	ImGui::Separator();
+	ImGui::SliderFloat(u8"이동속도", &m_fSpeedPerSec, 0, MAX_SCALE);
+	ImGui::SameLine();
+	ImGui::InputFloat("##SpeedPerSec", &m_fSpeedPerSec);
+	ImGui::SliderFloat(u8"회전속도", &m_fRotationPerSec, 0, MAX_SCALE);
+	ImGui::SameLine();
+	ImGui::InputFloat("##RotationPerSec", &m_fRotationPerSec);
+	ImGui::Separator();
+
+	if (m_bAllScale)
+	{
+		ImGui::SliderFloat(u8"스케일 X", &m_vScale.x, 1.f, MAX_SCALE);
+		ImGui::SameLine();
+		ImGui::InputFloat("##ScaleX", &m_vScale.x);
+		ImGui::SliderFloat(u8"스케일 Y", &m_vScale.y, 1.f, MAX_SCALE);
+		ImGui::SameLine();
+		ImGui::InputFloat("##ScaleY", &m_vScale.y);
+		ImGui::SliderFloat(u8"스케일 Z", &m_vScale.z, 1.f, MAX_SCALE);
+		ImGui::SameLine();
+		ImGui::InputFloat("##ScaleZ", &m_vScale.z);
+	}
+	else
+	{
+		ImGui::SliderFloat(u8"스케일", &m_vScale.x, 1.f, MAX_SCALE);
+		ImGui::SameLine();
+		ImGui::InputFloat("##Scale", &m_vScale.x);
+		m_vScale.z = m_vScale.y = m_vScale.x;
+	}
+
+	/* 회전 먼가 이상함, y가 x축 회전되고 x가 y축 회전 됨 그래서 일단 바꿔놨음 */
+	/* 해결, 쿼터니움 구하는 함수가 y x z 를 인자로 요구함*/
+	ImGui::Separator();
+	ImGui::SliderFloat(u8"회전 X", &m_vAngle.x, MIN_ANGLE, MAX_ANGLE);
+	ImGui::SameLine();
+	ImGui::InputFloat("##AngleX", &m_vAngle.x);
+	ImGui::SliderFloat(u8"회전 Y", &m_vAngle.y, MIN_ANGLE, MAX_ANGLE);
+	ImGui::SameLine();
+	ImGui::InputFloat("##AngleY", &m_vAngle.y);
+	ImGui::SliderFloat(u8"회전 Z", &m_vAngle.z, MIN_ANGLE, MAX_ANGLE);
+	ImGui::SameLine();
+	ImGui::InputFloat("##AngleZ", &m_vAngle.z);
+
 }
 
 HRESULT CMapTool::Environment_ListBox()
@@ -254,6 +409,13 @@ HRESULT CMapTool::Environment_ListBox()
 		break;
 	}
 
+	Adj_Scale_Angle();
+
+	return S_OK;
+}
+
+HRESULT CMapTool::Item_ListBox()
+{
 	return S_OK;
 }
 
@@ -265,6 +427,28 @@ HRESULT CMapTool::Chest_ListBox()
 HRESULT CMapTool::Monster_ListBox()
 {
 	return S_OK;
+}
+
+void CMapTool::Change_Mode()
+{
+	if (ImGui::RadioButton(u8"생성모드", m_bMode[CREATE]))
+	{
+		m_bMode[CREATE] = !m_bMode[CREATE];
+		m_bMode[MODIFY] = false;
+	}
+	ImGui::SameLine();
+	if (ImGui::RadioButton(u8"수정모드", m_bMode[MODIFY]))
+	{
+		m_bMode[MODIFY] = !m_bMode[MODIFY];
+		m_bMode[CREATE] = false;
+	}
+	ImGui::SameLine();
+	if (ImGui::RadioButton(u8"잠금", m_bMode[NORMAL]))
+	{
+		m_bMode[NORMAL] = !m_bMode[NORMAL];
+	}
+	ImGui::Text(u8"키를 눌러 모드 전환");
+	ImGui::Text(u8"V : 생성/수정 || B : 잠금 ");
 }
 
 void CMapTool::Load_Map_Menu()
@@ -373,7 +557,7 @@ HRESULT CMapTool::Load_Map(const _string& strMapPath)
 		tDesc.WorldMatrix = XMLoadFloat4x4(&WorldMatrix);
 
 		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_") + tDesc.strName,
-			ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_MapTool"), &tDesc)))
+			ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Map"), &tDesc)))
 			return E_FAIL;
 	}
 
@@ -423,5 +607,6 @@ void CMapTool::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pModifyObject);
 	Safe_Release(m_pMap);
 }

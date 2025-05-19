@@ -206,6 +206,11 @@ list<class CGameObject*>* CGameInstance::Find_ObjectList(_uint iLevelIndex, cons
 	return m_pObject_Manager->Find_ObjectList(iLevelIndex, strLayerTag);
 }
 
+CGameObject* CGameInstance::Find_Picked_Object(_uint iLevelIndex, const _wstring& strLayerTag)
+{
+	return m_pObject_Manager->Find_Picked_Object(iLevelIndex, strLayerTag);
+}
+
 #pragma endregion
 
 #pragma region RENDERER
@@ -248,6 +253,15 @@ _bool CGameInstance::Picking_InWorld(_float3& vPickedPos, const _float3& vPointA
 _bool CGameInstance::Picking_InLocal(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC)
 {
 	return m_pPicking->Picking_InLocal(vPickedPos, vPointA, vPointB, vPointC);
+}
+
+_bool CGameInstance::Picking_InWorldEx(_float3& vPickedPos, _float& fDist, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC)
+{
+	return m_pPicking->Picking_InWorldEx(vPickedPos, fDist, vPointA, vPointB, vPointC);
+}
+_bool CGameInstance::Picking_InLocalEx(_float3& vPickedPos, _float& fDist, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC)
+{
+	return m_pPicking->Picking_InLocalEx(vPickedPos, fDist, vPointA, vPointB, vPointC);
 }
 
 const _float3& CGameInstance::Get_MousePos()

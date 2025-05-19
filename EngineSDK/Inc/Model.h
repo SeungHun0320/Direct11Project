@@ -28,7 +28,7 @@ public:
 
 public: /* ¸ÊÅø¿ë,,,? */
 	_float3 Compute_PickedPosition_Local(_fmatrix WorldMatrixInverse);
-	_float3 Compute_PickedPosition_World(const _float4x4* pWorldMatrix);
+	_float3 Compute_PickedPosition_World(const _float4x4* pWorldMatrix, _float& fDist);
 	_float3 Compute_PickedPosition_World_Snap(const _float4x4* pWorldMatrix);
 
 private:

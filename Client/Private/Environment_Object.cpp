@@ -40,7 +40,8 @@ LIFE CEnvironment_Object::Update(_float fTimeDelta)
 {
 	if (MOUSE_DOWN(DIMK::LBUTTON))
 	{
-		_float3		vTmp = m_pModelCom->Compute_PickedPosition_World(m_pTransformCom->Get_WorldMatrix_Float4x4());
+		_float fDist{};
+		_float3		vTmp = m_pModelCom->Compute_PickedPosition_World(m_pTransformCom->Get_WorldMatrix_Float4x4(), fDist);
 		_float3     vDst = m_pModelCom->Compute_PickedPosition_World_Snap(m_pTransformCom->Get_WorldMatrix_Float4x4());
 		_float3		vSrc = m_pModelCom->Compute_PickedPosition_Local(m_pTransformCom->Get_WorldMatrix_Inverse());
 		_int a = 10;

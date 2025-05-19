@@ -26,6 +26,11 @@ public:
 	_bool Picking_InWorld(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC);
 	_bool Picking_InLocal(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC);
 
+	/* 월드에서 피킹된 녀석의 거리까지 반환해줌 */
+	_bool Picking_InWorldEx(_float3& vPickedPos, _float& fDist, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC);
+	/* 로컬에서 피킹된 녀석의 거리까지 반환해줌 */
+	_bool Picking_InLocalEx(_float3& vPickedPos, _float& fDist, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC);
+
 	/* 마우스의 방향과 좌표를 월드에서 로컬로 보내주기 위한 함수 */
 	void Transform_ToLocalSpace(_fmatrix WorldMatrixInverse);
 

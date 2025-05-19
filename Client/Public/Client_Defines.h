@@ -17,6 +17,7 @@
 #include "ImGuiFileDialog.h"
 
 #define _IMGUI
+#define _CONSOL
 
 namespace Client
 {

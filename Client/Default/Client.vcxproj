@@ -180,6 +180,7 @@
     <ClInclude Include="..\public\Map.h" />
     <ClInclude Include="..\public\MapTool.h" />
     <ClInclude Include="..\public\Monster.h" />
+    <ClInclude Include="..\public\Shop.h" />
     <ClInclude Include="..\public\SpiderTank.h" />
     <ClInclude Include="..\public\Terrain.h" />
     <ClInclude Include="..\public\Tool.h" />
@@ -221,6 +222,7 @@
     <ClCompile Include="..\private\Map.cpp" />
     <ClCompile Include="..\private\MapTool.cpp" />
     <ClCompile Include="..\private\Monster.cpp" />
+    <ClCompile Include="..\private\Shop.cpp" />
     <ClCompile Include="..\private\SpiderTank.cpp" />
     <ClCompile Include="..\private\Terrain.cpp" />
     <ClCompile Include="..\private\Tool.cpp" />

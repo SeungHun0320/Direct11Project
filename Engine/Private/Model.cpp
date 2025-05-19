@@ -117,28 +117,39 @@ _float3 CModel::Compute_PickedPosition_Local(_fmatrix WorldMatrixInverse)
     _float3 vResultPos{};
     _float fMinDist = FLT_MAX;
 
-    for (_int i = 0; i < m_Meshes.size(); i++)
+    for (auto& pMesh : m_Meshes)
     {
-        _float3 vPickedPos = m_Meshes[i]->Compute_PickedPosition_Local(WorldMatrixInverse);
+        _float fDist{};
+        _float3 vPickedPos = pMesh->Compute_PickedPosition_LocalEx(WorldMatrixInverse, fDist);
 
-        vResultPos = vPickedPos;
+        if (fDist < fMinDist)
+        {
+            vResultPos = vPickedPos;
+            fMinDist = fDist;
+        }
+
     }
 
     return vResultPos;
 }
 
-_float3 CModel::Compute_PickedPosition_World(const _float4x4* pWorldMatrix)
+_float3 CModel::Compute_PickedPosition_World(const _float4x4* pWorldMatrix, _float& fDist)
 {
     _float3 vResultPos{};
     _float fMinDist = FLT_MAX;
 
     const _float3 vRayOrigin = m_pGameInstance->Get_MousePos();
 
-    for (_int i = 0; i < m_Meshes.size(); i++)
+    for (auto& pMesh : m_Meshes)
     {
-        _float3 vPickedPos = m_Meshes[i]->Compute_PickedPosition_World(pWorldMatrix);
+        _float3 vPickedPos = pMesh->Compute_PickedPosition_WorldEx(pWorldMatrix, fDist);
 
-        vResultPos = vPickedPos;
+        if (fDist < fMinDist)
+        {
+            vResultPos = vPickedPos;
+            fMinDist = fDist;
+        }
+
     }
 
     return vResultPos;
@@ -149,11 +160,17 @@ _float3 CModel::Compute_PickedPosition_World_Snap(const _float4x4* pWorldMatrix)
     _float3 vResultPos{};
     _float fMinDist = FLT_MAX;
 
-    for (_int i = 0; i < m_Meshes.size(); i++)
+    for (auto& pMesh : m_Meshes)
     {
-        _float3 vPickedPos = m_Meshes[i]->Compute_PickedPosition_World_Snap(pWorldMatrix);
+        _float fDist{};
+        _float3 vPickedPos = pMesh->Compute_PickedPosition_World_SnapEx(pWorldMatrix, fDist);
 
-        vResultPos = vPickedPos;
+        if (fDist < fMinDist)
+        {
+            vResultPos = vPickedPos;
+            fMinDist = fDist;
+        }
+
     }
 
     return vResultPos;

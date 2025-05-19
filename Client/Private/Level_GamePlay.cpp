@@ -10,13 +10,13 @@
 
 #include "Environment_Object.h"
 
-CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CLevel_Courtyard::CLevel_Courtyard(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 		: CLevel { pDevice, pContext }
 {
 
 }
 
-HRESULT CLevel_GamePlay::Initialize()
+HRESULT CLevel_Courtyard::Initialize()
 {
 	//if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
 	//	return E_FAIL;
@@ -24,11 +24,11 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
-	//if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
-	//	return E_FAIL;
-
-	if (FAILED(Ready_Layer_Environmnet_Object(TEXT("Layer_EnvironObject"))))
+	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
 		return E_FAIL;
+
+	//if (FAILED(Ready_Layer_Environmnet_Object(TEXT("Layer_EnvironObject"))))
+	//	return E_FAIL;
 
 	//if (FAILED(Ready_Layer_Map(TEXT("Layer_Map"))))
 	//	return E_FAIL;
@@ -36,7 +36,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	return S_OK;
 }
 
-void CLevel_GamePlay::Update(_float fTimeDelta)
+void CLevel_Courtyard::Update(_float fTimeDelta)
 {
 	if (KEY_DOWN(DIK_RETURN))
 	{
@@ -47,19 +47,21 @@ void CLevel_GamePlay::Update(_float fTimeDelta)
 
 }
 
-HRESULT CLevel_GamePlay::Render()
+HRESULT CLevel_Courtyard::Render()
 {
 	SetWindowText(g_hWnd, TEXT("게임플레이 레벨입니다."));
 
 	return S_OK;
 }
 
-HRESULT CLevel_GamePlay::Ready_Layer_Terrain(const _wstring& strLayerTag)
+HRESULT CLevel_Courtyard::Ready_Layer_Terrain(const _wstring& strLayerTag)
 {
 	CTerrain::DESC tDesc = {};
 
 	tDesc.eLevelID = LEVEL::GAMEPLAY;
 	tDesc.strName = TEXT("Terrain");
+	tDesc.fSpeedPerSec = 30.f;
+	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
 
 	if(FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_") + tDesc.strName,
 		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
@@ -68,7 +70,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Terrain(const _wstring& strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& strLayerTag)
+HRESULT CLevel_Courtyard::Ready_Layer_Camera(const _wstring& strLayerTag)
 {
 	CCamera_Free::DESC tDesc = {};
 
@@ -91,7 +93,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& strLayerTag)
+HRESULT CLevel_Courtyard::Ready_Layer_Monster(const _wstring& strLayerTag)
 {
 	CMonster::DESC tDesc = {};
 
@@ -107,7 +109,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_GamePlay::Ready_Layer_Map(const _wstring& strLayerTag)
+HRESULT CLevel_Courtyard::Ready_Layer_Map(const _wstring& strLayerTag)
 {
 	CCourtyard::DESC tDesc = {};
 
@@ -123,7 +125,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Map(const _wstring& strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_GamePlay::Ready_Layer_Environmnet_Object(const _wstring& strLayerTag)
+HRESULT CLevel_Courtyard::Ready_Layer_Environmnet_Object(const _wstring& strLayerTag)
 {
 	CEnvironment_Object::DESC tDesc = {};
 
@@ -149,13 +151,13 @@ HRESULT CLevel_GamePlay::Ready_Layer_Environmnet_Object(const _wstring& strLayer
 	return S_OK;
 }
 
-CLevel_GamePlay* CLevel_GamePlay::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CLevel_Courtyard* CLevel_Courtyard::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	CLevel_GamePlay* pInstance = new CLevel_GamePlay(pDevice, pContext);
+	CLevel_Courtyard* pInstance = new CLevel_Courtyard(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize()))
 	{
-		MSG_BOX("Failed to Created : CLevel_GamePlay");
+		MSG_BOX("Failed to Created : CLevel_Courtyard");
 		Safe_Release(pInstance);
 	}
 
@@ -163,7 +165,7 @@ CLevel_GamePlay* CLevel_GamePlay::Create(ID3D11Device* pDevice, ID3D11DeviceCont
 }
 
 
-void CLevel_GamePlay::Free()
+void CLevel_Courtyard::Free()
 {
 	__super::Free();
 

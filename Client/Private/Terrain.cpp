@@ -40,6 +40,10 @@ LIFE CTerrain::Update(_float fTimeDelta)
 		_float3     vDst = m_pVIBufferCom->Compute_PickedPosition_World_Snap(m_pTransformCom->Get_WorldMatrix_Float4x4());
 		_float3		vSrc = m_pVIBufferCom->Compute_PickedPosition_Local(m_pTransformCom->Get_WorldMatrix_Inverse());
 		_int a = 10;
+
+#ifdef _CONSOL
+		printf("ÂïÀº ÁöÇü ÁÂÇ¥ : { %.2f, %.2f, %.2f }\n", vTmp.x, vTmp.y, vTmp.z);
+#endif
 	}
 
 	return LIFE::NONE;
