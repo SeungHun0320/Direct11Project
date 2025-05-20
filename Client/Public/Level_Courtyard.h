@@ -16,12 +16,15 @@ public:
 	virtual void Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
-public:
+private:
 	HRESULT Ready_Layer_Terrain(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_Camera(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_Monster(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_Map(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_Environmnet_Object(const _wstring& strLayerTag);
+
+private:
+	virtual HRESULT Load_Map(const _wstring& strMapFileTag) override;
 
 public:
 	static CLevel_Courtyard* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

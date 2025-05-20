@@ -2,9 +2,9 @@
 #include "../Default/framework.h"
 #include <process.h>
 
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
+#include <assimp_Old/Importer.hpp>
+#include <assimp_Old/scene.h>
+#include <assimp_Old/postprocess.h>
 
 #include "MeshExporter_Macro.h"
 #include "MeshExporter_Enum.h"

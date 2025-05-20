@@ -50,6 +50,25 @@ public: /* 본 */
 
 	}BONE;
 
+public: /* 애니메이션 */
+	typedef struct tagChannel
+	{
+		_uint iBoneIndex;
+		_uint iNumKeyFrames;
+		vector<KEYFRAME> KeyFrames;
+	}CHANNEL;
+
+	typedef struct tagAnimation
+	{
+		_float fDuration;
+		_float fTickPerSecond;
+		_float fCurrentTrackPosition;
+
+		vector<CHANNEL> Channels;
+	}ANIMATION;
+
+
+
 private:
 	CLevel_MeshExporter(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual ~CLevel_MeshExporter() = default;
@@ -66,6 +85,7 @@ private:
 	vector<ANIMMESH*>	 m_vecAnimMeshes;
 	vector<MATERIAL*>	 m_vecMaterials;
 	vector<BONE*>        m_vecBones;
+	vector<ANIMATION*>   m_vecAnimations;
 
 private:
 	_int m_iType = {};
@@ -90,6 +110,7 @@ private:
 	HRESULT Ready_Anim_Meshes(_uint iNumMeshes, aiMesh** ppMeshes);
 	HRESULT Ready_Non_Anim_Meshes(_uint iNumMeshes, aiMesh** ppMeshes);
 	HRESULT Ready_Material(const _char* pModelFilePath, _uint iNumMaterial, aiMaterial** ppAIMaterial);
+	HRESULT Ready_Animations(_uint iNumAnimations, aiAnimation** ppAnimations);
 
 private:
 	aiNode* Find_Node_That_UsesMeshIndex(aiNode* pNode, int meshIndex);

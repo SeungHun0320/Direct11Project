@@ -29,6 +29,9 @@ protected:
 protected:
 	_uint					m_iNextLevel{};
 
+protected:
+	virtual HRESULT Load_Map(const _wstring& strMapFileTag) { return S_OK; };
+
 public:	
 	virtual void Free() override;
 

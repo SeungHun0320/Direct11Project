@@ -170,9 +170,12 @@
     <ClInclude Include="..\public\Courtyard.h" />
     <ClInclude Include="..\public\Environment_Object.h" />
     <ClInclude Include="..\public\Grass.h" />
-    <ClInclude Include="..\Public\Level_GamePlay.h" />
+    <ClInclude Include="..\public\Level_Arena.h" />
+    <ClInclude Include="..\Public\Level_Courtyard.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\Public\Level_Logo.h" />
+    <ClInclude Include="..\public\Level_Main.h" />
+    <ClInclude Include="..\public\Level_Shop.h" />
     <ClInclude Include="..\Public\Loader.h" />
     <ClInclude Include="..\public\Main.h" />
     <ClInclude Include="..\public\MainApp.h" />
@@ -212,9 +215,12 @@
     <ClCompile Include="..\private\Courtyard.cpp" />
     <ClCompile Include="..\private\Environment_Object.cpp" />
     <ClCompile Include="..\private\Grass.cpp" />
-    <ClCompile Include="..\Private\Level_GamePlay.cpp" />
+    <ClCompile Include="..\private\Level_Arena.cpp" />
+    <ClCompile Include="..\Private\Level_Courtyard.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />
     <ClCompile Include="..\Private\Level_Logo.cpp" />
+    <ClCompile Include="..\private\Level_Main.cpp" />
+    <ClCompile Include="..\private\Level_Shop.cpp" />
     <ClCompile Include="..\Private\Loader.cpp" />
     <ClCompile Include="..\private\Main.cpp" />
     <ClCompile Include="..\private\MainApp.cpp" />

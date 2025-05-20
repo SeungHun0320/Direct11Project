@@ -16,9 +16,7 @@ public:
 		void Set_Init_Info(_fvector vScale, _fvector vEulerAngle, _fvector vPosition) 
 		{
 			WorldMatrix = XMMatrixIdentity();
-			WorldMatrix *= XMMatrixScalingFromVector(vScale);
-			WorldMatrix *= XMMatrixRotationRollPitchYawFromVector(vEulerAngle);
-			WorldMatrix *= XMMatrixTranslationFromVector(vPosition);
+			XMMatrixAffineTransformation(vScale, XMVectorSet(0.f, 0.f, 0.f, 1.f), vEulerAngle, vPosition);
 		}
 
 	}DESC;

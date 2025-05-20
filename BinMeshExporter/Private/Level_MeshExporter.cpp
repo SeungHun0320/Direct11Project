@@ -251,6 +251,9 @@ HRESULT CLevel_MeshExporter::Read_Anim_Model(const string& strModelPath, const s
 	if (FAILED(Ready_Material(strModelPath.c_str(), pAIScene->mNumMaterials, pAIScene->mMaterials)))
 		return E_FAIL;
 
+	if (FAILED(Ready_Animations(pAIScene->mNumAnimations, pAIScene->mAnimations)))
+		return E_FAIL;
+
 
 	return Exported_Anim_Model(strOutPath);
 
@@ -315,12 +318,48 @@ HRESULT CLevel_MeshExporter::Exported_Anim_Model(const string& strOutPath)
 		}
 	}
 
+	/*------------------------ 애니메이션 ----------------------------*/
+
+	/* 애니메이션 갯수 */
+	_uint iNumAnimation = static_cast<_uint>(m_vecAnimations.size());
+	OutFile.write(reinterpret_cast<const _char*>(&iNumAnimation), sizeof(_uint));
+
+	for (auto& pAnimation : m_vecAnimations)
+	{
+		/* 채널 갯수 */
+		_uint iNumChannels = static_cast<_uint>(pAnimation->Channels.size());
+		OutFile.write(reinterpret_cast<const _char*>(&iNumChannels), sizeof(_uint));
+
+		/* 채널이 들고있는 틱퍼세컨드, 전체 재생 거리 */
+		OutFile.write(reinterpret_cast<const _char*>(&pAnimation->fTickPerSecond), sizeof(_float));
+		OutFile.write(reinterpret_cast<const _char*>(&pAnimation->fDuration), sizeof(_float));
+
+		for (auto& Channel : pAnimation->Channels)
+		{
+			/* 키프레임 갯수, CBone의 뼈 인덱스 */
+			OutFile.write(reinterpret_cast<const _char*>(&Channel.iNumKeyFrames), sizeof(_uint));
+			OutFile.write(reinterpret_cast<const _char*>(&Channel.iBoneIndex), sizeof(_uint));
+
+			for (auto& KeyFrame : Channel.KeyFrames)
+			{
+				/* 크기 자전 이동, 이 상태를 취해야 하는 재생위치, 행렬이 아닌이유는 보간을 해주기 위해서 */
+				OutFile.write(reinterpret_cast<const _char*>(&KeyFrame.vScale), sizeof(_float3));
+				OutFile.write(reinterpret_cast<const _char*>(&KeyFrame.vRotation), sizeof(_float4));
+				OutFile.write(reinterpret_cast<const _char*>(&KeyFrame.vTranslation), sizeof(_float3));
+				OutFile.write(reinterpret_cast<const _char*>(&KeyFrame.fTrackPosition), sizeof(_float));
+			}
+		}
+	}
+
 
 	/* -------------------다 썼으니 삭제----------------------- */
+
+	/* 뼈 */
 	for (auto& pBone : m_vecBones)
 		Safe_Delete(pBone);
 	m_vecBones.clear();
 
+	/* 애님 메쉬 */
 	for (auto& pAnimMesh : m_vecAnimMeshes)
 	{
 		pAnimMesh->BoneIndices.clear();
@@ -331,20 +370,26 @@ HRESULT CLevel_MeshExporter::Exported_Anim_Model(const string& strOutPath)
 	}
 	m_vecAnimMeshes.clear();
 
-	for (auto& pNonAnimMesh : m_vecNonAnimMeshes)
-	{
-		pNonAnimMesh->Vertices.clear();
-		pNonAnimMesh->Indices.clear();
-		Safe_Delete(pNonAnimMesh);
-	}
-	m_vecNonAnimMeshes.clear();
-
+	/* 머테리얼 */
 	for (auto& pMaterial : m_vecMaterials)
 	{
 		pMaterial->vecTextures.clear();
 		Safe_Delete(pMaterial);
 	}
 	m_vecMaterials.clear();
+
+	/* 애니메이션 */
+	for (auto& pAnimation : m_vecAnimations)
+	{
+		for (auto& Channel : pAnimation->Channels)
+		{
+			Channel.KeyFrames.clear();
+		}
+		pAnimation->Channels.clear();
+
+		Safe_Delete(pAnimation);
+	}
+	m_vecAnimations.clear();
 
 	OutFile.close();
 
@@ -572,6 +617,12 @@ HRESULT CLevel_MeshExporter::Ready_Anim_Meshes(_uint iNumMeshes, aiMesh** ppMesh
 			/* 본인덱스 선언해서 */
 			_uint	iBoneIndex = {};
 
+			//for (auto& pBone : m_vecBones)
+			//{
+			//	pBone->strName;
+			//	int a = 0;
+			//}
+
 			/* 본이름이랑 메쉬이름이랑 비교해서 같으면 본인덱스 증가 시키고 */
 			auto	iter = find_if(m_vecBones.begin(), m_vecBones.end(), [&](BONE* pBone)->_bool
 				{
@@ -584,8 +635,27 @@ HRESULT CLevel_MeshExporter::Ready_Anim_Meshes(_uint iNumMeshes, aiMesh** ppMesh
 				});
 
 			/* 본인디시즈에 본인덱스 넣어주기 */
-			if(iter == m_vecBones.end())
+			if (iter == m_vecBones.end())
+			{
+				/* 플레이어 전용,,, 이게 맞냐? */
+				//if(i == 0) // 방패
+				//	pMesh->BoneIndices.push_back(26);
+				//if(i == 1) // 칼
+				//	pMesh->BoneIndices.push_back(43);
+				//if(i == 2)
+				//	pMesh->BoneIndices.push_back(44);
+				//if(i == 3)
+				//	pMesh->BoneIndices.push_back(45);
+				//if(i == 4)
+				//	pMesh->BoneIndices.push_back(46);
+				//if (i == 5)
+				//{
+				//	//pMesh->iNumBones = 
+				//	pMesh->BoneIndices.push_back(52);
+				//}
+			
 				pMesh->BoneIndices.push_back(--iBoneIndex);
+			}
 			else
 				pMesh->BoneIndices.push_back(iBoneIndex);
 
@@ -702,6 +772,84 @@ HRESULT CLevel_MeshExporter::Ready_Material(const _char* pModelFilePath, _uint i
 
 		m_vecMaterials.push_back(pMaterial);
 	}
+
+	return S_OK;
+}
+
+HRESULT CLevel_MeshExporter::Ready_Animations(_uint iNumAnimations, aiAnimation** ppAnimations)
+{
+	m_vecAnimations.reserve(iNumAnimations);
+
+	for (_uint i = 0; i < iNumAnimations; i++)
+	{
+		ANIMATION* pAnimation = new ANIMATION;
+
+		pAnimation->fTickPerSecond = static_cast<_float>(ppAnimations[i]->mTicksPerSecond);
+		pAnimation->fDuration = static_cast<_float>(ppAnimations[i]->mDuration);
+
+		pAnimation->Channels.reserve(ppAnimations[i]->mNumChannels);
+
+		for (_uint j = 0; j < ppAnimations[i]->mNumChannels; j++)
+		{
+			CHANNEL pChannel{};
+
+			pChannel.iNumKeyFrames = max(ppAnimations[i]->mChannels[j]->mNumScalingKeys, ppAnimations[i]->mChannels[j]->mNumRotationKeys);
+			pChannel.iNumKeyFrames = max(ppAnimations[i]->mChannels[j]->mNumPositionKeys, pChannel.iNumKeyFrames);
+
+			_float3 vScale{};
+			_float4 vRotation{};
+			_float3 vTranslation{};
+
+			for (_uint k = 0; k < pChannel.iNumKeyFrames; k++)
+			{
+				KEYFRAME KeyFrame{};
+
+				if (k < ppAnimations[i]->mChannels[j]->mNumScalingKeys)
+				{
+					memcpy(&vScale, &ppAnimations[i]->mChannels[j]->mScalingKeys[k].mValue, sizeof(_float3));
+					KeyFrame.fTrackPosition = static_cast<_float>(ppAnimations[i]->mChannels[j]->mScalingKeys[k].mTime);
+				}
+
+				if (k < ppAnimations[i]->mChannels[j]->mNumRotationKeys)
+				{
+					vRotation.x = ppAnimations[i]->mChannels[j]->mRotationKeys[k].mValue.x;
+					vRotation.y = ppAnimations[i]->mChannels[j]->mRotationKeys[k].mValue.y;
+					vRotation.z = ppAnimations[i]->mChannels[j]->mRotationKeys[k].mValue.z;
+					vRotation.w = ppAnimations[i]->mChannels[j]->mRotationKeys[k].mValue.w;
+					KeyFrame.fTrackPosition = static_cast<_float>(ppAnimations[i]->mChannels[j]->mRotationKeys[k].mTime);
+				}
+
+				if (k < ppAnimations[i]->mChannels[j]->mNumPositionKeys)
+				{
+					memcpy(&vTranslation, &ppAnimations[i]->mChannels[j]->mPositionKeys[k].mValue, sizeof(_float3));
+					KeyFrame.fTrackPosition = static_cast<_float>(ppAnimations[i]->mChannels[j]->mPositionKeys[k].mTime);
+				}
+
+				KeyFrame.vScale = vScale;
+				KeyFrame.vRotation = vRotation;
+				KeyFrame.vTranslation = vTranslation;
+
+				pChannel.KeyFrames.push_back(KeyFrame);
+			}
+
+			auto	iter = find_if(m_vecBones.begin(), m_vecBones.end(), [&](BONE* pBone)->_bool
+				{
+					if (pBone->strName == ppAnimations[i]->mChannels[j]->mNodeName.data)
+						return true;
+
+					++pChannel.iBoneIndex;
+
+					return false;
+				});
+
+
+			pAnimation->Channels.push_back(pChannel);
+		}
+
+
+		m_vecAnimations.push_back(pAnimation);
+	}
+
 
 	return S_OK;
 }

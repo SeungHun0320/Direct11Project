@@ -26,6 +26,9 @@ public:
 	virtual HRESULT Render();
 
 private:
+	_uint m_iSoonseo = {};
+
+private:
 	virtual HRESULT Ready_Components(void* pArg) override;
 
 public:

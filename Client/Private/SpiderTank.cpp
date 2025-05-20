@@ -22,6 +22,8 @@ HRESULT CSpiderTank::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
+	m_pModelCom->Set_Animation(0, true);
+
 	return S_OK;
 }
 
@@ -33,6 +35,14 @@ void CSpiderTank::Priority_Update(_float fTimeDelta)
 LIFE CSpiderTank::Update(_float fTimeDelta)
 {
 	m_pModelCom->Play_Animation(fTimeDelta);
+	
+	if (KEY_DOWN(DIK_UP))
+	{
+		m_pModelCom->Set_Animation(++m_iSoonseo, true);
+		if (34 <= m_iSoonseo)
+			m_iSoonseo = 0;
+	}
+
 
 	return __super::Update(fTimeDelta);
 }
@@ -63,9 +73,6 @@ HRESULT CSpiderTank::Render()
 
 		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TEX_TYPE::DIFFUSE, 0)))
 			return E_FAIL;
-
-		if (3 == i)
-			int a = 0;
 
 		m_pModelCom->Bind_Bone_Matrices(m_pShaderCom, "g_BoneMatrices", i);
 

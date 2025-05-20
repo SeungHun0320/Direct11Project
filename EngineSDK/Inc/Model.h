@@ -15,6 +15,11 @@ public:
 		return m_iNumMeshes;
 	}
 
+	void Set_Animation(_uint iIndex, _bool isLoop = true) {
+		m_iCurrentAnimIndex = iIndex;
+		m_isLoop = isLoop;
+	}
+
 	HRESULT Bind_Material(class CShader* pShader, const _char* pConstantName, _uint iMeshIndex, TEX_TYPE eType, _uint iTextureIndex = 0);
 	HRESULT Bind_Bone_Matrices(class CShader* pShader, const _char* pConstantName, _uint iMeshIndex);
 
@@ -51,11 +56,19 @@ private:
 	/* 본들을 담는 벡터 */
 	vector<class CBone*>			m_Bones;
 
+	/* 애니메이션을 루프 돌릴 것인지, 현재 애니메이션 인덱스가 몇인지 */
+	_bool						m_isLoop{};
+	_uint						m_iCurrentAnimIndex = { };
+	/* 애니메이션 갯수, 애니메이션을 담는 벡터 */
+	_uint						m_iNumAnimations = {};
+	vector<class CAnimation*>	m_Animations;
+
 private:
 	HRESULT Ready_Bones(ifstream& _InFile);
 	HRESULT Ready_NonAnim_Meshes(ifstream& _InFile);
 	HRESULT Ready_Anim_Meshes(ifstream& _InFile);
 	HRESULT Ready_Material(ifstream& _InFile);
+	HRESULT Ready_Animations(ifstream& _InFile);
 
 public:
 	static CModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, MODEL eType, const _wstring& strModelFilePath, _fmatrix PreTransformMatrix = XMMatrixIdentity());

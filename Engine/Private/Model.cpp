@@ -5,6 +5,7 @@
 #include "Bone.h"
 #include "Mesh.h"
 #include "Material.h"
+#include "Animation.h"
 
 CModel::CModel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : CComponent{ pDevice, pContext }
@@ -22,6 +23,8 @@ CModel::CModel(const CModel& Prototype)
     , m_eType{ Prototype.m_eType }
     , m_PreTransformMatrix{ Prototype.m_PreTransformMatrix }
     , m_Bones{ Prototype.m_Bones }
+    , m_iNumAnimations{ Prototype.m_iNumAnimations }
+    , m_Animations{ Prototype.m_Animations }
     , m_pGameInstance{ CGameInstance::Get_Instance() }
 {
     Safe_AddRef(m_pGameInstance);
@@ -34,6 +37,9 @@ CModel::CModel(const CModel& Prototype)
 
     for (auto& pMaterial : m_Materials)
         Safe_AddRef(pMaterial);
+
+    for (auto& pAnimation : m_Animations)
+        Safe_AddRef(pAnimation);
 }
 
 HRESULT CModel::Bind_Material(CShader* pShader, const _char* pConstantName, _uint iMeshIndex, TEX_TYPE eType, _uint iTextureIndex)
@@ -80,6 +86,12 @@ HRESULT CModel::Initialize_Prototype(MODEL eType, const _wstring& strModelFilePa
     if (FAILED(Ready_Material(InFile)))
         return E_FAIL;
 
+    if (m_eType == MODEL::ANIM)
+    {
+        if (FAILED(Ready_Animations(InFile)))
+            return E_FAIL;
+    }
+
     InFile.close();
 
     return S_OK;
@@ -101,7 +113,7 @@ HRESULT CModel::Render(_uint iMeshIndex)
 HRESULT CModel::Play_Animation(_float fTimeDelta)
 {
     /* 1. ㅎ녀재 애니메이션에 맞는 뼈의 상태를 읽어와서 뼈의 TrnasformationMatrix를 갱신해준다. */
-
+    m_Animations[m_iCurrentAnimIndex]->Update_Bones(fTimeDelta, m_Bones, m_isLoop);
 
     /* 2. 전체 뼐르 순회하면서 뼈들의 ColmbinedTransformationMatixf를 부모에서부터 자식으로 갱신해주낟. */
     for (auto& pBone : m_Bones)
@@ -309,6 +321,29 @@ HRESULT CModel::Ready_Material(ifstream& _InFile)
     return S_OK;
 }
 
+HRESULT CModel::Ready_Animations(ifstream& _InFile)
+{
+    /* 이쪽에서 파일입출력해서 갯수를 먼저 받아오기  */
+    _InFile.read(reinterpret_cast<_char*>(&m_iNumAnimations), sizeof(_uint));
+    m_Animations.reserve(m_iNumAnimations);
+
+    for (_uint i = 0; i < m_iNumAnimations; i++)
+    {
+        CAnimation::ANIMATION tDesc{};
+        _InFile.read(reinterpret_cast<_char*>(&tDesc.iNumChannels), sizeof(_uint));
+        _InFile.read(reinterpret_cast<_char*>(&tDesc.fTickPerSecond), sizeof(_float));
+        _InFile.read(reinterpret_cast<_char*>(&tDesc.fDuration), sizeof(_float));
+
+        CAnimation* pAnimation = CAnimation::Create(&tDesc, _InFile, m_Bones);
+        if (nullptr == pAnimation)
+            return E_FAIL;
+
+        m_Animations.push_back(pAnimation);
+    }
+
+    return S_OK;
+}
+
 CModel* CModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, MODEL eType, const _wstring& strModelFilePath, _fmatrix PreTransformMatrix)
 {
     CModel* pInstance = new CModel(pDevice, pContext);
@@ -351,6 +386,11 @@ void CModel::Free()
 
     for (auto& pMaterial : m_Materials)
         Safe_Release(pMaterial);
+    m_Materials.clear();
+
+    for (auto& pAnimation : m_Animations)
+        Safe_Release(pAnimation);
+    m_Animations.clear();
 
     m_Materials.clear();
 }

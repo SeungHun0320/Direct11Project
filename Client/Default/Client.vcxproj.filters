@@ -28,9 +28,6 @@
     <Filter Include="01.Levels\Loading\Loader">
       <UniqueIdentifier>{09b33f93-851a-4e38-8e8a-83626e4878cb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Levels\GamePlay">
-      <UniqueIdentifier>{a3f64273-696d-4106-b58f-efef5e5d53fe}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects">
       <UniqueIdentifier>{20fdda87-6d06-4fb1-94f1-5b9d3e443aa5}</UniqueIdentifier>
     </Filter>
@@ -162,9 +159,6 @@
     <ClInclude Include="..\Public\Client_Enum.h">
       <Filter>99.Defines</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Level_GamePlay.h">
-      <Filter>01.Levels\GamePlay</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Level_Loading.h">
       <Filter>01.Levels\Loading</Filter>
     </ClInclude>
@@ -273,6 +267,18 @@
     <ClInclude Include="..\public\Shop.h">
       <Filter>02.GameObjects\04.Map\03.Shop</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Level_Courtyard.h">
+      <Filter>01.Levels\00.Courtyard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Level_Main.h">
+      <Filter>01.Levels\01.Main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Level_Arena.h">
+      <Filter>01.Levels\02.Arena</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Level_Shop.h">
+      <Filter>01.Levels\03.Shop</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -290,9 +296,6 @@
   <ItemGroup>
     <ClCompile Include="Client.cpp">
       <Filter>98.Default</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Level_GamePlay.cpp">
-      <Filter>01.Levels\GamePlay</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Loading.cpp">
       <Filter>01.Levels\Loading</Filter>
@@ -392,6 +395,18 @@
     </ClCompile>
     <ClCompile Include="..\private\Shop.cpp">
       <Filter>02.GameObjects\04.Map\03.Shop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Courtyard.cpp">
+      <Filter>01.Levels\00.Courtyard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Level_Main.cpp">
+      <Filter>01.Levels\01.Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Level_Arena.cpp">
+      <Filter>01.Levels\02.Arena</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Level_Shop.cpp">
+      <Filter>01.Levels\03.Shop</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

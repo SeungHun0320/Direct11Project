@@ -1,4 +1,4 @@
-#include "Level_GamePlay.h"
+#include "Level_Courtyard.h"
 #include "GameInstance.h"
 #include "Level_Loading.h"
 
@@ -18,8 +18,8 @@ CLevel_Courtyard::CLevel_Courtyard(ID3D11Device* pDevice, ID3D11DeviceContext* p
 
 HRESULT CLevel_Courtyard::Initialize()
 {
-	//if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
-	//	return E_FAIL;
+	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
+		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
@@ -148,6 +148,11 @@ HRESULT CLevel_Courtyard::Ready_Layer_Environmnet_Object(const _wstring& strLaye
 	//	ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
 	//	return E_FAIL;
 
+	return S_OK;
+}
+
+HRESULT CLevel_Courtyard::Load_Map(const _wstring& strMapFileTag)
+{
 	return S_OK;
 }
 
