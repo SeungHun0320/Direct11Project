@@ -17,10 +17,6 @@ HRESULT CBone::Initialize(const BONE* pDesc)
 	return S_OK;
 }
 
-void CBone::Update_TransformationMatrix(_fmatrix TransformationMartix)
-{
-}
-
 void CBone::Update_CombinedTransformationMatrix(const vector<CBone*>& Bones, _fmatrix PreTransformMatrix)
 {
 	/* 만약 부모본인덱스가 -1이라면? 부모 본이 없다는 뜻 */
@@ -47,6 +43,11 @@ CBone* CBone::Create(const BONE* pDesc)
 	}
 
 	return pInstance;
+}
+
+CBone* CBone::Clone()
+{
+	return new CBone(*this);
 }
 
 void CBone::Free()

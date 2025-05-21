@@ -82,7 +82,7 @@ _bool CPicking::Picking_InLocal(_float3& vPickedPos, const _float3& vPointA, con
 
 _bool CPicking::Picking_InWorldEx(_float3& vPickedPos, _float& fDist, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC)
 {
-	_float		fDistance{};
+	_float		fDistance = { FLT_MAX };
 
 	_bool		isPicked = TriangleTests::Intersects(XMLoadFloat3(&m_vMousePos), XMLoadFloat3(&m_vMouseRay), XMLoadFloat3(&vPointA), XMLoadFloat3(&vPointB), XMLoadFloat3(&vPointC), fDistance);
 	/* 월드에 있는 마우스와 마우스 방향으로 피킹된 위치를 구해줌 */
@@ -90,6 +90,10 @@ _bool CPicking::Picking_InWorldEx(_float3& vPickedPos, _float& fDist, const _flo
 	{
 		XMStoreFloat3(&vPickedPos, XMLoadFloat3(&m_vMousePos) + XMLoadFloat3(&m_vMouseRay) * fDistance);
 		fDist = fDistance;
+	}
+	else
+	{
+		fDist = FLT_MAX;
 	}
 
 	return isPicked;

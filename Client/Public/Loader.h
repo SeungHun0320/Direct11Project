@@ -43,7 +43,10 @@ private:
 
 public:
 	HRESULT Loading_For_Logo();
-	HRESULT Loading_For_GamePlay();
+	HRESULT Loading_For_Courtyard();
+	HRESULT Loading_For_Main();
+	HRESULT Loading_For_Arena();
+	HRESULT Loading_For_Shop();
 	HRESULT Loading_For_Tools();
 
 

@@ -32,7 +32,6 @@ public:
 
 public:
 	HRESULT Initialize(const BONE* pDesc);
-	void Update_TransformationMatrix(_fmatrix TransformationMartix);
 	void Update_CombinedTransformationMatrix(const vector<CBone*>& Bones, _fmatrix PreTransformMatrix);
 
 private:
@@ -48,6 +47,7 @@ private:
 
 public:
 	static CBone* Create(const BONE* pDesc);
+	CBone* Clone();
 	virtual void Free() override;
 };
 

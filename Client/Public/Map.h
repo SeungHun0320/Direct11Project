@@ -23,7 +23,6 @@ protected:
 
 public:
 	_float3 Get_PickedPos_World();
-	_float3 Get_PickedPos_World_Snap();
 	_float3 Get_PickedPos_Local();
 
 public:
@@ -45,7 +44,7 @@ protected:
 	virtual HRESULT Ready_Components(void* pArg);
 
 public:
-	virtual CGameObject* Clone(void* pArg) = 0;
+	virtual CGameObject* Clone(void* pArg) PURE;
 	virtual void Free()override;
 };
 

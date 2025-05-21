@@ -2,7 +2,10 @@
 
 
 #include "Level_Courtyard.h"
+#include "Level_Arena.h"
 #include "Level_Tools.h"
+#include "Level_Shop.h"
+#include "Level_Main.h"
 #include "Level_Logo.h"
 #include "Loader.h"
 
@@ -44,8 +47,17 @@ void CLevel_Loading::Update(_float fTimeDelta)
 			case LEVEL::LOGO:
 				pLevel = CLevel_Logo::Create(m_pDevice, m_pContext);
 				break;
-			case LEVEL::GAMEPLAY:
+			case LEVEL::COURTYARD:
 				pLevel = CLevel_Courtyard::Create(m_pDevice, m_pContext);
+				break;
+			case LEVEL::MAIN:
+				pLevel = CLevel_Main::Create(m_pDevice, m_pContext);
+				break;
+			case LEVEL::ARENA:
+				pLevel = CLevel_Arena::Create(m_pDevice, m_pContext);
+				break;
+			case LEVEL::SHOP:
+				pLevel = CLevel_Shop::Create(m_pDevice, m_pContext);
 				break;
 			case LEVEL::TOOLS:
 				pLevel = CLevel_Tools::Create(m_pDevice, m_pContext);

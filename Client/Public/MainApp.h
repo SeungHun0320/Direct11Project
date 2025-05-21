@@ -27,6 +27,7 @@ private:
 
 private:
 	HRESULT Ready_Prototype_Component();
+	HRESULT Ready_Prototype_Object();
 	HRESULT Start_Level(LEVEL eStartLevel);
 
 public:

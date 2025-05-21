@@ -55,7 +55,7 @@ protected:
 	void*						m_pIndices = { nullptr };
 
 public:
-	virtual CComponent* Clone(void* pArg) = 0;
+	virtual CComponent* Clone(void* pArg)PURE;
 	virtual void Free() override;
 
 };

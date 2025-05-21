@@ -17,11 +17,9 @@ public:
 	virtual HRESULT Render() override;
 
 private:
-	HRESULT Ready_Layer_Terrain(const _wstring& strLayerTag);
+	HRESULT Ready_Layer_Pawn(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_Camera(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_Monster(const _wstring& strLayerTag);
-	HRESULT Ready_Layer_Map(const _wstring& strLayerTag);
-	HRESULT Ready_Layer_Environmnet_Object(const _wstring& strLayerTag);
 
 private:
 	virtual HRESULT Load_Map(const _wstring& strMapFileTag) override;

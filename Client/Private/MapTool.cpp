@@ -5,6 +5,7 @@
 #include "Arena.h"
 #include "Camera_Free.h"
 #include "Bush.h"
+#include "Chest.h"
 
 #define MAX_SCALE 100.f
 #define MIN_ANGLE -180.f
@@ -51,7 +52,7 @@ void CMapTool::Update(_float fTimeDelta)
 	{
 		if (MOUSE_DOWN(DIMK::LBUTTON))
 		{
-			CGameObject* pGameObject = m_pGameInstance->Find_Picked_Object(ENUM_CLASS(LEVEL::TOOLS), TEXT("Layer_MapTool_Object"));
+			CGameObject* pGameObject = m_pGameInstance->Find_Picked_Object(ENUM_CLASS(LEVEL::TOOLS), m_strLayerTag);
 			if (nullptr == pGameObject)
 				return;
 
@@ -65,10 +66,10 @@ void CMapTool::Update(_float fTimeDelta)
 
 		if (MOUSE_DOWN(DIMK::RBUTTON))
 		{
-			CGameObject* pGameObject = m_pGameInstance->Find_Picked_Object(ENUM_CLASS(LEVEL::TOOLS), TEXT("Layer_MapTool_Object"));
+			CGameObject* pGameObject = m_pGameInstance->Find_Picked_Object(ENUM_CLASS(LEVEL::TOOLS), m_strLayerTag);
 			if (nullptr == pGameObject)
 				return;
-
+			
 			pGameObject->Set_Dead(true);
 		}
 
@@ -77,24 +78,52 @@ void CMapTool::Update(_float fTimeDelta)
 	if (m_bMode[CREATE] && MOUSE_DOWN(DIMK::LBUTTON))
 	{
 		_float3 vInitPos = m_pMap->Get_PickedPos_World();
+		XMStoreFloat3(&vInitPos, XMVectorRound(XMLoadFloat3(&vInitPos)));
 
-		CEnvironment_Object::DESC tDesc = {};
-		tDesc.eLevelID = LEVEL::TOOLS;
-		tDesc.fRotationPerSec = 0.f;
-		tDesc.fSpeedPerSec = 0.f;
-		tDesc.strName = m_strName;
-		tDesc.WorldMatrix = XMMatrixTranslation(vInitPos.x, vInitPos.y, vInitPos.z);
+		if (m_bLists[ENVIRONMENT])
+		{
+			CEnvironment_Object::DESC tDesc = {};
+			tDesc.eLevelID = LEVEL::TOOLS;
+			tDesc.fRotationPerSec = 0.f;
+			tDesc.fSpeedPerSec = 0.f;
+			tDesc.strName = m_strName;
+			tDesc.WorldMatrix = XMMatrixTranslation(vInitPos.x, vInitPos.y, vInitPos.z);
 
-		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_") + tDesc.strName,
-			ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_MapTool_Object"), &tDesc)))
-			return;
+			if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_") + tDesc.strName,
+				ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Environment_Object"), &tDesc)))
+				return;
+		}
+		else if (m_bLists[ITEM])
+		{
+			// 여기서 아이템 Desc 만들어서 생성
+		}
+		else if (m_bLists[CHEST])
+		{
+			// 여기서 상자 Desc 만들어서 생성 (상자 자체는 환경오브젝트로 가되, 애니메이션도 있고 뭐 이것저것 있을 예정)
+			CChest::DESC tDesc = {};
+			tDesc.eLevelID = LEVEL::TOOLS;
+			tDesc.fRotationPerSec = 0.f;
+			tDesc.fSpeedPerSec = 0.f;
+			tDesc.strName = m_strName;
+			tDesc.WorldMatrix = XMMatrixTranslation(vInitPos.x, vInitPos.y, vInitPos.z);
+
+			// 프로토타입이랑 모델은 이미 로더쪽에서 다 만든상태고, 여기서 클릭했을 때 생성되게 했어요
+			
+			// 여기서 아이템 Desc 만들어서 생성
+			if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_") + tDesc.strName,
+				ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Chest"), &tDesc)))
+				return;
+		}
+		else if (m_bLists[ENEMY])
+		{
+			// 여기서 적 Desc 만들어서 생성
+		}
 	}
 }
 
 HRESULT CMapTool::Render()
 {
 	MapTool();
-	On_Modify_Object();
 
 	return S_OK;
 }
@@ -133,31 +162,40 @@ HRESULT CMapTool::MapTool()
 	{
 		if (ImGui::BeginTabItem(u8"환경"))
 		{
+			Seleted_List(ENVIRONMENT);
+			m_strLayerTag = TEXT("Layer_Environment_Object");
 			Environment_ListBox();
 
 			ImGui::EndTabItem();
 		}
 		if (ImGui::BeginTabItem(u8"아이템"))
 		{
+			Seleted_List(ITEM);
+			m_strLayerTag = TEXT("Layer_Item");
 			Item_ListBox();
 
 			ImGui::EndTabItem();
 		}
 		if (ImGui::BeginTabItem(u8"상자"))
 		{
+			Seleted_List(CHEST);
+			m_strLayerTag = TEXT("Layer_Chest");
 			Chest_ListBox();
 
 			ImGui::EndTabItem();
 		}
 		if (ImGui::BeginTabItem(u8"적"))
 		{
+			Seleted_List(ENEMY);
+			m_strLayerTag = TEXT("Layer_Monster");
 			Monster_ListBox();
 
 			ImGui::EndTabItem();
 		}
 	}
-	ImGui::SameLine();
 	ImGui::EndTabBar();
+	On_Modify_Object();
+
 
 	ImGui::End();
 
@@ -293,7 +331,6 @@ HRESULT CMapTool::On_Modify_Object()
 {
 	if (nullptr == m_pModifyObject)
 		return E_FAIL;
-	ImGui::Begin(u8"수정 창");
 
 	CTransform* pTransform = dynamic_cast<CTransform*>(m_pModifyObject->Get_Component(TEXT("Com_Transform")));
 	if (nullptr == pTransform)
@@ -308,18 +345,43 @@ HRESULT CMapTool::On_Modify_Object()
 
 	ImGuizmo::SetRect(0, 0, ImGui::GetIO().DisplaySize.x, ImGui::GetIO().DisplaySize.y);
 
+	_float fSnapValue[3] = { 0.25f, 0.25f, 0.25f };
+
 	if (ImGuizmo::Manipulate(
 		reinterpret_cast<_float*>(&ViewMatrix),
 		reinterpret_cast<_float*>(&ProjMatrix),
 		m_eGizmoOp,
 		ImGuizmo::LOCAL,
-		reinterpret_cast<_float*>(pTransform->Get_WorldMatrix_Float4x4())))
+		reinterpret_cast<_float*>(pTransform->Get_WorldMatrix_Float4x4()),
+		nullptr,
+		fSnapValue))
 	{
 
 	}
 
+	Adj_Scale_Angle();
 
-	ImGui::End();
+	_vector vPosition{};
+	_vector vScale{};
+	_vector vQuat{};
+	_vector vTmp{};
+
+	XMMatrixDecompose(&vScale, &vTmp, &vPosition, pTransform->Get_WorldMatrix());
+
+	//_float3
+
+	if (m_bFirst)
+	{
+		m_fRotationPerSec = pTransform->Get_RotationPerSec();
+		m_fSpeedPerSec = pTransform->Get_SpeedPerSec();
+		XMStoreFloat3(&m_vScale, vScale);
+		XMStoreFloat3(&m_vInitPos, vPosition);
+		m_bFirst = false;
+	}
+	vQuat = XMQuaternionRotationRollPitchYaw(XMConvertToDegrees(m_vAngle.x), XMConvertToDegrees(m_vAngle.y), XMConvertToDegrees(m_vAngle.z));
+
+	pTransform->Set_Matrix(XMMatrixAffineTransformation(XMLoadFloat3(&m_vScale), XMVectorSet(0.f, 0.f, 0.f, 1.f), vQuat, vPosition));
+
 	return S_OK;
 }
 
@@ -375,6 +437,14 @@ void CMapTool::Adj_Scale_Angle()
 
 }
 
+void CMapTool::Seleted_List(LIST eList)
+{
+	for (_uint i = 0; i < LIST_END; i++)
+		m_bLists[i] = false;
+
+	m_bLists[eList] = true;
+}
+
 HRESULT CMapTool::Environment_ListBox()
 {
 	static _int iCurrentObjIndex = { -1 }, iOldObjType = { -1 };
@@ -409,8 +479,6 @@ HRESULT CMapTool::Environment_ListBox()
 		break;
 	}
 
-	Adj_Scale_Angle();
-
 	return S_OK;
 }
 
@@ -421,11 +489,32 @@ HRESULT CMapTool::Item_ListBox()
 
 HRESULT CMapTool::Chest_ListBox()
 {
+	static _int iCurrentObjIndex = { -1 }, iOldObjType = { -1 };
+	const _char* szChests[] =
+	{ u8"돈 상자", u8"아이템 상자"};
+
+	ImGui::ListBox(u8"종류", &iCurrentObjIndex, szChests, IM_ARRAYSIZE(szChests));
+
+	switch (iCurrentObjIndex)
+	{
+	case CHEST_TYPE::CT_MONEY:
+		break;
+
+	case CHEST_TYPE::CT_ITEM:
+		break;
+
+	default:
+		break;
+	}
+
+	m_strName = TEXT("Chest");
+
 	return S_OK;
 }
 
 HRESULT CMapTool::Monster_ListBox()
 {
+
 	return S_OK;
 }
 
@@ -499,14 +588,49 @@ HRESULT CMapTool::Save_Map(const _string& strMapPath)
 			_float4x4 WorldMatrix  = *pTransform->Get_WorldMatrix_Float4x4();
 			_float fSpeedPerSec    = pTransform->Get_SpeedPerSec();
 			_float fRotationPerSec = pTransform->Get_RotationPerSec();
-			_wstring strPrototype  =  pMap->Get_Name();
-			iSaveLength = static_cast<_int>(strPrototype.length());
+			_wstring strName	   =  pMap->Get_Name();
+			iSaveLength = static_cast<_int>(strName.length());
 
+			OutFile.write(reinterpret_cast<const _char*>(&iSaveLength), sizeof(_int));
+			OutFile.write(reinterpret_cast<const _char*>(strName.c_str()), sizeof(_tchar) * iSaveLength);
 			OutFile.write(reinterpret_cast<const _char*>(&WorldMatrix),		sizeof(_float4x4));
 			OutFile.write(reinterpret_cast<const _char*>(&fSpeedPerSec),	sizeof(_float));
 			OutFile.write(reinterpret_cast<const _char*>(&fRotationPerSec), sizeof(_float));
-			OutFile.write(reinterpret_cast<const _char*>(&iSaveLength),		sizeof(_int));
+
+		}
+	}
+	list<CGameObject*>* pObjectList = m_pGameInstance->Find_ObjectList(ENUM_CLASS(LEVEL::TOOLS), TEXT("Layer_MapTool_Object"));
+	if (nullptr == pObjectList)
+	{
+		/* SR때 이거 하나 추가 안해서 고생함,, */
+		OutFile.write(reinterpret_cast<const _char*>(0), sizeof(_uint));
+	}
+	else
+	{
+		/* 오브젝트 갯수 저장 */
+		_uint iNumObject = static_cast<_uint>(pObjectList->size());
+		OutFile.write(reinterpret_cast<const _char*>(&iNumObject), sizeof(_uint));
+
+		for (auto& pObject : *pObjectList)
+		{
+			CTransform* pTransform = static_cast<CTransform*>(pObject->Get_Component(TEXT("Com_Transform")));
+			if (nullptr == pTransform)
+				return E_FAIL;
+
+			/* 문자열 저장용 */
+			_int iSaveLength = {};
+			_float4x4 WorldMatrix = *pTransform->Get_WorldMatrix_Float4x4();
+			_float fSpeedPerSec = pTransform->Get_SpeedPerSec();
+			_float fRotationPerSec = pTransform->Get_RotationPerSec();
+			_wstring strPrototype = pObject->Get_Name();
+			iSaveLength = static_cast<_int>(strPrototype.length());
+
+			OutFile.write(reinterpret_cast<const _char*>(&iSaveLength), sizeof(_int));
 			OutFile.write(reinterpret_cast<const _char*>(strPrototype.c_str()), sizeof(_tchar) * iSaveLength);
+			OutFile.write(reinterpret_cast<const _char*>(&WorldMatrix), sizeof(_float4x4));
+			OutFile.write(reinterpret_cast<const _char*>(&fSpeedPerSec), sizeof(_float));
+			OutFile.write(reinterpret_cast<const _char*>(&fRotationPerSec), sizeof(_float));
+
 		}
 	}
 
@@ -547,17 +671,42 @@ HRESULT CMapTool::Load_Map(const _string& strMapPath)
 		CMap::DESC tDesc{};
 		tDesc.eLevelID = LEVEL::TOOLS;
 
-		LoadFile.read(reinterpret_cast<_char*>(&WorldMatrix), sizeof(_float4x4));
-		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fSpeedPerSec), sizeof(_float));
-		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fRotationPerSec), sizeof(_float));
 		LoadFile.read(reinterpret_cast<_char*>(&iLoadLength), sizeof(_int));
 		tDesc.strName.resize(iLoadLength);
 		LoadFile.read(reinterpret_cast<_char*>(tDesc.strName.data()), sizeof(_tchar) * iLoadLength);
+		LoadFile.read(reinterpret_cast<_char*>(&WorldMatrix), sizeof(_float4x4));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fSpeedPerSec), sizeof(_float));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fRotationPerSec), sizeof(_float));
 
 		tDesc.WorldMatrix = XMLoadFloat4x4(&WorldMatrix);
 
 		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_") + tDesc.strName,
 			ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Map"), &tDesc)))
+			return E_FAIL;
+	}
+
+	_uint iNumObjects{};
+
+	LoadFile.read(reinterpret_cast<_char*>(&iNumObjects), sizeof(_uint));
+	for (_uint i = 0; i < iNumObjects; i++)
+	{
+		_int iLoadLength{};
+		_float4x4 WorldMatrix{};
+
+		CEnvironment_Object::DESC tDesc{};
+		tDesc.eLevelID = LEVEL::TOOLS;
+
+		LoadFile.read(reinterpret_cast<_char*>(&iLoadLength), sizeof(_int));
+		tDesc.strName.resize(iLoadLength);
+		LoadFile.read(reinterpret_cast<_char*>(tDesc.strName.data()), sizeof(_tchar) * iLoadLength);
+		LoadFile.read(reinterpret_cast<_char*>(&WorldMatrix), sizeof(_float4x4));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fSpeedPerSec), sizeof(_float));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fRotationPerSec), sizeof(_float));
+
+		tDesc.WorldMatrix = XMLoadFloat4x4(&WorldMatrix);
+
+		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_") + tDesc.strName,
+			ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_MapTool_Object"), &tDesc)))
 			return E_FAIL;
 	}
 

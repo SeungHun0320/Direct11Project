@@ -234,12 +234,13 @@ _float3 CVIBuffer::Compute_PickedPosition_WorldEx(const _float4x4* pWorldMatrix,
 		XMStoreFloat3(&v2, XMVector3TransformCoord(XMLoadFloat3(&m_pVertexPositions[iIndices[2]]), XMLoadFloat4x4(pWorldMatrix)));
 
 		_float3 vPickedCheckPos = {};
+		_float fCheckDist{};
 
-		if (true == m_pGameInstance->Picking_InWorldEx(vPickedCheckPos, fDist, v0, v1, v2))
+		if (true == m_pGameInstance->Picking_InWorldEx(vPickedCheckPos, fCheckDist, v0, v1, v2))
 		{
-			if (fDist < fMinDist)
+			if (fCheckDist < fMinDist)
 			{
-				fMinDist = fDist;
+				fMinDist = fCheckDist;
 				vPickedPos = vPickedCheckPos;
 				bHit = true;
 			}
@@ -249,6 +250,7 @@ _float3 CVIBuffer::Compute_PickedPosition_WorldEx(const _float4x4* pWorldMatrix,
 
 	if (bHit)
 	{
+		fDist = fMinDist;
 		return vPickedPos;
 	}
 	else

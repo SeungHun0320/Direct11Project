@@ -21,14 +21,13 @@ private:
 
 public:
 	HRESULT Initialize(const CHANNEL* pDesc, const vector<class CBone*>& Bones);
-	void Update_TransformationMatrix(_float fCurrentTrackPosition, const vector<class CBone*>& Bones);
+	void Update_TransformationMatrix(_uint* pCurrentKeyFrameIndex, _float fCurrentTrackPosition, const vector<class CBone*>& Bones);
 
 private:
 	_uint				m_iNumKeyFrames = {};
 	vector<KEYFRAME>	m_KeyFrames;
 
 	_uint				m_iBoneIndex = {};
-	_uint				m_iCurrentKeyFrameIndex = {};
 
 public:
 	static CChannel* Create(const CHANNEL* pDesc, const vector<class CBone*>& Bones);

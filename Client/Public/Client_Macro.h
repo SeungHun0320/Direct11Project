@@ -2,6 +2,8 @@
 
 #define _VUp		_float3(0.f,1.f,0.f)
 
+#define GET_PLAYER m_pGameInstance->Find_Object(ENUM_CLASS(LEVEL::STATIC), TEXT("Layer_Pawn"))
+
 #define KEY_DOWN		m_pGameInstance->Key_Down
 #define	KEY_PRESSING	m_pGameInstance->Key_Pressing
 #define KEY_UP			m_pGameInstance->Key_Up

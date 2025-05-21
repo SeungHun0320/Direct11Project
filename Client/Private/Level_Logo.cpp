@@ -28,7 +28,7 @@ void CLevel_Logo::Update(_float fTimeDelta)
 	if (KEY_DOWN(DIK_RETURN))
 	{
 		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
-			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::GAMEPLAY))))
+			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::COURTYARD))))
 			return;
 	}
 	else if (KEY_DOWN(DIK_RSHIFT))

@@ -44,6 +44,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <EnableUnitySupport>false</EnableUnitySupport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -51,6 +52,7 @@
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <EnableUnitySupport>false</EnableUnitySupport>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -159,11 +161,13 @@
   <ItemGroup>
     <ClInclude Include="..\public\Arena.h" />
     <ClInclude Include="..\Public\BackGround.h" />
+    <ClInclude Include="..\public\Blob.h" />
     <ClInclude Include="..\public\Boss.h" />
     <ClInclude Include="..\public\Bush.h" />
     <ClInclude Include="..\public\Button.h" />
     <ClInclude Include="..\public\Camera_Free.h" />
     <ClInclude Include="..\public\CheckPoint.h" />
+    <ClInclude Include="..\public\Chest.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Client_Enum.h" />
     <ClInclude Include="..\Public\Client_Macro.h" />
@@ -183,6 +187,8 @@
     <ClInclude Include="..\public\Map.h" />
     <ClInclude Include="..\public\MapTool.h" />
     <ClInclude Include="..\public\Monster.h" />
+    <ClInclude Include="..\public\Pawn.h" />
+    <ClInclude Include="..\public\Player.h" />
     <ClInclude Include="..\public\Shop.h" />
     <ClInclude Include="..\public\SpiderTank.h" />
     <ClInclude Include="..\public\Terrain.h" />
@@ -207,11 +213,13 @@
   <ItemGroup>
     <ClCompile Include="..\private\Arena.cpp" />
     <ClCompile Include="..\Private\BackGround.cpp" />
+    <ClCompile Include="..\private\Blob.cpp" />
     <ClCompile Include="..\private\Boss.cpp" />
     <ClCompile Include="..\private\Bush.cpp" />
     <ClCompile Include="..\private\Button.cpp" />
     <ClCompile Include="..\private\Camera_Free.cpp" />
     <ClCompile Include="..\private\CheckPoint.cpp" />
+    <ClCompile Include="..\private\Chest.cpp" />
     <ClCompile Include="..\private\Courtyard.cpp" />
     <ClCompile Include="..\private\Environment_Object.cpp" />
     <ClCompile Include="..\private\Grass.cpp" />
@@ -228,6 +236,8 @@
     <ClCompile Include="..\private\Map.cpp" />
     <ClCompile Include="..\private\MapTool.cpp" />
     <ClCompile Include="..\private\Monster.cpp" />
+    <ClCompile Include="..\private\Pawn.cpp" />
+    <ClCompile Include="..\private\Player.cpp" />
     <ClCompile Include="..\private\Shop.cpp" />
     <ClCompile Include="..\private\SpiderTank.cpp" />
     <ClCompile Include="..\private\Terrain.cpp" />

@@ -89,32 +89,6 @@ HRESULT CUI::Ready_Components(void* pArg)
 	return S_OK;
 }
 
-CUI* CUI::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-{
-	CUI* pInstance = new CUI(pDevice, pContext);
-
-	if (FAILED(pInstance->Initialize_Prototype()))
-	{
-		MSG_BOX("Failed to Created : CUI");
-		Safe_Release(pInstance);
-	}
-
-	return pInstance;
-}
-
-CGameObject* CUI::Clone(void* pArg)
-{
-	CUI* pInstance = new CUI(*this);
-
-	if (FAILED(pInstance->Initialize(pArg)))
-	{
-		MSG_BOX("Failed to Cloned : CBackGround");
-		Safe_Release(pInstance);
-	}
-
-	return pInstance;
-}
-
 void CUI::Free()
 {
 	__super::Free();

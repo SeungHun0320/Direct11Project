@@ -4,7 +4,9 @@
 
 #include "Terrain.h"
 #include "Camera_Free.h"
+
 #include "Monster.h"
+#include "Player.h"
 
 #include "Courtyard.h"
 
@@ -18,20 +20,17 @@ CLevel_Courtyard::CLevel_Courtyard(ID3D11Device* pDevice, ID3D11DeviceContext* p
 
 HRESULT CLevel_Courtyard::Initialize()
 {
-	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
-		return E_FAIL;
-
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
 		return E_FAIL;
 
-	//if (FAILED(Ready_Layer_Environmnet_Object(TEXT("Layer_EnvironObject"))))
-	//	return E_FAIL;
+	if (FAILED(Ready_Layer_Pawn(TEXT("Layer_Pawn"))))
+		return E_FAIL;
 
-	//if (FAILED(Ready_Layer_Map(TEXT("Layer_Map"))))
-	//	return E_FAIL;
+	if (FAILED(Load_Map(TEXT("Courtyard.Map"))))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -54,27 +53,45 @@ HRESULT CLevel_Courtyard::Render()
 	return S_OK;
 }
 
-HRESULT CLevel_Courtyard::Ready_Layer_Terrain(const _wstring& strLayerTag)
+HRESULT CLevel_Courtyard::Ready_Layer_Pawn(const _wstring& strLayerTag)
 {
-	CTerrain::DESC tDesc = {};
+	//이 레벨의 플레이어 생성위치
+	_float3 vInitPosition = { 10.f, 5.f, 10.f };
 
-	tDesc.eLevelID = LEVEL::GAMEPLAY;
-	tDesc.strName = TEXT("Terrain");
-	tDesc.fSpeedPerSec = 30.f;
+	// 플레이어가 있는지 체크하고 있으면 위치만 변경해줌.
+	auto pPlayer = GET_PLAYER;
+	if (pPlayer)
+	{
+		static_cast<CTransform*>(pPlayer->Get_Component(TEXT("Com_Transform")))
+			->Set_State(STATE::POSITION, XMVectorSetW(XMLoadFloat3(&vInitPosition), 1.f));
+		static_cast<CPawn*>(pPlayer)->Set_Level(LEVEL::COURTYARD);
+		return S_OK;
+	}
+
+	//없으면 새로 생성해서 넣어줌
+	CPlayer::DESC tDesc{};
+	tDesc.eLevelID = LEVEL::STATIC;
+	tDesc.fSpeedPerSec = 20.f;
 	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
+	tDesc.strName = TEXT("Player");
 
-	if(FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_") + tDesc.strName,
-		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
+	
+	tDesc.WorldMatrix = XMMatrixTranslation(vInitPosition.x, vInitPosition.y, vInitPosition.z);
+
+	// 최초 게임 입장할때 어디에서 입장하던 스태틱에 생성해준다.
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Player"),
+		ENUM_CLASS(LEVEL::STATIC), strLayerTag, &tDesc)))
 		return E_FAIL;
 
 	return S_OK;
 }
 
+
 HRESULT CLevel_Courtyard::Ready_Layer_Camera(const _wstring& strLayerTag)
 {
 	CCamera_Free::DESC tDesc = {};
 
-	tDesc.eLevelID = LEVEL::GAMEPLAY;
+	tDesc.eLevelID = LEVEL::COURTYARD;
 	tDesc.fSensor = 0.1f;
 
 	tDesc.vEye = _float3(0.f, 20.f, -15.f);
@@ -86,7 +103,7 @@ HRESULT CLevel_Courtyard::Ready_Layer_Camera(const _wstring& strLayerTag)
 	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	tDesc.strName = TEXT("Camera_Free");
 
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_") + tDesc.strName,
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_GameObject_") + tDesc.strName,
 		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
 		return E_FAIL;
 
@@ -97,62 +114,82 @@ HRESULT CLevel_Courtyard::Ready_Layer_Monster(const _wstring& strLayerTag)
 {
 	CMonster::DESC tDesc = {};
 
-	tDesc.eLevelID = LEVEL::GAMEPLAY;
+	tDesc.eLevelID = LEVEL::COURTYARD;
 	tDesc.fSpeedPerSec = 20.f;
 	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	tDesc.strName = TEXT("SpiderTank");
 
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_") + tDesc.strName,
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_GameObject_") + tDesc.strName,
 		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
 		return E_FAIL;
-
-	return S_OK;
-}
-
-HRESULT CLevel_Courtyard::Ready_Layer_Map(const _wstring& strLayerTag)
-{
-	CCourtyard::DESC tDesc = {};
-
-	tDesc.eLevelID = LEVEL::GAMEPLAY;
-	tDesc.fRotationPerSec = XMConvertToRadians(0.f);
-	tDesc.fSpeedPerSec = 10.f;
-	tDesc.strName = TEXT("Courtyard");
-
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_") + tDesc.strName,
-		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
-		return E_FAIL;
-
-	return S_OK;
-}
-
-HRESULT CLevel_Courtyard::Ready_Layer_Environmnet_Object(const _wstring& strLayerTag)
-{
-	CEnvironment_Object::DESC tDesc = {};
-
-	tDesc.eLevelID = LEVEL::GAMEPLAY;
-	tDesc.fRotationPerSec = 0.f;
-	tDesc.fSpeedPerSec = 0.f;
-	tDesc.strName = TEXT("Grass");
-
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_") + tDesc.strName,
-		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
-		return E_FAIL;
-
-	tDesc.strName = TEXT("Bush");
-	//if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_") + tDesc.strName,
-	//	ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
-	//	return E_FAIL;
-
-	tDesc.strName = TEXT("CheckPoint");
-	//if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::GAMEPLAY), TEXT("Prototype_GameObject_") + tDesc.strName,
-	//	ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
-	//	return E_FAIL;
 
 	return S_OK;
 }
 
 HRESULT CLevel_Courtyard::Load_Map(const _wstring& strMapFileTag)
 {
+	m_pGameInstance->Object_Clear(ENUM_CLASS(LEVEL::TOOLS));
+
+	ifstream LoadFile(TEXT("../bin/Resources/MapData/") + strMapFileTag, ios::binary);
+
+	if (!LoadFile.is_open())
+	{
+		MSG_BOX("파일 개방 실패,,");
+		return E_FAIL;
+	}
+
+	_uint iNumMaps{};
+
+	LoadFile.read(reinterpret_cast<_char*>(&iNumMaps), sizeof(_uint));
+
+	for (_uint i = 0; i < iNumMaps; i++)
+	{
+		_int iLoadLength{};
+		_float4x4 WorldMatrix{};
+
+		CMap::DESC tDesc{};
+		tDesc.eLevelID = LEVEL::COURTYARD;
+
+		LoadFile.read(reinterpret_cast<_char*>(&iLoadLength), sizeof(_int));
+		tDesc.strName.resize(iLoadLength);
+		LoadFile.read(reinterpret_cast<_char*>(tDesc.strName.data()), sizeof(_tchar) * iLoadLength);
+		LoadFile.read(reinterpret_cast<_char*>(&WorldMatrix), sizeof(_float4x4));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fSpeedPerSec), sizeof(_float));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fRotationPerSec), sizeof(_float));
+
+		tDesc.WorldMatrix = XMLoadFloat4x4(&WorldMatrix);
+
+		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_GameObject_") + tDesc.strName,
+			ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Map"), &tDesc)))
+			return E_FAIL;
+	}
+
+	_uint iNumEnvironmentObjects{};
+	LoadFile.read(reinterpret_cast<_char*>(&iNumEnvironmentObjects), sizeof(_uint));
+	for (_uint i = 0; i < iNumEnvironmentObjects; i++)
+	{
+		_int iLoadLength{};
+		_float4x4 WorldMatrix{};
+
+		CEnvironment_Object::DESC tDesc{};
+		tDesc.eLevelID = LEVEL::COURTYARD;
+
+		LoadFile.read(reinterpret_cast<_char*>(&iLoadLength), sizeof(_int));
+		tDesc.strName.resize(iLoadLength);
+		LoadFile.read(reinterpret_cast<_char*>(tDesc.strName.data()), sizeof(_tchar) * iLoadLength);
+		LoadFile.read(reinterpret_cast<_char*>(&WorldMatrix), sizeof(_float4x4));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fSpeedPerSec), sizeof(_float));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fRotationPerSec), sizeof(_float));
+
+		tDesc.WorldMatrix = XMLoadFloat4x4(&WorldMatrix);
+
+		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_GameObject_") + tDesc.strName,
+			ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_EnvironmentObject"), &tDesc)))
+			return E_FAIL;
+	}
+
+	LoadFile.close();
 	return S_OK;
 }
 

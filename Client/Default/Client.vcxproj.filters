@@ -46,12 +46,6 @@
     <Filter Include="02.GameObjects\03.Monsters">
       <UniqueIdentifier>{37157f77-26db-43b1-91fa-7f5d56fed923}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\00.Boss">
-      <UniqueIdentifier>{dbc32e9b-e215-4745-8fe0-80dda19bc6fb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\00.Boss\SpiderTank">
-      <UniqueIdentifier>{a5c78964-11df-4c62-8091-4d1601d4807d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\00.UI\01.Button">
       <UniqueIdentifier>{e8dd86c2-6ab2-4d41-ad8a-a62041ad8fbb}</UniqueIdentifier>
     </Filter>
@@ -138,6 +132,30 @@
     </Filter>
     <Filter Include="01.Levels\03.Shop">
       <UniqueIdentifier>{761424b8-9ac0-46f5-b977-1d3a3173d8c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Pawn">
+      <UniqueIdentifier>{0e7e22ae-55e2-4055-bb15-87dc015faf1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Pawn\Player">
+      <UniqueIdentifier>{1c5abdf3-a3a6-4378-b0e1-ad6e2baf21c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Item">
+      <UniqueIdentifier>{29546516-6976-45a7-a29a-c550732e34b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05.Environment_Objects\04.Chest">
+      <UniqueIdentifier>{226a477c-3d92-46e4-a670-4e0c14407949}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Monsters\Boss">
+      <UniqueIdentifier>{dbc32e9b-e215-4745-8fe0-80dda19bc6fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Monsters\Boss\SpiderTank">
+      <UniqueIdentifier>{a5c78964-11df-4c62-8091-4d1601d4807d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Monsters\00. Blob">
+      <UniqueIdentifier>{6dd7fe3a-3db7-407b-b5dd-a1760c529641}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Item\Item_">
+      <UniqueIdentifier>{fe3331e5-52de-4c49-b3f2-cdb5cce4e38d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -229,10 +247,10 @@
       <Filter>02.GameObjects\03.Monsters</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Boss.h">
-      <Filter>02.GameObjects\03.Monsters\00.Boss</Filter>
+      <Filter>02.GameObjects\03.Monsters\Boss</Filter>
     </ClInclude>
     <ClInclude Include="..\public\SpiderTank.h">
-      <Filter>02.GameObjects\03.Monsters\00.Boss\SpiderTank</Filter>
+      <Filter>02.GameObjects\03.Monsters\Boss\SpiderTank</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Map.h">
       <Filter>02.GameObjects\04.Map</Filter>
@@ -278,6 +296,18 @@
     </ClInclude>
     <ClInclude Include="..\public\Level_Shop.h">
       <Filter>01.Levels\03.Shop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Pawn.h">
+      <Filter>02.GameObjects\06.Pawn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Player.h">
+      <Filter>02.GameObjects\06.Pawn\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Blob.h">
+      <Filter>02.GameObjects\03.Monsters\00. Blob</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Chest.h">
+      <Filter>02.GameObjects\05.Environment_Objects\04.Chest</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -358,10 +388,10 @@
       <Filter>02.GameObjects\03.Monsters</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Boss.cpp">
-      <Filter>02.GameObjects\03.Monsters\00.Boss</Filter>
+      <Filter>02.GameObjects\03.Monsters\Boss</Filter>
     </ClCompile>
     <ClCompile Include="..\private\SpiderTank.cpp">
-      <Filter>02.GameObjects\03.Monsters\00.Boss\SpiderTank</Filter>
+      <Filter>02.GameObjects\03.Monsters\Boss\SpiderTank</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Map.cpp">
       <Filter>02.GameObjects\04.Map</Filter>
@@ -407,6 +437,18 @@
     </ClCompile>
     <ClCompile Include="..\private\Level_Shop.cpp">
       <Filter>01.Levels\03.Shop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Pawn.cpp">
+      <Filter>02.GameObjects\06.Pawn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Player.cpp">
+      <Filter>02.GameObjects\06.Pawn\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Blob.cpp">
+      <Filter>02.GameObjects\03.Monsters\00. Blob</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Chest.cpp">
+      <Filter>02.GameObjects\05.Environment_Objects\04.Chest</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

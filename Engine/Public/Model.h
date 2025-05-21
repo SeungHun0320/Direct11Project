@@ -29,12 +29,11 @@ public:
 	virtual HRESULT Render(_uint iMeshIndex);
 
 public:
-	HRESULT Play_Animation(_float fTimeDelta);
+	_bool Play_Animation(_float fTimeDelta);
 
 public: /* ¸ÊÅø¿ë,,,? */
 	_float3 Compute_PickedPosition_Local(_fmatrix WorldMatrixInverse);
-	_float3 Compute_PickedPosition_World(const _float4x4* pWorldMatrix, _float& fDist);
-	_float3 Compute_PickedPosition_World_Snap(const _float4x4* pWorldMatrix);
+	_bool Compute_PickedPosition_World(const _float4x4* pWorldMatrix, _float3& fOutPos, _float& fDist);
 
 private:
 	class CGameInstance* m_pGameInstance = { nullptr };

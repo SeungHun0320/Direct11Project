@@ -15,12 +15,10 @@ CMap::CMap(const CMap& Prototype)
 _float3 CMap::Get_PickedPos_World()
 {
 	_float fDist{};
-	return	m_pModelCom->Compute_PickedPosition_World(m_pTransformCom->Get_WorldMatrix_Float4x4(), fDist);
-}
+	_float3 fPickedPos{};
+	m_pModelCom->Compute_PickedPosition_World(m_pTransformCom->Get_WorldMatrix_Float4x4(), fPickedPos, fDist);
 
-_float3 CMap::Get_PickedPos_World_Snap()
-{
-	return m_pModelCom->Compute_PickedPosition_World_Snap(m_pTransformCom->Get_WorldMatrix_Float4x4());
+	return	fPickedPos;
 }
 
 _float3 CMap::Get_PickedPos_Local()
@@ -54,20 +52,21 @@ void CMap::Priority_Update(_float fTimeDelta)
 
 LIFE CMap::Update(_float fTimeDelta)
 {
-	if (MOUSE_DOWN(DIMK::LBUTTON))
-	{
-		_float fDist{};
-		_float3		vTmp = m_pModelCom->Compute_PickedPosition_World(m_pTransformCom->Get_WorldMatrix_Float4x4(), fDist);
-		_float3     vDst = m_pModelCom->Compute_PickedPosition_World_Snap(m_pTransformCom->Get_WorldMatrix_Float4x4());
-		_float3		vSrc = m_pModelCom->Compute_PickedPosition_Local(m_pTransformCom->Get_WorldMatrix_Inverse());
-		_int a = 10;
 
-#ifdef _CONSOL
-			printf("ÂïÀº ¸Ê ÁÂÇ¥ : { %.2f, %.2f, %.2f }\n", vTmp.x, vTmp.y, vTmp.z);
-			printf("ÂïÀº ½º³ÀÀº ÀßµÉ±î ¸Ê ÁÂÇ¥ : { %.2f, %.2f, %.2f }\n", vDst.x, vDst.y, vDst.z);
-		
-#endif
-	}
+//	if (MOUSE_DOWN(DIMK::LBUTTON))
+//	{
+//		_float fDist{};
+//		_float3		vTmp = m_pModelCom->Compute_PickedPosition_World(m_pTransformCom->Get_WorldMatrix_Float4x4(), fDist);
+//		_float3     vDst = m_pModelCom->Compute_PickedPosition_World_Snap(m_pTransformCom->Get_WorldMatrix_Float4x4());
+//		_float3		vSrc = m_pModelCom->Compute_PickedPosition_Local(m_pTransformCom->Get_WorldMatrix_Inverse());
+//		_int a = 10;
+//
+//#ifdef _CONSOL
+//			printf("ÂïÀº ¸Ê ÁÂÇ¥ : { %.2f, %.2f, %.2f }\n", vTmp.x, vTmp.y, vTmp.z);
+//			printf("ÂïÀº ½º³ÀÀº ÀßµÉ±î ¸Ê ÁÂÇ¥ : { %.2f, %.2f, %.2f }\n", vDst.x, vDst.y, vDst.z);
+//		
+//#endif
+//	}
 
 
 	return LIFE::NONE;

@@ -47,14 +47,17 @@ CGameObject* CObject_Manager::Find_Picked_Object(_uint iLevelIndex, const _wstri
 
 		if (nullptr == pModelCom || nullptr == pTransform)
 			continue;
-
+		
 		_float fDist{};
-		pModelCom->Compute_PickedPosition_World(pTransform->Get_WorldMatrix_Float4x4(), fDist);
+		_float3 vPickedPos{};
 
-		if (fDist < fMinDist) // 가장 가까운 객체 선택
+		if (pModelCom->Compute_PickedPosition_World(pTransform->Get_WorldMatrix_Float4x4(), vPickedPos, fDist))
 		{
-			fMinDist = fDist;
-			pReturnObject = pGameObj;
+			if (fDist < fMinDist && fDist != FLT_MAX) // 가장 가까운 객체 선택
+			{
+				fMinDist = fDist;
+				pReturnObject = pGameObj;
+			}
 		}
 	}
 

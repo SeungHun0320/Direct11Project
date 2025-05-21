@@ -28,7 +28,7 @@ protected:
 	virtual HRESULT Ready_Components(void* pArg) override;
 
 public:
-	virtual CGameObject* Clone(void* pArg) = 0;
+	virtual CGameObject* Clone(void* pArg) PURE;
 	virtual void Free() override;
 };
 

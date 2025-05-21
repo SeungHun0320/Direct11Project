@@ -11,7 +11,7 @@ END
 
 BEGIN(Client)
 
-class CUI : public CUIObject
+class CUI abstract : public CUIObject
 {
 public:
 	typedef struct tagUIDesc : public CUIObject::DESC
@@ -45,8 +45,7 @@ protected:
 	virtual HRESULT Ready_Components(void* pArg);
 
 public:
-	static CUI* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual CGameObject* Clone(void* pArg)override;
+	virtual CGameObject* Clone(void* pArg) PURE;
 	virtual void Free()override;
 };
 

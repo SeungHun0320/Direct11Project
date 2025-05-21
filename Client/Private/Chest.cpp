@@ -1,63 +1,52 @@
-#include "SpiderTank.h"
-
+#include "Chest.h"
 #include "GameInstance.h"
 
-CSpiderTank::CSpiderTank(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CBoss{pDevice, pContext}
+CChest::CChest(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	: CEnvironment_Object{ pDevice, pContext }
 {
 }
 
-CSpiderTank::CSpiderTank(const CSpiderTank& Prototype)
-	: CBoss(Prototype)
+CChest::CChest(const CChest& Prototype)
+	: CEnvironment_Object(Prototype)
 {
 }
 
-HRESULT CSpiderTank::Initialize_Prototype()
+HRESULT CChest::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CSpiderTank::Initialize(void* pArg)
+HRESULT CChest::Initialize(void* pArg)
 {
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
-	/* 1. 서로 다른 애니메이션을 셋팅했음에도 같은 동작이 재생된다. : 뼈가 공유되기때문에. */
-	/* 2. 같은 애니메이션을 셋했다면 재생속도가 빨라진다. : */
 	m_pModelCom->Set_Animation(0, true);
 
 	return S_OK;
 }
 
-void CSpiderTank::Priority_Update(_float fTimeDelta)
+void CChest::Priority_Update(_float fTimeDelta)
 {
 	__super::Priority_Update(fTimeDelta);
 }
 
-LIFE CSpiderTank::Update(_float fTimeDelta)
+LIFE CChest::Update(_float fTimeDelta)
 {
+	if (m_bDead)
+		return LIFE::DEAD;
+
 	m_pModelCom->Play_Animation(fTimeDelta);
-	
-	if (KEY_DOWN(DIK_UP))
-	{
-		m_pModelCom->Set_Animation(++m_iSoonseo, true);
-	}
-	if (KEY_DOWN(DIK_DOWN))
-	{
-		m_pModelCom->Set_Animation(--m_iSoonseo, true);
-	}
-
-
 
 	return __super::Update(fTimeDelta);
 }
 
-void CSpiderTank::Late_Update(_float fTimeDelta)
+void CChest::Late_Update(_float fTimeDelta)
 {
 	__super::Late_Update(fTimeDelta);
 }
 
-HRESULT CSpiderTank::Render()
+HRESULT CChest::Render()
 {
 	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
@@ -91,46 +80,48 @@ HRESULT CSpiderTank::Render()
 	return S_OK;
 }
 
-HRESULT CSpiderTank::Ready_Components(void* pArg)
+HRESULT CChest::Ready_Components(void* pArg)
 {
-	if (FAILED(__super::Ready_Components(pArg)))
+	/* For.Com_Shader */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxAnimMesh"),
+		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
 		return E_FAIL;
 
 	/* For.Com_Model */
-	if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototpye_Component_Model_SpiderTank"),
+	if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototpye_Component_Model_Chest"),
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
 		return E_FAIL;
 
 	return S_OK;
 }
 
-CSpiderTank* CSpiderTank::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CChest* CChest::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	CSpiderTank* pInstance = new CSpiderTank(pDevice, pContext);
+	CChest* pInstance = new CChest(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created : CSpiderTank");
+		MSG_BOX("Failed to Created : CChest");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-CGameObject* CSpiderTank::Clone(void* pArg)
+CGameObject* CChest::Clone(void* pArg)
 {
-	CSpiderTank* pInstance = new CSpiderTank(*this);
+	CChest* pInstance = new CChest(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Cloned : CSpiderTank");
+		MSG_BOX("Failed to Cloned : CChest");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CSpiderTank::Free()
+void CChest::Free()
 {
 	__super::Free();
 }

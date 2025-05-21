@@ -1,23 +1,22 @@
-#include "Environment_Object.h"
-
+#include "Pawn.h"
 #include "GameInstance.h"
 
-CEnvironment_Object::CEnvironment_Object(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CGameObject{ pDevice, pContext }
+CPawn::CPawn(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	: CGameObject{pDevice, pContext}
 {
 }
 
-CEnvironment_Object::CEnvironment_Object(const CEnvironment_Object& Prototype)
+CPawn::CPawn(const CPawn& Prototype)
 	: CGameObject(Prototype)
 {
 }
 
-HRESULT CEnvironment_Object::Initialize_Prototype()
+HRESULT CPawn::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CEnvironment_Object::Initialize(void* pArg)
+HRESULT CPawn::Initialize(void* pArg)
 {
 	DESC* pDesc = static_cast<DESC*>(pArg);
 
@@ -32,31 +31,21 @@ HRESULT CEnvironment_Object::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CEnvironment_Object::Priority_Update(_float fTimeDelta)
+void CPawn::Priority_Update(_float fTimeDelta)
 {
 }
 
-LIFE CEnvironment_Object::Update(_float fTimeDelta)
+LIFE CPawn::Update(_float fTimeDelta)
 {
-	if (MOUSE_DOWN(DIMK::LBUTTON))
-	{
-		_float fDist{};
-		//_float3		vTmp = m_pModelCom->Compute_PickedPosition_World(m_pTransformCom->Get_WorldMatrix_Float4x4(), fDist);
-		//_float3     vDst = m_pModelCom->Compute_PickedPosition_World_Snap(m_pTransformCom->Get_WorldMatrix_Float4x4());
-		//_float3		vSrc = m_pModelCom->Compute_PickedPosition_Local(m_pTransformCom->Get_WorldMatrix_Inverse());
-		_int a = 10;
-	}
-
-
 	return LIFE::NONE;
 }
 
-void CEnvironment_Object::Late_Update(_float fTimeDelta)
+void CPawn::Late_Update(_float fTimeDelta)
 {
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 }
 
-HRESULT CEnvironment_Object::Render()
+HRESULT CPawn::Render()
 {
 	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
@@ -77,9 +66,11 @@ HRESULT CEnvironment_Object::Render()
 
 		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TEX_TYPE::DIFFUSE, 0)))
 			return E_FAIL;
-		 
+
+		m_pModelCom->Bind_Bone_Matrices(m_pShaderCom, "g_BoneMatrices", i);
+
 		if (FAILED(m_pShaderCom->Begin(0)))
-			return E_FAIL; 
+			return E_FAIL;
 
 		if (FAILED(m_pModelCom->Render(i)))
 			return E_FAIL;
@@ -88,17 +79,18 @@ HRESULT CEnvironment_Object::Render()
 	return S_OK;
 }
 
-HRESULT CEnvironment_Object::Ready_Components(void* pArg)
+HRESULT CPawn::Ready_Components(void* pArg)
 {
 	/* For.Com_Shader */
-	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxMesh"),
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxAnimMesh"),
 		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
 		return E_FAIL;
 
 	return S_OK;
 }
 
-void CEnvironment_Object::Free()
+
+void CPawn::Free()
 {
 	__super::Free();
 
