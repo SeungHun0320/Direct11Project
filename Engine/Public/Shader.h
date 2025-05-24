@@ -18,6 +18,8 @@ public:
 public:
 	/* 쉐이더의 바인드 버퍼 이후, 렌더 이전에 호출 해 줌*/
 	HRESULT Begin(_uint iPassIndex);
+	/* 쉐이더에게 다양한 자료형을 던져주기 위해서 */
+	HRESULT Bind_RawValue(const _char* pConstantName, const void* pData, _uint iLength);
 	/* 쉐이더에게 매트릭스를 전달해주기 위해서 */
 	HRESULT Bind_Matrix(const _char* pConstantName, const _float4x4* pMatrix);
 	/* 쉐이더에게 매트릭스'들'을 전달해주기 위해서 */

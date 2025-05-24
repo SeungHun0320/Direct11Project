@@ -26,6 +26,22 @@ public:
 		return &m_CombinedTransformationMatrix;
 	}
 
+	const _float4x4* Get_TransformationMatrix() const {
+		return &m_TransformationMatrix;
+	}
+
+	const _uint Get_ParentBoneIndex() {
+		return m_iParentBoneIndex;
+	}
+
+	void Set_ParentBoneIndex(_uint iParentBoneIndex = 2) {
+		m_iParentBoneIndex = iParentBoneIndex;
+	}
+
+	_bool Compare_Name(const _string& strName) {
+		return m_strName == strName;
+	}
+
 	void Set_TransformationMatrix(_fmatrix TransformationMatrix) {
 		XMStoreFloat4x4(&m_TransformationMatrix, TransformationMatrix);
 	}

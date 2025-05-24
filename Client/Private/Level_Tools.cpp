@@ -22,6 +22,9 @@ HRESULT CLevel_Tools::Initialize()
 	if (FAILED(Ready_Tools()))
 		return E_FAIL;
 
+	if (FAILED(Ready_Lights()))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -134,6 +137,22 @@ HRESULT CLevel_Tools::Ready_Tools()
 {
 	m_pMapTool = CMapTool::Create(m_pDevice, m_pContext);
 	if (nullptr == m_pMapTool)
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Tools::Ready_Lights()
+{
+	LIGHT_DESC			LightDesc{};
+
+	LightDesc.eType = LIGHT_DESC::TYPE_DIRECTIONAL;
+	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
+
+	if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
 		return E_FAIL;
 
 	return S_OK;

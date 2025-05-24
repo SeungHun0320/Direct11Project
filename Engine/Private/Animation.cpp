@@ -83,6 +83,32 @@ exit:
 
 }
 
+void CAnimation::Reset()
+{
+    m_fCurrentTrackPosition = 0.f;
+    for (_uint i = 0; i < m_iNumChannels; ++i)
+        m_CurrentKeyFrameIndices[i] = 0;
+}
+
+void CAnimation::Update_TransformationMatrices(vector<_matrix>& OutTransformationMatrices, _float fTimeDelta)
+{
+    m_fCurrentTrackPosition += m_fTickPerSecond * fTimeDelta;
+
+    if (m_fCurrentTrackPosition >= m_fDuration)
+    {
+        m_fCurrentTrackPosition = 0.f;
+    }
+
+    for (_uint i = 0; i < m_iNumChannels; ++i)
+        m_Channels[i]->Update_TransformationMatrix(OutTransformationMatrices, &m_CurrentKeyFrameIndices[i], m_fCurrentTrackPosition);
+}
+
+void CAnimation::Update_First_TransformationMatrices(vector<_matrix>& OutTransformationMatrices)
+{
+    for (_uint i = 0; i < m_iNumChannels; ++i)
+        m_Channels[i]->Update_First_TransformationMatrix(OutTransformationMatrices);
+}
+
 CAnimation* CAnimation::Create(const ANIMATION* pDesc, ifstream& _InFile, const vector<class CBone*>& Bones)
 {
     CAnimation* pInstance = new CAnimation();

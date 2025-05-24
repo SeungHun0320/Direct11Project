@@ -617,12 +617,6 @@ HRESULT CLevel_MeshExporter::Ready_Anim_Meshes(_uint iNumMeshes, aiMesh** ppMesh
 			/* 본인덱스 선언해서 */
 			_uint	iBoneIndex = {};
 
-			//for (auto& pBone : m_vecBones)
-			//{
-			//	pBone->strName;
-			//	int a = 0;
-			//}
-
 			/* 본이름이랑 메쉬이름이랑 비교해서 같으면 본인덱스 증가 시키고 */
 			auto	iter = find_if(m_vecBones.begin(), m_vecBones.end(), [&](BONE* pBone)->_bool
 				{
@@ -638,23 +632,22 @@ HRESULT CLevel_MeshExporter::Ready_Anim_Meshes(_uint iNumMeshes, aiMesh** ppMesh
 			if (iter == m_vecBones.end())
 			{
 				/* 플레이어 전용,,, 이게 맞냐? */
-				//if(i == 0) // 방패
-				//	pMesh->BoneIndices.push_back(26);
-				//if(i == 1) // 칼
-				//	pMesh->BoneIndices.push_back(43);
-				//if(i == 2)
-				//	pMesh->BoneIndices.push_back(44);
-				//if(i == 3)
-				//	pMesh->BoneIndices.push_back(45);
-				//if(i == 4)
-				//	pMesh->BoneIndices.push_back(46);
-				//if (i == 5)
-				//{
-				//	//pMesh->iNumBones = 
-				//	pMesh->BoneIndices.push_back(52);
-				//}
+				if(i == 0) // 방패
+					pMesh->BoneIndices.push_back(26);
+				if(i == 1) // 칼
+					pMesh->BoneIndices.push_back(43);
+				if(i == 2)
+					pMesh->BoneIndices.push_back(44);
+				if(i == 3)
+					pMesh->BoneIndices.push_back(45);
+				if(i == 4)
+					pMesh->BoneIndices.push_back(46);
+				if (i == 5) // 대거
+				{
+					pMesh->BoneIndices.push_back(52);
+				}
 			
-				pMesh->BoneIndices.push_back(--iBoneIndex);
+				//pMesh->BoneIndices.push_back(--iBoneIndex);
 			}
 			else
 				pMesh->BoneIndices.push_back(iBoneIndex);
@@ -852,24 +845,6 @@ HRESULT CLevel_MeshExporter::Ready_Animations(_uint iNumAnimations, aiAnimation*
 
 
 	return S_OK;
-}
-
-aiNode* CLevel_MeshExporter::Find_Node_That_UsesMeshIndex(aiNode* pNode, int meshIndex)
-{
-	for (_uint i = 0; i < pNode->mNumMeshes; ++i)
-	{
-		if (pNode->mMeshes[i] == meshIndex)
-			return pNode;
-	}
-
-	for (_uint i = 0; i < pNode->mNumChildren; ++i)
-	{
-		aiNode* found = Find_Node_That_UsesMeshIndex(pNode->mChildren[i], meshIndex);
-		if (found) return found;
-	}
-
-	return nullptr;
-
 }
 
 CLevel_MeshExporter* CLevel_MeshExporter::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

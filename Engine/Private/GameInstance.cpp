@@ -5,6 +5,7 @@
 #include "PipeLine.h"
 #include "Sound_Device.h"
 #include "Input_Device.h"
+#include "Light_Manager.h"
 #include "Level_Manager.h"
 #include "Timer_Manager.h"
 #include "Graphic_Device.h"
@@ -59,8 +60,9 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ ID
 	if (nullptr == m_pPicking)
 		return E_FAIL;
 
-
-
+	m_pLight_Manager = CLight_Manager::Create();
+	if (nullptr == m_pLight_Manager)
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -373,6 +375,17 @@ const _float4* CGameInstance::Get_CamPosition() const
 }
 #pragma endregion
 
+#pragma region LIGHT_MANAGER
+const LIGHT_DESC* CGameInstance::Get_Light(_uint iIndex)
+{
+	return m_pLight_Manager->Get_Light(iIndex);
+}
+HRESULT CGameInstance::Add_Light(const LIGHT_DESC& LightDesc)
+{
+	return m_pLight_Manager->Add_Light(LightDesc);
+}
+#pragma endregion
+
 void CGameInstance::Release_Engine()
 {
 	Safe_Release(m_pPicking);
@@ -394,6 +407,8 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pSound_Device);
 
 	Safe_Release(m_pPipeLine);
+
+	Safe_Release(m_pLight_Manager);
 
 	Destroy_Instance();
 }

@@ -7,6 +7,9 @@
 #include "Material.h"
 #include "Animation.h"
 
+#include "Transform.h"
+
+
 CModel::CModel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : CComponent{ pDevice, pContext }
     , m_pGameInstance{ CGameInstance::Get_Instance() }
@@ -22,10 +25,10 @@ CModel::CModel(const CModel& Prototype)
     , m_Materials{ Prototype.m_Materials }
     , m_eType{ Prototype.m_eType }
     , m_PreTransformMatrix{ Prototype.m_PreTransformMatrix }
-    //, m_Bones{ Prototype.m_Bones }
     , m_iNumAnimations{ Prototype.m_iNumAnimations }
-    //, m_Animations{ Prototype.m_Animations }
     , m_pGameInstance{ CGameInstance::Get_Instance() }
+    , m_iRootBoneIndex { Prototype.m_iRootBoneIndex }
+    , m_vPreRootPosition {Prototype.m_vPreRootPosition }
 {
     Safe_AddRef(m_pGameInstance);
 
@@ -110,11 +113,37 @@ HRESULT CModel::Render(_uint iMeshIndex)
     return S_OK;
 }
 
+_matrix CModel::MatrixLerp(_fmatrix CurrentTransfomaionMatrix, _cmatrix NextTransformMatrix, _float fRatio)
+{
+    _vector			vScale{}, vRotation{}, vPosition{};
+
+    _vector			vSourScale{}, vDestScale{};
+    _vector			vSourRotation{}, vDestRotation{};
+    _vector			vSourTranslation{}, vDestTranslation{};
+
+    XMMatrixDecompose(&vSourScale, &vSourRotation, &vSourTranslation, CurrentTransfomaionMatrix);
+    XMMatrixDecompose(&vDestScale, &vDestRotation, &vDestTranslation, NextTransformMatrix);
+
+    vScale    = XMVectorLerp(vSourScale, vDestScale, fRatio);
+    vRotation = XMQuaternionSlerp(vSourRotation, vDestRotation, fRatio);
+    vPosition = XMVectorLerp(vSourTranslation, vDestTranslation, fRatio);
+
+    return  XMMatrixAffineTransformation(vScale, XMVectorSet(0.f, 0.f, 0.f, 1.f), vRotation, vPosition);
+}
+
 _bool CModel::Play_Animation(_float fTimeDelta)
 {
     _bool		isFinished = { false };
-    /* 1. 현재 애니메이션에 맞는 뼈의 상태를 읽어와서 뼈의 TrnasformationMatrix를 갱신해준다. */
-    isFinished = m_Animations[m_iCurrentAnimIndex]->Update_Bones(fTimeDelta, m_Bones, m_isLoop);
+
+    if (m_isBlended)
+    {
+        Animation_Blend(fTimeDelta);
+    }
+    else
+    {
+        /* 1. 현재 애니메이션에 맞는 뼈의 상태를 읽어와서 뼈의 TrnasformationMatrix를 갱신해준다. */
+        isFinished = m_Animations[m_iCurrentAnimIndex]->Update_Bones(fTimeDelta, m_Bones, m_isLoop);
+    }
 
     /* 2. 전체 뼈를 순회하면서 뼈들의 ColmbinedTransformationMatix를 부모에서부터 자식으로 갱신해준다. */
     for (auto& pBone : m_Bones)
@@ -122,9 +151,62 @@ _bool CModel::Play_Animation(_float fTimeDelta)
         pBone->Update_CombinedTransformationMatrix(m_Bones, XMLoadFloat4x4(&m_PreTransformMatrix));
     }
 
-    /*XMMatrixDecompose()*/
-
     return isFinished;
+}
+
+void CModel::Animation_Blend(_float fTimeDelta)
+{
+    /* 뼈 갯수만큼 있어야함 */
+    vector<_matrix> CurTransfomationMatrices(m_Bones.size());
+    vector<_matrix> NextTransfomationMatrices(m_Bones.size());
+
+    for (_uint i = 0; i < m_Bones.size(); i++)
+    {
+        CurTransfomationMatrices[i]  = XMLoadFloat4x4(m_Bones[i]->Get_TransformationMatrix());
+        NextTransfomationMatrices[i] = XMLoadFloat4x4(m_Bones[i]->Get_TransformationMatrix());
+    }
+
+    m_Animations[m_iCurrentAnimIndex]->Update_TransformationMatrices(CurTransfomationMatrices, 0.f);
+    m_Animations[m_iNextAnimIndex]->Update_First_TransformationMatrices(NextTransfomationMatrices);
+
+    m_fBlendTickPerSecond += fTimeDelta;
+
+    _float fRatio = m_fBlendTickPerSecond / m_fBlendDuration;
+
+    if (1.f <= fRatio)
+    {
+        fRatio = 1.f;
+        m_Animations[m_iCurrentAnimIndex]->Reset();
+        m_iCurrentAnimIndex = m_iNextAnimIndex;
+        m_fBlendTickPerSecond = 0.f;
+        m_isBlended = false;
+
+    }
+
+    /* 구한 트랜스포메이션 행렬끼리 보간 한 값을 뼈에 세팅 */
+    for (_uint i = 0; i < m_Bones.size(); i++)
+        m_Bones[i]->Set_TransformationMatrix(MatrixLerp(CurTransfomationMatrices[i], NextTransfomationMatrices[i], fRatio));
+}
+
+_vector CModel::Compute_RootPosition()
+{
+    _vector			vScale{}, vRotation{}, vPosition{};
+ 
+    XMMatrixDecompose(&vScale, &vRotation, &vPosition, XMLoadFloat4x4(m_Bones[m_iRootBoneIndex]->Get_CombinedTransformationMatrix()));
+
+    _vector fDelta = vPosition - XMLoadFloat3(&m_vPreRootPosition);
+    XMStoreFloat3(&m_vPreRootPosition, vPosition);
+
+    return fDelta;
+}
+
+void CModel::Update_RootPosition()
+{
+    _vector			vScale{}, vRotation{}, vPosition{};
+    XMMatrixDecompose(&vScale, &vRotation, &vPosition, XMLoadFloat4x4(m_Bones[m_iRootBoneIndex]->Get_TransformationMatrix()));
+
+    m_Bones[m_iRootBoneIndex]->Set_TransformationMatrix(XMMatrixAffineTransformation(vScale, XMVectorSet(0.f, 0.f, 0.f, 1.f), vRotation, XMVectorZero()));
+
 }
 
 _float3 CModel::Compute_PickedPosition_Local(_fmatrix WorldMatrixInverse)
@@ -202,6 +284,15 @@ HRESULT CModel::Ready_Bones(ifstream& _InFile)
         m_Bones.push_back(pBone);
     }
 
+    for (_uint i = 0; i < m_Bones.size(); i++)
+    {
+        if (m_Bones[i]->Compare_Name("root"))
+        {
+            m_Bones[i]->Set_ParentBoneIndex(2);
+            break;
+        }
+    }
+
     return S_OK;
 }
 
@@ -259,6 +350,7 @@ HRESULT CModel::Ready_Anim_Meshes(ifstream& _InFile)
         _InFile.read(reinterpret_cast<_char*>(&tDesc.iMaterialIndex), sizeof(_uint));
         _InFile.read(reinterpret_cast<_char*>(tDesc.Vertices.data()), sizeof(VTXANIMMESH) * tDesc.iNumVertices);
         _InFile.read(reinterpret_cast<_char*>(tDesc.Indicies.data()), sizeof(_uint) * tDesc.iNumIndices);
+
         _InFile.read(reinterpret_cast<_char*>(&tDesc.iNumBones), sizeof(_uint));
         _InFile.read(reinterpret_cast<_char*>(tDesc.BoneIndices.data()), sizeof(_uint) * tDesc.iNumBoneIndices);
         _InFile.read(reinterpret_cast<_char*>(tDesc.OffsetMatrices.data()), sizeof(_float4x4) * tDesc.iNumOffsetMatrices);

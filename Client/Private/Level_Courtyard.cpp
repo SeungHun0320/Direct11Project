@@ -3,14 +3,16 @@
 #include "Level_Loading.h"
 
 #include "Terrain.h"
-#include "Camera_Free.h"
-
-#include "Monster.h"
-#include "Player.h"
-
 #include "Courtyard.h"
 
-#include "Environment_Object.h"
+#include "Camera_Free.h"
+
+#include "Player.h"
+
+#include "Monster.h"
+
+#include "Chest.h"
+#include "Item.h"
 
 CLevel_Courtyard::CLevel_Courtyard(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 		: CLevel { pDevice, pContext }
@@ -20,6 +22,9 @@ CLevel_Courtyard::CLevel_Courtyard(ID3D11Device* pDevice, ID3D11DeviceContext* p
 
 HRESULT CLevel_Courtyard::Initialize()
 {
+	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
@@ -29,7 +34,10 @@ HRESULT CLevel_Courtyard::Initialize()
 	if (FAILED(Ready_Layer_Pawn(TEXT("Layer_Pawn"))))
 		return E_FAIL;
 
-	if (FAILED(Load_Map(TEXT("Courtyard.Map"))))
+	//if (FAILED(Load_Map(TEXT("Courtyard.Map"))))
+	//	return E_FAIL;
+
+	if (FAILED(Ready_Lights()))
 		return E_FAIL;
 
 	return S_OK;
@@ -56,7 +64,7 @@ HRESULT CLevel_Courtyard::Render()
 HRESULT CLevel_Courtyard::Ready_Layer_Pawn(const _wstring& strLayerTag)
 {
 	//이 레벨의 플레이어 생성위치
-	_float3 vInitPosition = { 10.f, 5.f, 10.f };
+	_float3 vInitPosition = { 0.f, 0.f, 0.f };
 
 	// 플레이어가 있는지 체크하고 있으면 위치만 변경해줌.
 	auto pPlayer = GET_PLAYER;
@@ -127,10 +135,23 @@ HRESULT CLevel_Courtyard::Ready_Layer_Monster(const _wstring& strLayerTag)
 	return S_OK;
 }
 
+HRESULT CLevel_Courtyard::Ready_Layer_Terrain(const _wstring& strLayerTag)
+{
+	CTerrain::DESC tDesc = {};
+	tDesc.eLevelID = LEVEL::COURTYARD;
+	tDesc.fSpeedPerSec = 0.f;
+	tDesc.fRotationPerSec = 0.f;
+	tDesc.strName = TEXT("Terrain");
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_GameObject_") + tDesc.strName,
+		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 HRESULT CLevel_Courtyard::Load_Map(const _wstring& strMapFileTag)
 {
-	m_pGameInstance->Object_Clear(ENUM_CLASS(LEVEL::TOOLS));
-
 	ifstream LoadFile(TEXT("../bin/Resources/MapData/") + strMapFileTag, ios::binary);
 
 	if (!LoadFile.is_open())
@@ -140,7 +161,6 @@ HRESULT CLevel_Courtyard::Load_Map(const _wstring& strMapFileTag)
 	}
 
 	_uint iNumMaps{};
-
 	LoadFile.read(reinterpret_cast<_char*>(&iNumMaps), sizeof(_uint));
 
 	for (_uint i = 0; i < iNumMaps; i++)
@@ -185,11 +205,102 @@ HRESULT CLevel_Courtyard::Load_Map(const _wstring& strMapFileTag)
 		tDesc.WorldMatrix = XMLoadFloat4x4(&WorldMatrix);
 
 		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_GameObject_") + tDesc.strName,
-			ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_EnvironmentObject"), &tDesc)))
+			ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Environment_Object"), &tDesc)))
+			return E_FAIL;
+	}
+
+	_uint iNumItem{};
+	LoadFile.read(reinterpret_cast<_char*>(&iNumItem), sizeof(_uint));
+
+	for (_uint i = 0; i < iNumItem; i++)
+	{
+		_int iLoadLength{};
+		_float4x4 WorldMatrix{};
+
+		CItem::DESC tDesc{};
+		tDesc.eLevelID = LEVEL::COURTYARD;
+
+		LoadFile.read(reinterpret_cast<_char*>(&iLoadLength), sizeof(_int));
+		tDesc.strName.resize(iLoadLength);
+		LoadFile.read(reinterpret_cast<_char*>(tDesc.strName.data()), sizeof(_tchar) * iLoadLength);
+		LoadFile.read(reinterpret_cast<_char*>(&WorldMatrix), sizeof(_float4x4));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fSpeedPerSec), sizeof(_float));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fRotationPerSec), sizeof(_float));
+
+		tDesc.WorldMatrix = XMLoadFloat4x4(&WorldMatrix);
+
+		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_GameObject_") + tDesc.strName,
+			ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Item"), &tDesc)))
+			return E_FAIL;
+	}
+
+	_uint iNumChests{};
+	LoadFile.read(reinterpret_cast<_char*>(&iNumChests), sizeof(_uint));
+
+	for (_uint i = 0; i < iNumChests; i++)
+	{
+		_int iLoadLength{};
+		_float4x4 WorldMatrix{};
+
+		CChest::DESC tDesc{};
+		tDesc.eLevelID = LEVEL::COURTYARD;
+
+		LoadFile.read(reinterpret_cast<_char*>(&iLoadLength), sizeof(_int));
+		tDesc.strName.resize(iLoadLength);
+		LoadFile.read(reinterpret_cast<_char*>(tDesc.strName.data()), sizeof(_tchar) * iLoadLength);
+		LoadFile.read(reinterpret_cast<_char*>(&WorldMatrix), sizeof(_float4x4));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fSpeedPerSec), sizeof(_float));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fRotationPerSec), sizeof(_float));
+
+		tDesc.WorldMatrix = XMLoadFloat4x4(&WorldMatrix);
+
+		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_GameObject_") + tDesc.strName,
+			ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Chest"), &tDesc)))
+			return E_FAIL;
+	}
+
+	_uint iNumMonsters{};
+	LoadFile.read(reinterpret_cast<_char*>(&iNumMonsters), sizeof(_uint));
+
+	for (_uint i = 0; i < iNumMonsters; i++)
+	{
+		_int iLoadLength{};
+		_float4x4 WorldMatrix{};
+
+		CMonster::DESC tDesc{};
+		tDesc.eLevelID = LEVEL::COURTYARD;
+
+		LoadFile.read(reinterpret_cast<_char*>(&iLoadLength), sizeof(_int));
+		tDesc.strName.resize(iLoadLength);
+		LoadFile.read(reinterpret_cast<_char*>(tDesc.strName.data()), sizeof(_tchar) * iLoadLength);
+		LoadFile.read(reinterpret_cast<_char*>(&WorldMatrix), sizeof(_float4x4));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fSpeedPerSec), sizeof(_float));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fRotationPerSec), sizeof(_float));
+
+		tDesc.WorldMatrix = XMLoadFloat4x4(&WorldMatrix);
+
+		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_GameObject_") + tDesc.strName,
+			ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Monster"), &tDesc)))
 			return E_FAIL;
 	}
 
 	LoadFile.close();
+	return S_OK;
+}
+
+HRESULT CLevel_Courtyard::Ready_Lights()
+{
+	LIGHT_DESC			LightDesc{};
+
+	LightDesc.eType = LIGHT_DESC::TYPE_DIRECTIONAL;
+	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
+
+	if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
+		return E_FAIL;
+
 	return S_OK;
 }
 

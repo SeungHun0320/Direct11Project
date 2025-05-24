@@ -102,11 +102,9 @@ HRESULT CMainApp::Ready_Prototype_Component()
 
 HRESULT CMainApp::Ready_Prototype_Object()
 {
-
 	_matrix		PreTransformMatrix = XMMatrixIdentity();
 
-
-	/*For.Prototpye_Component_Model_Fox*/    /* 야우 확인용 */
+	/*For.Prototype_Component_Model_Fox*/    /* 야우 확인용 */
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Fox"),
 	CModel::Create(m_pDevice, m_pContext, MODEL::ANIM, TEXT("../Bin/Resources/Models/Anim/Fox/_Fox.Model"), PreTransformMatrix))))

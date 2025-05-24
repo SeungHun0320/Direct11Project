@@ -11,6 +11,7 @@
 
 /* 몬스터들 */
 #include "SpiderTank.h"
+#include "Blob.h"
 
 /* 지형(통맵) */
 #include "Courtyard.h"
@@ -23,6 +24,10 @@
 #include "Bush.h"
 #include "CheckPoint.h"
 #include "Chest.h"
+
+/* 아이템들 */
+#include "Potion.h"
+
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice { pDevice }
@@ -178,39 +183,57 @@ HRESULT CLoader::Loading_For_Courtyard()
 
 	_matrix		PreTransformMatrix = XMMatrixIdentity();
 
-	/*For.Prototpye_Component_Model_SpiderTank*/
+	/*For.Prototype_Component_Model_SpiderTank*/
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototpye_Component_Model_SpiderTank"),
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_Component_Model_SpiderTank"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::ANIM, TEXT("../Bin/Resources/Models/Anim/Monster/Spidertank/Spidertank.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
 	//PreTransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f));
-	//if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototpye_Component_Model_SpiderTank"),
+	//if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_Component_Model_SpiderTank"),
 	//	CModel::Create(m_pDevice, m_pContext, MODEL::ANIM, TEXT("../Bin/Resources/Models/Study/Fiona/Fiona.Model"), PreTransformMatrix))))
 	//	return E_FAIL;
 
-	/*For.Prototpye_Component_Model_Courtyard*/
+	/*For.Prototype_Component_Model_Courtyard*/
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototpye_Component_Model_Courtyard"),
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_Component_Model_Courtyard"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Map/Fortress/Courtyard/Courtyard.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
-	/*For.Prototpye_Component_Model_Bush*/
+	/*For.Prototype_Component_Model_Bush*/
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototpye_Component_Model_Bush"),
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_Component_Model_Bush"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Environment_Objects/Bush/bush.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
-	/*For.Prototpye_Component_Model_Grass*/
+	/*For.Prototype_Component_Model_Grass*/
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototpye_Component_Model_Grass"),
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_Component_Model_Grass"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Environment_Objects/Grass/grass base.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
-	/*For.Prototpye_Component_Model_CheckPoint*/
+	/*For.Prototype_Component_Model_CheckPoint*/
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototpye_Component_Model_CheckPoint"),
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_Component_Model_CheckPoint"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Environment_Objects/TUNIC_Checkpoint/TUNIC_Checkpoint.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_Chest*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_Component_Model_Chest"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::ANIM, TEXT("../Bin/Resources/Models/Anim/Environment_Objects/Chest/Chest.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_Potion*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_Component_Model_Potion"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Potion/Potion.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_Blob*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_Component_Model_Blob"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::ANIM, TEXT("../Bin/Resources/Models/Anim/Monster/Blob/Blob.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
 	///* For.Prototype_Component_VIBuffer_Cube */
@@ -253,9 +276,24 @@ HRESULT CLoader::Loading_For_Courtyard()
 		CGrass::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* For.Prototpye_GameObject_CheckPoint */
+	/* For.Prototype_GameObject_CheckPoint */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_GameObject_CheckPoint"),
 		CCheckPoint::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Chest */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_GameObject_Chest"),
+		CChest::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Potion */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_GameObject_Potion"),
+		CPotion::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Blob */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_GameObject_Blob"),
+		CBlob::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	///* For.Prototype_GameObject_Player */
@@ -350,52 +388,64 @@ HRESULT CLoader::Loading_For_Tools()
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
 	_matrix		PreTransformMatrix = XMMatrixIdentity();
 
-	/*For.Prototpye_Component_Model_Courtyard*/
+	/*For.Prototype_Component_Model_Courtyard*/
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototpye_Component_Model_Courtyard"),
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_Component_Model_Courtyard"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Map/Fortress/Courtyard/Courtyard.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
-	/*For.Prototpye_Component_Model_Arena*/
+	/*For.Prototype_Component_Model_Arena*/
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototpye_Component_Model_Arena"),
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_Component_Model_Arena"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Map/Fortress/Arena/Arena.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
-	/*For.Prototpye_Component_Model_Main*/
+	/*For.Prototype_Component_Model_Main*/
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototpye_Component_Model_Main"),
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_Component_Model_Main"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Map/Fortress/Main/Main.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
-	/*For.Prototpye_Component_Model_Shop*/
+	/*For.Prototype_Component_Model_Shop*/
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototpye_Component_Model_Shop"),
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_Component_Model_Shop"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Map/Shop/Shop.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
-	/*For.Prototpye_Component_Model_Bush*/
+	/*For.Prototype_Component_Model_Bush*/
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototpye_Component_Model_Bush"),
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_Component_Model_Bush"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Environment_Objects/Bush/bush.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
-	/*For.Prototpye_Component_Model_Grass*/
+	/*For.Prototype_Component_Model_Grass*/
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototpye_Component_Model_Grass"),
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_Component_Model_Grass"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Environment_Objects/Grass/grass base.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
-	/*For.Prototpye_Component_Model_CheckPoint*/
+	/*For.Prototype_Component_Model_CheckPoint*/
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototpye_Component_Model_CheckPoint"),
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_Component_Model_CheckPoint"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Environment_Objects/TUNIC_Checkpoint/TUNIC_Checkpoint.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
-	/*For.Prototpye_Component_Model_Chest*/
- 	PreTransformMatrix = XMMatrixScaling(0.005f, 0.005f, 0.005f);
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototpye_Component_Model_Chest"),
+	/*For.Prototype_Component_Model_Chest*/
+ 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_Component_Model_Chest"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::ANIM, TEXT("../Bin/Resources/Models/Anim/Environment_Objects/Chest/Chest.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_Potion*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_Component_Model_Potion"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Potion/Potion.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_Blob*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_Component_Model_Blob"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::ANIM, TEXT("../Bin/Resources/Models/Anim/Monster/Blob/Blob.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
 
@@ -437,15 +487,26 @@ HRESULT CLoader::Loading_For_Tools()
 		CGrass::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* For.Prototpye_GameOjbect_CheckPoint */
+	/* For.Prototype_GameObject_CheckPoint */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_CheckPoint"),
 		CCheckPoint::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* For.Prototpye_GameOjbect_Chest */
+	/* For.Prototype_GameObject_Chest */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_Chest"),
 		CChest::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+	/* For.Prototype_GameObject_Potion */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_Potion"),
+		CPotion::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Blob */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_Blob"),
+		CBlob::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 

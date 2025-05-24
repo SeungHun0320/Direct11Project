@@ -23,6 +23,29 @@ namespace Engine
 		float			fTrackPosition;
 	}KEYFRAME;
 
+	typedef struct tagLightDesc
+	{
+		enum TYPE { TYPE_DIRECTIONAL, TYPE_POINT, TYPE_END };
+
+		/* 어떤 타입인지 */
+		TYPE				eType;
+		/* 어떤 방향으로 쏘는지 ( 정광원 ) */
+		XMFLOAT4			vDirection;
+		/* 어디에 있는지 ( 점광원 ) */
+		XMFLOAT4			vPosition;
+		/* 점광원의 거리 */
+		float				fRange;
+
+		/* 빛의 색상 */
+		XMFLOAT4			vDiffuse;
+		/* 확산광? */
+		XMFLOAT4			vAmbient;
+		/* 반사광 */
+		XMFLOAT4			vSpecular;
+	}LIGHT_DESC;
+
+	/* 화면에 그려야하는 최종적인 색 = Light.Diffuse * 재질.Diffuse */
+
 	typedef struct ENGINE_DLL tagVertexPositionTexcoord
 	{
 		XMFLOAT3		vPosition;

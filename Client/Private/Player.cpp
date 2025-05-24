@@ -34,9 +34,24 @@ void CPlayer::Priority_Update(_float fTimeDelta)
 
 LIFE CPlayer::Update(_float fTimeDelta)
 {
-	m_pModelCom->Play_Animation(fTimeDelta);
+	Key_Input();
 
-	return __super::Update(fTimeDelta);
+	m_pModelCom->Play_Animation(fTimeDelta, m_pTransformCom);
+
+
+	_float3 vPos{};
+	XMStoreFloat3(&vPos, m_pTransformCom->Get_State(STATE::POSITION));
+
+#ifdef _CONSOL
+	if (KEY_PRESSING(DIK_1))
+	{
+		printf("플레이어 위치 :%.3f %.3f %.3f\n", vPos.x, vPos.y, vPos.z);
+	}
+		
+#endif
+
+
+	return LIFE::NONE;
 }
 
 void CPlayer::Late_Update(_float fTimeDelta)
@@ -47,6 +62,46 @@ void CPlayer::Late_Update(_float fTimeDelta)
 HRESULT CPlayer::Render()
 {
 	return __super::Render();
+}
+
+void CPlayer::Key_Input()
+{
+	//if (KEY_PRESSING(DIK_W))
+	//{
+	//	m_pModelCom->Change_Animation(GO_STRAIGHT, true, 0.03f, false);
+	//}
+	//if (KEY_DOWN(DIK_J))
+	//{
+	//	m_pModelCom->Change_Animation(SWORD_ATTACK1, true, 0.05f, true);
+	//}
+	//if (KEY_DOWN(DIK_SPACE))
+	//{
+	//	m_pModelCom->Change_Animation(FAIL_DODGE, false, 0.5f);
+	//}
+	//if(KEY_DOWN(DIK_Z))
+	//	m_pModelCom->Change_Animation(IDLE, true, 0.5f);
+	
+	//if (KEY_DOWN(DIK_UP))
+	//{
+	//	++m_iSoonseo;
+
+	//	if (32 <= m_iSoonseo)
+	//		m_iSoonseo = 0;
+
+	//	m_pModelCom->Change_Animation(m_iSoonseo, true, 0.5f, true, true);
+
+	//}
+	//	
+	//if (KEY_DOWN(DIK_DOWN))
+	//{
+	//	--m_iSoonseo;
+
+	//	if (0 >= m_iSoonseo)
+	//		m_iSoonseo = 32;
+
+	//	m_pModelCom->Change_Animation(m_iSoonseo, true, 0.5f, true, true);
+	//}
+		
 }
 
 HRESULT CPlayer::Ready_Components(void* pArg)

@@ -16,7 +16,9 @@ public:
 	virtual void Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
+private:
 	virtual HRESULT Load_Map(const _wstring& strMapFileTag) override;
+	virtual HRESULT Ready_Lights() override;
 
 public:
 	static CLevel_Arena* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

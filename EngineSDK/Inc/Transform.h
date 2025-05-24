@@ -53,8 +53,16 @@ public:
 		return m_fSpeedPerSec;
 	}
 
+	void Set_SpeedPerSec(_float fSpeed) {
+		m_fSpeedPerSec = fSpeed;
+	}
+
 	_float Get_RotationPerSec() {
 		return m_fRotationPerSec;
+	}
+
+	void Set_RotationPerSec(_float fRotation) {
+		m_fRotationPerSec = fRotation;
 	}
 
 	void Set_Matrix(_fmatrix WorldMatrix) {

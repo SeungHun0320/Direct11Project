@@ -103,6 +103,11 @@ public:
 	const _float4* Get_CamPosition() const;
 #pragma endregion
 
+#pragma region LIGHT_MANAGER
+	const LIGHT_DESC* Get_Light(_uint iIndex);
+	HRESULT Add_Light(const LIGHT_DESC& LightDesc);
+#pragma endregion
+
 private:
 	class CGraphic_Device*		m_pGraphic_Device = { nullptr };
 	class CInput_Device*		m_pInputDevice = { nullptr };
@@ -114,6 +119,7 @@ private:
 	class CSound_Device*		m_pSound_Device = { nullptr };
 	class CPipeLine*			m_pPipeLine = { nullptr };
 	class CPicking*				m_pPicking = { nullptr };
+	class CLight_Manager*		m_pLight_Manager = { nullptr };
 
 public:
 	void Release_Engine();

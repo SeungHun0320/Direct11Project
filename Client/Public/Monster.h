@@ -38,6 +38,7 @@ protected:
 
 protected:
 	virtual HRESULT Ready_Components(void* pArg);
+	virtual HRESULT Bind_ShaderResources();
 
 public:
 	virtual CGameObject* Clone(void* pArg) PURE;

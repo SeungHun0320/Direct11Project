@@ -7,7 +7,7 @@ BEGIN(Client)
 class CSpiderTank final : public CBoss
 {
 public:
-	typedef struct tagSpiderTank : public CBoss::DESC
+	typedef struct tagSpiderTankDesc : public CBoss::DESC
 	{
 
 	}DESC;
@@ -26,7 +26,7 @@ public:
 	virtual HRESULT Render();
 
 private:
-	_uint m_iSoonseo = {};
+	_int m_iSoonseo = {};
 
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;

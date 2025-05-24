@@ -174,6 +174,7 @@
     <ClInclude Include="..\public\Courtyard.h" />
     <ClInclude Include="..\public\Environment_Object.h" />
     <ClInclude Include="..\public\Grass.h" />
+    <ClInclude Include="..\public\Item.h" />
     <ClInclude Include="..\public\Level_Arena.h" />
     <ClInclude Include="..\Public\Level_Courtyard.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
@@ -189,6 +190,8 @@
     <ClInclude Include="..\public\Monster.h" />
     <ClInclude Include="..\public\Pawn.h" />
     <ClInclude Include="..\public\Player.h" />
+    <ClInclude Include="..\Public\PlayerState.h" />
+    <ClInclude Include="..\public\Potion.h" />
     <ClInclude Include="..\public\Shop.h" />
     <ClInclude Include="..\public\SpiderTank.h" />
     <ClInclude Include="..\public\Terrain.h" />
@@ -223,6 +226,7 @@
     <ClCompile Include="..\private\Courtyard.cpp" />
     <ClCompile Include="..\private\Environment_Object.cpp" />
     <ClCompile Include="..\private\Grass.cpp" />
+    <ClCompile Include="..\private\Item.cpp" />
     <ClCompile Include="..\private\Level_Arena.cpp" />
     <ClCompile Include="..\Private\Level_Courtyard.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />
@@ -238,11 +242,16 @@
     <ClCompile Include="..\private\Monster.cpp" />
     <ClCompile Include="..\private\Pawn.cpp" />
     <ClCompile Include="..\private\Player.cpp" />
+    <ClCompile Include="..\private\Potion.cpp" />
     <ClCompile Include="..\private\Shop.cpp" />
     <ClCompile Include="..\private\SpiderTank.cpp" />
     <ClCompile Include="..\private\Terrain.cpp" />
     <ClCompile Include="..\private\Tool.cpp" />
     <ClCompile Include="..\private\UI.cpp" />
+    <ClCompile Include="..\Public\PlayerState_Sprint.cpp" />
+    <ClCompile Include="..\Public\PlayerState_Dodge.cpp" />
+    <ClCompile Include="..\Public\PlayerState_GoStraight.cpp" />
+    <ClCompile Include="..\Public\PlayerState_Idle.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="ImGui\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="ImGui\backends\imgui_impl_win32.cpp" />

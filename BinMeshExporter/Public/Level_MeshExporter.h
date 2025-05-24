@@ -112,9 +112,6 @@ private:
 	HRESULT Ready_Material(const _char* pModelFilePath, _uint iNumMaterial, aiMaterial** ppAIMaterial);
 	HRESULT Ready_Animations(_uint iNumAnimations, aiAnimation** ppAnimations);
 
-private:
-	aiNode* Find_Node_That_UsesMeshIndex(aiNode* pNode, int meshIndex);
-
 public:
 	static CLevel_MeshExporter* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual void Free() override;

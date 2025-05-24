@@ -118,6 +118,12 @@
     <ClInclude Include="..\public\Channel.h">
       <Filter>01.Utility\04.Components\Model\Animation\Channel</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Light.h">
+      <Filter>01.Utility\08.Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Light_Manager.h">
+      <Filter>01.Utility\08.Lights\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Timer.cpp">
@@ -221,6 +227,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Channel.cpp">
       <Filter>01.Utility\04.Components\Model\Animation\Channel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Light.cpp">
+      <Filter>01.Utility\08.Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Light_Manager.cpp">
+      <Filter>01.Utility\08.Lights\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -352,6 +364,12 @@
     </Filter>
     <Filter Include="01.Utility\04.Components\Model\Animation\Channel">
       <UniqueIdentifier>{fd79f7ce-977a-4f56-af37-07848f8c5c8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\08.Lights">
+      <UniqueIdentifier>{9298422f-26dc-4d7a-a141-5a1bd60c7564}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\08.Lights\Manager">
+      <UniqueIdentifier>{0153579a-e3b2-4a15-b661-8478898194d1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

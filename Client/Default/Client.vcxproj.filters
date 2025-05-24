@@ -154,8 +154,29 @@
     <Filter Include="02.GameObjects\03.Monsters\00. Blob">
       <UniqueIdentifier>{6dd7fe3a-3db7-407b-b5dd-a1760c529641}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\07.Item\Item_">
+    <Filter Include="02.GameObjects\07.Item\Item_Potion">
       <UniqueIdentifier>{fe3331e5-52de-4c49-b3f2-cdb5cce4e38d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Pawn\Player\PlayerState">
+      <UniqueIdentifier>{fd392b1e-16e0-4bb9-8427-f6f1c3b47ff7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Pawn\Player\Player_Idle">
+      <UniqueIdentifier>{a55b01da-4705-44b3-b57b-18d47a028e64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Pawn\Player\Player_GoStraight">
+      <UniqueIdentifier>{ef6a9a5a-e06f-40e1-ad2d-1d97a5ec2c59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Pawn\Player\Player_Dodge">
+      <UniqueIdentifier>{c6ca0069-05ad-4b21-bcb2-48dc9f71546b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Pawn\Player\Player_Sprint">
+      <UniqueIdentifier>{c7596690-5efb-4c8c-9a2d-d0b7d3d74acd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Pawn\Player\Player_StickAttack">
+      <UniqueIdentifier>{8cbbb533-4d5e-4e18-b376-9df44255655e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Pawn\Player\Player_SwordAttack">
+      <UniqueIdentifier>{f8128cde-4e5f-4a73-a304-871af992ecba}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -309,6 +330,15 @@
     <ClInclude Include="..\public\Chest.h">
       <Filter>02.GameObjects\05.Environment_Objects\04.Chest</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Item.h">
+      <Filter>02.GameObjects\07.Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Potion.h">
+      <Filter>02.GameObjects\07.Item\Item_Potion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState.h">
+      <Filter>02.GameObjects\06.Pawn\Player\PlayerState</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -449,6 +479,24 @@
     </ClCompile>
     <ClCompile Include="..\private\Chest.cpp">
       <Filter>02.GameObjects\05.Environment_Objects\04.Chest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Item.cpp">
+      <Filter>02.GameObjects\07.Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Potion.cpp">
+      <Filter>02.GameObjects\07.Item\Item_Potion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Public\PlayerState_Idle.cpp">
+      <Filter>02.GameObjects\06.Pawn\Player\Player_Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Public\PlayerState_GoStraight.cpp">
+      <Filter>02.GameObjects\06.Pawn\Player\Player_GoStraight</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Public\PlayerState_Dodge.cpp">
+      <Filter>02.GameObjects\06.Pawn\Player\Player_Dodge</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Public\PlayerState_Sprint.cpp">
+      <Filter>02.GameObjects\06.Pawn\Player\Player_Sprint</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -36,18 +36,16 @@ void CSpiderTank::Priority_Update(_float fTimeDelta)
 
 LIFE CSpiderTank::Update(_float fTimeDelta)
 {
-	m_pModelCom->Play_Animation(fTimeDelta);
-	
+	m_pModelCom->Play_Animation(fTimeDelta, m_pTransformCom);
+
 	if (KEY_DOWN(DIK_UP))
 	{
-		m_pModelCom->Set_Animation(++m_iSoonseo, true);
+		m_pModelCom->Change_Animation(++m_iSoonseo, true, 1.f, true);
 	}
 	if (KEY_DOWN(DIK_DOWN))
 	{
-		m_pModelCom->Set_Animation(--m_iSoonseo, true);
+		m_pModelCom->Change_Animation(--m_iSoonseo, true, 1.f, true);
 	}
-
-
 
 	return __super::Update(fTimeDelta);
 }
@@ -59,15 +57,7 @@ void CSpiderTank::Late_Update(_float fTimeDelta)
 
 HRESULT CSpiderTank::Render()
 {
-	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
-		return E_FAIL;
-
-	/* dx9 : 장치에 뷰, 투영행렬을 저장해두면 렌더링시 알아서 정점에 Transform해주었다. */
-	/* dx11 : 셰이더에 뷰, 투영행렬을 저장해두고 우리가 직접 변환해주어야한다. */
-
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::VIEW))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::PROJ))))
+	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
 	_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
@@ -97,7 +87,7 @@ HRESULT CSpiderTank::Ready_Components(void* pArg)
 		return E_FAIL;
 
 	/* For.Com_Model */
-	if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototpye_Component_Model_SpiderTank"),
+	if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Model_SpiderTank"),
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
 		return E_FAIL;
 

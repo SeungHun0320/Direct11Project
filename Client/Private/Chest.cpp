@@ -21,7 +21,7 @@ HRESULT CChest::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
-	m_pModelCom->Set_Animation(0, true);
+	m_pModelCom->Set_Animation(1, true);
 
 	return S_OK;
 }
@@ -36,7 +36,7 @@ LIFE CChest::Update(_float fTimeDelta)
 	if (m_bDead)
 		return LIFE::DEAD;
 
-	m_pModelCom->Play_Animation(fTimeDelta);
+	m_pModelCom->Play_Animation(fTimeDelta, m_pTransformCom);
 
 	return __super::Update(fTimeDelta);
 }
@@ -48,23 +48,13 @@ void CChest::Late_Update(_float fTimeDelta)
 
 HRESULT CChest::Render()
 {
-	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
-		return E_FAIL;
-
-	/* dx9 : 장치에 뷰, 투영행렬을 저장해두면 렌더링시 알아서 정점에 Transform해주었다. */
-	/* dx11 : 셰이더에 뷰, 투영행렬을 저장해두고 우리가 직접 변환해주어야한다. */
-
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::VIEW))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::PROJ))))
+	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
 	_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
 
 	for (_uint i = 0; i < iNumMesh; i++)
 	{
-		//m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TEX_TYPE::DIFFUSE, 0);
-
 		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TEX_TYPE::DIFFUSE, 0)))
 			return E_FAIL;
 
@@ -88,7 +78,7 @@ HRESULT CChest::Ready_Components(void* pArg)
 		return E_FAIL;
 
 	/* For.Com_Model */
-	if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototpye_Component_Model_Chest"),
+	if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Model_Chest"),
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
 		return E_FAIL;
 
