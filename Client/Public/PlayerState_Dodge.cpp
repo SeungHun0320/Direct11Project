@@ -2,6 +2,7 @@
 #include "Player.h"
 
 CPlayerState_Dodge::CPlayerState_Dodge(CPlayer* pOwner)
+	: CPlayerState{ pOwner }
 {
 }
 

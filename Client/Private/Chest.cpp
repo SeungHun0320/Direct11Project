@@ -36,7 +36,7 @@ LIFE CChest::Update(_float fTimeDelta)
 	if (m_bDead)
 		return LIFE::DEAD;
 
-	m_pModelCom->Play_Animation(fTimeDelta, m_pTransformCom);
+	m_pModelCom->Play_Animation(fTimeDelta);
 
 	return __super::Update(fTimeDelta);
 }

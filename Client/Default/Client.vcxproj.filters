@@ -163,20 +163,23 @@
     <Filter Include="02.GameObjects\06.Pawn\Player\Player_Idle">
       <UniqueIdentifier>{a55b01da-4705-44b3-b57b-18d47a028e64}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player\Player_GoStraight">
-      <UniqueIdentifier>{ef6a9a5a-e06f-40e1-ad2d-1d97a5ec2c59}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\06.Pawn\Player\Player_Dodge">
       <UniqueIdentifier>{c6ca0069-05ad-4b21-bcb2-48dc9f71546b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player\Player_Sprint">
-      <UniqueIdentifier>{c7596690-5efb-4c8c-9a2d-d0b7d3d74acd}</UniqueIdentifier>
+    <Filter Include="02.GameObjects\06.Pawn\Player\Player_Move">
+      <UniqueIdentifier>{ef6a9a5a-e06f-40e1-ad2d-1d97a5ec2c59}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player\Player_StickAttack">
+    <Filter Include="02.GameObjects\06.Pawn\Player\Player_Attack">
       <UniqueIdentifier>{8cbbb533-4d5e-4e18-b376-9df44255655e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player\Player_SwordAttack">
-      <UniqueIdentifier>{f8128cde-4e5f-4a73-a304-871af992ecba}</UniqueIdentifier>
+    <Filter Include="02.GameObjects\06.Pawn\Player\Player_Attack\AttackComboLogic">
+      <UniqueIdentifier>{22fc8cc2-bb25-4873-b8ab-bfc59d669a50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Pawn\Player\Player_Hit">
+      <UniqueIdentifier>{3c1e4225-e571-405d-8b89-99b883633c26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Pawn\Player\Player_Die">
+      <UniqueIdentifier>{ce1a33ce-3caf-46e6-9981-67d239273594}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -489,14 +492,20 @@
     <ClCompile Include="..\Public\PlayerState_Idle.cpp">
       <Filter>02.GameObjects\06.Pawn\Player\Player_Idle</Filter>
     </ClCompile>
-    <ClCompile Include="..\Public\PlayerState_GoStraight.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\Player_GoStraight</Filter>
+    <ClCompile Include="..\Public\PlayerState_Move.cpp">
+      <Filter>02.GameObjects\06.Pawn\Player\Player_Move</Filter>
     </ClCompile>
     <ClCompile Include="..\Public\PlayerState_Dodge.cpp">
       <Filter>02.GameObjects\06.Pawn\Player\Player_Dodge</Filter>
     </ClCompile>
-    <ClCompile Include="..\Public\PlayerState_Sprint.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\Player_Sprint</Filter>
+    <ClCompile Include="..\Public\PlayerState_Attack.cpp">
+      <Filter>02.GameObjects\06.Pawn\Player\Player_Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Public\PlayerState_Hit.cpp">
+      <Filter>02.GameObjects\06.Pawn\Player\Player_Hit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Public\PlayerState_Die.cpp">
+      <Filter>02.GameObjects\06.Pawn\Player\Player_Die</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

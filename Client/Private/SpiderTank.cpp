@@ -36,7 +36,7 @@ void CSpiderTank::Priority_Update(_float fTimeDelta)
 
 LIFE CSpiderTank::Update(_float fTimeDelta)
 {
-	m_pModelCom->Play_Animation(fTimeDelta, m_pTransformCom);
+	m_pModelCom->Play_Animation(fTimeDelta);
 
 	if (KEY_DOWN(DIK_UP))
 	{

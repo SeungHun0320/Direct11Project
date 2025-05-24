@@ -49,11 +49,11 @@ public:
 	virtual void Free() override;
 };
 
-class CPlayerState_GoStraight final : public CPlayerState
+class CPlayerState_Move final : public CPlayerState
 {
 public:
-	CPlayerState_GoStraight(class CPlayer* pOwner);
-	virtual ~CPlayerState_GoStraight() = default;
+	CPlayerState_Move(class CPlayer* pOwner);
+	virtual ~CPlayerState_Move() = default;
 
 public: // CPlayerState을(를) 통해 상속됨
 	void Enter(_float fTimeDelta) override;
@@ -81,35 +81,52 @@ public:
 
 };
 
-class CPlayerState_Sprint final : public CPlayerState
+class CPlayerState_Attack final : public CPlayerState
 {
 public:
-	CPlayerState_Sprint(class CPlayer* pOwner);
-	virtual ~CPlayerState_Sprint() = default;
+	CPlayerState_Attack(class CPlayer* pOwner);
+	virtual ~CPlayerState_Attack() = default;
 
-public:	// CPlayerState을(를) 통해 상속됨
+public: // CPlayerState을(를) 통해 상속됨
 	void Enter(_float fTimeDelta) override;
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
 
 public:
-	virtual void Free()override;
+	virtual void Free() override;
+
 };
 
-class CPlayerState_StickAttack final : public CPlayerState
+class CPlayerState_Hit final : public CPlayerState
 {
 public:
-	CPlayerState_StickAttack(class CPlayer* pOwner);
-	virtual ~CPlayerState_StickAttack() = default;
+	CPlayerState_Hit(class CPlayer* pOwner);
+	virtual ~CPlayerState_Hit() = default;
 
-
-
-	// CPlayerState을(를) 통해 상속됨
+public: // CPlayerState을(를) 통해 상속됨
 	void Enter(_float fTimeDelta) override;
-
 	void Execute(_float fTimeDelta) override;
-
 	void Exit() override;
+
+public:
+	virtual void Free() override;
+
+};
+
+class CPlayerState_Die final : public CPlayerState
+{
+public:
+	CPlayerState_Die(class CPlayer* pOwner);
+	virtual ~CPlayerState_Die() = default;
+
+public: // CPlayerState을(를) 통해 상속됨
+	void Enter(_float fTimeDelta) override;
+	void Execute(_float fTimeDelta) override;
+	void Exit() override;
+
+public:
+	virtual void Free() override;
+
 
 };
 

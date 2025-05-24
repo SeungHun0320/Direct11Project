@@ -3,8 +3,6 @@
 
 BEGIN(Client)
 
-
-
 class CPlayer final : public CPawn
 {
 public:
@@ -14,42 +12,32 @@ public:
 	}DESC;
 
 public:
-	enum STATES
+	enum ANIM_STATES
 	{
 		IDLE,
-		GO_STRAIGHT,
-		GO_LEFT,
-		GO_RIGHT,
-		GO_BACK,
+		GO_STRAIGHT, GO_LEFT, GO_RIGHT, GO_BACK,
 		OPEN_CHEST,
-		LADDER,
-		ON_LADDER,
-		OFF_LADDER,
+		LADDER, ON_LADDER, OFF_LADDER,
 		PARRY,
 		KNEEL,
-		EAT,
-		USE_POTION,
+		EAT,USE_POTION,
 		ON_SWITCH,
 		COIN_FLIP,
-		WINDUP,
-		TOSS,
-		WAKE_UP,
-		DANCE,
-		DODGE,
-		FAIL_DODGE,
-		HYPERDASH,
-		HIT,
-		STAGGER,
-		GET_UP,
+		WINDUP,	TOSS,
+		WAKE_UP, DANCE,
+		DODGE, FAIL_DODGE, HYPERDASH,
+		HIT, STAGGER, GET_UP,
 		DIE,
 		DAGGER,
-		STICK_ATTACK1,
-		STICK_ATTACK2,
-		SWORD_ATTACK1,
-		SWORD_ATTACK2,
-		SWORD_ATTACK3,
-		RUN,
+		STICK_ATTACK1, STICK_ATTACK2,
+		SWORD_ATTACK1, SWORD_ATTACK2, SWORD_ATTACK3,
+		SPRINT,
 		PS_END
+	};
+
+	enum class STATES
+	{
+		IDLE, MOVE, DODGE, ATTACK, HIT, DIE, ST_END
 	};
 
 private:
@@ -70,15 +58,21 @@ public:
 	virtual void Late_Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
-private:
-	STATE m_eState{ PS_END };
-	_int m_iSoonseo = {};
+public:
+
 
 private:
-	void Key_Input();
+	STATES m_eCurState{ STATES::ST_END };
+	STATES m_ePreState{ STATES::ST_END };
+	class CPlayerState* m_pCurState = { nullptr };
+	class CPlayerState* m_pStates[ENUM_CLASS(STATES::ST_END)];
+
+private:
+	void Key_Input(_float fTimeDelta);
 
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;
+	HRESULT Ready_States();
 
 public:
 	static CPlayer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

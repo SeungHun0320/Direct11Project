@@ -248,9 +248,11 @@
     <ClCompile Include="..\private\Terrain.cpp" />
     <ClCompile Include="..\private\Tool.cpp" />
     <ClCompile Include="..\private\UI.cpp" />
-    <ClCompile Include="..\Public\PlayerState_Sprint.cpp" />
+    <ClCompile Include="..\Public\PlayerState_Die.cpp" />
+    <ClCompile Include="..\Public\PlayerState_Hit.cpp" />
+    <ClCompile Include="..\Public\PlayerState_Attack.cpp" />
     <ClCompile Include="..\Public\PlayerState_Dodge.cpp" />
-    <ClCompile Include="..\Public\PlayerState_GoStraight.cpp" />
+    <ClCompile Include="..\Public\PlayerState_Move.cpp" />
     <ClCompile Include="..\Public\PlayerState_Idle.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="ImGui\backends\imgui_impl_dx11.cpp" />

@@ -2,6 +2,8 @@
 
 #include "GameInstance.h"
 
+#include "PlayerState.h"
+
 CPlayer::CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CPawn{pDevice, pContext}
 {
@@ -22,6 +24,9 @@ HRESULT CPlayer::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
+	if (FAILED(Ready_States()))
+		return E_FAIL;
+
 	m_pModelCom->Set_Animation(0, true);
 
 	return S_OK;
@@ -34,22 +39,8 @@ void CPlayer::Priority_Update(_float fTimeDelta)
 
 LIFE CPlayer::Update(_float fTimeDelta)
 {
-	Key_Input();
-
-	m_pModelCom->Play_Animation(fTimeDelta, m_pTransformCom);
-
-
-	_float3 vPos{};
-	XMStoreFloat3(&vPos, m_pTransformCom->Get_State(STATE::POSITION));
-
-#ifdef _CONSOL
-	if (KEY_PRESSING(DIK_1))
-	{
-		printf("플레이어 위치 :%.3f %.3f %.3f\n", vPos.x, vPos.y, vPos.z);
-	}
-		
-#endif
-
+	Key_Input(fTimeDelta);
+	m_pModelCom->Play_Animation(fTimeDelta);
 
 	return LIFE::NONE;
 }
@@ -64,7 +55,7 @@ HRESULT CPlayer::Render()
 	return __super::Render();
 }
 
-void CPlayer::Key_Input()
+void CPlayer::Key_Input(_float fTimeDelta)
 {
 	//if (KEY_PRESSING(DIK_W))
 	//{
@@ -117,6 +108,24 @@ HRESULT CPlayer::Ready_Components(void* pArg)
 	return S_OK;
 }
 
+HRESULT CPlayer::Ready_States()
+{
+	m_pStates[ENUM_CLASS(STATES::IDLE)] = new CPlayerState_Idle(this);
+	m_pStates[ENUM_CLASS(STATES::MOVE)] = new CPlayerState_Move(this);
+	m_pStates[ENUM_CLASS(STATES::DODGE)] = new CPlayerState_Dodge(this);
+	m_pStates[ENUM_CLASS(STATES::ATTACK)] = new CPlayerState_Attack(this);
+	m_pStates[ENUM_CLASS(STATES::HIT)] = new CPlayerState_Hit(this);
+	m_pStates[ENUM_CLASS(STATES::DIE)] = new CPlayerState_Die(this);
+
+	for (_uint i = 0; i < ENUM_CLASS(STATES::ST_END); i++)
+	{
+		if (nullptr == m_pStates[i])
+			return E_FAIL;
+	}
+
+	return S_OK;
+}
+
 CPlayer* CPlayer::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CPlayer* pInstance = new CPlayer(pDevice, pContext);
@@ -146,4 +155,7 @@ CGameObject* CPlayer::Clone(void* pArg)
 void CPlayer::Free()
 {
 	__super::Free();
+
+	for (_uint i = 0; i < ENUM_CLASS(STATES::ST_END); i++)
+		Safe_Release(m_pStates[i]);
 }

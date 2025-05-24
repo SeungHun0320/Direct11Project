@@ -52,6 +52,11 @@ void CLevel_Courtyard::Update(_float fTimeDelta)
 			return;
 	}
 
+	if (KEY_DOWN(DIK_ESCAPE))
+	{
+		PostQuitMessage(0);
+	}
+
 }
 
 HRESULT CLevel_Courtyard::Render()

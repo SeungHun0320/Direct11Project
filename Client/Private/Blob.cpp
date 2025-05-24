@@ -37,7 +37,7 @@ void CBlob::Priority_Update(_float fTimeDelta)
 
 LIFE CBlob::Update(_float fTimeDelta)
 {
-	m_pModelCom->Play_Animation(fTimeDelta, m_pTransformCom);
+	m_pModelCom->Play_Animation(fTimeDelta);
 
 	return __super::Update(fTimeDelta);
 }
