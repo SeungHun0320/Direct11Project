@@ -9,8 +9,7 @@ class CPlayerState abstract : public CBase
 {
 public:
 	CPlayerState(class CPlayer* pOwner) 
-		: m_pOwner{ pOwner }
-	{ Safe_AddRef(m_pOwner); }
+		: m_pOwner{ pOwner } { /* 약한 참조 ㅋㅋ */ }
 	virtual ~CPlayerState() = default;
 
 public:
@@ -30,7 +29,6 @@ public:
 	virtual void Free() override
 	{
 		__super::Free();
-		Safe_Release(m_pOwner);
 	}
 };
 
@@ -76,16 +74,69 @@ public:	// CPlayerState을(를) 통해 상속됨
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
 
+private:
+	_float  m_fTimeAcc{};
+	_bool   m_IsDodgeQueue{};
+	_float3 m_vInputDir{};
+
 public:
 	virtual void Free()override;
 
 };
 
-class CPlayerState_Attack final : public CPlayerState
+class CPlayerState_Sprint final : public CPlayerState
 {
 public:
-	CPlayerState_Attack(class CPlayer* pOwner);
-	virtual ~CPlayerState_Attack() = default;
+	CPlayerState_Sprint(class CPlayer* pOwner);
+	virtual ~CPlayerState_Sprint() = default;
+
+public:	// CPlayerState을(를) 통해 상속됨
+	void Enter(_float fTimeDelta) override;
+	void Execute(_float fTimeDelta) override;
+	void Exit() override;
+
+public:
+	virtual void Free()override;
+
+};
+
+class CPlayerState_Attack1 final : public CPlayerState
+{
+public:
+	CPlayerState_Attack1(class CPlayer* pOwner);
+	virtual ~CPlayerState_Attack1() = default;
+
+public: // CPlayerState을(를) 통해 상속됨
+	void Enter(_float fTimeDelta) override;
+	void Execute(_float fTimeDelta) override;
+	void Exit() override;
+
+public:
+	virtual void Free() override;
+
+};
+
+class CPlayerState_Attack2 final : public CPlayerState
+{
+public:
+	CPlayerState_Attack2(class CPlayer* pOwner);
+	virtual ~CPlayerState_Attack2() = default;
+
+public: // CPlayerState을(를) 통해 상속됨
+	void Enter(_float fTimeDelta) override;
+	void Execute(_float fTimeDelta) override;
+	void Exit() override;
+
+public:
+	virtual void Free() override;
+
+};
+
+class CPlayerState_Attack3 final : public CPlayerState
+{
+public:
+	CPlayerState_Attack3(class CPlayer* pOwner);
+	virtual ~CPlayerState_Attack3() = default;
 
 public: // CPlayerState을(를) 통해 상속됨
 	void Enter(_float fTimeDelta) override;
@@ -126,7 +177,6 @@ public: // CPlayerState을(를) 통해 상속됨
 
 public:
 	virtual void Free() override;
-
 
 };
 

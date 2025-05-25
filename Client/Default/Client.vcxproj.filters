@@ -172,14 +172,23 @@
     <Filter Include="02.GameObjects\06.Pawn\Player\Player_Attack">
       <UniqueIdentifier>{8cbbb533-4d5e-4e18-b376-9df44255655e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player\Player_Attack\AttackComboLogic">
-      <UniqueIdentifier>{22fc8cc2-bb25-4873-b8ab-bfc59d669a50}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\06.Pawn\Player\Player_Hit">
       <UniqueIdentifier>{3c1e4225-e571-405d-8b89-99b883633c26}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\06.Pawn\Player\Player_Die">
       <UniqueIdentifier>{ce1a33ce-3caf-46e6-9981-67d239273594}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.Camera\Camera_Free">
+      <UniqueIdentifier>{dd439121-a541-4f8d-a76a-45b3b5d641dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.Camera\Camera_TPS">
+      <UniqueIdentifier>{97e7a38c-428b-43ee-a37a-d122f2b03502}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Pawn\Player\Player_Sprint">
+      <UniqueIdentifier>{fa6d62b7-1254-4074-8d08-e29aa75a126a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Pawn\Player\Player_Attack\Player_AttackStrategy">
+      <UniqueIdentifier>{0c1d460e-ea77-4d2c-bfcd-694773e37063}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -264,9 +273,6 @@
     <ClInclude Include="ImGui\ImGuiFileDialogConfig.h">
       <Filter>98.Default\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Camera_Free.h">
-      <Filter>02.GameObjects\02.Camera</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Monster.h">
       <Filter>02.GameObjects\03.Monsters</Filter>
     </ClInclude>
@@ -342,6 +348,12 @@
     <ClInclude Include="..\Public\PlayerState.h">
       <Filter>02.GameObjects\06.Pawn\Player\PlayerState</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Camera_Free.h">
+      <Filter>02.GameObjects\02.Camera\Camera_Free</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player_IAttackStrategy.h">
+      <Filter>02.GameObjects\06.Pawn\Player\Player_Attack\Player_AttackStrategy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -413,9 +425,6 @@
     </ClCompile>
     <ClCompile Include="ImGui\ImGuiFileDialog.cpp">
       <Filter>98.Default\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Camera_Free.cpp">
-      <Filter>02.GameObjects\02.Camera</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Monster.cpp">
       <Filter>02.GameObjects\03.Monsters</Filter>
@@ -489,23 +498,29 @@
     <ClCompile Include="..\private\Potion.cpp">
       <Filter>02.GameObjects\07.Item\Item_Potion</Filter>
     </ClCompile>
-    <ClCompile Include="..\Public\PlayerState_Idle.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\Player_Idle</Filter>
+    <ClCompile Include="..\Private\PlayerState_Die.cpp">
+      <Filter>02.GameObjects\06.Pawn\Player\Player_Die</Filter>
     </ClCompile>
-    <ClCompile Include="..\Public\PlayerState_Move.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\Player_Move</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Public\PlayerState_Dodge.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\Player_Dodge</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Public\PlayerState_Attack.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\Player_Attack</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Public\PlayerState_Hit.cpp">
+    <ClCompile Include="..\Private\PlayerState_Hit.cpp">
       <Filter>02.GameObjects\06.Pawn\Player\Player_Hit</Filter>
     </ClCompile>
-    <ClCompile Include="..\Public\PlayerState_Die.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\Player_Die</Filter>
+    <ClCompile Include="..\Private\PlayerState_Dodge.cpp">
+      <Filter>02.GameObjects\06.Pawn\Player\Player_Dodge</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Move.cpp">
+      <Filter>02.GameObjects\06.Pawn\Player\Player_Move</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Idle.cpp">
+      <Filter>02.GameObjects\06.Pawn\Player\Player_Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Camera_Free.cpp">
+      <Filter>02.GameObjects\02.Camera\Camera_Free</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Attack.cpp">
+      <Filter>02.GameObjects\06.Pawn\Player\Player_Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Sprint.cpp">
+      <Filter>02.GameObjects\06.Pawn\Player\Player_Sprint</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

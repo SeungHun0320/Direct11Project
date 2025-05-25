@@ -94,6 +94,7 @@ private: /* 애님메쉬 제어용 함수들 */
 	HRESULT AnimMesh_Chest_ListBox();
 	HRESULT AnimMesh_Monster_ListBox();
 	HRESULT AnimMesh_Environment_ListBox();
+	HRESULT AnimMesh_Delete(_uint _iCurrentObjIndex, vector<_string>& vecNames);
 
 private: /* 모드 바꾸는 아임구이 버튼 */
 	void Change_Mode();

@@ -195,7 +195,7 @@ HRESULT CLoader::Loading_For_Courtyard()
 	//	return E_FAIL;
 
 	/*For.Prototype_Component_Model_Courtyard*/
-	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_Component_Model_Courtyard"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Map/Fortress/Courtyard/Courtyard.Model"), PreTransformMatrix))))
 		return E_FAIL;
@@ -389,25 +389,25 @@ HRESULT CLoader::Loading_For_Tools()
 	_matrix		PreTransformMatrix = XMMatrixIdentity();
 
 	/*For.Prototype_Component_Model_Courtyard*/
-	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_Component_Model_Courtyard"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Map/Fortress/Courtyard/Courtyard.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
 	/*For.Prototype_Component_Model_Arena*/
-	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_Component_Model_Arena"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Map/Fortress/Arena/Arena.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
 	/*For.Prototype_Component_Model_Main*/
-	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_Component_Model_Main"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Map/Fortress/Main/Main.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
 	/*For.Prototype_Component_Model_Shop*/
-	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_Component_Model_Shop"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Map/Shop/Shop.Model"), PreTransformMatrix))))
 		return E_FAIL;

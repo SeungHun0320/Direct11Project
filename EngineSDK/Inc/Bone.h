@@ -30,8 +30,8 @@ public:
 		return &m_TransformationMatrix;
 	}
 
-	const _uint Get_ParentBoneIndex() {
-		return m_iParentBoneIndex;
+	_bool Compare_ParentBoneIndex(_uint iParentBoneIndex) {
+		return m_iParentBoneIndex == iParentBoneIndex;
 	}
 
 	void Set_ParentBoneIndex(_uint iParentBoneIndex = 2) {

@@ -29,13 +29,21 @@ HRESULT CCamera_Free::Initialize(void* pArg)
 
 void CCamera_Free::Priority_Update(_float fTimeDelta)
 {
-	Key_Input(fTimeDelta);
+	if(LEVEL::TOOLS == m_eLevelID)
+		Key_Input(fTimeDelta);
 
 	__super::Bind_Matrices();
 }
 
 LIFE CCamera_Free::Update(_float fTimeDelta)
 {
+
+//	_float3 vTmp; 
+//	XMStoreFloat3(&vTmp, m_pTransformCom->Get_State(STATE::POSITION));
+//#ifdef _CONSOL
+//	printf("ÂïÀº Ä«¸Þ¶ó ÁÂÇ¥ : { %.2f, %.2f, %.2f }\n", vTmp.x, vTmp.y, vTmp.z);
+//#endif
+
 	return LIFE::NONE;
 }
 

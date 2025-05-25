@@ -15,17 +15,13 @@ public:
 		return m_iNumMeshes;
 	}
 
-	_float3 Get_RootPosition() {
-		return m_vPreRootPosition;
-	}
-
 	void Set_Animation(_uint iIndex, _bool isLoop = true, _float fBlendDuration = 0.f, _bool isBlended = false) {
 		m_iCurrentAnimIndex = iIndex;
 		m_isLoop = isLoop;
 		m_isBlended = isBlended;
 	}
 
-	void Change_Animation(_uint iNextIndex, _bool isLoop = true, _float fBlendDuration = 0.f, _bool isBlended = true, _bool isRoot = false) {
+	void Change_Animation(_uint iNextIndex, _bool isLoop = true, _float fBlendDuration = 0.f, _bool isBlended = true) {		
 		if (false == isBlended)
 			m_iCurrentAnimIndex = iNextIndex;
 
@@ -34,7 +30,6 @@ public:
 		m_isBlended = isBlended;
 		m_fBlendTickPerSecond = 0.f;
 		m_fBlendDuration = fBlendDuration;
-		m_isRoot = isRoot;
 	}
 
 	HRESULT Bind_Material(class CShader* pShader, const _char* pConstantName, _uint iMeshIndex, TEX_TYPE eType, _uint iTextureIndex = 0);
@@ -52,8 +47,6 @@ public:
 	_bool Play_Animation(_float fTimeDelta);
 	void  Animation_Blend(_float fTimeDelta);
 
-	/* 루트 포지션을 계산해주는 함수 */
-	_vector  Compute_RootPosition();
 	void     Update_RootPosition();
 
 public: /* 맵툴용,,,? */
@@ -90,10 +83,6 @@ private: /* 애니메이션을 루프 돌릴 것인지, 현재 애니메이션 인덱스가 몇인지 */
 
 	_float  m_fBlendDuration = {};
 	_float	m_fBlendTickPerSecond = {};
-
-private:
-	_float3 m_vPreRootPosition = {};
-	_bool   m_isRoot = {};
 
 private:/* 애니메이션 갯수, 애니메이션을 담는 벡터 */
 	_uint						m_iNumAnimations = {};

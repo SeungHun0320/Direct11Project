@@ -22,20 +22,20 @@ CLevel_Courtyard::CLevel_Courtyard(ID3D11Device* pDevice, ID3D11DeviceContext* p
 
 HRESULT CLevel_Courtyard::Initialize()
 {
-	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
+	//	return E_FAIL;
 
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
+	//	return E_FAIL;
 
 	if (FAILED(Ready_Layer_Pawn(TEXT("Layer_Pawn"))))
 		return E_FAIL;
 
-	//if (FAILED(Load_Map(TEXT("Courtyard.Map"))))
-	//	return E_FAIL;
+	if (FAILED(Load_Map(TEXT("Courtyard.Map"))))
+		return E_FAIL;
 
 	if (FAILED(Ready_Lights()))
 		return E_FAIL;
@@ -69,7 +69,7 @@ HRESULT CLevel_Courtyard::Render()
 HRESULT CLevel_Courtyard::Ready_Layer_Pawn(const _wstring& strLayerTag)
 {
 	//이 레벨의 플레이어 생성위치
-	_float3 vInitPosition = { 0.f, 0.f, 0.f };
+	_float3 vInitPosition = { 0.f, 0.f, -100.f };
 
 	// 플레이어가 있는지 체크하고 있으면 위치만 변경해줌.
 	auto pPlayer = GET_PLAYER;
@@ -84,7 +84,7 @@ HRESULT CLevel_Courtyard::Ready_Layer_Pawn(const _wstring& strLayerTag)
 	//없으면 새로 생성해서 넣어줌
 	CPlayer::DESC tDesc{};
 	tDesc.eLevelID = LEVEL::STATIC;
-	tDesc.fSpeedPerSec = 20.f;
+	tDesc.fSpeedPerSec = 5.f;
 	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	tDesc.strName = TEXT("Player");
 
@@ -107,8 +107,8 @@ HRESULT CLevel_Courtyard::Ready_Layer_Camera(const _wstring& strLayerTag)
 	tDesc.eLevelID = LEVEL::COURTYARD;
 	tDesc.fSensor = 0.1f;
 
-	tDesc.vEye = _float3(0.f, 20.f, -15.f);
-	tDesc.vAt = _float3(0.f, 0.f, 0.f);
+	tDesc.vEye = _float3(0.f, 10.f, -110.f);
+	tDesc.vAt = _float3(0.f, 0.f, -100.f);
 	tDesc.fFov = XMConvertToRadians(60.f);
 	tDesc.fNear = 0.1f;
 	tDesc.fFar = 5000.f;

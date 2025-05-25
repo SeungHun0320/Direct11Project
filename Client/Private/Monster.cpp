@@ -41,6 +41,9 @@ void CMonster::Priority_Update(_float fTimeDelta)
 
 LIFE CMonster::Update(_float fTimeDelta)
 {
+	if (m_bDead)
+		return LIFE::DEAD;
+
 	return LIFE::NONE;
 }
 

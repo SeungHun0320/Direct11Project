@@ -28,7 +28,6 @@ CModel::CModel(const CModel& Prototype)
     , m_iNumAnimations{ Prototype.m_iNumAnimations }
     , m_pGameInstance{ CGameInstance::Get_Instance() }
     , m_iRootBoneIndex { Prototype.m_iRootBoneIndex }
-    , m_vPreRootPosition {Prototype.m_vPreRootPosition }
 {
     Safe_AddRef(m_pGameInstance);
 
@@ -188,18 +187,6 @@ void CModel::Animation_Blend(_float fTimeDelta)
         m_Bones[i]->Set_TransformationMatrix(MatrixLerp(CurTransfomationMatrices[i], NextTransfomationMatrices[i], fRatio));
 }
 
-_vector CModel::Compute_RootPosition()
-{
-    _vector			vScale{}, vRotation{}, vPosition{};
- 
-    XMMatrixDecompose(&vScale, &vRotation, &vPosition, XMLoadFloat4x4(m_Bones[m_iRootBoneIndex]->Get_CombinedTransformationMatrix()));
-
-    _vector fDelta = vPosition - XMLoadFloat3(&m_vPreRootPosition);
-    XMStoreFloat3(&m_vPreRootPosition, vPosition);
-
-    return fDelta;
-}
-
 void CModel::Update_RootPosition()
 {
     _vector			vScale{}, vRotation{}, vPosition{};
@@ -249,8 +236,6 @@ _bool CModel::Compute_PickedPosition_World(const _float4x4* pWorldMatrix, _float
             fMinDist = fDist;
             bHit = true;
         }
-
-
     }
 
     if (bHit)
@@ -284,13 +269,21 @@ HRESULT CModel::Ready_Bones(ifstream& _InFile)
         m_Bones.push_back(pBone);
     }
 
+    
     for (_uint i = 0; i < m_Bones.size(); i++)
     {
-        if (m_Bones[i]->Compare_Name("root"))
+        if (m_Bones[i]->Compare_Name("root") || m_Bones[i]->Compare_Name("Blob"))
         {
-            m_Bones[i]->Set_ParentBoneIndex(2);
+            m_iRootBoneIndex = i;
             break;
         }
+    }
+
+    for (_uint i = 0; i < m_Bones.size(); i++)
+    {
+        if (m_Bones[i]->Compare_ParentBoneIndex(m_iRootBoneIndex))
+            m_Bones[i]->Set_ParentBoneIndex(m_iRootBoneIndex - 1);
+
     }
 
     return S_OK;

@@ -100,6 +100,7 @@ void CMapTool::Update(_float fTimeDelta)
 				return;
 			
 			pGameObject->Set_Dead(true);
+			
 		}
 
 	}
@@ -374,6 +375,10 @@ HRESULT CMapTool::Craete_Map(MAP iMapIdx, const _wstring& strLayerTag)
 	m_pMap = static_cast<CMap*>(m_pGameInstance->Find_Object(ENUM_CLASS(LEVEL::TOOLS), strLayerTag));
 	if (nullptr != m_pMap)
 		Safe_AddRef(m_pMap);
+
+	m_EnvironmentNames.clear();
+	m_ChestNames.clear();
+	m_MonsterNames.clear();
 
 	return S_OK;
 }
@@ -692,6 +697,8 @@ HRESULT CMapTool::AnimMesh_Chest_ListBox()
 		ImGui::EndListBox();
 	}
 
+	AnimMesh_Delete(iCurrentObjIndex, m_ChestNames);
+
 	return S_OK;
 
 }
@@ -727,6 +734,8 @@ HRESULT CMapTool::AnimMesh_Monster_ListBox()
 		ImGui::EndListBox();
 	}
 
+	AnimMesh_Delete(iCurrentObjIndex, m_MonsterNames);
+
 	return S_OK;
 }
 
@@ -760,17 +769,25 @@ HRESULT CMapTool::AnimMesh_Environment_ListBox()
 		ImGui::EndListBox();
 	}
 
-	/* πŸ≤ŸªÔ πŸ≤Â¿Ω */
-	switch (iCurrentObjIndex)
+	AnimMesh_Delete(iCurrentObjIndex, m_EnvironmentNames);
+
+	return S_OK;
+}
+
+HRESULT CMapTool::AnimMesh_Delete(_uint _iCurrentObjIndex, vector<_string>& vecNames)
+{
+	if (nullptr == m_pModifyObject)
+		return E_FAIL;
+
+	if (0 > _iCurrentObjIndex || vecNames.empty())
+		return E_FAIL;
+	
+	if (ImGui::Button(u8"ªË¡¶"))
 	{
-	case BLOB:
-		m_strName = TEXT("Blob");
-		break;
-
-	default:
-		break;
+		m_pModifyObject->Set_Dead(true);
+		vecNames.erase(vecNames.begin() + _iCurrentObjIndex);
 	}
-
+		
 	return S_OK;
 }
 
@@ -1053,13 +1070,29 @@ HRESULT CMapTool::Load_Map(const _string& strMapPath)
 			return E_FAIL;
 
 		if (tDesc.strName == L"Courtyard")
+		{
+			m_strMapFileTag = "Courtyard.Map";
 			m_eCurrentMap = COURTYARD;
+		}
+
 		else if (tDesc.strName == L"Main")
+		{
+			m_strMapFileTag = "Main.Map";
 			m_eCurrentMap = MAIN;
+		}
+
 		else if (tDesc.strName == L"Arena")
+		{
+			m_strMapFileTag = "Arena.Map";
 			m_eCurrentMap = ARENA;
+		}
+
 		else if (tDesc.strName == L"Shop")
+		{
+			m_strMapFileTag = "Shop.Map";
 			m_eCurrentMap = SHOP;
+		}
+
 		
 		m_ePreMap = m_eCurrentMap;
 		

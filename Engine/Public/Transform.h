@@ -84,9 +84,12 @@ public:
 	void Go_Left(_float fTimeDelta);
 	void Go_Target(_fvector vTarget, _float fTimeDelta, _float fMinDistance);
 	void Turn(_fvector vAxis, _float fTimeDelta);
+	void Go_Dir(_fvector vDir, _float fTimeDelta);
 
 public:
 	void LookAt(_fvector vAt);
+	void LookDir(_fvector vDir);
+	void LookDirLerp(_fvector vTargetDir, _float fTimeDelta, _float fRatio);
 
 public:
 	HRESULT Bind_ShaderResource(class CShader* pShader, const _char* pConstantName);

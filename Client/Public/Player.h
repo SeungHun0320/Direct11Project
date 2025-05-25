@@ -8,6 +8,7 @@ class CPlayer final : public CPawn
 public:
 	typedef struct tagPlayerDesc : public CPawn::DESC {
 
+		_int iStamina;
 
 	}DESC;
 
@@ -37,7 +38,7 @@ public:
 
 	enum class STATES
 	{
-		IDLE, MOVE, DODGE, ATTACK, HIT, DIE, ST_END
+		IDLE, MOVE, DODGE, SPRINT, ATTACK1, ATTACK2, ATTACK3, HIT, DIE, ST_END
 	};
 
 private:
@@ -58,17 +59,65 @@ public:
 	virtual void Late_Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
-public:
+public: /* 상태패턴 관련 함수들 */
+	void Change_States(STATES eStates);
+	_vector Get_State(STATE eState);
+	/* 키 입력 관련 함수들*/
+	_bool IsKeyDown(_ubyte eKeyID);
+	_bool IsKeyPressing(_ubyte eKeyID);
+	_bool IsKeyUp(_ubyte eKeyID);
+	_bool IsAnyMoveKeyPressed() const;
+	
+	/* 상태로 넘겨줄 함수들 */
+	_bool Play_Animation(_float fTimeDelta);
+	void  Change_Animation(_uint iNextIndex, _bool isLoop = true, _float fBlendDuration = 0.f, _bool isBlend = true);
+	void  Dodge(_fvector vDir,_float fTimeDelta);
+	void  Move(_fvector vDir, _float fTimeDelta, _float fSpeed);
 
+	_vector Get_InputDirection() {
+
+		_vector vInputDir{};
+		
+		if (IsKeyPressing(DIK_W))
+			vInputDir += DIR_FORWARD;
+
+		if (IsKeyPressing(DIK_A))
+			vInputDir += DIR_LEFT;
+
+		if (IsKeyPressing(DIK_S))
+			vInputDir += DIR_BACKWARD;
+
+		if (IsKeyPressing(DIK_D))
+			vInputDir += DIR_RIGHT;
+
+		return XMVector3Normalize(vInputDir);
+	};
+
+	_float Get_Stamina() {
+		return m_fStamina;
+	}
+
+	void Use_Stamina(_float fStamina) {
+		m_fStamina -= fStamina;
+	}
+
+private:
+	void Key_Input(_float fTimeDelta);
+
+private:
+	_float m_fStamina = {};
+	_float m_fMaxStamina = {};
+	_float m_fStaminaRecoveryPerSec = {};
+	_float m_fStaminaTimeAcc = {};
 
 private:
 	STATES m_eCurState{ STATES::ST_END };
 	STATES m_ePreState{ STATES::ST_END };
 	class CPlayerState* m_pCurState = { nullptr };
-	class CPlayerState* m_pStates[ENUM_CLASS(STATES::ST_END)];
+	class CPlayerState* m_pStates[ENUM_CLASS(STATES::ST_END)] = { nullptr };
 
 private:
-	void Key_Input(_float fTimeDelta);
+	void Stamina_Recovery(_float fTimeDelta);
 
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;
