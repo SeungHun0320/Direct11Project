@@ -9785,12 +9785,12 @@ bool ImGui::TestShortcutRouting(ImGuiKeyChord key_chord, ImGuiID owner_id)
 
 // Note that Dear ImGui doesn't know the meaning/semantic of ImGuiKey from 0..511: they are legacy native keycodes.
 // Consider transitioning from 'IsKeyDown(MY_ENGINE_KEY_A)' (<1.87) to IsKeyDown(ImGuiKey_A) (>= 1.87)
-bool ImGui::IsKeyDown(ImGuiKey key)
+bool ImGui::KeyDown(ImGuiKey key)
 {
-    return IsKeyDown(key, ImGuiKeyOwner_Any);
+    return KeyDown(key, ImGuiKeyOwner_Any);
 }
 
-bool ImGui::IsKeyDown(ImGuiKey key, ImGuiID owner_id)
+bool ImGui::KeyDown(ImGuiKey key, ImGuiID owner_id)
 {
     const ImGuiKeyData* key_data = GetKeyData(key);
     if (!key_data->Down)
@@ -10089,10 +10089,10 @@ static void UpdateAliasKey(ImGuiKey key, bool v, float analog_value)
 static ImGuiKeyChord GetMergedModsFromKeys()
 {
     ImGuiKeyChord mods = 0;
-    if (ImGui::IsKeyDown(ImGuiMod_Ctrl))     { mods |= ImGuiMod_Ctrl; }
-    if (ImGui::IsKeyDown(ImGuiMod_Shift))    { mods |= ImGuiMod_Shift; }
-    if (ImGui::IsKeyDown(ImGuiMod_Alt))      { mods |= ImGuiMod_Alt; }
-    if (ImGui::IsKeyDown(ImGuiMod_Super))    { mods |= ImGuiMod_Super; }
+    if (ImGui::KeyDown(ImGuiMod_Ctrl))     { mods |= ImGuiMod_Ctrl; }
+    if (ImGui::KeyDown(ImGuiMod_Shift))    { mods |= ImGuiMod_Shift; }
+    if (ImGui::KeyDown(ImGuiMod_Alt))      { mods |= ImGuiMod_Alt; }
+    if (ImGui::KeyDown(ImGuiMod_Super))    { mods |= ImGuiMod_Super; }
     return mods;
 }
 
@@ -13695,7 +13695,7 @@ float ImGui::GetNavTweakPressedAmount(ImGuiAxis axis)
         key_more = (axis == ImGuiAxis_X) ? ImGuiKey_RightArrow : ImGuiKey_DownArrow;
     }
     float amount = (float)GetKeyPressedAmount(key_more, repeat_delay, repeat_rate) - (float)GetKeyPressedAmount(key_less, repeat_delay, repeat_rate);
-    if (amount != 0.0f && IsKeyDown(key_less) && IsKeyDown(key_more)) // Cancel when opposite directions are held, regardless of repeat phase
+    if (amount != 0.0f && KeyDown(key_less) && KeyDown(key_more)) // Cancel when opposite directions are held, regardless of repeat phase
         amount = 0.0f;
     return amount;
 }
@@ -13714,13 +13714,13 @@ static void ImGui::NavUpdate()
     const ImGuiKey nav_gamepad_keys_to_change_source[] = { ImGuiKey_GamepadFaceRight, ImGuiKey_GamepadFaceLeft, ImGuiKey_GamepadFaceUp, ImGuiKey_GamepadFaceDown, ImGuiKey_GamepadDpadRight, ImGuiKey_GamepadDpadLeft, ImGuiKey_GamepadDpadUp, ImGuiKey_GamepadDpadDown };
     if (nav_gamepad_active)
         for (ImGuiKey key : nav_gamepad_keys_to_change_source)
-            if (IsKeyDown(key))
+            if (KeyDown(key))
                 g.NavInputSource = ImGuiInputSource_Gamepad;
     const bool nav_keyboard_active = (io.ConfigFlags & ImGuiConfigFlags_NavEnableKeyboard) != 0;
     const ImGuiKey nav_keyboard_keys_to_change_source[] = { ImGuiKey_Space, ImGuiKey_Enter, ImGuiKey_Escape, ImGuiKey_RightArrow, ImGuiKey_LeftArrow, ImGuiKey_UpArrow, ImGuiKey_DownArrow };
     if (nav_keyboard_active)
         for (ImGuiKey key : nav_keyboard_keys_to_change_source)
-            if (IsKeyDown(key))
+            if (KeyDown(key))
                 g.NavInputSource = ImGuiInputSource_Keyboard;
 
     // Process navigation init request (select first/default focus)
@@ -13770,9 +13770,9 @@ static void ImGui::NavUpdate()
     g.NavActivateFlags = ImGuiActivateFlags_None;
     if (g.NavId != 0 && g.NavCursorVisible && !g.NavWindowingTarget && g.NavWindow && !(g.NavWindow->Flags & ImGuiWindowFlags_NoNavInputs))
     {
-        const bool activate_down = (nav_keyboard_active && IsKeyDown(ImGuiKey_Space, ImGuiKeyOwner_NoOwner)) || (nav_gamepad_active && IsKeyDown(ImGuiKey_NavGamepadActivate, ImGuiKeyOwner_NoOwner));
+        const bool activate_down = (nav_keyboard_active && KeyDown(ImGuiKey_Space, ImGuiKeyOwner_NoOwner)) || (nav_gamepad_active && KeyDown(ImGuiKey_NavGamepadActivate, ImGuiKeyOwner_NoOwner));
         const bool activate_pressed = activate_down && ((nav_keyboard_active && IsKeyPressed(ImGuiKey_Space, 0, ImGuiKeyOwner_NoOwner)) || (nav_gamepad_active && IsKeyPressed(ImGuiKey_NavGamepadActivate, 0, ImGuiKeyOwner_NoOwner)));
-        const bool input_down = (nav_keyboard_active && (IsKeyDown(ImGuiKey_Enter, ImGuiKeyOwner_NoOwner) || IsKeyDown(ImGuiKey_KeypadEnter, ImGuiKeyOwner_NoOwner))) || (nav_gamepad_active && IsKeyDown(ImGuiKey_NavGamepadInput, ImGuiKeyOwner_NoOwner));
+        const bool input_down = (nav_keyboard_active && (KeyDown(ImGuiKey_Enter, ImGuiKeyOwner_NoOwner) || KeyDown(ImGuiKey_KeypadEnter, ImGuiKeyOwner_NoOwner))) || (nav_gamepad_active && KeyDown(ImGuiKey_NavGamepadInput, ImGuiKeyOwner_NoOwner));
         const bool input_pressed = input_down && ((nav_keyboard_active && (IsKeyPressed(ImGuiKey_Enter, 0, ImGuiKeyOwner_NoOwner) || IsKeyPressed(ImGuiKey_KeypadEnter, 0, ImGuiKeyOwner_NoOwner))) || (nav_gamepad_active && IsKeyPressed(ImGuiKey_NavGamepadInput, 0, ImGuiKeyOwner_NoOwner)));
         if (g.ActiveId == 0 && activate_pressed)
         {
@@ -13841,7 +13841,7 @@ static void ImGui::NavUpdate()
         if (nav_gamepad_active)
         {
             const ImVec2 scroll_dir = GetKeyMagnitude2d(ImGuiKey_GamepadLStickLeft, ImGuiKey_GamepadLStickRight, ImGuiKey_GamepadLStickUp, ImGuiKey_GamepadLStickDown);
-            const float tweak_factor = IsKeyDown(ImGuiKey_NavGamepadTweakSlow) ? 1.0f / 10.0f : IsKeyDown(ImGuiKey_NavGamepadTweakFast) ? 10.0f : 1.0f;
+            const float tweak_factor = KeyDown(ImGuiKey_NavGamepadTweakSlow) ? 1.0f / 10.0f : KeyDown(ImGuiKey_NavGamepadTweakFast) ? 10.0f : 1.0f;
             if (scroll_dir.x != 0.0f && window->ScrollbarX)
                 SetScrollX(window, ImTrunc(window->Scroll.x + scroll_dir.x * scroll_speed * tweak_factor));
             if (scroll_dir.y != 0.0f)
@@ -14250,8 +14250,8 @@ static float ImGui::NavUpdatePageUpPageDown()
     if ((window->Flags & ImGuiWindowFlags_NoNavInputs) || g.NavWindowingTarget != NULL)
         return 0.0f;
 
-    const bool page_up_held = IsKeyDown(ImGuiKey_PageUp, ImGuiKeyOwner_NoOwner);
-    const bool page_down_held = IsKeyDown(ImGuiKey_PageDown, ImGuiKeyOwner_NoOwner);
+    const bool page_up_held = KeyDown(ImGuiKey_PageUp, ImGuiKeyOwner_NoOwner);
+    const bool page_down_held = KeyDown(ImGuiKey_PageDown, ImGuiKeyOwner_NoOwner);
     const bool home_pressed = IsKeyPressed(ImGuiKey_Home, ImGuiInputFlags_Repeat, ImGuiKeyOwner_NoOwner);
     const bool end_pressed = IsKeyPressed(ImGuiKey_End, ImGuiInputFlags_Repeat, ImGuiKeyOwner_NoOwner);
     if (page_up_held == page_down_held && home_pressed == end_pressed) // Proceed if either (not both) are pressed, otherwise early out
@@ -14532,7 +14532,7 @@ static void ImGui::NavUpdateWindowing()
         }
 
         // Single press toggles NavLayer, long press with L/R apply actual focus on release (until then the window was merely rendered top-most)
-        if (!IsKeyDown(ImGuiKey_NavGamepadMenu))
+        if (!KeyDown(ImGuiKey_NavGamepadMenu))
         {
             g.NavWindowingToggleLayer &= (g.NavWindowingHighlightAlpha < 1.0f); // Once button was held long enough we don't consider it a tap-to-toggle-layer press anymore.
             if (g.NavWindowingToggleLayer && g.NavWindow)
@@ -14590,7 +14590,7 @@ static void ImGui::NavUpdateWindowing()
             if (g.ActiveId == 0 || g.ActiveIdAllowOverlap)
                 if (IsMousePosValid(&io.MousePos) == IsMousePosValid(&io.MousePosPrev))
                     apply_toggle_layer = true;
-        if (!IsKeyDown(g.NavWindowingToggleKey))
+        if (!KeyDown(g.NavWindowingToggleKey))
             g.NavWindowingToggleLayer = false;
     }
 
@@ -21048,7 +21048,7 @@ void ImGui::DebugRenderKeyboardPreview(ImDrawList* draw_list)
         draw_list->AddRectFilled(face_min, face_max, IM_COL32(252, 252, 252, 255), key_face_rounding);
         ImVec2 label_min = ImVec2(key_min.x + key_label_pos.x, key_min.y + key_label_pos.y);
         draw_list->AddText(label_min, IM_COL32(64, 64, 64, 255), key_data->Label);
-        if (IsKeyDown(key_data->Key))
+        if (KeyDown(key_data->Key))
             draw_list->AddRectFilled(key_min, key_max, IM_COL32(255, 0, 0, 128), key_rounding);
     }
     draw_list->PopClipRect();
@@ -21632,7 +21632,7 @@ void ImGui::ShowMetricsWindow(bool* p_open)
         {
             // User code should never have to go through such hoops! You can generally iterate between ImGuiKey_NamedKey_BEGIN and ImGuiKey_NamedKey_END.
             Indent();
-            Text("Keys down:");         for (ImGuiKey key = ImGuiKey_NamedKey_BEGIN; key < ImGuiKey_NamedKey_END; key = (ImGuiKey)(key + 1)) { if (!IsKeyDown(key)) continue;     SameLine(); Text(IsNamedKey(key) ? "\"%s\"" : "\"%s\" %d", GetKeyName(key), key); SameLine(); Text("(%.02f)", GetKeyData(key)->DownDuration); }
+            Text("Keys down:");         for (ImGuiKey key = ImGuiKey_NamedKey_BEGIN; key < ImGuiKey_NamedKey_END; key = (ImGuiKey)(key + 1)) { if (!KeyDown(key)) continue;     SameLine(); Text(IsNamedKey(key) ? "\"%s\"" : "\"%s\" %d", GetKeyName(key), key); SameLine(); Text("(%.02f)", GetKeyData(key)->DownDuration); }
             Text("Keys pressed:");      for (ImGuiKey key = ImGuiKey_NamedKey_BEGIN; key < ImGuiKey_NamedKey_END; key = (ImGuiKey)(key + 1)) { if (!IsKeyPressed(key)) continue;  SameLine(); Text(IsNamedKey(key) ? "\"%s\"" : "\"%s\" %d", GetKeyName(key), key); }
             Text("Keys released:");     for (ImGuiKey key = ImGuiKey_NamedKey_BEGIN; key < ImGuiKey_NamedKey_END; key = (ImGuiKey)(key + 1)) { if (!IsKeyReleased(key)) continue; SameLine(); Text(IsNamedKey(key) ? "\"%s\"" : "\"%s\" %d", GetKeyName(key), key); }
             Text("Keys mods: %s%s%s%s", io.KeyCtrl ? "CTRL " : "", io.KeyShift ? "SHIFT " : "", io.KeyAlt ? "ALT " : "", io.KeySuper ? "SUPER " : "");

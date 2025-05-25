@@ -63,43 +63,33 @@ public: /* 상태패턴 관련 함수들 */
 	void Change_States(STATES eStates);
 	_vector Get_State(STATE eState);
 	/* 키 입력 관련 함수들*/
-	_bool IsKeyDown(_ubyte eKeyID);
-	_bool IsKeyPressing(_ubyte eKeyID);
-	_bool IsKeyUp(_ubyte eKeyID);
+	_bool KeyDown(_ubyte eKeyID);
+	_bool KeyPressing(_ubyte eKeyID);
+	_bool KeyUp(_ubyte eKeyID);
 	_bool IsAnyMoveKeyPressed() const;
 	
 	/* 상태로 넘겨줄 함수들 */
 	_bool Play_Animation(_float fTimeDelta);
 	void  Change_Animation(_uint iNextIndex, _bool isLoop = true, _float fBlendDuration = 0.f, _bool isBlend = true);
 	void  Dodge(_fvector vDir,_float fTimeDelta);
-	void  Move(_fvector vDir, _float fTimeDelta, _float fSpeed);
+	void  Move(_fvector vDir, _float fTimeDelta, _float fSpeed = 0.f);
 
-	_vector Get_InputDirection() {
-
-		_vector vInputDir{};
-		
-		if (IsKeyPressing(DIK_W))
-			vInputDir += DIR_FORWARD;
-
-		if (IsKeyPressing(DIK_A))
-			vInputDir += DIR_LEFT;
-
-		if (IsKeyPressing(DIK_S))
-			vInputDir += DIR_BACKWARD;
-
-		if (IsKeyPressing(DIK_D))
-			vInputDir += DIR_RIGHT;
-
-		return XMVector3Normalize(vInputDir);
-	};
+	_vector Get_InputDirection();
 
 	_float Get_Stamina() {
 		return m_fStamina;
 	}
-
 	void Use_Stamina(_float fStamina) {
 		m_fStamina -= fStamina;
 	}
+	
+public: /* 전략패턴 트라이 */
+	void Set_AttackStrategy(class CPlayer_IAttackStrategy* pStrategy) {
+		m_pAttackStrategy = pStrategy;
+	};
+	class CPlayer_IAttackStrategy* Get_AttackStrategy() const {
+		return m_pAttackStrategy;
+	};
 
 private:
 	void Key_Input(_float fTimeDelta);
@@ -110,11 +100,14 @@ private:
 	_float m_fStaminaRecoveryPerSec = {};
 	_float m_fStaminaTimeAcc = {};
 
-private:
+private: /* 상태 패턴들 */
 	STATES m_eCurState{ STATES::ST_END };
 	STATES m_ePreState{ STATES::ST_END };
 	class CPlayerState* m_pCurState = { nullptr };
 	class CPlayerState* m_pStates[ENUM_CLASS(STATES::ST_END)] = { nullptr };
+
+private: /* 전략 패턴 트라이*/
+	class CPlayer_IAttackStrategy* m_pAttackStrategy = { nullptr };
 
 private:
 	void Stamina_Recovery(_float fTimeDelta);

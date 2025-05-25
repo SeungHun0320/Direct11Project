@@ -8,22 +8,22 @@ CPlayerState_Idle::CPlayerState_Idle(CPlayer* pOwner)
 
 void CPlayerState_Idle::Enter(_float fTimeDelta)
 {
-	m_pOwner->Change_Animation(CPlayer::ANIM_STATES::IDLE, true, 0.2f, true);
+	m_pOwner->Change_Animation(CPlayer::ANIM_STATES::IDLE, true, 0.1f);
 }
 
 void CPlayerState_Idle::Execute(_float fTimeDelta)
 {
 	m_pOwner->Play_Animation(fTimeDelta);
 
-	if (m_pOwner->IsKeyDown(DIK_W) || m_pOwner->IsKeyDown(DIK_A) || m_pOwner->IsKeyDown(DIK_S) || m_pOwner->IsKeyDown(DIK_D))
+	if (m_pOwner->KeyDown(DIK_W) || m_pOwner->KeyDown(DIK_A) || m_pOwner->KeyDown(DIK_S) || m_pOwner->KeyDown(DIK_D))
 	{
 		m_pOwner->Change_States(CPlayer::STATES::MOVE);
 	}
 
-	if (m_pOwner->IsKeyDown(DIK_SPACE)) 
+	if (m_pOwner->KeyDown(DIK_SPACE)) 
 		m_pOwner->Change_States(CPlayer::STATES::DODGE);
 
-	if (m_pOwner->IsKeyDown(DIK_J) || m_pOwner->IsKeyDown(DIK_K) || m_pOwner->IsKeyDown(DIK_L))
+	if (m_pOwner->KeyDown(DIK_J) || m_pOwner->KeyDown(DIK_K) || m_pOwner->KeyDown(DIK_L))
 		m_pOwner->Change_States(CPlayer::STATES::ATTACK1);
 
 }

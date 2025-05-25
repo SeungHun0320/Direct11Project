@@ -10,7 +10,7 @@ CPlayerState_Sprint::CPlayerState_Sprint(CPlayer* pOwner)
 
 void CPlayerState_Sprint::Enter(_float fTimeDelta)
 {
-	m_pOwner->Change_Animation(CPlayer::ANIM_STATES::SPRINT, true, 0.3f);
+	m_pOwner->Change_Animation(CPlayer::ANIM_STATES::SPRINT, true, 0.2f);
 }
 
 void CPlayerState_Sprint::Execute(_float fTimeDelta)
@@ -19,22 +19,22 @@ void CPlayerState_Sprint::Execute(_float fTimeDelta)
 
 	_vector vInputDir{};
 
-	if (m_pOwner->IsKeyPressing(DIK_W))
+	if (m_pOwner->KeyPressing(DIK_W))
 		vInputDir += DIR_FORWARD;
 
-	if (m_pOwner->IsKeyPressing(DIK_A))
+	if (m_pOwner->KeyPressing(DIK_A))
 		vInputDir += DIR_LEFT;
 
-	if (m_pOwner->IsKeyPressing(DIK_S))
+	if (m_pOwner->KeyPressing(DIK_S))
 		vInputDir += DIR_BACKWARD;
 
-	if (m_pOwner->IsKeyPressing(DIK_D))
+	if (m_pOwner->KeyPressing(DIK_D))
 		vInputDir += DIR_RIGHT;
 
 	vInputDir = XMVector3Normalize(vInputDir);
 	m_pOwner->Move(vInputDir, fTimeDelta, SPEED);
 
-	if (m_pOwner->IsKeyDown(DIK_SPACE))
+	if (m_pOwner->KeyDown(DIK_SPACE))
 	{
 		m_pOwner->Change_States(CPlayer::STATES::DODGE);
 	}
@@ -42,7 +42,7 @@ void CPlayerState_Sprint::Execute(_float fTimeDelta)
 	if (!m_pOwner->IsAnyMoveKeyPressed())
 		m_pOwner->Change_States(CPlayer::STATES::IDLE);
 	
-	if (m_pOwner->IsKeyUp(DIK_SPACE))
+	if (m_pOwner->KeyUp(DIK_SPACE))
 	{
 		m_pOwner->Change_States(CPlayer::STATES::MOVE);
 	}

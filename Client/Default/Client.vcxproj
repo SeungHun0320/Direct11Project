@@ -250,6 +250,8 @@
     <ClCompile Include="..\Private\PlayerState_Idle.cpp" />
     <ClCompile Include="..\Private\PlayerState_Move.cpp" />
     <ClCompile Include="..\Private\PlayerState_Sprint.cpp" />
+    <ClCompile Include="..\Private\Player_StickAattack.cpp" />
+    <ClCompile Include="..\Private\Player_SwordAttack.cpp" />
     <ClCompile Include="..\private\Potion.cpp" />
     <ClCompile Include="..\private\Shop.cpp" />
     <ClCompile Include="..\private\SpiderTank.cpp" />

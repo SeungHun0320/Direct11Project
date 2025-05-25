@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 
 #include "PlayerState.h"
+#include "Player_IAttackStrategy.h"
 
 CPlayer::CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CPawn{pDevice, pContext}
@@ -30,6 +31,8 @@ HRESULT CPlayer::Initialize(void* pArg)
 	m_fStaminaRecoveryPerSec = 20.f;
 	m_fMaxStamina = 100.f;
 	m_fStamina = m_fMaxStamina;
+
+	m_pAttackStrategy = new CPlayer_SwordAttack;
 
 	Change_States(STATES::IDLE);
 	return S_OK;
@@ -95,7 +98,7 @@ void CPlayer::Change_Animation(_uint iNextIndex, _bool isLoop, _float fBlendDura
 
 void CPlayer::Dodge(_fvector vDir, _float fTimeDelta)
 {
-	m_pTransformCom->Set_SpeedPerSec(9.f);
+	m_pTransformCom->Set_SpeedPerSec(10.f);
 	m_pTransformCom->LookDir(vDir);
 	m_pTransformCom->Go_Dir(vDir, fTimeDelta);
 }
@@ -107,23 +110,45 @@ void CPlayer::Move(_fvector vDir, _float fTimeDelta, _float fSpeed)
 	m_pTransformCom->Go_Dir(vDir, fTimeDelta);
 }
 
+_vector CPlayer::Get_InputDirection()
+{
+	_vector vInputDir{};
+
+	if (KeyPressing(DIK_W))
+		vInputDir += DIR_FORWARD;
+
+	if (KeyPressing(DIK_A))
+		vInputDir += DIR_LEFT;
+
+	if (KeyPressing(DIK_S))
+		vInputDir += DIR_BACKWARD;
+
+	if (KeyPressing(DIK_D))
+		vInputDir += DIR_RIGHT;
+
+	if (XMVector3Equal(vInputDir, XMVectorZero()))
+		vInputDir = m_pTransformCom->Get_State(STATE::LOOK);
+
+	return XMVector3Normalize(vInputDir);
+}
+
 
 _vector CPlayer::Get_State(STATE eState)
 {
 	return m_pTransformCom->Get_State(eState);
 }
 
-_bool CPlayer::IsKeyDown(_ubyte eKeyID)
+_bool CPlayer::KeyDown(_ubyte eKeyID)
 {
 	return KEY_DOWN(eKeyID);
 }
 
-_bool CPlayer::IsKeyPressing(_ubyte eKeyID)
+_bool CPlayer::KeyPressing(_ubyte eKeyID)
 {
 	return KEY_PRESSING(eKeyID);
 }
 
-_bool CPlayer::IsKeyUp(_ubyte eKeyID)
+_bool CPlayer::KeyUp(_ubyte eKeyID)
 {
 	return KEY_UP(eKeyID);
 }
@@ -137,8 +162,10 @@ _bool CPlayer::IsAnyMoveKeyPressed() const
 
 void CPlayer::Key_Input(_float fTimeDelta)
 {
-	//if (KEY_DOWN(DIK_SPACE))
-	//	m_pModelCom->Change_Animation(FAIL_DODGE, false, 0.3f);
+	if (KEY_DOWN(DIK_1))
+		Set_AttackStrategy(new CPlayer_StickAttack);
+	if(KEY_DOWN(DIK_2))
+		Set_AttackStrategy(new CPlayer_SwordAttack);
 }
 
 void CPlayer::Stamina_Recovery(_float fTimeDelta)
@@ -212,6 +239,7 @@ void CPlayer::Free()
 	__super::Free();
 
 	Safe_Release(m_pCurState);
+	Safe_Release(m_pAttackStrategy);
 
 	for (_uint i = 0; i < ENUM_CLASS(STATES::ST_END); i++)
 		Safe_Release(m_pStates[i]);

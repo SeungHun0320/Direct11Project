@@ -40,6 +40,7 @@ private:
 	_float					m_fDuration = {};
 	/* 재생 속도*/
 	_float					m_fTickPerSecond = {};
+	_float					m_fTickOffset = { 1.3f };
 	/* 현재 재생되고 있는 위치 */
 	_float					m_fCurrentTrackPosition = {};
 	vector<_uint>			m_CurrentKeyFrameIndices;

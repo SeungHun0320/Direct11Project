@@ -282,15 +282,15 @@ static void ImGui_ImplWin32_AddKeyEvent(ImGuiIO& io, ImGuiKey key, bool down, in
 static void ImGui_ImplWin32_ProcessKeyEventsWorkarounds(ImGuiIO& io)
 {
     // Left & right Shift keys: when both are pressed together, Windows tend to not generate the WM_KEYUP event for the first released one.
-    if (ImGui::IsKeyDown(ImGuiKey_LeftShift) && !IsVkDown(VK_LSHIFT))
+    if (ImGui::KeyDown(ImGuiKey_LeftShift) && !IsVkDown(VK_LSHIFT))
         ImGui_ImplWin32_AddKeyEvent(io, ImGuiKey_LeftShift, false, VK_LSHIFT);
-    if (ImGui::IsKeyDown(ImGuiKey_RightShift) && !IsVkDown(VK_RSHIFT))
+    if (ImGui::KeyDown(ImGuiKey_RightShift) && !IsVkDown(VK_RSHIFT))
         ImGui_ImplWin32_AddKeyEvent(io, ImGuiKey_RightShift, false, VK_RSHIFT);
 
     // Sometimes WM_KEYUP for Win key is not passed down to the app (e.g. for Win+V on some setups, according to GLFW).
-    if (ImGui::IsKeyDown(ImGuiKey_LeftSuper) && !IsVkDown(VK_LWIN))
+    if (ImGui::KeyDown(ImGuiKey_LeftSuper) && !IsVkDown(VK_LWIN))
         ImGui_ImplWin32_AddKeyEvent(io, ImGuiKey_LeftSuper, false, VK_LWIN);
-    if (ImGui::IsKeyDown(ImGuiKey_RightSuper) && !IsVkDown(VK_RWIN))
+    if (ImGui::KeyDown(ImGuiKey_RightSuper) && !IsVkDown(VK_RWIN))
         ImGui_ImplWin32_AddKeyEvent(io, ImGuiKey_RightSuper, false, VK_RWIN);
 }
 

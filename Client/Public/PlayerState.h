@@ -76,6 +76,8 @@ public:	// CPlayerState을(를) 통해 상속됨
 
 private:
 	_float  m_fTimeAcc{};
+	_float  m_fDodgeTime{};
+
 	_bool   m_IsDodgeQueue{};
 	_float3 m_vInputDir{};
 
@@ -111,6 +113,15 @@ public: // CPlayerState을(를) 통해 상속됨
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
 
+private:
+	_float m_fTimeAcc = {};
+	_float m_fDuration = {};
+	_uint  m_iMaxCombo = {};
+	WEAPON_TYPE m_eWeaponType {};
+
+	_bool  m_isAttackCombo = {};
+	_float3 m_vInputDir{};
+
 public:
 	virtual void Free() override;
 
@@ -127,6 +138,15 @@ public: // CPlayerState을(를) 통해 상속됨
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
 
+private:
+	_float m_fTimeAcc = {};
+	_float m_fDuration = {};
+	_uint  m_iMaxCombo = {};
+	WEAPON_TYPE m_eWeaponType{};
+
+	_bool  m_isAttackCombo = {};
+	_float3 m_vInputDir{};
+
 public:
 	virtual void Free() override;
 
@@ -142,6 +162,16 @@ public: // CPlayerState을(를) 통해 상속됨
 	void Enter(_float fTimeDelta) override;
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
+
+private:
+	_float m_fTimeAcc = {};
+	_float m_fDuration = {};
+	_uint  m_iMaxCombo = {};
+	WEAPON_TYPE m_eWeaponType{};
+
+
+	_bool  m_isAttackCombo = {};
+	_float3 m_vInputDir{};
 
 public:
 	virtual void Free() override;

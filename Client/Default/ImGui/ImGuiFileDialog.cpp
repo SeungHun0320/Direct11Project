@@ -2452,7 +2452,7 @@ void IGFD::FileManager::SelectOrDeselectFileName(const FileDialogInternal& vFile
         return;
     }
 
-    if (ImGui::IsKeyDown(ImGuiMod_Ctrl)) {
+    if (ImGui::KeyDown(ImGuiMod_Ctrl)) {
         if (dLGcountSelectionMax == 0) {                                                       // infinite selection
             if (m_SelectedFileNames.find(vInfos->fileNameExt) == m_SelectedFileNames.end()) {  // not found +> add
                 m_AddFileNameInSelection(vInfos->fileNameExt, true);
@@ -2468,7 +2468,7 @@ void IGFD::FileManager::SelectOrDeselectFileName(const FileDialogInternal& vFile
                 }
             }
         }
-    } else if (ImGui::IsKeyDown(ImGuiMod_Shift)) {
+    } else if (ImGui::KeyDown(ImGuiMod_Shift)) {
         if (dLGcountSelectionMax != 1) {
             m_SelectedFileNames.clear();
             // we will iterate filelist and get the last selection after the start selection
@@ -2774,8 +2774,8 @@ void IGFD::FileDialogInternal::EndFrame() {
         }
     }
 
-    if (ImGui::IsKeyDown(ImGuiMod_Ctrl)) {
-        if (ImGui::IsKeyDown(SelectAllFilesKey)) {
+    if (ImGui::KeyDown(ImGuiMod_Ctrl)) {
+        if (ImGui::KeyDown(SelectAllFilesKey)) {
             fileManager.SelectAllFileNames();
         }
     }

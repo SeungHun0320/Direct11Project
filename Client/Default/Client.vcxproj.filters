@@ -190,6 +190,12 @@
     <Filter Include="02.GameObjects\06.Pawn\Player\Player_Attack\Player_AttackStrategy">
       <UniqueIdentifier>{0c1d460e-ea77-4d2c-bfcd-694773e37063}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\06.Pawn\Player\Player_Attack\Player_AttackStrategy\SwordAttack">
+      <UniqueIdentifier>{d9ca5cec-6849-4c44-b569-f6494ae0405b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Pawn\Player\Player_Attack\Player_AttackStrategy\StickAttack">
+      <UniqueIdentifier>{e8ae0cfc-5463-4b0e-90a7-aaff6d240c03}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -521,6 +527,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Sprint.cpp">
       <Filter>02.GameObjects\06.Pawn\Player\Player_Sprint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player_SwordAttack.cpp">
+      <Filter>02.GameObjects\06.Pawn\Player\Player_Attack\Player_AttackStrategy\SwordAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player_StickAattack.cpp">
+      <Filter>02.GameObjects\06.Pawn\Player\Player_Attack\Player_AttackStrategy\StickAttack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

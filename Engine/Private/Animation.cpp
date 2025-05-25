@@ -12,6 +12,7 @@ CAnimation::CAnimation(const CAnimation& Prototype)
     , m_CurrentKeyFrameIndices { Prototype.m_CurrentKeyFrameIndices}
     , m_iNumChannels { Prototype.m_iNumChannels }
     , m_Channels {Prototype.m_Channels}
+    , m_fTickOffset {Prototype.m_fTickOffset }
 {
     for (auto& pChannel : m_Channels)
         Safe_AddRef(pChannel);
@@ -58,7 +59,7 @@ _bool CAnimation::Update_Bones(_float fTimeDelta, const vector<CBone*>& Bones, _
 {
     _bool			isFinished = { false };
 
-    m_fCurrentTrackPosition += m_fTickPerSecond * fTimeDelta;
+    m_fCurrentTrackPosition += m_fTickPerSecond * fTimeDelta * m_fTickOffset;
 
     if (m_fCurrentTrackPosition >= m_fDuration)
     {
