@@ -42,7 +42,9 @@ public:
 	{
 		IDLE, MOVE, DODGE, SPRINT, ATTACK1, ATTACK2, ATTACK3,
 		HIT, GET_UP, DIE, PARRY, USE_POTION, DANCE, WAKE_UP,
-		WIND_UP, TOSS, ST_END
+		WIND_UP, TOSS, EAT, COIN_FLIP,
+		OPEN_CHEST, ON_SWITCH, KNEEL,
+		LADDER, ON_LADDER, OFF_LADDER, ST_END
 	};
 
 private:
@@ -72,6 +74,7 @@ public: /* 키 입력 관련 함수들*/
 	_bool KeyPressing(_ubyte eKeyID);
 	_bool KeyUp(_ubyte eKeyID);
 	_bool IsAnyMoveKeyPressed() const;
+	_bool IsMoveKeyPressed();
 	
 public: /* 상태로 넘겨줄 함수들 */
 	_bool Play_Animation(_float fTimeDelta);
@@ -80,6 +83,8 @@ public: /* 상태로 넘겨줄 함수들 */
 	void  Dodge(_fvector vDir,_float fTimeDelta, _float fSpeed);
 	void  Move(_fvector vDir, _float fTimeDelta, _float fSpeed = 0.f);
 	void  Stagger(_fvector vDir, _float fTimeDelta, _float fSpeed = 0.f);
+	void  Go_Up(_float fTimeDelta, _float fSpeed);
+	void  Go_Down(_float fTimeDelta, _float fSpeed);
 
 public: /* 키입력에 따른 룩 갖고오는 함수 */
 	_vector Get_InputDirection();
@@ -113,6 +118,7 @@ public: /* 피격 관련 */
 	void Set_Hit(_bool IsHit) {
 		m_IsHit = IsHit;
 	}
+
 public: /* 방패 관련 */
 	_bool Get_IsShield() {
 		return m_IsShield;
@@ -120,6 +126,9 @@ public: /* 방패 관련 */
 	void Set_IsShield(_bool IsShield) {
 		m_IsShield = IsShield;
 	}
+
+public: /* 애니메이션 관련 */
+	void Set_TrackPosition(_float fTrackPosition);
 
 public: /* 전략패턴 트라이 */
 	void Set_AttackStrategy(class CPlayer_IAttackStrategy* pStrategy);

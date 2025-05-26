@@ -28,6 +28,10 @@ public:
 		return m_fCurrentTrackPosition;
 	}
 
+	void Set_CurrentTrackPosition(_float fTrackPosition) {
+		m_fCurrentTrackPosition = fTrackPosition;
+	}
+
 public:
 	HRESULT Initialize(const ANIMATION* pDesc, ifstream& _InFile, const vector<class CBone*>& Bones);
 	_bool Update_Bones(_float fTimeDelta, const vector<CBone*>& Bones, _bool isLoop);

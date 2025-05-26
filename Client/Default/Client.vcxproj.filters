@@ -229,6 +229,9 @@
     <Filter Include="02.GameObjects\06.Pawn\Player\PlayerState\Player_CoinFlip">
       <UniqueIdentifier>{440e516f-6408-4c38-a2d9-6a73aa6c4f48}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\06.Pawn\Player\PlayerState\Player_Ladder">
+      <UniqueIdentifier>{c464a575-1cb1-4550-87cd-05474bc7ecc0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -392,6 +395,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\Player_IAttackStrategy.h">
       <Filter>02.GameObjects\06.Pawn\Player\PlayerState\Player_Attack\Player_AttackStrategy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Camera_TPS.h">
+      <Filter>02.GameObjects\02.Camera\Camera_TPS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -590,6 +596,21 @@
     </ClCompile>
     <ClCompile Include="..\Private\Player_IAttackStrategy.cpp">
       <Filter>02.GameObjects\06.Pawn\Player\PlayerState\Player_Attack\Player_AttackStrategy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Eat.cpp">
+      <Filter>02.GameObjects\06.Pawn\Player\PlayerState\Player_Eat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_CoinFlip.cpp">
+      <Filter>02.GameObjects\06.Pawn\Player\PlayerState\Player_CoinFlip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Interaction.cpp">
+      <Filter>02.GameObjects\06.Pawn\Player\PlayerState\Player_Interaction</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Ladder.cpp">
+      <Filter>02.GameObjects\06.Pawn\Player\PlayerState\Player_Ladder</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Camera_TPS.cpp">
+      <Filter>02.GameObjects\02.Camera\Camera_TPS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

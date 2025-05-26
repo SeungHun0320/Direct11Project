@@ -155,21 +155,33 @@ void CPlayer::Stagger(_fvector vDir, _float fTimeDelta, _float fSpeed)
 	m_pTransformCom->Go_Dir(vDir, fTimeDelta);
 }
 
+void CPlayer::Go_Up(_float fTimeDelta, _float fSpeed)
+{
+	m_pTransformCom->Set_SpeedPerSec(fSpeed);
+	m_pTransformCom->Go_Up(fTimeDelta);
+}
+
+void CPlayer::Go_Down(_float fTimeDelta, _float fSpeed)
+{
+	m_pTransformCom->Set_SpeedPerSec(fSpeed);
+	m_pTransformCom->Go_Down(fTimeDelta);
+}
+
 _vector CPlayer::Get_InputDirection()
 {
 	_vector vInputDir{};
 
 	if (KeyPressing(DIK_W))
-		vInputDir += DIR_FORWARD;
+		vInputDir += DIR_FORWARDRIGHT;
 
 	if (KeyPressing(DIK_A))
-		vInputDir += DIR_LEFT;
+		vInputDir += DIR_FORWARDLEFT;
 
 	if (KeyPressing(DIK_S))
-		vInputDir += DIR_BACKWARD;
+		vInputDir += DIR_BACKWARDLEFT;
 
 	if (KeyPressing(DIK_D))
-		vInputDir += DIR_RIGHT;
+		vInputDir += DIR_BACKWARDRIGHT;
 
 	if (XMVector3Equal(vInputDir, XMVectorZero()))
 		vInputDir = m_pTransformCom->Get_State(STATE::LOOK);
@@ -205,6 +217,17 @@ _bool CPlayer::IsAnyMoveKeyPressed() const
 		KEY_PRESSING(DIK_SPACE);
 }
 
+_bool CPlayer::IsMoveKeyPressed()
+{
+	return KEY_PRESSING(DIK_W) || KEY_PRESSING(DIK_A) ||
+		KEY_PRESSING(DIK_S) || KEY_PRESSING(DIK_D);
+}
+
+void CPlayer::Set_TrackPosition(_float fTrackPosition)
+{
+	m_pModelCom->Set_CurrnetTrackPosition(fTrackPosition);
+}
+
 void CPlayer::Set_AttackStrategy(CPlayer_IAttackStrategy* pStrategy)
 {
 	Safe_Release(m_pAttackStrategy);
@@ -227,6 +250,8 @@ void CPlayer::Key_Input(_float fTimeDelta)
 		m_IsHit = true;
 	if (KEY_DOWN(DIK_7))
 		m_bDead = true;
+	if (KEY_DOWN(DIK_LCONTROL))
+		Change_States(STATES::LADDER);
 }
 
 void CPlayer::Stamina_Recovery(_float fTimeDelta)
@@ -266,6 +291,14 @@ HRESULT CPlayer::Ready_States()
 	m_pStates[ENUM_CLASS(STATES::WAKE_UP)]    = new CPlayerState_WakeUp(this);
 	m_pStates[ENUM_CLASS(STATES::WIND_UP)]	  = new CPlayerState_WindUp(this);
 	m_pStates[ENUM_CLASS(STATES::TOSS)]		  = new CPlayerState_Toss(this);
+	m_pStates[ENUM_CLASS(STATES::EAT)]		  = new CPlayerState_Eat(this);
+	m_pStates[ENUM_CLASS(STATES::COIN_FLIP)]  = new CPlayerState_CoinFlip(this);
+	m_pStates[ENUM_CLASS(STATES::OPEN_CHEST)] = new CPlayerState_OpenChest(this);
+	m_pStates[ENUM_CLASS(STATES::ON_SWITCH)]  = new CPlayerState_OnSwitch(this);
+	m_pStates[ENUM_CLASS(STATES::KNEEL)]	  = new CPlayerState_Kneel(this);
+	m_pStates[ENUM_CLASS(STATES::LADDER)]	  = new CPlayerState_Ladder(this);
+	m_pStates[ENUM_CLASS(STATES::ON_LADDER)]  = new CPlayerState_OnLadder(this);
+	m_pStates[ENUM_CLASS(STATES::OFF_LADDER)] = new CPlayerState_OffLadder(this);
 
 	for (_uint i = 0; i < ENUM_CLASS(STATES::ST_END); i++)
 	{

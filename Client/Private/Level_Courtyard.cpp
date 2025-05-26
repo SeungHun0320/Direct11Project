@@ -6,6 +6,7 @@
 #include "Courtyard.h"
 
 #include "Camera_Free.h"
+#include "Camera_TPS.h"
 
 #include "Player.h"
 
@@ -24,14 +25,14 @@ HRESULT CLevel_Courtyard::Initialize()
 {
 	//if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
 	//	return E_FAIL;
-
-	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
-		return E_FAIL;
-
+	// 
 	//if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
 	//	return E_FAIL;
 
 	if (FAILED(Ready_Layer_Pawn(TEXT("Layer_Pawn"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
 	if (FAILED(Load_Map(TEXT("Courtyard.Map"))))
@@ -101,19 +102,51 @@ HRESULT CLevel_Courtyard::Ready_Layer_Pawn(const _wstring& strLayerTag)
 
 HRESULT CLevel_Courtyard::Ready_Layer_Camera(const _wstring& strLayerTag)
 {
-	CCamera_Free::DESC tDesc = {};
+	//CCamera_Free::DESC tDesc = {};
+
+	//tDesc.eLevelID = LEVEL::COURTYARD;
+	//tDesc.fSensor = 0.1f;
+
+	//auto pPlayer = GET_PLAYER;
+
+	//_float3 vPos = {};
+	//XMStoreFloat3(&vPos, static_cast<CTransform*>(pPlayer->Get_Component(TEXT("Com_Transform")))
+	//	->Get_State(STATE::POSITION));
+
+	//tDesc.vEye = _float3(-12.5f, 15.5f, -112.5f);
+	//tDesc.vAt = _float3(vPos.x, vPos.y, vPos.z);
+	//tDesc.fFov = XMConvertToRadians(60.f);
+	//tDesc.fNear = 0.1f;
+	//tDesc.fFar = 5000.f;
+	//tDesc.fSpeedPerSec = 30.f;
+	//tDesc.fRotationPerSec = XMConvertToRadians(180.f);
+	//tDesc.strName = TEXT("Camera_Free");
+
+	//if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_GameObject_") + tDesc.strName,
+	//	ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
+	//	return E_FAIL;
+
+	CCamera_TPS::DESC tDesc = {};
 
 	tDesc.eLevelID = LEVEL::COURTYARD;
 	tDesc.fSensor = 0.1f;
 
-	tDesc.vEye = _float3(0.f, 10.f, -110.f);
-	tDesc.vAt = _float3(0.f, 0.f, -100.f);
+	CGameObject* pPlayer = GET_PLAYER;
+
+	_float3 vPos = {};
+	XMStoreFloat3(&vPos, static_cast<CTransform*>(pPlayer->Get_Component(TEXT("Com_Transform")))
+		->Get_State(STATE::POSITION));
+
+	tDesc.pTarget = pPlayer;
+	tDesc.vOffset = _float3(-9.f, 12.5f, -9.f);
+	tDesc.vEye = _float3(vPos.x + tDesc.vOffset.x, vPos.y + tDesc.vOffset.y, vPos.z + tDesc.vOffset.z);
+	tDesc.vAt = _float3(vPos.x, vPos.y, vPos.z);
 	tDesc.fFov = XMConvertToRadians(60.f);
 	tDesc.fNear = 0.1f;
-	tDesc.fFar = 5000.f;
+	tDesc.fFar = 1000.f;
 	tDesc.fSpeedPerSec = 30.f;
 	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
-	tDesc.strName = TEXT("Camera_Free");
+	tDesc.strName = TEXT("Camera_TPS");
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_GameObject_") + tDesc.strName,
 		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))

@@ -83,6 +83,8 @@ public:
 	void Go_Right(_float fTimeDelta);
 	void Go_Left(_float fTimeDelta);
 	void Go_Target(_fvector vTarget, _float fTimeDelta, _float fMinDistance);
+	void Go_Up(_float fTimeDelta);
+	void Go_Down(_float fTimeDelta);
 	void Turn(_fvector vAxis, _float fTimeDelta);
 	void Go_Dir(_fvector vDir, _float fTimeDelta);
 
@@ -99,8 +101,8 @@ private:
 	_float4x4				m_WorldMatrix = {};
 	_float					m_fSpeedPerSec = {};
 	_float					m_fRotationPerSec = {};
-	_vector					m_vVelocity;      // 현재 속도
-	_vector					m_vAcceleration;  // 가속도				
+	_vector					m_vVelocity = {};      // 현재 속도
+	_vector					m_vAcceleration = {};  // 가속도				
 
 public:
 	static CTransform* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

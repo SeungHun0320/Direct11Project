@@ -166,6 +166,7 @@
     <ClInclude Include="..\public\Bush.h" />
     <ClInclude Include="..\public\Button.h" />
     <ClInclude Include="..\public\Camera_Free.h" />
+    <ClInclude Include="..\public\Camera_TPS.h" />
     <ClInclude Include="..\public\CheckPoint.h" />
     <ClInclude Include="..\public\Chest.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
@@ -222,6 +223,7 @@
     <ClCompile Include="..\private\Bush.cpp" />
     <ClCompile Include="..\private\Button.cpp" />
     <ClCompile Include="..\private\Camera_Free.cpp" />
+    <ClCompile Include="..\private\Camera_TPS.cpp" />
     <ClCompile Include="..\private\CheckPoint.cpp" />
     <ClCompile Include="..\private\Chest.cpp" />
     <ClCompile Include="..\private\Courtyard.cpp" />
@@ -243,6 +245,10 @@
     <ClCompile Include="..\private\Monster.cpp" />
     <ClCompile Include="..\private\Pawn.cpp" />
     <ClCompile Include="..\private\Player.cpp" />
+    <ClCompile Include="..\Private\PlayerState_Ladder.cpp" />
+    <ClCompile Include="..\Private\PlayerState_Interaction.cpp" />
+    <ClCompile Include="..\Private\PlayerState_CoinFlip.cpp" />
+    <ClCompile Include="..\Private\PlayerState_Eat.cpp" />
     <ClCompile Include="..\Private\PlayerState_Toss.cpp" />
     <ClCompile Include="..\Private\PlayerState_UsePotion.cpp" />
     <ClCompile Include="..\Private\PlayerState_Dance.cpp" />

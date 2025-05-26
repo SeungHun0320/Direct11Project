@@ -144,6 +144,27 @@ void CPlayerState_Attack2::Enter(_float fTimeDelta)
 
     m_fTimeAcc = 0.f;
 
+    for (_uint i = 0; i < CPlayer::MESHES::MESHES_END; i++)
+    {
+        if (i == CPlayer::MESHES::MESH_SHILED && m_pOwner->Get_IsShield())
+            continue;
+
+        m_pOwner->Set_MeshVisible(i, true);
+    }
+
+    switch (m_eWeaponType)
+    {
+    case WEAPON_TYPE::SWORD:
+        m_pOwner->Set_MeshVisible(CPlayer::MESHES::MESH_SWORD, false);
+        break;
+    case WEAPON_TYPE::STICK:
+        m_pOwner->Set_MeshVisible(CPlayer::MESHES::MESH_STICK, false);
+        break;
+    case WEAPON_TYPE::DAGGER:
+        m_pOwner->Set_MeshVisible(CPlayer::MESHES::MESH_DAGGER, false);
+        break;
+    }
+
     XMStoreFloat3(&m_vInputDir, m_pOwner->Get_InputDirection());
 	m_pOwner->Change_Animation(eCombo, false, 0.1f);
 
@@ -153,8 +174,9 @@ void CPlayerState_Attack2::Execute(_float fTimeDelta)
 {
     m_fTimeAcc += fTimeDelta;
 
-    if (m_pOwner->KeyDown(DIK_J)) // m_fTimeAcc >= m_fDuration && 
-        m_isAttackCombo = true;
+    if (m_pOwner->Get_Dead())
+        m_pOwner->Change_States(CPlayer::STATES::DIE);
+
 
     if (m_pOwner->KeyDown(DIK_J)) // m_fTimeAcc >= m_fDuration && 
         m_isAttackCombo = true;
@@ -198,10 +220,6 @@ void CPlayerState_Attack2::Execute(_float fTimeDelta)
         else
             m_pOwner->Move(XMLoadFloat3(&m_vInputDir), fTimeDelta, 1.f);
     }
-
-    if (m_pOwner->Get_Dead())
-        m_pOwner->Change_States(CPlayer::STATES::DIE);
-
 }
 
 void CPlayerState_Attack2::Exit()
@@ -243,6 +261,10 @@ void CPlayerState_Attack3::Execute(_float fTimeDelta)
 {
     m_fTimeAcc += fTimeDelta;
 
+    if (m_pOwner->Get_Dead())
+        m_pOwner->Change_States(CPlayer::STATES::DIE);
+
+
     if (m_fTimeAcc >= m_fDuration && m_pOwner->KeyDown(DIK_J))
         m_isAttackCombo = true;
 
@@ -264,12 +286,9 @@ void CPlayerState_Attack3::Execute(_float fTimeDelta)
                 m_pOwner->Change_States(CPlayer::STATES::IDLE);
             }
         }
-        else
-            m_pOwner->Move(XMLoadFloat3(&m_vInputDir), fTimeDelta, 3.5f);
+        else if (0.3f <= m_fTimeAcc)
+            m_pOwner->Move(XMLoadFloat3(&m_vInputDir), fTimeDelta, 7.5f);
     }
-
-    if (m_pOwner->Get_Dead())
-        m_pOwner->Change_States(CPlayer::STATES::DIE);
 }
 
 void CPlayerState_Attack3::Exit()

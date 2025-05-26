@@ -2,6 +2,7 @@
 
 #include "GameInstance.h"
 
+#include "Camera_TPS.h"
 #include "Camera_Free.h"
 #include "BackGround.h"
 #include "Terrain.h"
@@ -254,6 +255,11 @@ HRESULT CLoader::Loading_For_Courtyard()
 	/* For.Prototype_GameObject_Camera_Free */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_GameObject_Camera_Free"),
 		CCamera_Free::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Camera_TPS */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_GameObject_Camera_TPS"),
+		CCamera_TPS::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_SpiderTank */

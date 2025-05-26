@@ -14,7 +14,7 @@ void CPlayerState_Dodge::Enter(_float fTimeDelta)
 	if (0 >= m_pOwner->Get_Stamina())
 	{
 		m_pOwner->Change_Animation(CPlayer::ANIM_STATES::FAIL_DODGE, false, 0.1f);
-		m_fDuration = 0.65f;
+		m_fDuration = 0.75f;
 	}
 	else
 	{

@@ -35,7 +35,7 @@ void CPlayerState_Move::Execute(_float fTimeDelta)
 		m_pOwner->Change_States(CPlayer::STATES::WIND_UP);
 
 	if (m_pOwner->KeyDown(DIK_L))
-		int a = 0;// 먹는 행동, 코인토스 실험 ㄱ
+		m_pOwner->Change_States(CPlayer::STATES::EAT);
 		
 	if (m_pOwner->KeyDown(DIK_P))
 		m_pOwner->Change_States(CPlayer::STATES::USE_POTION);

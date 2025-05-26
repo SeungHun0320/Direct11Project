@@ -111,6 +111,28 @@ void CTransform::Go_Target(_fvector vTarget, _float fTimeDelta, _float fMinDista
 		Set_State(STATE::POSITION, Get_State(STATE::POSITION) + XMVector3Normalize(vMoveDir) * m_fSpeedPerSec * fTimeDelta);
 }
 
+void CTransform::Go_Up(_float fTimeDelta)
+{
+	_vector vPosition = Get_State(STATE::POSITION);
+
+	vPosition += XMVector3Normalize(XMVectorSet(0.f, 1.f, 0.f, 0.f)) * m_fSpeedPerSec * fTimeDelta;
+
+	/* 만약 충돌한다면 여기서 셋 전에 처리를 해주면 좋을거 같음 */
+
+	Set_State(STATE::POSITION, vPosition);
+}
+
+void CTransform::Go_Down(_float fTimeDelta)
+{
+	_vector vPosition = Get_State(STATE::POSITION);
+
+	vPosition -= XMVector3Normalize(XMVectorSet(0.f, 1.f, 0.f, 0.f)) * m_fSpeedPerSec * fTimeDelta;
+
+	/* 만약 충돌한다면 여기서 셋 전에 처리를 해주면 좋을거 같음 */
+
+	Set_State(STATE::POSITION, vPosition);
+}
+
 void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
 {
 	/* 회전행렬을 만들어서 각 행에 회전행렬을 곱해준다*/

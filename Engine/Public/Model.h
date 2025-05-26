@@ -18,6 +18,8 @@ public:
 	_bool Get_MeshVisible(_uint iIndex);
 	void  Set_MeshVisible(_uint iIndex, _bool IsVisible);
 
+	void  Set_CurrnetTrackPosition(_float fTrackPosition);
+
 	void Set_Animation(_uint iIndex, _bool isLoop = true, _float fBlendDuration = 0.f, _bool isBlended = false) {
 		m_iCurrentAnimIndex = iIndex;
 		m_isLoop = isLoop;

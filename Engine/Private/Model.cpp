@@ -54,6 +54,11 @@ void CModel::Set_MeshVisible(_uint iIndex, _bool IsVisible)
     m_Meshes[iIndex]->Set_MeshVisible(IsVisible);
 }
 
+void CModel::Set_CurrnetTrackPosition(_float fTrackPosition)
+{
+    m_Animations[m_iCurrentAnimIndex]->Set_CurrentTrackPosition(fTrackPosition);
+}
+
 HRESULT CModel::Bind_Material(CShader* pShader, const _char* pConstantName, _uint iMeshIndex, TEX_TYPE eType, _uint iTextureIndex)
 {
     if (iMeshIndex >= m_iNumMeshes)

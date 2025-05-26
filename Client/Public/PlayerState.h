@@ -45,6 +45,9 @@ public: // CPlayerState을(를) 통해 상속됨
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
 
+private:
+	_float m_fHoldTime = {};
+
 public:
 	virtual void Free() override;
 };
@@ -374,6 +377,51 @@ class CPlayerState_Dance final : public CPlayerState
 public:
 	CPlayerState_Dance(class CPlayer* pOwner);
 	virtual ~CPlayerState_Dance() = default;
+
+public: // CPlayerState을(를) 통해 상속됨
+	void Enter(_float fTimeDelta) override;
+	void Execute(_float fTimeDelta) override;
+	void Exit() override;
+
+public:
+	virtual void Free() override;
+};
+
+class CPlayerState_Ladder final : public CPlayerState
+{
+public:
+	CPlayerState_Ladder(class CPlayer* pOwner);
+	virtual ~CPlayerState_Ladder() = default;
+
+public: // CPlayerState을(를) 통해 상속됨
+	void Enter(_float fTimeDelta) override;
+	void Execute(_float fTimeDelta) override;
+	void Exit() override;
+
+public:
+	virtual void Free() override;
+};
+
+class CPlayerState_OnLadder final : public CPlayerState
+{
+public:
+	CPlayerState_OnLadder(class CPlayer* pOwner);
+	virtual ~CPlayerState_OnLadder() = default;
+
+public: // CPlayerState을(를) 통해 상속됨
+	void Enter(_float fTimeDelta) override;
+	void Execute(_float fTimeDelta) override;
+	void Exit() override;
+
+public:
+	virtual void Free() override;
+};
+
+class CPlayerState_OffLadder final : public CPlayerState
+{
+public:
+	CPlayerState_OffLadder(class CPlayer* pOwner);
+	virtual ~CPlayerState_OffLadder() = default;
 
 public: // CPlayerState을(를) 통해 상속됨
 	void Enter(_float fTimeDelta) override;
