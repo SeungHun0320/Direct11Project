@@ -40,6 +40,15 @@ public:
 		return m_iMaterialIndex;
 	}
 
+	_bool Get_MeshVisible() const {
+		return m_IsVisible;
+	}
+
+	void Set_MeshVisible(_bool IsVisible) {
+		m_IsVisible = IsVisible;
+	}
+
+
 public:
 	virtual HRESULT Initialize_Prototype(MODEL eType, const COMMON* pDesc, _fmatrix PreTransformMatrix);
 	virtual HRESULT Initialize(void* pArg);
@@ -56,6 +65,8 @@ private:
 	_float4x4				m_BoneMatrices[g_iMaxNumBones] = {};
 
 	vector<_float4x4>		m_OffsetMatrices;
+
+	_bool					m_IsVisible = { false };
 
 private:
 	HRESULT Ready_NonAnim_Mesh(const COMMON* pDesc, _fmatrix PreTransformMatrix);

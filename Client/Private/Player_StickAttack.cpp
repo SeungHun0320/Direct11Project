@@ -27,16 +27,6 @@ _float CPlayer_StickAttack::Get_Duration(_int iComboIndex) const
     }
 }
 
-_int CPlayer_StickAttack::Get_MaxComboCount() const
-{
-    return 2;
-}
-
-WEAPON_TYPE CPlayer_StickAttack::Get_WeaponType() const
-{
-    return WEAPON_TYPE::STICK;
-}
-
 void CPlayer_StickAttack::Free()
 {
     __super::Free();

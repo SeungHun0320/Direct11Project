@@ -44,6 +44,16 @@ CModel::CModel(const CModel& Prototype)
         m_Animations.push_back(pPrototypeAnim->Clone());
 }
 
+_bool CModel::Get_MeshVisible(_uint iIndex)
+{
+    return m_Meshes[iIndex]->Get_MeshVisible();
+}
+
+void CModel::Set_MeshVisible(_uint iIndex, _bool IsVisible)
+{
+    m_Meshes[iIndex]->Set_MeshVisible(IsVisible);
+}
+
 HRESULT CModel::Bind_Material(CShader* pShader, const _char* pConstantName, _uint iMeshIndex, TEX_TYPE eType, _uint iTextureIndex)
 {
     if (iMeshIndex >= m_iNumMeshes)
@@ -192,7 +202,7 @@ void CModel::Update_RootPosition()
     _vector			vScale{}, vRotation{}, vPosition{};
     XMMatrixDecompose(&vScale, &vRotation, &vPosition, XMLoadFloat4x4(m_Bones[m_iRootBoneIndex]->Get_TransformationMatrix()));
 
-    m_Bones[m_iRootBoneIndex]->Set_TransformationMatrix(XMMatrixAffineTransformation(vScale, XMVectorSet(0.f, 0.f, 0.f, 1.f), vRotation, XMVectorZero()));
+    m_Bones[m_iRootBoneIndex]->Set_TransformationMatrix(XMMatrixAffineTransformation(vScale, XMVectorSet(0.f, 0.f, 0.f, 1.f), XMVectorZero(), XMVectorZero()));
 
 }
 
@@ -282,8 +292,14 @@ HRESULT CModel::Ready_Bones(ifstream& _InFile)
     for (_uint i = 0; i < m_Bones.size(); i++)
     {
         if (m_Bones[i]->Compare_ParentBoneIndex(m_iRootBoneIndex))
-            m_Bones[i]->Set_ParentBoneIndex(m_iRootBoneIndex - 1);
-
+        {
+            if (m_Bones[3]->Compare_Name("Spidertank_skeleton"))
+            {
+                m_Bones[i]->Set_ParentBoneIndex(3);
+            }
+            else
+                m_Bones[i]->Set_ParentBoneIndex(m_iRootBoneIndex - 1);
+        }
     }
 
     return S_OK;
@@ -471,3 +487,4 @@ void CModel::Free()
 
     m_Materials.clear();
 }
+

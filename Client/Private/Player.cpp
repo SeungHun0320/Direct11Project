@@ -32,9 +32,19 @@ HRESULT CPlayer::Initialize(void* pArg)
 	m_fMaxStamina = 100.f;
 	m_fStamina = m_fMaxStamina;
 
-	m_pAttackStrategy = new CPlayer_SwordAttack;
+	m_IsShield = true;
 
-	Change_States(STATES::IDLE);
+	for (_uint i = 0; i < CPlayer::MESHES::MESHES_END; i++)
+	{
+		if (i == CPlayer::MESHES::MESH_SHILED && m_IsShield)
+			continue;
+
+		m_pModelCom->Set_MeshVisible(i, true);
+	}
+		
+	m_pAttackStrategy = new CPlayer_SwordAttack(3, WEAPON_TYPE::SWORD);
+
+	Change_States(STATES::WAKE_UP);
 	return S_OK;
 }
 
@@ -45,8 +55,8 @@ void CPlayer::Priority_Update(_float fTimeDelta)
 
 LIFE CPlayer::Update(_float fTimeDelta)
 {
-	if (m_bDead)
-		return LIFE::DEAD;
+	//if (m_bDead)
+	//	return LIFE::DEAD;
 
 	Key_Input(fTimeDelta);
 	Stamina_Recovery(fTimeDelta);
@@ -69,7 +79,31 @@ void CPlayer::Late_Update(_float fTimeDelta)
 
 HRESULT CPlayer::Render()
 {
-	return __super::Render();
+	if (FAILED(Bind_ShaderResources()))
+		return E_FAIL;
+
+	_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
+
+	for (_uint i = 0; i < iNumMesh; i++)
+	{
+		//m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TEX_TYPE::DIFFUSE, 0);
+
+		if (m_pModelCom->Get_MeshVisible(i))
+			continue;
+
+		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TEX_TYPE::DIFFUSE, 0)))
+			return E_FAIL;
+
+		m_pModelCom->Bind_Bone_Matrices(m_pShaderCom, "g_BoneMatrices", i);
+
+		if (FAILED(m_pShaderCom->Begin(0)))
+			return E_FAIL;
+
+		if (FAILED(m_pModelCom->Render(i)))
+			return E_FAIL;
+	}
+
+	return S_OK;
 }
 
 void CPlayer::Change_States(STATES eStates)
@@ -96,9 +130,14 @@ void CPlayer::Change_Animation(_uint iNextIndex, _bool isLoop, _float fBlendDura
 	m_pModelCom->Change_Animation(iNextIndex, isLoop, fBlendDuration, isBlend);
 }
 
-void CPlayer::Dodge(_fvector vDir, _float fTimeDelta)
+void CPlayer::Set_MeshVisible(_uint iIndex, _bool IsVisible)
 {
-	m_pTransformCom->Set_SpeedPerSec(10.f);
+	m_pModelCom->Set_MeshVisible(iIndex, IsVisible);
+}
+
+void CPlayer::Dodge(_fvector vDir, _float fTimeDelta, _float fSpeed)
+{
+	m_pTransformCom->Set_SpeedPerSec(fSpeed);
 	m_pTransformCom->LookDir(vDir);
 	m_pTransformCom->Go_Dir(vDir, fTimeDelta);
 }
@@ -107,6 +146,12 @@ void CPlayer::Move(_fvector vDir, _float fTimeDelta, _float fSpeed)
 {
 	m_pTransformCom->Set_SpeedPerSec(fSpeed);
 	m_pTransformCom->LookDirLerp(vDir, fTimeDelta, fSpeed * 1.5f);
+	m_pTransformCom->Go_Dir(vDir, fTimeDelta);
+}
+
+void CPlayer::Stagger(_fvector vDir, _float fTimeDelta, _float fSpeed)
+{
+	m_pTransformCom->Set_SpeedPerSec(fSpeed);
 	m_pTransformCom->Go_Dir(vDir, fTimeDelta);
 }
 
@@ -160,12 +205,28 @@ _bool CPlayer::IsAnyMoveKeyPressed() const
 		KEY_PRESSING(DIK_SPACE);
 }
 
+void CPlayer::Set_AttackStrategy(CPlayer_IAttackStrategy* pStrategy)
+{
+	Safe_Release(m_pAttackStrategy);
+	m_pAttackStrategy = pStrategy;
+}
+
 void CPlayer::Key_Input(_float fTimeDelta)
 {
 	if (KEY_DOWN(DIK_1))
-		Set_AttackStrategy(new CPlayer_StickAttack);
-	if(KEY_DOWN(DIK_2))
-		Set_AttackStrategy(new CPlayer_SwordAttack);
+		Set_AttackStrategy(new CPlayer_StickAttack(2, WEAPON_TYPE::STICK));
+	if (KEY_DOWN(DIK_2))
+		Set_AttackStrategy(new CPlayer_SwordAttack(3, WEAPON_TYPE::SWORD));
+	if (KEY_DOWN(DIK_3))
+		Set_AttackStrategy(new CPlayer_DaggerAttack(1, WEAPON_TYPE::DAGGER));
+	if (KEY_DOWN(DIK_4))
+		m_eHitType = HIT_TYPE::NORMAL;
+	if (KEY_DOWN(DIK_5))
+		m_eHitType = HIT_TYPE::STAGGER;
+	if (KEY_DOWN(DIK_6))
+		m_IsHit = true;
+	if (KEY_DOWN(DIK_7))
+		m_bDead = true;
 }
 
 void CPlayer::Stamina_Recovery(_float fTimeDelta)
@@ -189,15 +250,22 @@ HRESULT CPlayer::Ready_Components(void* pArg)
 
 HRESULT CPlayer::Ready_States()
 {
-	m_pStates[ENUM_CLASS(STATES::IDLE)] = new CPlayerState_Idle(this);
-	m_pStates[ENUM_CLASS(STATES::MOVE)] = new CPlayerState_Move(this);
-	m_pStates[ENUM_CLASS(STATES::DODGE)] = new CPlayerState_Dodge(this);
-	m_pStates[ENUM_CLASS(STATES::SPRINT)] = new CPlayerState_Sprint(this);
-	m_pStates[ENUM_CLASS(STATES::ATTACK1)] = new CPlayerState_Attack1(this);
-	m_pStates[ENUM_CLASS(STATES::ATTACK2)] = new CPlayerState_Attack2(this);
-	m_pStates[ENUM_CLASS(STATES::ATTACK3)] = new CPlayerState_Attack3(this);
-	m_pStates[ENUM_CLASS(STATES::HIT)] = new CPlayerState_Hit(this);
-	m_pStates[ENUM_CLASS(STATES::DIE)] = new CPlayerState_Die(this);
+	m_pStates[ENUM_CLASS(STATES::IDLE)]       = new CPlayerState_Idle(this);
+	m_pStates[ENUM_CLASS(STATES::MOVE)]       = new CPlayerState_Move(this);
+	m_pStates[ENUM_CLASS(STATES::DODGE)]      = new CPlayerState_Dodge(this);
+	m_pStates[ENUM_CLASS(STATES::SPRINT)]     = new CPlayerState_Sprint(this);
+	m_pStates[ENUM_CLASS(STATES::ATTACK1)]    = new CPlayerState_Attack1(this);
+	m_pStates[ENUM_CLASS(STATES::ATTACK2)]    = new CPlayerState_Attack2(this);
+	m_pStates[ENUM_CLASS(STATES::ATTACK3)]    = new CPlayerState_Attack3(this);
+	m_pStates[ENUM_CLASS(STATES::HIT)]        = new CPlayerState_Hit(this);
+	m_pStates[ENUM_CLASS(STATES::GET_UP)]     = new CPlayerState_GetUp(this);
+	m_pStates[ENUM_CLASS(STATES::DIE)]		  = new CPlayerState_Die(this);
+	m_pStates[ENUM_CLASS(STATES::PARRY)]      = new CPlayerState_Parry(this);
+	m_pStates[ENUM_CLASS(STATES::USE_POTION)] = new CPlayerState_UsePotion(this);
+	m_pStates[ENUM_CLASS(STATES::DANCE)]	  = new CPlayerState_Dance(this);
+	m_pStates[ENUM_CLASS(STATES::WAKE_UP)]    = new CPlayerState_WakeUp(this);
+	m_pStates[ENUM_CLASS(STATES::WIND_UP)]	  = new CPlayerState_WindUp(this);
+	m_pStates[ENUM_CLASS(STATES::TOSS)]		  = new CPlayerState_Toss(this);
 
 	for (_uint i = 0; i < ENUM_CLASS(STATES::ST_END); i++)
 	{

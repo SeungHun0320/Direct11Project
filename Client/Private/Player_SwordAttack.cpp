@@ -26,15 +26,10 @@ _float CPlayer_SwordAttack::Get_Duration(_int iComboIndex) const
     case 1:
         return 0.7f;
     case 2:
-        return 1.2f;
+        return 0.9f;
     default:
         return 0.f;
     }
-}
-
-_int CPlayer_SwordAttack::Get_MaxComboCount() const
-{
-    return 3;
 }
 
 void CPlayer_SwordAttack::Free()
@@ -42,7 +37,4 @@ void CPlayer_SwordAttack::Free()
     __super::Free();
 }
 
-WEAPON_TYPE CPlayer_SwordAttack::Get_WeaponType() const
-{
-    return WEAPON_TYPE::SWORD;
-}
+

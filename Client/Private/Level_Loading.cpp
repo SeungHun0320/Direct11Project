@@ -35,14 +35,13 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevelID)
 
 void CLevel_Loading::Update(_float fTimeDelta)
 {
-
 	if (KEY_DOWN(DIK_SPACE))
 	{
 		if (true == m_pLoader->isFinished())
 		{
 			CLevel* pLevel = { nullptr };
 
-			switch (m_eNextLevelID)
+ 			switch (m_eNextLevelID)
 			{
 			case LEVEL::LOGO:
 				pLevel = CLevel_Logo::Create(m_pDevice, m_pContext);

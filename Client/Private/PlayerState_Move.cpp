@@ -17,30 +17,31 @@ void CPlayerState_Move::Execute(_float fTimeDelta)
 {
 	m_pOwner->Play_Animation(fTimeDelta);
 
-	_vector vInputDir{};
+	if (m_pOwner->Get_Dead())
+		m_pOwner->Change_States(CPlayer::STATES::DIE);
 
-	if (m_pOwner->KeyPressing(DIK_W))
-		vInputDir += DIR_FORWARD;
+	if (m_pOwner->Get_IsHit())
+		m_pOwner->Change_States(CPlayer::STATES::HIT);
 
-	if (m_pOwner->KeyPressing(DIK_A))
-		vInputDir += DIR_LEFT;
-
-	if (m_pOwner->KeyPressing(DIK_S))
-		vInputDir += DIR_BACKWARD;
-
-	if (m_pOwner->KeyPressing(DIK_D))
-		vInputDir += DIR_RIGHT;
-
-	vInputDir = XMVector3Normalize(vInputDir);
-	m_pOwner->Move(vInputDir, fTimeDelta, SPEED);
+	m_pOwner->Move(m_pOwner->Get_InputDirection(), fTimeDelta, SPEED);
 
 	if (m_pOwner->KeyDown(DIK_SPACE))
-	{
 		m_pOwner->Change_States(CPlayer::STATES::DODGE);
-	}
 
-	if (m_pOwner->KeyDown(DIK_J) || m_pOwner->KeyDown(DIK_K) || m_pOwner->KeyDown(DIK_L))
+	if (m_pOwner->KeyDown(DIK_J)) 
 		m_pOwner->Change_States(CPlayer::STATES::ATTACK1);
+
+	if (m_pOwner->KeyDown(DIK_K))
+		m_pOwner->Change_States(CPlayer::STATES::WIND_UP);
+
+	if (m_pOwner->KeyDown(DIK_L))
+		int a = 0;// 먹는 행동, 코인토스 실험 ㄱ
+		
+	if (m_pOwner->KeyDown(DIK_P))
+		m_pOwner->Change_States(CPlayer::STATES::USE_POTION);
+
+	if (m_pOwner->KeyDown(DIK_SEMICOLON))
+		m_pOwner->Change_States(CPlayer::STATES::PARRY);
 
 	if (!m_pOwner->IsAnyMoveKeyPressed())
 		m_pOwner->Change_States(CPlayer::STATES::IDLE);

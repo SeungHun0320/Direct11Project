@@ -34,6 +34,10 @@ public:
 		return m_iParentBoneIndex == iParentBoneIndex;
 	}
 
+	_int Get_ParentBoneIndex() const {
+		return m_iParentBoneIndex;
+	}
+
 	void Set_ParentBoneIndex(_uint iParentBoneIndex = 2) {
 		m_iParentBoneIndex = iParentBoneIndex;
 	}

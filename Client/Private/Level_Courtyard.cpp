@@ -88,8 +88,7 @@ HRESULT CLevel_Courtyard::Ready_Layer_Pawn(const _wstring& strLayerTag)
 	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	tDesc.strName = TEXT("Player");
 
-	
-	tDesc.WorldMatrix = XMMatrixTranslation(vInitPosition.x, vInitPosition.y, vInitPosition.z);
+	tDesc.WorldMatrix = XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixTranslation(vInitPosition.x, vInitPosition.y, vInitPosition.z);
 
 	// 최초 게임 입장할때 어디에서 입장하던 스태틱에 생성해준다.
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Player"),
@@ -131,7 +130,7 @@ HRESULT CLevel_Courtyard::Ready_Layer_Monster(const _wstring& strLayerTag)
 	tDesc.fSpeedPerSec = 20.f;
 	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	tDesc.strName = TEXT("SpiderTank");
-
+	tDesc.WorldMatrix = XMMatrixTranslation(0.f, 0.f, -80.f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_GameObject_") + tDesc.strName,
 		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))

@@ -10,29 +10,20 @@ CPlayerState_Sprint::CPlayerState_Sprint(CPlayer* pOwner)
 
 void CPlayerState_Sprint::Enter(_float fTimeDelta)
 {
-	m_pOwner->Change_Animation(CPlayer::ANIM_STATES::SPRINT, true, 0.2f);
+	m_pOwner->Change_Animation(CPlayer::ANIM_STATES::SPRINT, true, 0.1f);
 }
 
 void CPlayerState_Sprint::Execute(_float fTimeDelta)
 {
 	m_pOwner->Play_Animation(fTimeDelta);
 
-	_vector vInputDir{};
+	if (m_pOwner->Get_Dead())
+		m_pOwner->Change_States(CPlayer::STATES::DIE);
 
-	if (m_pOwner->KeyPressing(DIK_W))
-		vInputDir += DIR_FORWARD;
+	if (m_pOwner->Get_IsHit())
+		m_pOwner->Change_States(CPlayer::STATES::HIT);
 
-	if (m_pOwner->KeyPressing(DIK_A))
-		vInputDir += DIR_LEFT;
-
-	if (m_pOwner->KeyPressing(DIK_S))
-		vInputDir += DIR_BACKWARD;
-
-	if (m_pOwner->KeyPressing(DIK_D))
-		vInputDir += DIR_RIGHT;
-
-	vInputDir = XMVector3Normalize(vInputDir);
-	m_pOwner->Move(vInputDir, fTimeDelta, SPEED);
+	m_pOwner->Move(m_pOwner->Get_InputDirection(), fTimeDelta, SPEED);
 
 	if (m_pOwner->KeyDown(DIK_SPACE))
 	{
@@ -46,6 +37,10 @@ void CPlayerState_Sprint::Execute(_float fTimeDelta)
 	{
 		m_pOwner->Change_States(CPlayer::STATES::MOVE);
 	}
+
+	/* 나중에 인벤에 어떤 칸에 어떤 아이템이 장착되어 있는지에 따라서 분기 ㄱ */
+	if (m_pOwner->KeyDown(DIK_J) || m_pOwner->KeyDown(DIK_K) || m_pOwner->KeyDown(DIK_L))
+		m_pOwner->Change_States(CPlayer::STATES::ATTACK1);
 }
 
 void CPlayerState_Sprint::Exit()

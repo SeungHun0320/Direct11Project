@@ -17,6 +17,27 @@ void CPlayerState_Attack1::Enter(_float fTimeDelta)
     m_iMaxCombo   = pStrategy->Get_MaxComboCount();
     m_eWeaponType = pStrategy->Get_WeaponType();
 
+    for (_uint i = 0; i < CPlayer::MESHES::MESHES_END; i++)
+    {
+        if (i == CPlayer::MESHES::MESH_SHILED && m_pOwner->Get_IsShield())
+            continue;
+
+        m_pOwner->Set_MeshVisible(i, true);
+    }
+
+    switch (m_eWeaponType)
+    {
+    case WEAPON_TYPE::SWORD:
+        m_pOwner->Set_MeshVisible(CPlayer::MESHES::MESH_SWORD, false);
+        break;
+    case WEAPON_TYPE::STICK:
+        m_pOwner->Set_MeshVisible(CPlayer::MESHES::MESH_STICK, false);
+        break;
+    case WEAPON_TYPE::DAGGER:
+        m_pOwner->Set_MeshVisible(CPlayer::MESHES::MESH_DAGGER, false);
+        break;
+    }
+
     m_fTimeAcc = 0.f;
 
     XMStoreFloat3(&m_vInputDir, m_pOwner->Get_InputDirection());
@@ -48,8 +69,6 @@ void CPlayerState_Attack1::Execute(_float fTimeDelta)
                 m_pOwner->Change_States(CPlayer::STATES::IDLE);
             }
         }
-        else
-            m_pOwner->Move(XMLoadFloat3(&m_vInputDir), fTimeDelta);
     }
     else if (WEAPON_TYPE::SWORD == m_eWeaponType)
     {
@@ -72,7 +91,26 @@ void CPlayerState_Attack1::Execute(_float fTimeDelta)
         else
             m_pOwner->Move(XMLoadFloat3(&m_vInputDir), fTimeDelta, 0.5f);
     }
+    else if (WEAPON_TYPE::DAGGER == m_eWeaponType)
+    {
+        if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(fTimeDelta))
+        {
+            if (m_pOwner->IsAnyMoveKeyPressed())
+            {
+                m_pOwner->Change_States(CPlayer::STATES::MOVE);
+            }
+            else
+            {
+                m_pOwner->Change_States(CPlayer::STATES::IDLE);
+            }
+        }
+        else
+            m_pOwner->Move(XMLoadFloat3(&m_vInputDir), fTimeDelta, 0.5f);
+    }
 
+
+    if (m_pOwner->Get_Dead())
+        m_pOwner->Change_States(CPlayer::STATES::DIE);
 }
 
 void CPlayerState_Attack1::Exit()
@@ -139,8 +177,6 @@ void CPlayerState_Attack2::Execute(_float fTimeDelta)
                 m_pOwner->Change_States(CPlayer::STATES::IDLE);
             }
         }
-        else
-            m_pOwner->Move(XMLoadFloat3(&m_vInputDir), fTimeDelta);
     }
     else if (WEAPON_TYPE::SWORD == m_eWeaponType)
     {
@@ -162,6 +198,9 @@ void CPlayerState_Attack2::Execute(_float fTimeDelta)
         else
             m_pOwner->Move(XMLoadFloat3(&m_vInputDir), fTimeDelta, 1.f);
     }
+
+    if (m_pOwner->Get_Dead())
+        m_pOwner->Change_States(CPlayer::STATES::DIE);
 
 }
 
@@ -226,9 +265,11 @@ void CPlayerState_Attack3::Execute(_float fTimeDelta)
             }
         }
         else
-            m_pOwner->Move(XMLoadFloat3(&m_vInputDir), fTimeDelta, 3.f);
+            m_pOwner->Move(XMLoadFloat3(&m_vInputDir), fTimeDelta, 3.5f);
     }
 
+    if (m_pOwner->Get_Dead())
+        m_pOwner->Change_States(CPlayer::STATES::DIE);
 }
 
 void CPlayerState_Attack3::Exit()

@@ -243,6 +243,12 @@
     <ClCompile Include="..\private\Monster.cpp" />
     <ClCompile Include="..\private\Pawn.cpp" />
     <ClCompile Include="..\private\Player.cpp" />
+    <ClCompile Include="..\Private\PlayerState_Toss.cpp" />
+    <ClCompile Include="..\Private\PlayerState_UsePotion.cpp" />
+    <ClCompile Include="..\Private\PlayerState_Dance.cpp" />
+    <ClCompile Include="..\Private\PlayerState_WakeUp.cpp" />
+    <ClCompile Include="..\Private\PlayerState_Parry.cpp" />
+    <ClCompile Include="..\Private\PlayerState_GetUp.cpp" />
     <ClCompile Include="..\Private\PlayerState_Attack.cpp" />
     <ClCompile Include="..\Private\PlayerState_Die.cpp" />
     <ClCompile Include="..\Private\PlayerState_Dodge.cpp" />
@@ -250,7 +256,9 @@
     <ClCompile Include="..\Private\PlayerState_Idle.cpp" />
     <ClCompile Include="..\Private\PlayerState_Move.cpp" />
     <ClCompile Include="..\Private\PlayerState_Sprint.cpp" />
-    <ClCompile Include="..\Private\Player_StickAattack.cpp" />
+    <ClCompile Include="..\Private\Player_DaggerAttack.cpp" />
+    <ClCompile Include="..\Private\Player_IAttackStrategy.cpp" />
+    <ClCompile Include="..\Private\Player_StickAttack.cpp" />
     <ClCompile Include="..\Private\Player_SwordAttack.cpp" />
     <ClCompile Include="..\private\Potion.cpp" />
     <ClCompile Include="..\private\Shop.cpp" />
