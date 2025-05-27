@@ -12,18 +12,18 @@ void CPlayerState_Idle::Enter(_float fTimeDelta)
 
 	if (CPlayer::STATES::KNEEL == m_pOwner->Get_PreState())
 	{
-		m_pOwner->Set_TrackPosition(1.f);
+		m_pOwner->Set_TrackPosition(CPlayer::PART::PART_BODY, 1.f);
 		m_fDuration = 0.4f;
 	}
 	else
 		m_fDuration = 0.15f;
 
-	m_pOwner->Change_Animation(CPlayer::ANIM_STATES::IDLE, true, m_fDuration);
+	m_pOwner->Change_Animation(CPlayer::PART::PART_BODY, CPlayer::ANIM_STATES::IDLE, true, m_fDuration);
 }
 
 void CPlayerState_Idle::Execute(_float fTimeDelta)
 {
-	m_pOwner->Play_Animation(fTimeDelta);
+	m_pOwner->Play_Animation(CPlayer::PART::PART_BODY, fTimeDelta);
 
 	if (m_pOwner->Get_IsHit())
 		m_pOwner->Change_States(CPlayer::STATES::HIT);

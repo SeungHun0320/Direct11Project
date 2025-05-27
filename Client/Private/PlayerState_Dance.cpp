@@ -8,12 +8,12 @@ CPlayerState_Dance::CPlayerState_Dance(CPlayer* pOwner)
 
 void CPlayerState_Dance::Enter(_float fTimeDelta)
 {
-	m_pOwner->Change_Animation(CPlayer::ANIM_STATES::DANCE, true, 0.1f);
+	m_pOwner->Change_Animation(CPlayer::PART::PART_BODY, CPlayer::ANIM_STATES::DANCE, true, 0.1f);
 }
 
 void CPlayerState_Dance::Execute(_float fTimeDelta)
 {
-	m_pOwner->Play_Animation(fTimeDelta);
+	m_pOwner->Play_Animation(CPlayer::PART::PART_BODY, fTimeDelta);
 
 	if (m_pOwner->IsAnyMoveKeyPressed())
 	{

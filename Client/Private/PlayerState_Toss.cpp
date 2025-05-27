@@ -19,17 +19,17 @@ void CPlayerState_WindUp::Enter(_float fTimeDelta)
 		if (i == CPlayer::MESHES::MESH_SHILED && m_pOwner->Get_IsShield())
 			continue;
 
-		m_pOwner->Set_MeshVisible(i, true);
+		m_pOwner->Set_MeshVisible(CPlayer::PART::PART_BODY, i, true);
 	}
 
-	m_pOwner->Change_Animation(CPlayer::ANIM_STATES::WINDUP, false, 0.1f);
+	m_pOwner->Change_Animation(CPlayer::PART::PART_BODY, CPlayer::ANIM_STATES::WINDUP, false, 0.1f);
 }
 
 void CPlayerState_WindUp::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 
-	if (0.8f <= m_fTimeAcc || m_pOwner->Play_Animation(fTimeDelta))
+	if (0.8f <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART::PART_BODY, fTimeDelta))
 	{
 		m_pOwner->Change_States(CPlayer::STATES::TOSS);
 	}
@@ -63,14 +63,14 @@ void CPlayerState_Toss::Enter(_float fTimeDelta)
 	m_fTimeAcc = 0.f;
 	m_fDuration = 0.f;
 
-	m_pOwner->Change_Animation(CPlayer::ANIM_STATES::TOSS, false, 0.3f);
+	m_pOwner->Change_Animation(CPlayer::PART::PART_BODY, CPlayer::ANIM_STATES::TOSS, false, 0.3f);
 }
 
 void CPlayerState_Toss::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 
-	if (0.8f <= m_fTimeAcc || m_pOwner->Play_Animation(fTimeDelta))
+	if (0.8f <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART::PART_BODY, fTimeDelta))
 	{
 		if (m_pOwner->IsAnyMoveKeyPressed())
 		{

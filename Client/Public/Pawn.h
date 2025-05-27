@@ -1,22 +1,19 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "GameObject.h"
+#include "ContainerObject.h"
 
 BEGIN(Engine)
-class CShader;
-class CModel;
 END
 
 BEGIN(Client)
 
-class CPawn abstract : public CGameObject
+class CPawn abstract : public CContainerObject
 {
 public:
-	typedef struct tagPawnDesc : public CGameObject::DESC
+	typedef struct tagPawnDesc : public CContainerObject::DESC
 	{
 		LEVEL eLevelID;
-
 	}DESC;
 protected:
 	CPawn(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -36,17 +33,14 @@ public:
 	virtual void Late_Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
-
-protected:
-	CShader* m_pShaderCom = { nullptr };
-	CModel* m_pModelCom = { nullptr };
-
 protected:
 	LEVEL m_eLevelID = { LEVEL::LEVEL_END };
+	_uint m_iState = {};
 
 protected:
 	virtual HRESULT Ready_Components(void* pArg);
-	virtual HRESULT Bind_ShaderResources();
+	virtual HRESULT Ready_PartObjects() { return S_OK; };
+
 
 public:
 	virtual CGameObject* Clone(void* pArg) PURE;

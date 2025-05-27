@@ -2,6 +2,7 @@
 
 #include "GameInstance.h"
 
+#include "Body_Player.h"
 #include "PlayerState.h"
 #include "Player_IAttackStrategy.h"
 
@@ -39,9 +40,9 @@ HRESULT CPlayer::Initialize(void* pArg)
 		if (i == CPlayer::MESHES::MESH_SHILED && m_IsShield)
 			continue;
 
-		m_pModelCom->Set_MeshVisible(i, true);
+		m_PartObjects[PART_BODY]->Set_MeshVisible(i, true);
 	}
-		
+
 	m_pAttackStrategy = new CPlayer_SwordAttack(3, WEAPON_TYPE::SWORD);
 
 	Change_States(STATES::WAKE_UP);
@@ -69,7 +70,7 @@ LIFE CPlayer::Update(_float fTimeDelta)
 
 	m_pCurState->Execute(fTimeDelta);
 
-	return LIFE::NONE;
+	return __super::Update(fTimeDelta);
 }
 
 void CPlayer::Late_Update(_float fTimeDelta)
@@ -79,30 +80,6 @@ void CPlayer::Late_Update(_float fTimeDelta)
 
 HRESULT CPlayer::Render()
 {
-	if (FAILED(Bind_ShaderResources()))
-		return E_FAIL;
-
-	_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
-
-	for (_uint i = 0; i < iNumMesh; i++)
-	{
-		//m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TEX_TYPE::DIFFUSE, 0);
-
-		if (m_pModelCom->Get_MeshVisible(i))
-			continue;
-
-		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TEX_TYPE::DIFFUSE, 0)))
-			return E_FAIL;
-
-		m_pModelCom->Bind_Bone_Matrices(m_pShaderCom, "g_BoneMatrices", i);
-
-		if (FAILED(m_pShaderCom->Begin(0)))
-			return E_FAIL;
-
-		if (FAILED(m_pModelCom->Render(i)))
-			return E_FAIL;
-	}
-
 	return S_OK;
 }
 
@@ -120,19 +97,24 @@ void CPlayer::Change_States(STATES eStates)
 	m_eCurState = eStates;
 }
 
-_bool CPlayer::Play_Animation(_float fTimeDelta)
+_bool CPlayer::Play_Animation(PART ePart, _float fTimeDelta)
 {
-	return m_pModelCom->Play_Animation(fTimeDelta);
+	return m_PartObjects[ePart]->Play_Animation(fTimeDelta);
 }
 
-void CPlayer::Change_Animation(_uint iNextIndex, _bool isLoop, _float fBlendDuration, _bool isBlend)
+void CPlayer::Set_TrackPosition(PART ePart, _float fTrackPosition)
 {
-	m_pModelCom->Change_Animation(iNextIndex, isLoop, fBlendDuration, isBlend);
+	m_PartObjects[ePart]->Set_TrackPosition(fTrackPosition);
 }
 
-void CPlayer::Set_MeshVisible(_uint iIndex, _bool IsVisible)
+void CPlayer::Change_Animation(PART ePart, _uint iNextIndex, _bool isLoop, _float fBlendDuration, _bool isBlend)
 {
-	m_pModelCom->Set_MeshVisible(iIndex, IsVisible);
+	m_PartObjects[ePart]->Change_Animation(iNextIndex, isLoop, fBlendDuration, isBlend);
+}
+
+void CPlayer::Set_MeshVisible(PART ePart, _uint iIndex, _bool IsVisible)
+{
+	m_PartObjects[ePart]->Set_MeshVisible(iIndex, IsVisible);
 }
 
 void CPlayer::Dodge(_fvector vDir, _float fTimeDelta, _float fSpeed)
@@ -223,11 +205,6 @@ _bool CPlayer::IsMoveKeyPressed()
 		KEY_PRESSING(DIK_S) || KEY_PRESSING(DIK_D);
 }
 
-void CPlayer::Set_TrackPosition(_float fTrackPosition)
-{
-	m_pModelCom->Set_CurrnetTrackPosition(fTrackPosition);
-}
-
 void CPlayer::Set_AttackStrategy(CPlayer_IAttackStrategy* pStrategy)
 {
 	Safe_Release(m_pAttackStrategy);
@@ -265,9 +242,17 @@ HRESULT CPlayer::Ready_Components(void* pArg)
 	if (FAILED(__super::Ready_Components(pArg)))
 		return E_FAIL;
 
-	/* For.Com_Model */
-	if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Model_Fox"),
-		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
+	return S_OK;
+}
+
+HRESULT CPlayer::Ready_PartObjects()
+{
+	CBody_Player::DESC	BodyDesc{};
+
+	BodyDesc.eLevelID = m_eLevelID;
+	BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+
+	if (FAILED(__super::Add_PartObject(PART_BODY, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Body_Player"), &BodyDesc)))
 		return E_FAIL;
 
 	return S_OK;

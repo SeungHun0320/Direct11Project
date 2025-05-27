@@ -8,7 +8,7 @@ CPlayerState_Die::CPlayerState_Die(CPlayer* pOwner)
 
 void CPlayerState_Die::Enter(_float fTimeDelta)
 {
-	m_pOwner->Change_Animation(CPlayer::ANIM_STATES::DIE, false, 0.1f);
+	m_pOwner->Change_Animation(CPlayer::PART::PART_BODY, CPlayer::ANIM_STATES::DIE, false, 0.1f);
 
 	m_fTimeAcc = 0.f;
 	m_fDuration = 1.6f;
@@ -18,7 +18,7 @@ void CPlayerState_Die::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 
-	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(fTimeDelta))
+	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART::PART_BODY, fTimeDelta))
 		m_pOwner->Change_States(CPlayer::STATES::IDLE);
 }
 

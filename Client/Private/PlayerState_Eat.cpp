@@ -18,17 +18,17 @@ void CPlayerState_Eat::Enter(_float fTimeDelta)
 		if (i == CPlayer::MESHES::MESH_SHILED && m_pOwner->Get_IsShield())
 			continue;
 
-		m_pOwner->Set_MeshVisible(i, true);
+		m_pOwner->Set_MeshVisible(CPlayer::PART::PART_BODY, i, true);
 	}
 
-	m_pOwner->Change_Animation(CPlayer::ANIM_STATES::EAT, false, 0.2f);
+	m_pOwner->Change_Animation(CPlayer::PART::PART_BODY, CPlayer::ANIM_STATES::EAT, false, 0.2f);
 }
 
 void CPlayerState_Eat::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 
-	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(fTimeDelta))
+	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART::PART_BODY, fTimeDelta))
 	{
 		if (m_pOwner->IsAnyMoveKeyPressed())
 		{

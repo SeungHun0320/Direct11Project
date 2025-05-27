@@ -8,7 +8,7 @@ CPlayerState_Parry::CPlayerState_Parry(CPlayer* pOwner)
 
 void CPlayerState_Parry::Enter(_float fTimeDelta)
 {
-	m_pOwner->Change_Animation(CPlayer::ANIM_STATES::PARRY, false, 0.2f);
+	m_pOwner->Change_Animation(CPlayer::PART::PART_BODY, CPlayer::ANIM_STATES::PARRY, false, 0.2f);
 	m_fTimeAcc = 0.f;
 	m_fDuration = 1.f;
 }
@@ -20,7 +20,7 @@ void CPlayerState_Parry::Execute(_float fTimeDelta)
 
 	m_fTimeAcc += fTimeDelta;
 
-	if (1.1f <= m_fTimeAcc || m_pOwner->Play_Animation(fTimeDelta))
+	if (1.1f <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART::PART_BODY, fTimeDelta))
 	{
 		if (m_pOwner->IsAnyMoveKeyPressed())
 		{

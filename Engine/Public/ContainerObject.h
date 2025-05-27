@@ -10,7 +10,7 @@ public:
 	{
 		_uint		iNumPartObjects{};
 	}DESC;
-private:
+protected:
 	CContainerObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CContainerObject(const CContainerObject& Prototype);
 	virtual ~CContainerObject() = default;

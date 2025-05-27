@@ -88,6 +88,7 @@ HRESULT CLevel_Courtyard::Ready_Layer_Pawn(const _wstring& strLayerTag)
 	tDesc.fSpeedPerSec = 5.f;
 	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	tDesc.strName = TEXT("Player");
+	tDesc.iNumPartObjects = CPlayer::PART::PART_END;
 
 	tDesc.WorldMatrix = XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixTranslation(vInitPosition.x, vInitPosition.y, vInitPosition.z);
 

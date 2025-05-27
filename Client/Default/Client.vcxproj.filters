@@ -85,12 +85,6 @@
     <Filter Include="02.GameObjects\04.Map\01.Main">
       <UniqueIdentifier>{1c64d770-9a05-4831-abdd-84cf98a096a5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.Tools">
-      <UniqueIdentifier>{7812b788-45ee-4a11-b8cc-777b8842ec37}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.Tools\00. MapTool">
-      <UniqueIdentifier>{ae8c8b7d-fa3f-4ba0-b00a-d9b3ca93886a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\05.Environment_Objects">
       <UniqueIdentifier>{d5f68ddd-4dc1-4375-b941-64b6d6e60b6c}</UniqueIdentifier>
     </Filter>
@@ -235,6 +229,12 @@
     <Filter Include="02.GameObjects\06.Pawn\Player\State\UsePotion">
       <UniqueIdentifier>{8a1a186d-c05d-4f80-9088-92ac41b7da57}</UniqueIdentifier>
     </Filter>
+    <Filter Include="96.Tools">
+      <UniqueIdentifier>{7812b788-45ee-4a11-b8cc-777b8842ec37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96.Tools\00. MapTool">
+      <UniqueIdentifier>{ae8c8b7d-fa3f-4ba0-b00a-d9b3ca93886a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -334,10 +334,10 @@
       <Filter>02.GameObjects\04.Map\00.Courtyard</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Tool.h">
-      <Filter>03.Tools</Filter>
+      <Filter>96.Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\public\MapTool.h">
-      <Filter>03.Tools\00. MapTool</Filter>
+      <Filter>96.Tools\00. MapTool</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Arena.h">
       <Filter>02.GameObjects\04.Map\02.Arena</Filter>
@@ -493,10 +493,10 @@
       <Filter>02.GameObjects\04.Map\00.Courtyard</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Tool.cpp">
-      <Filter>03.Tools</Filter>
+      <Filter>96.Tools</Filter>
     </ClCompile>
     <ClCompile Include="..\private\MapTool.cpp">
-      <Filter>03.Tools\00. MapTool</Filter>
+      <Filter>96.Tools\00. MapTool</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Arena.cpp">
       <Filter>02.GameObjects\04.Map\02.Arena</Filter>

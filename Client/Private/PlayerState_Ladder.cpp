@@ -11,12 +11,15 @@ CPlayerState_Ladder::CPlayerState_Ladder(CPlayer* pOwner)
 
 void CPlayerState_Ladder::Enter(_float fTimeDelta)
 {
-	m_pOwner->Change_Animation(CPlayer::ANIM_STATES::LADDER, true, 0.1f);
+	for (_uint i = 0; i < CPlayer::MESHES::MESHES_END; i++)
+		m_pOwner->Set_MeshVisible(CPlayer::PART::PART_BODY, i, true);
+
+	m_pOwner->Change_Animation(CPlayer::PART::PART_BODY, CPlayer::ANIM_STATES::LADDER, true, 0.1f);
 }
 
 void CPlayerState_Ladder::Execute(_float fTimeDelta)
 {
-	m_pOwner->Play_Animation(fTimeDelta);
+	m_pOwner->Play_Animation(CPlayer::PART::PART_BODY, fTimeDelta);
 
 	if (m_pOwner->KeyPressing(DIK_W))
 	{
@@ -37,6 +40,11 @@ void CPlayerState_Ladder::Execute(_float fTimeDelta)
 
 void CPlayerState_Ladder::Exit()
 {
+	for (_uint i = 0; i < CPlayer::MESHES::MESHES_END; i++)
+	{
+		m_pOwner->Set_MeshVisible(CPlayer::PART::PART_BODY, i, false);
+	}
+		
 }
 
 void CPlayerState_Ladder::Free()
@@ -55,14 +63,17 @@ void CPlayerState_OnLadder::Enter(_float fTimeDelta)
 	m_fTimeAcc  = 0.f;
 	m_fDuration = 0.7f;
 
-	m_pOwner->Change_Animation(CPlayer::ANIM_STATES::ON_LADDER, false, 0.2f);
+	for (_uint i = 0; i < CPlayer::MESHES::MESHES_END; i++)
+		m_pOwner->Set_MeshVisible(CPlayer::PART::PART_BODY, i, true);
+
+	m_pOwner->Change_Animation(CPlayer::PART::PART_BODY, CPlayer::ANIM_STATES::ON_LADDER, false, 0.2f);
 }
 
 void CPlayerState_OnLadder::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 
-	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(fTimeDelta))
+	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART::PART_BODY, fTimeDelta))
 	{
 		m_pOwner->Change_States(CPlayer::STATES::LADDER);
 	}
@@ -73,6 +84,14 @@ void CPlayerState_OnLadder::Exit()
 {
 	m_fTimeAcc = 0.f;
 	m_fDuration = 0.f;
+
+	for (_uint i = 0; i < CPlayer::MESHES::MESHES_END; i++)
+	{
+		if (i == CPlayer::MESHES::MESH_SHILED && m_pOwner->Get_IsShield())
+			continue;
+
+		m_pOwner->Set_MeshVisible(CPlayer::PART::PART_BODY, i, false);
+	}
 }
 
 void CPlayerState_OnLadder::Free()
@@ -92,14 +111,17 @@ void CPlayerState_OffLadder::Enter(_float fTimeDelta)
 	m_fTimeAcc = 0.f;
 	m_fDuration = 0.6f;
 
-	m_pOwner->Change_Animation(CPlayer::ANIM_STATES::OFF_LADDER, false, 0.1f);
+	for (_uint i = 0; i < CPlayer::MESHES::MESHES_END; i++)
+		m_pOwner->Set_MeshVisible(CPlayer::PART::PART_BODY, i, true);
+
+	m_pOwner->Change_Animation(CPlayer::PART::PART_BODY, CPlayer::ANIM_STATES::OFF_LADDER, false, 0.1f);
 }
 
 void CPlayerState_OffLadder::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 
-	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(fTimeDelta))
+	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART::PART_BODY, fTimeDelta))
 	{
 		if (m_pOwner->IsAnyMoveKeyPressed())
 		{
@@ -120,6 +142,14 @@ void CPlayerState_OffLadder::Exit()
 {
 	m_fTimeAcc = 0.f;
 	m_fDuration = 0.f;
+
+	for (_uint i = 0; i < CPlayer::MESHES::MESHES_END; i++)
+	{
+		if (i == CPlayer::MESHES::MESH_SHILED && m_pOwner->Get_IsShield())
+			continue;
+
+		m_pOwner->Set_MeshVisible(CPlayer::PART::PART_BODY, i, false);
+	}
 }
 
 void CPlayerState_OffLadder::Free()

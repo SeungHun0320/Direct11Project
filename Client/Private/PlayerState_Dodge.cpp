@@ -13,12 +13,12 @@ void CPlayerState_Dodge::Enter(_float fTimeDelta)
 {
 	if (0 >= m_pOwner->Get_Stamina())
 	{
-		m_pOwner->Change_Animation(CPlayer::ANIM_STATES::FAIL_DODGE, false, 0.1f);
+		m_pOwner->Change_Animation(CPlayer::PART::PART_BODY, CPlayer::ANIM_STATES::FAIL_DODGE, false, 0.1f);
 		m_fDuration = 0.75f;
 	}
 	else
 	{
-		m_pOwner->Change_Animation(CPlayer::ANIM_STATES::DODGE, false, 0.1f);
+		m_pOwner->Change_Animation(CPlayer::PART::PART_BODY, CPlayer::ANIM_STATES::DODGE, false, 0.1f);
 		m_fDuration = 0.7f;
 	}
 
@@ -33,7 +33,7 @@ void CPlayerState_Dodge::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 
-	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(fTimeDelta)) /* 재생 시간 */
+	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART::PART_BODY, fTimeDelta)) /* 재생 시간 */
 	{
 		if (m_pOwner->KeyPressing(DIK_J) || m_pOwner->KeyDown(DIK_K) || m_pOwner->KeyDown(DIK_L))
 		{

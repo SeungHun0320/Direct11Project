@@ -13,6 +13,8 @@ public:
 	}DESC;
 
 public:
+	enum PART { PART_BODY, PART_EFFECT, PART_END };
+
 	enum MESHES	{
 		MESH_SHILED, MESH_SWORD, MESH_POTION, MESH_POTION2, MESH_STICK, MESH_DAGGER, MESHES_END
 	};
@@ -76,10 +78,15 @@ public: /* 키 입력 관련 함수들*/
 	_bool IsAnyMoveKeyPressed() const;
 	_bool IsMoveKeyPressed();
 	
+
 public: /* 상태로 넘겨줄 함수들 */
-	_bool Play_Animation(_float fTimeDelta);
-	void  Change_Animation(_uint iNextIndex, _bool isLoop = true, _float fBlendDuration = 0.f, _bool isBlend = true);
-	void  Set_MeshVisible(_uint iIndex, _bool IsVisible);
+	/* 애니메이션 관련 */
+	_bool Play_Animation(PART ePart, _float fTimeDelta);
+	void  Set_TrackPosition(PART ePart, _float fTrackPosition);
+	void  Change_Animation(PART ePart, _uint iNextIndex, _bool isLoop = true, _float fBlendDuration = 0.f, _bool isBlend = true);
+	void  Set_MeshVisible(PART ePart, _uint iIndex, _bool IsVisible);
+
+	/* 이동 관련 */
 	void  Dodge(_fvector vDir,_float fTimeDelta, _float fSpeed);
 	void  Move(_fvector vDir, _float fTimeDelta, _float fSpeed = 0.f);
 	void  Stagger(_fvector vDir, _float fTimeDelta, _float fSpeed = 0.f);
@@ -127,9 +134,6 @@ public: /* 방패 관련 */
 		m_IsShield = IsShield;
 	}
 
-public: /* 애니메이션 관련 */
-	void Set_TrackPosition(_float fTrackPosition);
-
 public: /* 전략패턴 트라이 */
 	void Set_AttackStrategy(class CPlayer_IAttackStrategy* pStrategy);
 	class CPlayer_IAttackStrategy* Get_AttackStrategy() const {
@@ -164,6 +168,8 @@ private:
 
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;
+	virtual HRESULT Ready_PartObjects() override;
+
 	HRESULT Ready_States();
 
 public:

@@ -58,6 +58,8 @@ LIFE CContainerObject::Update(_float fTimeDelta)
             else
                 Iter++;
         }
+        else
+            Iter++;
     }
 
     return LIFE::NONE;
