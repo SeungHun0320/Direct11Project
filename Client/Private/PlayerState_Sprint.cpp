@@ -10,12 +10,12 @@ CPlayerState_Sprint::CPlayerState_Sprint(CPlayer* pOwner)
 
 void CPlayerState_Sprint::Enter(_float fTimeDelta)
 {
-	m_pOwner->Change_Animation(CPlayer::PART::PART_BODY, CPlayer::ANIM_STATES::SPRINT, true, 0.1f);
+	m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::SPRINT, true, 0.1f);
 }
 
 void CPlayerState_Sprint::Execute(_float fTimeDelta)
 {
-	m_pOwner->Play_Animation(CPlayer::PART::PART_BODY, fTimeDelta);
+	m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta);
 
 	if (m_pOwner->Get_Dead())
 		m_pOwner->Change_States(CPlayer::STATES::DIE);

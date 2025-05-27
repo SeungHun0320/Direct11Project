@@ -15,12 +15,12 @@ void CPlayerState_Hit::Enter(_float fTimeDelta)
 	switch (m_eHitType)
 	{
 	case HIT_TYPE::NORMAL:
-		m_pOwner->Change_Animation(CPlayer::PART::PART_BODY, CPlayer::ANIM_STATES::HIT, false, 0.1f);
+		m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::HIT, false, 0.1f);
 		m_fDuration = 0.5f;
 		break;
 
 	case HIT_TYPE::STAGGER:
-		m_pOwner->Change_Animation(CPlayer::PART::PART_BODY, CPlayer::ANIM_STATES::STAGGER, false, 0.1f);
+		m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::STAGGER, false, 0.1f);
 		m_fDuration = 0.7f;
 		break;
 	}
@@ -35,7 +35,7 @@ void CPlayerState_Hit::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 
-	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART::PART_BODY, fTimeDelta))
+	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta))
 	{
 		if (HIT_TYPE::NORMAL == m_eHitType)
 		{

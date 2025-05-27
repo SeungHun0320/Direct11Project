@@ -1,6 +1,10 @@
 #include "PlayerState.h"
 #include "Player.h"
 
+/* --------------------------
+		  상자 오픈
+------------------------- */
+
 CPlayerState_OpenChest::CPlayerState_OpenChest(CPlayer* pOwner)
 	: CPlayerState{ pOwner }
 {
@@ -11,14 +15,14 @@ void CPlayerState_OpenChest::Enter(_float fTimeDelta)
 	m_fDuration = 2.2f;
 	m_fTimeAcc  = 0.f;
 
-	m_pOwner->Change_Animation(CPlayer::PART::PART_BODY, CPlayer::ANIM_STATES::OPEN_CHEST, false, 0.2f);
+	m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::OPEN_CHEST, false, 0.2f);
 }
 
 void CPlayerState_OpenChest::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 
-	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART::PART_BODY, fTimeDelta))
+	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta))
 	{
 		if (m_pOwner->IsAnyMoveKeyPressed())
 		{
@@ -40,6 +44,10 @@ void CPlayerState_OpenChest::Free()
 	__super::Free();
 }
 
+/* --------------------------
+		 스위치 작동
+------------------------- */
+
 CPlayerState_OnSwitch::CPlayerState_OnSwitch(CPlayer* pOwner)
 	: CPlayerState{ pOwner }
 {
@@ -50,14 +58,14 @@ void CPlayerState_OnSwitch::Enter(_float fTimeDelta)
 	m_fDuration = 2.7f;
 	m_fTimeAcc = 0.f;
 	
-	m_pOwner->Change_Animation(CPlayer::PART::PART_BODY, CPlayer::ANIM_STATES::ON_SWITCH, false, 0.2f);
+	m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::ON_SWITCH, false, 0.2f);
 }
 
 void CPlayerState_OnSwitch::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 
-	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART::PART_BODY, fTimeDelta))
+	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta))
 	{
 		if (m_pOwner->IsAnyMoveKeyPressed())
 		{
@@ -79,6 +87,10 @@ void CPlayerState_OnSwitch::Free()
 	__super::Free();
 }
 
+/* --------------------------
+		    기도
+------------------------- */
+
 CPlayerState_Kneel::CPlayerState_Kneel(CPlayer* pOwner)
 	: CPlayerState{ pOwner }
 {
@@ -86,12 +98,12 @@ CPlayerState_Kneel::CPlayerState_Kneel(CPlayer* pOwner)
 
 void CPlayerState_Kneel::Enter(_float fTimeDelta)
 {
-	m_pOwner->Change_Animation(CPlayer::PART::PART_BODY, CPlayer::ANIM_STATES::KNEEL, false, 0.2f);
+	m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::KNEEL, false, 0.2f);
 }
 
 void CPlayerState_Kneel::Execute(_float fTimeDelta)
 {
-	if (m_pOwner->Play_Animation(CPlayer::PART::PART_BODY, fTimeDelta))
+	if (m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta))
 	{
 		if (m_pOwner->KeyUp(DIK_SPACE))
 		{

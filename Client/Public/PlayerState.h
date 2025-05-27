@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Base.h"
 #include "Client_Defines.h"
+#include "Base.h"
 
 BEGIN(Client)
 
@@ -28,8 +28,7 @@ protected:
 	_float   m_fDuration = {};
 
 public:
-	virtual void Free() override
-	{
+	virtual void Free() override {
 		__super::Free();
 	}
 };

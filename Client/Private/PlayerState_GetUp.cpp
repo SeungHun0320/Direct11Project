@@ -8,7 +8,7 @@ CPlayerState_GetUp::CPlayerState_GetUp(CPlayer* pOwner)
 
 void CPlayerState_GetUp::Enter(_float fTimeDelta)
 {
-	m_pOwner->Change_Animation(CPlayer::PART::PART_BODY, CPlayer::ANIM_STATES::GET_UP, false, 0.2f);
+	m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::GET_UP, false, 0.2f);
 
 	m_fTimeAcc = 0.f;
 	m_fDuration = 1.f;
@@ -18,7 +18,7 @@ void CPlayerState_GetUp::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 
-	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART::PART_BODY, fTimeDelta))
+	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta))
 	{
 		 if (m_pOwner->IsAnyMoveKeyPressed())
 		{

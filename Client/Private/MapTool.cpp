@@ -163,6 +163,7 @@ void CMapTool::Update(_float fTimeDelta)
 			tDesc.fRotationPerSec = m_fRotationPerSec;
 			tDesc.fSpeedPerSec = m_fSpeedPerSec;
 			tDesc.strName = m_strName;
+			tDesc.iNumPartObjects = m_iNumPartObjects;
 			tDesc.WorldMatrix = XMMatrixTranslation(vInitPos.x, vInitPos.y, vInitPos.z);
 
 			if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_") + tDesc.strName,
@@ -620,6 +621,7 @@ HRESULT CMapTool::Monster_ListBox()
 	{
 	case BLOB:
 		m_strName = TEXT("Blob");
+		m_iNumPartObjects = CBlob::PART_END;
 		break;
 
 	default:
@@ -1005,13 +1007,15 @@ HRESULT CMapTool::Save_Map(const _string& strMapPath)
 			_float fSpeedPerSec = pTransform->Get_SpeedPerSec();
 			_float fRotationPerSec = pTransform->Get_RotationPerSec();
 			_wstring strPrototype = pObject->Get_Name();
+			_uint    iNumPartObjects = dynamic_cast<CMonster*>(pObject)->Get_NumPartObjects();
 			iSaveLength = static_cast<_int>(strPrototype.length());
-
+			
 			OutFile.write(reinterpret_cast<const _char*>(&iSaveLength), sizeof(_int));
 			OutFile.write(reinterpret_cast<const _char*>(strPrototype.c_str()), sizeof(_tchar) * iSaveLength);
 			OutFile.write(reinterpret_cast<const _char*>(&WorldMatrix), sizeof(_float4x4));
 			OutFile.write(reinterpret_cast<const _char*>(&fSpeedPerSec), sizeof(_float));
 			OutFile.write(reinterpret_cast<const _char*>(&fRotationPerSec), sizeof(_float));
+			OutFile.write(reinterpret_cast<const _char*>(&iNumPartObjects), sizeof(_uint));
 
 		}
 	}
@@ -1197,6 +1201,7 @@ HRESULT CMapTool::Load_Map(const _string& strMapPath)
 		LoadFile.read(reinterpret_cast<_char*>(&WorldMatrix), sizeof(_float4x4));
 		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fSpeedPerSec), sizeof(_float));
 		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fRotationPerSec), sizeof(_float));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.iNumPartObjects), sizeof(_uint));
 
 		tDesc.WorldMatrix = XMLoadFloat4x4(&WorldMatrix);
 

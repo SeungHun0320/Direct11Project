@@ -12,7 +12,10 @@
 
 /* 몬스터들 */
 #include "SpiderTank.h"
+#include "Body_SpiderTank.h"
+
 #include "Blob.h"
+#include "Body_Blob.h"
 
 /* 지형(통맵) */
 #include "Courtyard.h"
@@ -262,6 +265,10 @@ HRESULT CLoader::Loading_For_Courtyard()
 		CCamera_TPS::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_Body_SpiderTank */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_GameObject_Body_SpiderTank"), CBody_SpiderTank::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* For.Prototype_GameObject_SpiderTank */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_GameObject_SpiderTank"),
 		CSpiderTank::Create(m_pDevice, m_pContext))))
@@ -295,6 +302,10 @@ HRESULT CLoader::Loading_For_Courtyard()
 	/* For.Prototype_GameObject_Potion */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_GameObject_Potion"),
 		CPotion::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Body_Blob */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_GameObject_Body_Blob"), CBody_Blob::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Blob */
@@ -506,6 +517,10 @@ HRESULT CLoader::Loading_For_Tools()
 	/* For.Prototype_GameObject_Potion */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_Potion"),
 		CPotion::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Body_Blob */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_Body_Blob"), CBody_Blob::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Blob */

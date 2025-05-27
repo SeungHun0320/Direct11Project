@@ -10,7 +10,7 @@
 
 #include "Player.h"
 
-#include "Monster.h"
+#include "SpiderTank.h"
 
 #include "Chest.h"
 #include "Item.h"
@@ -25,7 +25,7 @@ HRESULT CLevel_Courtyard::Initialize()
 {
 	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
 		return E_FAIL;
-	// 
+
 	//if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
 	//	return E_FAIL;
 
@@ -88,7 +88,7 @@ HRESULT CLevel_Courtyard::Ready_Layer_Pawn(const _wstring& strLayerTag)
 	tDesc.fSpeedPerSec = 5.f;
 	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	tDesc.strName = TEXT("Player");
-	tDesc.iNumPartObjects = CPlayer::PART::PART_END;
+	tDesc.iNumPartObjects = CPlayer::PART_END;
 
 	tDesc.WorldMatrix = XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixTranslation(vInitPosition.x, vInitPosition.y, vInitPosition.z);
 
@@ -130,16 +130,16 @@ HRESULT CLevel_Courtyard::Ready_Layer_Camera(const _wstring& strLayerTag)
 	CGameObject* pPlayer = GET_PLAYER;
 
 	_float3 vPos = {};
-	XMStoreFloat3(&vPos, static_cast<CTransform*>(pPlayer->Get_Component(TEXT("Com_Transform")))
-		->Get_State(STATE::POSITION));
+	XMStoreFloat3(&vPos, static_cast<CTransform*>(pPlayer->Get_Component(TEXT("Com_Transform")))->Get_State(STATE::POSITION));
+	
 	CCamera_TPS::DESC tDesc = {};
 
 	tDesc.eLevelID = LEVEL::COURTYARD;
 	tDesc.fSensor = 1.5f;
-	tDesc.pTarget = pPlayer;
 	tDesc.vOffset = _float3(-7.f, 11.f, -7.f);
 	tDesc.fDeadZoneX = 2.5f;
 	tDesc.fDeadZoneZ = 2.5f;
+	tDesc.pTarget = pPlayer;
 
 	tDesc.vEye = _float3(vPos.x + tDesc.vOffset.x, vPos.y + tDesc.vOffset.y, vPos.z + tDesc.vOffset.z);
 	tDesc.vAt = _float3(vPos.x, vPos.y, vPos.z);
@@ -167,6 +167,7 @@ HRESULT CLevel_Courtyard::Ready_Layer_Monster(const _wstring& strLayerTag)
 	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	tDesc.strName = TEXT("SpiderTank");
 	tDesc.WorldMatrix = XMMatrixTranslation(0.f, 0.f, -80.f);
+	tDesc.iNumPartObjects = CSpiderTank::PART_END;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_GameObject_") + tDesc.strName,
 		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
@@ -316,6 +317,7 @@ HRESULT CLevel_Courtyard::Load_Map(const _wstring& strMapFileTag)
 		LoadFile.read(reinterpret_cast<_char*>(&WorldMatrix), sizeof(_float4x4));
 		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fSpeedPerSec), sizeof(_float));
 		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fRotationPerSec), sizeof(_float));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.iNumPartObjects), sizeof(_uint));
 
 		tDesc.WorldMatrix = XMLoadFloat4x4(&WorldMatrix);
 

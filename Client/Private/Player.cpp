@@ -35,9 +35,9 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 	m_IsShield = true;
 
-	for (_uint i = 0; i < CPlayer::MESHES::MESHES_END; i++)
+	for (_uint i = 0; i < CPlayer::MESHES_END; i++)
 	{
-		if (i == CPlayer::MESHES::MESH_SHILED && m_IsShield)
+		if (i == CPlayer::MESH_SHILED && m_IsShield)
 			continue;
 
 		m_PartObjects[PART_BODY]->Set_MeshVisible(i, true);
@@ -213,6 +213,7 @@ void CPlayer::Set_AttackStrategy(CPlayer_IAttackStrategy* pStrategy)
 
 void CPlayer::Key_Input(_float fTimeDelta)
 {
+	/* 테스트용으로 냅둔겨 나중에 싹 쳐내소 */
 	if (KEY_DOWN(DIK_1))
 		Set_AttackStrategy(new CPlayer_StickAttack(2, WEAPON_TYPE::STICK));
 	if (KEY_DOWN(DIK_2))
@@ -285,7 +286,7 @@ HRESULT CPlayer::Ready_States()
 	m_pStates[ENUM_CLASS(STATES::ON_LADDER)]  = new CPlayerState_OnLadder(this);
 	m_pStates[ENUM_CLASS(STATES::OFF_LADDER)] = new CPlayerState_OffLadder(this);
 
-	for (_uint i = 0; i < ENUM_CLASS(STATES::ST_END); i++)
+	for (_uint i = 0; i < ENUM_CLASS(STATES::STATES_END); i++)
 	{
 		if (nullptr == m_pStates[i])
 			return E_FAIL;
@@ -327,7 +328,7 @@ void CPlayer::Free()
 	Safe_Release(m_pCurState);
 	Safe_Release(m_pAttackStrategy);
 
-	for (_uint i = 0; i < ENUM_CLASS(STATES::ST_END); i++)
+	for (_uint i = 0; i < ENUM_CLASS(STATES::STATES_END); i++)
 		Safe_Release(m_pStates[i]);
 
 }

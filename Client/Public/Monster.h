@@ -1,6 +1,8 @@
 #pragma once
-#include "GameObject.h"
+
 #include "Client_Defines.h"
+#include "ContainerObject.h"
+
 
 BEGIN(Engine)
 class CShader;
@@ -9,10 +11,10 @@ END
 
 BEGIN(Client)
 
-class CMonster abstract : public CGameObject
+class CMonster abstract : public CContainerObject
 {
 public:
-	typedef struct tagMonsterDesc : CGameObject::DESC
+	typedef struct tagMonsterDesc : CContainerObject::DESC
 	{
 		LEVEL eLevelID{};
 	}DESC;
@@ -29,16 +31,40 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
-protected:
-	CShader* m_pShaderCom = { nullptr };
-	CModel* m_pModelCom = { nullptr };
+public:
+	virtual _bool Find_Player();
+
+public:
+	const _bool Get_IsFind() const {
+		return m_IsFind;
+	}
+	void Set_IsFind(_bool IsFind) {
+		m_IsFind = IsFind;
+	}
+
+	const _float Get_DistanceToPlayer() const {
+		return m_fDistanceToPlayer;
+	}
+
+
+protected: /* 맵툴에선 굳이 넣어줄 필요가 없어서 그냥 이니셜라이즈에서 때려박는게 나은거 같기도 */
+	class CGameObject* m_pTarget = { nullptr };
+	CTransform*  m_pTargetTransform = { nullptr };
 
 protected:
 	LEVEL m_eLevelID = {LEVEL::LEVEL_END};
+	_uint m_iState = {};
+
+protected: /* 상태 관련 변수들 */
+	_float m_fDistanceToPlayer = {};
+	_float m_fDetectDistance = {};
+	_float m_fChaseStopDistance = {};
+	_bool  m_IsFind = {};
 
 protected:
 	virtual HRESULT Ready_Components(void* pArg);
-	virtual HRESULT Bind_ShaderResources();
+	virtual HRESULT Ready_PartObjects() { return S_OK; };
+	virtual HRESULT Ready_States() { return S_OK; };
 
 public:
 	virtual CGameObject* Clone(void* pArg) PURE;

@@ -2,7 +2,9 @@
 #include "Player.h"
 #include "Player_IAttackStrategy.h"
 
-/*-------------------------어택 1---------------------------------*/
+/* --------------------------
+           어택 1
+------------------------- */
 
 CPlayerState_Attack1::CPlayerState_Attack1(CPlayer* pOwner)
 	: CPlayerState{ pOwner }
@@ -17,31 +19,31 @@ void CPlayerState_Attack1::Enter(_float fTimeDelta)
     m_iMaxCombo   = pStrategy->Get_MaxComboCount();
     m_eWeaponType = pStrategy->Get_WeaponType();
 
-    for (_uint i = 0; i < CPlayer::MESHES::MESHES_END; i++)
+    for (_uint i = 0; i < CPlayer::MESHES_END; i++)
     {
-        if (i == CPlayer::MESHES::MESH_SHILED && m_pOwner->Get_IsShield())
+        if (i == CPlayer::MESH_SHILED && m_pOwner->Get_IsShield())
             continue;
 
-        m_pOwner->Set_MeshVisible(CPlayer::PART::PART_BODY, i, true);
+        m_pOwner->Set_MeshVisible(CPlayer::PART_BODY, i, true);
     }
 
     switch (m_eWeaponType)
     {
     case WEAPON_TYPE::SWORD:
-        m_pOwner->Set_MeshVisible(CPlayer::PART::PART_BODY, CPlayer::MESHES::MESH_SWORD, false);
+        m_pOwner->Set_MeshVisible(CPlayer::PART_BODY, CPlayer::MESH_SWORD, false);
         break;
     case WEAPON_TYPE::STICK:
-        m_pOwner->Set_MeshVisible(CPlayer::PART::PART_BODY, CPlayer::MESHES::MESH_STICK, false);
+        m_pOwner->Set_MeshVisible(CPlayer::PART_BODY, CPlayer::MESH_STICK, false);
         break;
     case WEAPON_TYPE::DAGGER:
-        m_pOwner->Set_MeshVisible(CPlayer::PART::PART_BODY, CPlayer::MESHES::MESH_DAGGER, false);
+        m_pOwner->Set_MeshVisible(CPlayer::PART_BODY, CPlayer::MESH_DAGGER, false);
         break;
     }
 
     m_fTimeAcc = 0.f;
 
     XMStoreFloat3(&m_vInputDir, m_pOwner->Get_InputDirection());
-	m_pOwner->Change_Animation(CPlayer::PART::PART_BODY, eCombo, false, 0.1f);
+	m_pOwner->Change_Animation(CPlayer::PART_BODY, eCombo, false, 0.1f);
 }
 
 void CPlayerState_Attack1::Execute(_float fTimeDelta)
@@ -53,7 +55,7 @@ void CPlayerState_Attack1::Execute(_float fTimeDelta)
 
     if (WEAPON_TYPE::STICK == m_eWeaponType)
     {
-        if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART::PART_BODY, fTimeDelta))
+        if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta))
         {
             if (m_isAttackCombo)
             {
@@ -69,10 +71,12 @@ void CPlayerState_Attack1::Execute(_float fTimeDelta)
                 m_pOwner->Change_States(CPlayer::STATES::IDLE);
             }
         }
+        else if(0.3f <= m_fTimeAcc)
+            m_pOwner->Move(XMLoadFloat3(&m_vInputDir), fTimeDelta, 1.5f);
     }
     else if (WEAPON_TYPE::SWORD == m_eWeaponType)
     {
-        if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART::PART_BODY, fTimeDelta))
+        if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta))
         {
             if (m_isAttackCombo)
             {
@@ -88,12 +92,12 @@ void CPlayerState_Attack1::Execute(_float fTimeDelta)
                 m_pOwner->Change_States(CPlayer::STATES::IDLE);
             }
         }
-        else
-            m_pOwner->Move(XMLoadFloat3(&m_vInputDir), fTimeDelta, 0.5f);
+        else if (0.3f <= m_fTimeAcc)
+            m_pOwner->Move(XMLoadFloat3(&m_vInputDir), fTimeDelta, 3.f);
     }
     else if (WEAPON_TYPE::DAGGER == m_eWeaponType)
     {
-        if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART::PART_BODY, fTimeDelta))
+        if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta))
         {
             if (m_pOwner->IsAnyMoveKeyPressed())
             {
@@ -104,8 +108,8 @@ void CPlayerState_Attack1::Execute(_float fTimeDelta)
                 m_pOwner->Change_States(CPlayer::STATES::IDLE);
             }
         }
-        else
-            m_pOwner->Move(XMLoadFloat3(&m_vInputDir), fTimeDelta, 0.5f);
+        else if (0.3f <= m_fTimeAcc)
+            m_pOwner->Move(XMLoadFloat3(&m_vInputDir), fTimeDelta, 3.f);
     }
 
 
@@ -127,7 +131,9 @@ void CPlayerState_Attack1::Free()
 	__super::Free();
 }
 
-/*--------------------------어택 2--------------------------------*/
+/* --------------------------
+           어택 2
+------------------------- */
 
 CPlayerState_Attack2::CPlayerState_Attack2(CPlayer* pOwner)
 	: CPlayerState{ pOwner }
@@ -144,29 +150,29 @@ void CPlayerState_Attack2::Enter(_float fTimeDelta)
 
     m_fTimeAcc = 0.f;
 
-    for (_uint i = 0; i < CPlayer::MESHES::MESHES_END; i++)
+    for (_uint i = 0; i < CPlayer::MESHES_END; i++)
     {
-        if (i == CPlayer::MESHES::MESH_SHILED && m_pOwner->Get_IsShield())
+        if (i == CPlayer::MESH_SHILED && m_pOwner->Get_IsShield())
             continue;
 
-        m_pOwner->Set_MeshVisible(CPlayer::PART::PART_BODY, i, true);
+        m_pOwner->Set_MeshVisible(CPlayer::PART_BODY, i, true);
     }
 
     switch (m_eWeaponType)
     {
     case WEAPON_TYPE::SWORD:
-        m_pOwner->Set_MeshVisible(CPlayer::PART::PART_BODY, CPlayer::MESHES::MESH_SWORD, false);
+        m_pOwner->Set_MeshVisible(CPlayer::PART_BODY, CPlayer::MESH_SWORD, false);
         break;
     case WEAPON_TYPE::STICK:
-        m_pOwner->Set_MeshVisible(CPlayer::PART::PART_BODY, CPlayer::MESHES::MESH_STICK, false);
+        m_pOwner->Set_MeshVisible(CPlayer::PART_BODY, CPlayer::MESH_STICK, false);
         break;
     case WEAPON_TYPE::DAGGER:
-        m_pOwner->Set_MeshVisible(CPlayer::PART::PART_BODY, CPlayer::MESHES::MESH_DAGGER, false);
+        m_pOwner->Set_MeshVisible(CPlayer::PART_BODY, CPlayer::MESH_DAGGER, false);
         break;
     }
 
     XMStoreFloat3(&m_vInputDir, m_pOwner->Get_InputDirection());
-	m_pOwner->Change_Animation(CPlayer::PART::PART_BODY, eCombo, false, 0.1f);
+	m_pOwner->Change_Animation(CPlayer::PART_BODY, eCombo, false, 0.1f);
 
 }
 
@@ -183,7 +189,7 @@ void CPlayerState_Attack2::Execute(_float fTimeDelta)
 
     if (WEAPON_TYPE::STICK == m_eWeaponType)
     {
-        if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART::PART_BODY, fTimeDelta))
+        if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta))
         {
             if (m_isAttackCombo)
             {
@@ -199,10 +205,12 @@ void CPlayerState_Attack2::Execute(_float fTimeDelta)
                 m_pOwner->Change_States(CPlayer::STATES::IDLE);
             }
         }
+        else if (0.3f <= m_fTimeAcc)
+            m_pOwner->Move(XMLoadFloat3(&m_vInputDir), fTimeDelta, 3.f);
     }
     else if (WEAPON_TYPE::SWORD == m_eWeaponType)
     {
-        if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART::PART_BODY, fTimeDelta))
+        if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta))
         {
             if (m_isAttackCombo)
             {
@@ -217,8 +225,8 @@ void CPlayerState_Attack2::Execute(_float fTimeDelta)
             else
                 m_pOwner->Change_States(CPlayer::STATES::IDLE);
         }
-        else
-            m_pOwner->Move(XMLoadFloat3(&m_vInputDir), fTimeDelta, 1.f);
+        else if (0.3f <= m_fTimeAcc)
+            m_pOwner->Move(XMLoadFloat3(&m_vInputDir), fTimeDelta, 2.f);
     }
 }
 
@@ -236,7 +244,9 @@ void CPlayerState_Attack2::Free()
 	__super::Free();
 }
 
-/*--------------------------어택 3--------------------------------*/
+/* --------------------------
+           어택 3
+------------------------- */
 
 CPlayerState_Attack3::CPlayerState_Attack3(CPlayer* pOwner)
 	: CPlayerState{ pOwner }
@@ -254,7 +264,7 @@ void CPlayerState_Attack3::Enter(_float fTimeDelta)
     m_fTimeAcc = 0.f;
 
     XMStoreFloat3(&m_vInputDir, m_pOwner->Get_InputDirection());
-	m_pOwner->Change_Animation(CPlayer::PART::PART_BODY, eCombo, false, 0.1f);
+	m_pOwner->Change_Animation(CPlayer::PART_BODY, eCombo, false, 0.1f);
 }
 
 void CPlayerState_Attack3::Execute(_float fTimeDelta)
@@ -270,7 +280,7 @@ void CPlayerState_Attack3::Execute(_float fTimeDelta)
 
     if (WEAPON_TYPE::SWORD == m_eWeaponType)
     {
-        if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART::PART_BODY, fTimeDelta))
+        if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta))
         {
             if (m_isAttackCombo)
             {

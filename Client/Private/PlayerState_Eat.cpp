@@ -13,22 +13,22 @@ void CPlayerState_Eat::Enter(_float fTimeDelta)
 	m_fDuration = 0.8f;
 	m_fTimeAcc  = 0.f;
 
-	for (_uint i = 0; i < CPlayer::MESHES::MESHES_END; i++)
+	for (_uint i = 0; i < CPlayer::MESHES_END; i++)
 	{
-		if (i == CPlayer::MESHES::MESH_SHILED && m_pOwner->Get_IsShield())
+		if (i == CPlayer::MESH_SHILED && m_pOwner->Get_IsShield())
 			continue;
 
-		m_pOwner->Set_MeshVisible(CPlayer::PART::PART_BODY, i, true);
+		m_pOwner->Set_MeshVisible(CPlayer::PART_BODY, i, true);
 	}
 
-	m_pOwner->Change_Animation(CPlayer::PART::PART_BODY, CPlayer::ANIM_STATES::EAT, false, 0.2f);
+	m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::EAT, false, 0.2f);
 }
 
 void CPlayerState_Eat::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 
-	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART::PART_BODY, fTimeDelta))
+	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta))
 	{
 		if (m_pOwner->IsAnyMoveKeyPressed())
 		{

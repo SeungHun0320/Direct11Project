@@ -235,6 +235,15 @@
     <Filter Include="96.Tools\00. MapTool">
       <UniqueIdentifier>{ae8c8b7d-fa3f-4ba0-b00a-d9b3ca93886a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\03.Monsters\00. Blob\State">
+      <UniqueIdentifier>{547b62b2-8b9e-4477-8599-2a4a3a3b9fe1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Monsters\00. Blob\Body">
+      <UniqueIdentifier>{b28d4db8-20a2-4af4-804c-c248659e00e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Monsters\Boss\SpiderTank\Body_SpiderTank">
+      <UniqueIdentifier>{1747f651-4736-4bc2-a05d-8a5ed4e15210}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -404,6 +413,15 @@
     </ClInclude>
     <ClInclude Include="..\public\Body_Player.h">
       <Filter>02.GameObjects\06.Pawn\Player\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Body_Blob.h">
+      <Filter>02.GameObjects\03.Monsters\00. Blob\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Body_SpiderTank.h">
+      <Filter>02.GameObjects\03.Monsters\Boss\SpiderTank\Body_SpiderTank</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BlobState.h">
+      <Filter>02.GameObjects\03.Monsters\00. Blob\State</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -620,6 +638,15 @@
     </ClCompile>
     <ClCompile Include="..\private\Body_Player.cpp">
       <Filter>02.GameObjects\06.Pawn\Player\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Body_Blob.cpp">
+      <Filter>02.GameObjects\03.Monsters\00. Blob\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Body_SpiderTank.cpp">
+      <Filter>02.GameObjects\03.Monsters\Boss\SpiderTank\Body_SpiderTank</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Public\BlobState.cpp">
+      <Filter>02.GameObjects\03.Monsters\00. Blob\State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

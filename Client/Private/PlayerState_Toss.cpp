@@ -3,7 +3,10 @@
 
 #define SPEED 2.5f
 
-/*---------------------- 와인드업~ --------------------------*/
+/* --------------------------
+		  와인드업~
+------------------------- */
+
 CPlayerState_WindUp::CPlayerState_WindUp(CPlayer* pOwner)
 	: CPlayerState{ pOwner }
 {
@@ -14,22 +17,22 @@ void CPlayerState_WindUp::Enter(_float fTimeDelta)
 	m_fTimeAcc  = 0.f;
 	m_fDuration = 0.f;
 
-	for (_uint i = 0; i < CPlayer::MESHES::MESHES_END; i++)
+	for (_uint i = 0; i < CPlayer::MESHES_END; i++)
 	{
-		if (i == CPlayer::MESHES::MESH_SHILED && m_pOwner->Get_IsShield())
+		if (i == CPlayer::MESH_SHILED && m_pOwner->Get_IsShield())
 			continue;
 
-		m_pOwner->Set_MeshVisible(CPlayer::PART::PART_BODY, i, true);
+		m_pOwner->Set_MeshVisible(CPlayer::PART_BODY, i, true);
 	}
 
-	m_pOwner->Change_Animation(CPlayer::PART::PART_BODY, CPlayer::ANIM_STATES::WINDUP, false, 0.1f);
+	m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::WINDUP, false, 0.1f);
 }
 
 void CPlayerState_WindUp::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 
-	if (0.8f <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART::PART_BODY, fTimeDelta))
+	if (0.8f <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta))
 	{
 		m_pOwner->Change_States(CPlayer::STATES::TOSS);
 	}
@@ -52,7 +55,10 @@ void CPlayerState_WindUp::Free()
 }
 
 
-/*----------------------- 던지기 ------------------------*/
+/* --------------------------
+		  던지기
+------------------------- */
+
 CPlayerState_Toss::CPlayerState_Toss(CPlayer* pOwner)
 	: CPlayerState{ pOwner }
 {
@@ -63,14 +69,14 @@ void CPlayerState_Toss::Enter(_float fTimeDelta)
 	m_fTimeAcc = 0.f;
 	m_fDuration = 0.f;
 
-	m_pOwner->Change_Animation(CPlayer::PART::PART_BODY, CPlayer::ANIM_STATES::TOSS, false, 0.3f);
+	m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::TOSS, false, 0.3f);
 }
 
 void CPlayerState_Toss::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 
-	if (0.8f <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART::PART_BODY, fTimeDelta))
+	if (0.8f <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta))
 	{
 		if (m_pOwner->IsAnyMoveKeyPressed())
 		{

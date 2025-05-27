@@ -1,6 +1,9 @@
 #include "Camera_TPS.h"
 #include "GameInstance.h"
 
+
+#include "Player.h"
+
 CCamera_TPS::CCamera_TPS(ID3D11Device* pDeivce, ID3D11DeviceContext* pContext)
 	: CCamera{ pDeivce, pContext }
 {
@@ -27,9 +30,17 @@ HRESULT CCamera_TPS::Initialize(void* pArg)
 	m_fDeadZoneX = pDesc->fDeadZoneX;
 	m_fDeadZoneZ = pDesc->fDeadZoneZ;
 
-	if(nullptr != m_pTarget)
+	if (nullptr != m_pTarget)
+	{
 		Safe_AddRef(m_pTarget);
+		m_pTargetTransformCom = dynamic_cast<CTransform*>(m_pTarget->Get_Component(TEXT("Com_Transform")));
 
+		if (nullptr == m_pTargetTransformCom)
+			return E_FAIL;
+		else
+			Safe_AddRef(m_pTargetTransformCom);
+	}
+		
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
@@ -46,11 +57,10 @@ void CCamera_TPS::Priority_Update(_float fTimeDelta)
 
 	//m_pTransformCom->Set_State(STATE::POSITION, vCamPos);
 
-	if (nullptr == m_pTarget)
+	if (nullptr == m_pTarget && nullptr == m_pTargetTransformCom)
 		return;
 
-	CTransform* pTargetTransform = static_cast<CTransform*>(m_pTarget->Get_Component(TEXT("Com_Transform")));
-	_vector vTargetPos = pTargetTransform->Get_State(STATE::POSITION);
+	_vector vTargetPos = m_pTargetTransformCom->Get_State(STATE::POSITION);
 	_vector vCamPos = m_pTransformCom->Get_State(STATE::POSITION);
 
 	// 1. 플레이어 -> 카메라 상대 위치
@@ -122,4 +132,5 @@ void CCamera_TPS::Free()
 	__super::Free();
 
 	Safe_Release(m_pTarget);
-}
+	Safe_Release(m_pTargetTransformCom);
+}	

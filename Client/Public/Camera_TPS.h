@@ -38,9 +38,9 @@ private:
 	_float		m_fDeadZoneX = {};
 	_float		m_fDeadZoneZ = {};
 
-
 private:
 	class CGameObject*  m_pTarget = { nullptr };
+	CTransform*   m_pTargetTransformCom = { nullptr };
 
 public:
 	static CCamera_TPS* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

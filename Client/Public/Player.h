@@ -37,7 +37,7 @@ public:
 		STICK_ATTACK1, STICK_ATTACK2,
 		SWORD_ATTACK1, SWORD_ATTACK2, SWORD_ATTACK3,
 		SPRINT,
-		PS_END
+		ANIM_END
 	};
 
 	enum class STATES
@@ -46,7 +46,7 @@ public:
 		HIT, GET_UP, DIE, PARRY, USE_POTION, DANCE, WAKE_UP,
 		WIND_UP, TOSS, EAT, COIN_FLIP,
 		OPEN_CHEST, ON_SWITCH, KNEEL,
-		LADDER, ON_LADDER, OFF_LADDER, ST_END
+		LADDER, ON_LADDER, OFF_LADDER, STATES_END
 	};
 
 private:
@@ -153,10 +153,10 @@ private: /* 방패를 소유하고 있는지 아닌지 */
 	_bool m_IsShield = { false };
 
 private: /* 상태 패턴들 */
-	STATES m_eCurState{ STATES::ST_END };
-	STATES m_ePreState{ STATES::ST_END };
+	STATES m_eCurState{ STATES::STATES_END };
+	STATES m_ePreState{ STATES::STATES_END };
 	class CPlayerState* m_pCurState = { nullptr };
-	class CPlayerState* m_pStates[ENUM_CLASS(STATES::ST_END)] = { nullptr };
+	class CPlayerState* m_pStates[ENUM_CLASS(STATES::STATES_END)] = { nullptr };
 
 private: /* 전략 패턴 트라이*/
 	class CPlayer_IAttackStrategy* m_pAttackStrategy = { nullptr };
@@ -169,7 +169,6 @@ private:
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;
 	virtual HRESULT Ready_PartObjects() override;
-
 	HRESULT Ready_States();
 
 public:

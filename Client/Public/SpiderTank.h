@@ -12,6 +12,9 @@ public:
 
 	}DESC;
 
+public:
+	enum PART { PART_BODY, PART_EFFECT, PART_END };
+
 private:
 	CSpiderTank(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CSpiderTank(const CSpiderTank& Prototype);
@@ -26,10 +29,8 @@ public:
 	virtual HRESULT Render();
 
 private:
-	_int m_iSoonseo = {};
-
-private:
 	virtual HRESULT Ready_Components(void* pArg) override;
+	virtual HRESULT Ready_PartObjects() override;
 
 public:
 	static CSpiderTank* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

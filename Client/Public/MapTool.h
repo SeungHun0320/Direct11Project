@@ -55,6 +55,9 @@ private: /* 현재 선택된 맵 정보 */
 	MAP m_eCurrentMap = { MAP_END };
 	MAP m_ePreMap = { MAP_END };
 
+private: /* 몬스터 정보 저장용 구조체 */
+	_uint m_iNumPartObjects{};
+
 private:
 	ImGuizmo::OPERATION m_eGizmoOp = { ImGuizmo::TRANSLATE };
 	_bool m_bMode[MODE_END] = { false };
