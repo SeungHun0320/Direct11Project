@@ -12,6 +12,8 @@ public:
 	{
 		_float3 vOffset{};
 		_float fSensor{};
+		_float fDeadZoneX{};
+		_float fDeadZoneZ{};
 		LEVEL  eLevelID{};
 		class CGameObject* pTarget{ nullptr };
 	}DESC;
@@ -29,9 +31,13 @@ public:
 	virtual HRESULT Render();
 
 private:
-	_float3             m_vOffset = {};
-	_float				m_fSensor{};
-	LEVEL				m_eLevelID{ LEVEL::LEVEL_END };
+	_float3     m_vOffset = {};
+	_float	    m_fSensor = {};
+	LEVEL		m_eLevelID = { LEVEL::LEVEL_END };
+
+	_float		m_fDeadZoneX = {};
+	_float		m_fDeadZoneZ = {};
+
 
 private:
 	class CGameObject*  m_pTarget = { nullptr };

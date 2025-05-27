@@ -29,8 +29,8 @@ HRESULT CCamera_Free::Initialize(void* pArg)
 
 void CCamera_Free::Priority_Update(_float fTimeDelta)
 {
-	if(LEVEL::TOOLS == m_eLevelID)
-		Key_Input(fTimeDelta);
+	//if(LEVEL::TOOLS == m_eLevelID)
+	Key_Input(fTimeDelta);
 
 	__super::Bind_Matrices();
 }

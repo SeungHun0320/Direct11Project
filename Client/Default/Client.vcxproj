@@ -162,6 +162,7 @@
     <ClInclude Include="..\public\Arena.h" />
     <ClInclude Include="..\Public\BackGround.h" />
     <ClInclude Include="..\public\Blob.h" />
+    <ClInclude Include="..\public\Body_Player.h" />
     <ClInclude Include="..\public\Boss.h" />
     <ClInclude Include="..\public\Bush.h" />
     <ClInclude Include="..\public\Button.h" />
@@ -219,6 +220,7 @@
     <ClCompile Include="..\private\Arena.cpp" />
     <ClCompile Include="..\Private\BackGround.cpp" />
     <ClCompile Include="..\private\Blob.cpp" />
+    <ClCompile Include="..\private\Body_Player.cpp" />
     <ClCompile Include="..\private\Boss.cpp" />
     <ClCompile Include="..\private\Bush.cpp" />
     <ClCompile Include="..\private\Button.cpp" />

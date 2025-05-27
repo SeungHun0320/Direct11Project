@@ -408,7 +408,7 @@ HRESULT CMapTool::On_Modify_Object()
 		reinterpret_cast<_float*>(&ProjMatrix),
 		m_eGizmoOp,
 		ImGuizmo::LOCAL,
-		reinterpret_cast<_float*>(pTransform->Get_WorldMatrix_Float4x4()),
+		reinterpret_cast<_float*>(&pTransform->Get_WorldMatrix_Ref()),
 		nullptr,
 		fSnapValue))
 	{

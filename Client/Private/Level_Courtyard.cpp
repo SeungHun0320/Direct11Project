@@ -23,8 +23,8 @@ CLevel_Courtyard::CLevel_Courtyard(ID3D11Device* pDevice, ID3D11DeviceContext* p
 
 HRESULT CLevel_Courtyard::Initialize()
 {
-	//if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
-	//	return E_FAIL;
+	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
+		return E_FAIL;
 	// 
 	//if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
 	//	return E_FAIL;
@@ -126,24 +126,26 @@ HRESULT CLevel_Courtyard::Ready_Layer_Camera(const _wstring& strLayerTag)
 	//	ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
 	//	return E_FAIL;
 
-	CCamera_TPS::DESC tDesc = {};
-
-	tDesc.eLevelID = LEVEL::COURTYARD;
-	tDesc.fSensor = 0.1f;
-
 	CGameObject* pPlayer = GET_PLAYER;
 
 	_float3 vPos = {};
 	XMStoreFloat3(&vPos, static_cast<CTransform*>(pPlayer->Get_Component(TEXT("Com_Transform")))
 		->Get_State(STATE::POSITION));
+	CCamera_TPS::DESC tDesc = {};
 
+	tDesc.eLevelID = LEVEL::COURTYARD;
+	tDesc.fSensor = 1.5f;
 	tDesc.pTarget = pPlayer;
-	tDesc.vOffset = _float3(-9.f, 12.5f, -9.f);
+	tDesc.vOffset = _float3(-7.f, 11.f, -7.f);
+	tDesc.fDeadZoneX = 2.5f;
+	tDesc.fDeadZoneZ = 2.5f;
+
 	tDesc.vEye = _float3(vPos.x + tDesc.vOffset.x, vPos.y + tDesc.vOffset.y, vPos.z + tDesc.vOffset.z);
 	tDesc.vAt = _float3(vPos.x, vPos.y, vPos.z);
 	tDesc.fFov = XMConvertToRadians(60.f);
 	tDesc.fNear = 0.1f;
 	tDesc.fFar = 1000.f;
+
 	tDesc.fSpeedPerSec = 30.f;
 	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	tDesc.strName = TEXT("Camera_TPS");

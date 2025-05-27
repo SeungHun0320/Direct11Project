@@ -37,8 +37,12 @@ public:
 
 	_float3 Get_Scaled();
 
-	_float4x4* Get_WorldMatrix_Float4x4() {
+	const _float4x4* Get_WorldMatrix_Float4x4() {
 		return &m_WorldMatrix;
+	}
+
+	_float4x4& Get_WorldMatrix_Ref() {
+		return m_WorldMatrix;
 	}
 
 	_matrix Get_WorldMatrix() {
