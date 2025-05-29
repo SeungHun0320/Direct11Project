@@ -35,7 +35,6 @@ public:
 
 protected:
 	LEVEL m_eLevelID = { LEVEL::LEVEL_END };
-	_uint m_iState = {};
 
 protected:
 	virtual HRESULT Ready_Components(void* pArg);

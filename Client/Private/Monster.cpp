@@ -58,8 +58,11 @@ LIFE CMonster::Update(_float fTimeDelta)
 	if (m_bDead)
 		return LIFE::DEAD;
 
-	m_fDistanceToPlayer = XMVectorGetX(XMVector3Length(m_pTargetTransform->Get_State(STATE::POSITION)
-							- m_pTransformCom->Get_State(STATE::POSITION)));
+	if (nullptr != m_pTargetTransform)
+	{
+		m_fDistanceToPlayer = XMVectorGetX(XMVector3Length(m_pTargetTransform->Get_State(STATE::POSITION) - m_pTransformCom->Get_State(STATE::POSITION)));
+	}
+
 
 	return __super::Update(fTimeDelta);
 }
@@ -80,6 +83,11 @@ _bool CMonster::Find_Player()
 		return true;
 
 	return false;
+}
+
+const _vector CMonster::Get_TargetPosition() const
+{
+	return m_pTargetTransform->Get_State(STATE::POSITION);
 }
 
 HRESULT CMonster::Ready_Components(void* pArg)

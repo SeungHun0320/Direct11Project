@@ -12,6 +12,11 @@ CBody_Blob::CBody_Blob(const CBody_Blob& Prototype)
 {
 }
 
+const _float4x4* CBody_Blob::Get_SocketMatrix(const _string& strBoneName)
+{
+    return m_pModelCom->Get_BoneMatrix(strBoneName);
+}
+
 HRESULT CBody_Blob::Initialize_Prototype()
 {
     return S_OK;
@@ -47,7 +52,7 @@ LIFE CBody_Blob::Update(_float fTimeDelta)
 
 void CBody_Blob::Late_Update(_float fTimeDelta)
 {
-    XMStoreFloat4x4(&m_CombindWorldMatrix, XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Float4x4()) * XMLoadFloat4x4(m_pParentMatrix));
+    XMStoreFloat4x4(&m_CombinedWorldMatrix, XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Float4x4()) * XMLoadFloat4x4(m_pParentMatrix));
 
     m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 }
@@ -91,6 +96,11 @@ void CBody_Blob::Change_Animation(_uint iNextIndex, _bool isLoop, _float fBlendD
     m_pModelCom->Change_Animation(iNextIndex, isLoop, fBlendDuration, isBlend);
 }
 
+void CBody_Blob::Set_TrackPosition(_float fTrackPosition)
+{
+    m_pModelCom->Set_CurrnetTrackPosition(fTrackPosition);
+}
+
 HRESULT CBody_Blob::Ready_Components(void* pArg)
 {
     /* For.Com_Shader */
@@ -108,7 +118,7 @@ HRESULT CBody_Blob::Ready_Components(void* pArg)
 
 HRESULT CBody_Blob::Bind_ShaderResources()
 {
-    if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombindWorldMatrix)))
+    if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix)))
         return E_FAIL;
     if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::VIEW))))
         return E_FAIL;

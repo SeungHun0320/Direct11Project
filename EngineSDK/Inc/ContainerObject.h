@@ -15,7 +15,7 @@ protected:
 	CContainerObject(const CContainerObject& Prototype);
 	virtual ~CContainerObject() = default;
 
-public: /* ¸ÊÅø ¹Ó´Ù */
+public: /* ¸ÊÅø ¹Ó´Ù. */
 	const _uint Get_NumPartObjects() const {
 		return m_iNumPartObjects;
 	}

@@ -143,6 +143,38 @@ void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
 	Set_State(STATE::LOOK, XMVector4Transform(Get_State(STATE::LOOK), RotationMatrix));
 }
 
+void CTransform::Rotation(_fvector vAxis, _float fRadian)
+{
+	_float3		vScaled = Get_Scaled();
+
+	_vector		vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f) * vScaled.x;
+	_vector		vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f) * vScaled.y;
+	_vector		vLook = XMVectorSet(0.f, 0.f, 1.f, 0.f) * vScaled.z;
+
+	_matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, fRadian);
+
+	Set_State(STATE::RIGHT, XMVector4Transform(vRight, RotationMatrix));
+	Set_State(STATE::UP, XMVector4Transform(vUp, RotationMatrix));
+	Set_State(STATE::LOOK, XMVector4Transform(vLook, RotationMatrix));
+}
+
+void CTransform::Rotation(_float fX, _float fY, _float fZ)
+{
+	_float3		vScaled = Get_Scaled();
+
+	_vector		vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f) * vScaled.x;
+	_vector		vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f) * vScaled.y;
+	_vector		vLook = XMVectorSet(0.f, 0.f, 1.f, 0.f) * vScaled.z;
+
+	_vector		vQuaternion = XMQuaternionRotationRollPitchYaw(fX, fY, fZ);
+
+	_matrix		RotationMatrix = XMMatrixRotationQuaternion(vQuaternion);
+
+	Set_State(STATE::RIGHT, XMVector4Transform(vRight, RotationMatrix));
+	Set_State(STATE::UP, XMVector4Transform(vUp, RotationMatrix));
+	Set_State(STATE::LOOK, XMVector4Transform(vLook, RotationMatrix));
+}
+
 void CTransform::Go_Dir(_fvector vDir, _float fTimeDelta)
 {
 	_vector vPosition = Get_State(STATE::POSITION);
@@ -166,6 +198,28 @@ void CTransform::LookAt(_fvector vAt)
 	Set_State(STATE::RIGHT, XMVector3Normalize(vRight) * vScaled.x);
 	Set_State(STATE::UP, XMVector3Normalize(vUp) * vScaled.y);
 	Set_State(STATE::LOOK, XMVector3Normalize(vLook) * vScaled.z);
+}
+
+void CTransform::LookAtLerp(_fvector vAt, _float fTimeDelta, _float fLerpSpeed)
+{
+	_float3		vScaled = Get_Scaled();
+	_vector		vPos = Get_State(STATE::POSITION);
+	_vector		vLook = Get_State(STATE::LOOK);
+
+	_vector		vTargetDir = XMVector3Normalize(vAt - vPos);
+
+	// Lerp 방식 보간
+	_vector vInterpolatedDir = XMVector3Normalize(
+		XMVectorLerp(vLook, vTargetDir, fTimeDelta * fLerpSpeed)
+	);
+
+	_vector vRight = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook);
+	_vector vUp = XMVector3Cross(vLook, vRight);
+
+	Set_State(STATE::RIGHT, XMVector3Normalize(vRight) * vScaled.x);
+	Set_State(STATE::UP, XMVector3Normalize(vUp) * vScaled.y);
+	Set_State(STATE::LOOK, XMVector3Normalize(vInterpolatedDir) * vScaled.z);
+
 }
 
 void CTransform::LookDir(_fvector vDir)
@@ -198,7 +252,6 @@ void CTransform::LookDirLerp(_fvector vTargetDir, _float fTimeDelta, _float fRat
 		fRatio *= 3.5f;
 	}
 		
-
 	_vector vLook = XMVector3Normalize(
 		XMVectorLerp(vCurrentLook, vTargetLook, fRatio * fTimeDelta)
 	);

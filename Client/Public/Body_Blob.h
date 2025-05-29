@@ -3,6 +3,8 @@
 #include "Client_Defines.h"
 #include "PartObject.h"
 
+#include "Blob.h"
+
 BEGIN(Engine)
 class CShader;
 class CModel;
@@ -23,6 +25,9 @@ private:
 	virtual ~CBody_Blob() = default;
 
 public:
+	const _float4x4* Get_SocketMatrix(const _string& strBoneName);
+
+public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);
 	virtual void Priority_Update(_float fTimeDelta);
@@ -33,10 +38,13 @@ public:
 public:
 	_bool Play_Animation(_float fTimeDelta);
 	 void Change_Animation(_uint iNextIndex, _bool isLoop = true, _float fBlendDuration = 0.f, _bool isBlend = true);
+	 void  Set_TrackPosition(_float fTrackPosition);
 
 private:
 	CShader* m_pShaderCom = { nullptr };
 	CModel* m_pModelCom = { nullptr };
+
+	CBlob::STATES* m_pParentState = { nullptr };
 
 private:
 	LEVEL m_eLevelID = { LEVEL::LEVEL_END };

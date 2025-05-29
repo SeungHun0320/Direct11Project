@@ -41,10 +41,7 @@ void CPlayerState_Ladder::Execute(_float fTimeDelta)
 void CPlayerState_Ladder::Exit()
 {
 	for (_uint i = 0; i < CPlayer::MESHES_END; i++)
-	{
-		m_pOwner->Set_MeshVisible(CPlayer::PART_BODY, i, false);
-	}
-		
+		m_pOwner->Set_MeshVisible(CPlayer::PART_BODY, i, false);	
 }
 
 void CPlayerState_Ladder::Free()
@@ -85,13 +82,8 @@ void CPlayerState_OnLadder::Exit()
 	m_fTimeAcc = 0.f;
 	m_fDuration = 0.f;
 
-	for (_uint i = 0; i < CPlayer::MESHES_END; i++)
-	{
-		if (i == CPlayer::MESH_SHILED && m_pOwner->Get_IsShield())
-			continue;
-
-		m_pOwner->Set_MeshVisible(CPlayer::PART_BODY, i, false);
-	}
+	if (m_pOwner->Get_IsShield())
+		m_pOwner->Set_MeshVisible(CPlayer::PART_BODY, CPlayer::MESH_SHILED, false);
 }
 
 void CPlayerState_OnLadder::Free()
@@ -143,13 +135,9 @@ void CPlayerState_OffLadder::Exit()
 	m_fTimeAcc = 0.f;
 	m_fDuration = 0.f;
 
-	for (_uint i = 0; i < CPlayer::MESHES_END; i++)
-	{
-		if (i == CPlayer::MESH_SHILED && m_pOwner->Get_IsShield())
-			continue;
+	if (m_pOwner->Get_IsShield())
+		m_pOwner->Set_MeshVisible(CPlayer::PART_BODY, CPlayer::MESH_SHILED, false);
 
-		m_pOwner->Set_MeshVisible(CPlayer::PART_BODY, i, false);
-	}
 }
 
 void CPlayerState_OffLadder::Free()

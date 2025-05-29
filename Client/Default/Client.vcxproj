@@ -164,8 +164,11 @@
     <ClInclude Include="..\public\Blob.h" />
     <ClInclude Include="..\Public\BlobState.h" />
     <ClInclude Include="..\public\Body_Blob.h" />
+    <ClInclude Include="..\Public\Body_WizardCandleabra.h" />
     <ClInclude Include="..\public\Body_Player.h" />
     <ClInclude Include="..\public\Body_SpiderTank.h" />
+    <ClInclude Include="..\Public\Body_WizardSupport.h" />
+    <ClInclude Include="..\Public\Body_WizardSword.h" />
     <ClInclude Include="..\public\Boss.h" />
     <ClInclude Include="..\public\Bush.h" />
     <ClInclude Include="..\public\Button.h" />
@@ -193,6 +196,9 @@
     <ClInclude Include="..\public\Map.h" />
     <ClInclude Include="..\public\MapTool.h" />
     <ClInclude Include="..\public\Monster.h" />
+    <ClInclude Include="..\Public\Part_WizardCandleabra.h" />
+    <ClInclude Include="..\Public\Part_WizardStaff.h" />
+    <ClInclude Include="..\public\Part_WizardSword.h" />
     <ClInclude Include="..\public\Pawn.h" />
     <ClInclude Include="..\public\Player.h" />
     <ClInclude Include="..\Public\PlayerState.h" />
@@ -203,6 +209,9 @@
     <ClInclude Include="..\public\Terrain.h" />
     <ClInclude Include="..\public\Tool.h" />
     <ClInclude Include="..\Public\UI.h" />
+    <ClInclude Include="..\public\Wizard_Candleabra.h" />
+    <ClInclude Include="..\public\Wizard_Support.h" />
+    <ClInclude Include="..\public\Wizard_Sword.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="ImGui\backends\imgui_impl_dx11.h" />
@@ -223,9 +232,13 @@
     <ClCompile Include="..\private\Arena.cpp" />
     <ClCompile Include="..\Private\BackGround.cpp" />
     <ClCompile Include="..\private\Blob.cpp" />
+    <ClCompile Include="..\Private\BlobState.cpp" />
     <ClCompile Include="..\private\Body_Blob.cpp" />
+    <ClCompile Include="..\Private\Body_WizardCandleabra.cpp" />
     <ClCompile Include="..\private\Body_Player.cpp" />
     <ClCompile Include="..\private\Body_SpiderTank.cpp" />
+    <ClCompile Include="..\Private\Body_WizardSupport.cpp" />
+    <ClCompile Include="..\Private\Body_WizardSword.cpp" />
     <ClCompile Include="..\private\Boss.cpp" />
     <ClCompile Include="..\private\Bush.cpp" />
     <ClCompile Include="..\private\Button.cpp" />
@@ -250,6 +263,9 @@
     <ClCompile Include="..\private\Map.cpp" />
     <ClCompile Include="..\private\MapTool.cpp" />
     <ClCompile Include="..\private\Monster.cpp" />
+    <ClCompile Include="..\Private\Part_WizardCandleabra.cpp" />
+    <ClCompile Include="..\Private\Part_WizardStaff.cpp" />
+    <ClCompile Include="..\private\Part_WizardSword.cpp" />
     <ClCompile Include="..\private\Pawn.cpp" />
     <ClCompile Include="..\private\Player.cpp" />
     <ClCompile Include="..\Private\PlayerState_Ladder.cpp" />
@@ -279,7 +295,9 @@
     <ClCompile Include="..\private\Terrain.cpp" />
     <ClCompile Include="..\private\Tool.cpp" />
     <ClCompile Include="..\private\UI.cpp" />
-    <ClCompile Include="..\Public\BlobState.cpp" />
+    <ClCompile Include="..\private\Wizard_Candleabra.cpp" />
+    <ClCompile Include="..\private\Wizard_Support.cpp" />
+    <ClCompile Include="..\private\Wizard_Sword.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="ImGui\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="ImGui\backends\imgui_impl_win32.cpp" />

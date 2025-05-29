@@ -1,28 +1,28 @@
-#include "Body_Player.h"
+#include "Body_WizardSword.h"
 
 #include "GameInstance.h"
 
-CBody_Player::CBody_Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    : CPartObject {pDevice, pContext}
+CBody_WizardSword::CBody_WizardSword(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+    : CPartObject{ pDevice, pContext }
 {
 }
 
-CBody_Player::CBody_Player(const CBody_Player& Prototype)
+CBody_WizardSword::CBody_WizardSword(const CBody_WizardSword& Prototype)
     : CPartObject(Prototype)
 {
 }
 
-const _float4x4* CBody_Player::Get_SocketMatrix(const _string& strBoneName)
+const _float4x4* CBody_WizardSword::Get_SocketMatrix(const _string& strBoneName)
 {
     return m_pModelCom->Get_BoneMatrix(strBoneName);
 }
 
-HRESULT CBody_Player::Initialize_Prototype()
+HRESULT CBody_WizardSword::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT CBody_Player::Initialize(void* pArg)
+HRESULT CBody_WizardSword::Initialize(void* pArg)
 {
     DESC* pDesc = static_cast<DESC*>(pArg);
 
@@ -34,26 +34,33 @@ HRESULT CBody_Player::Initialize(void* pArg)
     if (FAILED(Ready_Components(pArg)))
         return E_FAIL;
 
+    /* 본, 애니메이션 얕복의 문제점 */
+    /* 1. 서로 다른 애니메이션을 셋팅했음에도 같은 동작이 재생된다. : 뼈가 공유되기때문에. */
+    /* 2. 같은 애니메이션을 셋했다면 재생속도가 빨라진다. : */
+    m_pModelCom->Set_Animation(5, true);
     return S_OK;
 }
 
-void CBody_Player::Priority_Update(_float fTimeDelta)
+void CBody_WizardSword::Priority_Update(_float fTimeDelta)
 {
+    __super::Priority_Update(fTimeDelta);
 }
 
-LIFE CBody_Player::Update(_float fTimeDelta)
+LIFE CBody_WizardSword::Update(_float fTimeDelta)
 {
-    return LIFE::NONE;
+    m_pModelCom->Play_Animation(fTimeDelta);
+
+    return __super::Update(fTimeDelta);
 }
 
-void CBody_Player::Late_Update(_float fTimeDelta)
+void CBody_WizardSword::Late_Update(_float fTimeDelta)
 {
     XMStoreFloat4x4(&m_CombinedWorldMatrix, XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Float4x4()) * XMLoadFloat4x4(m_pParentMatrix));
 
     m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 }
 
-HRESULT CBody_Player::Render()
+HRESULT CBody_WizardSword::Render()
 {
     if (FAILED(Bind_ShaderResources()))
         return E_FAIL;
@@ -82,27 +89,22 @@ HRESULT CBody_Player::Render()
     return S_OK;
 }
 
-_bool CBody_Player::Play_Animation(_float fTimeDelta)
+_bool CBody_WizardSword::Play_Animation(_float fTimeDelta)
 {
     return m_pModelCom->Play_Animation(fTimeDelta);
 }
 
-void CBody_Player::Change_Animation(_uint iNextIndex, _bool isLoop, _float fBlendDuration, _bool isBlend)
+void CBody_WizardSword::Change_Animation(_uint iNextIndex, _bool isLoop, _float fBlendDuration, _bool isBlend)
 {
     m_pModelCom->Change_Animation(iNextIndex, isLoop, fBlendDuration, isBlend);
 }
 
-void CBody_Player::Set_MeshVisible(_uint iIndex, _bool IsVisible)
-{
-    m_pModelCom->Set_MeshVisible(iIndex, IsVisible);
-}
-
-void CBody_Player::Set_TrackPosition(_float fTrackPosition)
+void CBody_WizardSword::Set_TrackPosition(_float fTrackPosition)
 {
     m_pModelCom->Set_CurrnetTrackPosition(fTrackPosition);
 }
 
-HRESULT CBody_Player::Ready_Components(void* pArg)
+HRESULT CBody_WizardSword::Ready_Components(void* pArg)
 {
     /* For.Com_Shader */
     if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxAnimMesh"),
@@ -110,14 +112,14 @@ HRESULT CBody_Player::Ready_Components(void* pArg)
         return E_FAIL;
 
     /* For.Com_Model */
-    if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Fox"),
+    if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Model_Wizard_Sword"),
         TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
         return E_FAIL;
 
     return S_OK;
 }
 
-HRESULT CBody_Player::Bind_ShaderResources()
+HRESULT CBody_WizardSword::Bind_ShaderResources()
 {
     if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix)))
         return E_FAIL;
@@ -143,33 +145,33 @@ HRESULT CBody_Player::Bind_ShaderResources()
     return S_OK;
 }
 
-CBody_Player* CBody_Player::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CBody_WizardSword* CBody_WizardSword::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-    CBody_Player* pInstance = new CBody_Player(pDevice, pContext);
+    CBody_WizardSword* pInstance = new CBody_WizardSword(pDevice, pContext);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CBody_Player");
+        MSG_BOX("Failed to Created : CBody_WizardSword");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-CGameObject* CBody_Player::Clone(void* pArg)
+CGameObject* CBody_WizardSword::Clone(void* pArg)
 {
-    CBody_Player* pInstance = new CBody_Player(*this);
+    CBody_WizardSword* pInstance = new CBody_WizardSword(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
-        MSG_BOX("Failed to Cloned : CBody_Player");
+        MSG_BOX("Failed to Cloned : CBody_WizardSword");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-void CBody_Player::Free()
+void CBody_WizardSword::Free()
 {
     __super::Free();
 

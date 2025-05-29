@@ -18,6 +18,8 @@ public:
 	_bool Get_MeshVisible(_uint iIndex);
 	void  Set_MeshVisible(_uint iIndex, _bool IsVisible);
 
+	const _float4x4* Get_BoneMatrix(const _string& strBoneName);
+
 	void  Set_CurrnetTrackPosition(_float fTrackPosition);
 
 	void Set_Animation(_uint iIndex, _bool isLoop = true, _float fBlendDuration = 0.f, _bool isBlended = false) {

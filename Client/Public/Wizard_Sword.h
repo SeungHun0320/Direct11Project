@@ -1,27 +1,26 @@
 #pragma once
-
 #include "Monster.h"
 
 BEGIN(Client)
 
-class CBlob final : public CMonster
+class CWizard_Sword final : public CMonster
 {
 public:
-	typedef struct tagBlobDesc : public CMonster::DESC
+	typedef struct tagWizardSwordDesc : public CMonster::DESC
 	{
 
 	}DESC;
 
 public:
-	enum PART { PART_BODY, PART_EFFECT, PART_END };
+	enum PART { PART_BODY, PART_SWORD, PART_EFFECT, PART_END };
 
 	enum ANIM_TYPE { IDLE, ATTACK, JUMP, ANIM_END };
 	enum class STATES { IDLE, ATTACK, JUMP, HIT, STATES_END };
 
 private:
-	CBlob(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CBlob(const CBlob& Prototype);
-	virtual ~CBlob() = default;
+	CWizard_Sword(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CWizard_Sword(const CWizard_Sword& Prototype);
+	virtual ~CWizard_Sword() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -47,7 +46,7 @@ public: /* 상태로 넘겨줄 함수들 */
 	void Hit(_fvector vDir, _float fTimeDelta, _float fSpeed = 0.f);
 	void Turn(_fvector vAxis, _float fTimeDelta);
 
-	 /* 상태 관련 ?*/
+	/* 상태 관련 ?*/
 	_float3 Get_Scaled();
 	void Scaling(_float3 vScale);
 	void Scaling(_float fX = 1.f, _float fY = 1.f, _float fZ = 1.f);
@@ -64,7 +63,7 @@ private:
 	virtual HRESULT Ready_States() override;
 
 public:
-	static CBlob* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CWizard_Sword* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 

@@ -1,13 +1,25 @@
 #include "MapTool.h"
 #include "GameInstance.h"
 
+#include "Camera_Free.h"
+
+/* 맵 */
 #include "Courtyard.h"
 #include "Arena.h"
-#include "Camera_Free.h"
+
+/* 상호작용 오브젝트 */
 #include "Bush.h"
 #include "Chest.h"
+
+/* 아이템 */
 #include "Item.h"
+
+/* 몬스터 */
 #include "Blob.h"
+#include "Wizard_Candleabra.h"
+#include "Wizard_Support.h"
+#include "Wizard_Sword.h"
+
 
 #define MAX_SCALE 100.f
 #define MIN_ANGLE -180.f
@@ -43,7 +55,7 @@ void CMapTool::Add_ListBoxName()
 	};
 
 	vector<_wstring> MonsterFilters = {
-		L"Blob"
+		L"Blob", L"Wizard"
 	};
 
 	for (const auto& Pair : *m_pGameInstance->Get_Prototypes(ENUM_CLASS(LEVEL::TOOLS)))
@@ -66,7 +78,12 @@ void CMapTool::Add_ListBoxName()
 		for (const auto& KeyWord : MonsterFilters)
 		{
 			if (Pair.first.find(KeyWord) != _wstring::npos)
+			{
 				m_ProtoMonsterNames.push_back(m_pGameInstance->WStringToString(Pair.first));
+				if (Pair.first.find(L"Body") != _wstring::npos)
+					m_ProtoMonsterNames.pop_back();
+			}
+				
 		}
 	}
 }
@@ -624,6 +641,21 @@ HRESULT CMapTool::Monster_ListBox()
 		m_iNumPartObjects = CBlob::PART_END;
 		break;
 
+	case CANDLEABRA:
+		m_strName = TEXT("Wizard_Candleabra");
+		m_iNumPartObjects = CWizard_Candleabra::PART_END;
+		break;
+
+	case SUPPORT:
+		m_strName = TEXT("Wizard_Support");
+		m_iNumPartObjects = CWizard_Support::PART_END;
+		break;
+
+	case SWORD:
+		m_strName = TEXT("Wizard_Sword");
+		m_iNumPartObjects = CWizard_Sword::PART_END;
+		break;
+
 	default:
 		break;
 	}
@@ -1034,6 +1066,8 @@ HRESULT CMapTool::Load_Map(const _string& strMapPath)
 	m_MonsterNames.clear();
 
 	m_pGameInstance->Object_Clear(ENUM_CLASS(LEVEL::TOOLS));
+	Safe_Release(m_pModifyObject);
+	Safe_Release(m_pMap);
 
 	if (FAILED(Craete_Camera(TEXT("Layer_Camera"))))
 	{

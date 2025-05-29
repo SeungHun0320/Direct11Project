@@ -139,15 +139,6 @@
     <Filter Include="02.GameObjects\05.Environment_Objects\04.Chest">
       <UniqueIdentifier>{226a477c-3d92-46e4-a670-4e0c14407949}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\Boss">
-      <UniqueIdentifier>{dbc32e9b-e215-4745-8fe0-80dda19bc6fb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\Boss\SpiderTank">
-      <UniqueIdentifier>{a5c78964-11df-4c62-8091-4d1601d4807d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\00. Blob">
-      <UniqueIdentifier>{6dd7fe3a-3db7-407b-b5dd-a1760c529641}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\07.Item\Item_Potion">
       <UniqueIdentifier>{fe3331e5-52de-4c49-b3f2-cdb5cce4e38d}</UniqueIdentifier>
     </Filter>
@@ -235,14 +226,62 @@
     <Filter Include="96.Tools\00. MapTool">
       <UniqueIdentifier>{ae8c8b7d-fa3f-4ba0-b00a-d9b3ca93886a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\00. Blob\State">
+    <Filter Include="02.GameObjects\03.Monsters\01. Blob">
+      <UniqueIdentifier>{6dd7fe3a-3db7-407b-b5dd-a1760c529641}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Monsters\01. Blob\State">
       <UniqueIdentifier>{547b62b2-8b9e-4477-8599-2a4a3a3b9fe1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\00. Blob\Body">
+    <Filter Include="02.GameObjects\03.Monsters\01. Blob\Body">
       <UniqueIdentifier>{b28d4db8-20a2-4af4-804c-c248659e00e3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\Boss\SpiderTank\Body_SpiderTank">
+    <Filter Include="02.GameObjects\03.Monsters\00. Boss">
+      <UniqueIdentifier>{dbc32e9b-e215-4745-8fe0-80dda19bc6fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Monsters\00. Boss\SpiderTank">
+      <UniqueIdentifier>{a5c78964-11df-4c62-8091-4d1601d4807d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Monsters\00. Boss\SpiderTank\Body_SpiderTank">
       <UniqueIdentifier>{1747f651-4736-4bc2-a05d-8a5ed4e15210}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Monsters\02.Wizard">
+      <UniqueIdentifier>{2ed5755e-46f7-46e2-becd-ae46f84523f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\Candleabra">
+      <UniqueIdentifier>{4cd31df0-c2d4-4b0e-b34e-b0b3f7a1d42e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\Support">
+      <UniqueIdentifier>{be378bc8-0e22-4f86-a8f8-e30d87453b9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\Sword">
+      <UniqueIdentifier>{45c0bdea-2f0c-46b6-805b-c19501147a6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\Sword\Body">
+      <UniqueIdentifier>{e7241204-558b-48a8-81d3-8aa9ea536934}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\Support\Body">
+      <UniqueIdentifier>{0feb1736-751e-4285-9cda-2be2b4c8543e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\Candleabra\Body">
+      <UniqueIdentifier>{5416de23-8dcc-4f82-8e84-81639b4b9e80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\Candleabra\State">
+      <UniqueIdentifier>{6d8c6df2-9bbb-4b70-835a-d4bd1f6e150d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\Support\State">
+      <UniqueIdentifier>{a2b25d01-6deb-4509-b60f-3cafdf44af4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\Sword\State">
+      <UniqueIdentifier>{442e3122-f3b5-45b0-b54b-ae7cd1af28fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\Candleabra\Candleabra">
+      <UniqueIdentifier>{c86425d1-7a76-4071-8522-2ceff5714bda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\Support\Staff">
+      <UniqueIdentifier>{e037e139-4e36-415d-a0b7-583f2fd835ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\Sword\Sword">
+      <UniqueIdentifier>{b5d2b2c9-0a64-4c7d-a41a-c037c54c7df7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -331,10 +370,10 @@
       <Filter>02.GameObjects\03.Monsters</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Boss.h">
-      <Filter>02.GameObjects\03.Monsters\Boss</Filter>
+      <Filter>02.GameObjects\03.Monsters\00. Boss</Filter>
     </ClInclude>
     <ClInclude Include="..\public\SpiderTank.h">
-      <Filter>02.GameObjects\03.Monsters\Boss\SpiderTank</Filter>
+      <Filter>02.GameObjects\03.Monsters\00. Boss\SpiderTank</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Map.h">
       <Filter>02.GameObjects\04.Map</Filter>
@@ -388,7 +427,7 @@
       <Filter>02.GameObjects\06.Pawn\Player</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Blob.h">
-      <Filter>02.GameObjects\03.Monsters\00. Blob</Filter>
+      <Filter>02.GameObjects\03.Monsters\01. Blob</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Chest.h">
       <Filter>02.GameObjects\05.Environment_Objects\04.Chest</Filter>
@@ -415,13 +454,40 @@
       <Filter>02.GameObjects\06.Pawn\Player\Body</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Body_Blob.h">
-      <Filter>02.GameObjects\03.Monsters\00. Blob\Body</Filter>
+      <Filter>02.GameObjects\03.Monsters\01. Blob\Body</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Body_SpiderTank.h">
-      <Filter>02.GameObjects\03.Monsters\Boss\SpiderTank\Body_SpiderTank</Filter>
+      <Filter>02.GameObjects\03.Monsters\00. Boss\SpiderTank\Body_SpiderTank</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\BlobState.h">
-      <Filter>02.GameObjects\03.Monsters\00. Blob\State</Filter>
+      <Filter>02.GameObjects\03.Monsters\01. Blob\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Wizard_Candleabra.h">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\Candleabra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Wizard_Support.h">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Wizard_Sword.h">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\Sword</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Body_WizardCandleabra.h">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\Candleabra\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Body_WizardSupport.h">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\Support\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Body_WizardSword.h">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\Sword\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Part_WizardSword.h">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\Sword\Sword</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Part_WizardCandleabra.h">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\Candleabra\Candleabra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Part_WizardStaff.h">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\Support\Staff</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -499,10 +565,10 @@
       <Filter>02.GameObjects\03.Monsters</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Boss.cpp">
-      <Filter>02.GameObjects\03.Monsters\Boss</Filter>
+      <Filter>02.GameObjects\03.Monsters\00. Boss</Filter>
     </ClCompile>
     <ClCompile Include="..\private\SpiderTank.cpp">
-      <Filter>02.GameObjects\03.Monsters\Boss\SpiderTank</Filter>
+      <Filter>02.GameObjects\03.Monsters\00. Boss\SpiderTank</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Map.cpp">
       <Filter>02.GameObjects\04.Map</Filter>
@@ -556,7 +622,7 @@
       <Filter>02.GameObjects\06.Pawn\Player</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Blob.cpp">
-      <Filter>02.GameObjects\03.Monsters\00. Blob</Filter>
+      <Filter>02.GameObjects\03.Monsters\01. Blob</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Chest.cpp">
       <Filter>02.GameObjects\05.Environment_Objects\04.Chest</Filter>
@@ -640,13 +706,40 @@
       <Filter>02.GameObjects\06.Pawn\Player\Body</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Body_Blob.cpp">
-      <Filter>02.GameObjects\03.Monsters\00. Blob\Body</Filter>
+      <Filter>02.GameObjects\03.Monsters\01. Blob\Body</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Body_SpiderTank.cpp">
-      <Filter>02.GameObjects\03.Monsters\Boss\SpiderTank\Body_SpiderTank</Filter>
+      <Filter>02.GameObjects\03.Monsters\00. Boss\SpiderTank\Body_SpiderTank</Filter>
     </ClCompile>
-    <ClCompile Include="..\Public\BlobState.cpp">
-      <Filter>02.GameObjects\03.Monsters\00. Blob\State</Filter>
+    <ClCompile Include="..\private\Wizard_Candleabra.cpp">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\Candleabra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Wizard_Support.cpp">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\Support</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Wizard_Sword.cpp">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\Sword</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BlobState.cpp">
+      <Filter>02.GameObjects\03.Monsters\01. Blob\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Body_WizardCandleabra.cpp">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\Candleabra\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Body_WizardSupport.cpp">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\Support\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Body_WizardSword.cpp">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\Sword\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Part_WizardSword.cpp">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\Sword\Sword</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Part_WizardCandleabra.cpp">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\Candleabra\Candleabra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Part_WizardStaff.cpp">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\Support\Staff</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

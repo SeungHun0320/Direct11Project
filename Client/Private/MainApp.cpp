@@ -48,6 +48,9 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(Ready_Prototype_Object()))
 		return E_FAIL;
 
+	if (FAILED(Ready_For_BGM()))
+		return E_FAIL;
+
 	if (FAILED(Start_Level(LEVEL::LOGO)))
 		return E_FAIL;
 
@@ -119,6 +122,11 @@ HRESULT CMainApp::Ready_Prototype_Object()
 		return E_FAIL;
 
 	return S_OK;
+}
+
+HRESULT CMainApp::Ready_For_BGM()
+{
+	return m_pGameInstance->LoadSound("../Bin/Resources/Sounds/BGM", false, true);
 }
 
 HRESULT CMainApp::Start_Level(LEVEL eStartLevel)

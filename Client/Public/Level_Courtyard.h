@@ -1,7 +1,7 @@
 #pragma once
-
 #include "Client_Defines.h"
 #include "Level.h"
+#include "GameInstance.h"
 
 BEGIN(Client)
 
@@ -15,6 +15,9 @@ public:
 	virtual HRESULT Initialize() override;
 	virtual void Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
+
+private:
+	CSound_Core* m_pBGM = { nullptr };
 
 private:
 	HRESULT Ready_Layer_Pawn(const _wstring& strLayerTag);

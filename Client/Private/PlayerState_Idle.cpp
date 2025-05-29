@@ -43,8 +43,8 @@ void CPlayerState_Idle::Execute(_float fTimeDelta)
 
 		if (1.f <= m_fHoldTime)
 		{
-			//m_pOwner->Change_States(CPlayer::STATES::KNEEL);
-			m_pOwner->Change_States(CPlayer::STATES::OPEN_CHEST);
+			m_pOwner->Change_States(CPlayer::STATES::KNEEL);
+			//m_pOwner->Change_States(CPlayer::STATES::OPEN_CHEST);
 	
 			m_fHoldTime = 0.f;
 		}

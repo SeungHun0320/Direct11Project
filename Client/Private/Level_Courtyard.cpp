@@ -1,19 +1,21 @@
 #include "Level_Courtyard.h"
-#include "GameInstance.h"
 #include "Level_Loading.h"
 
 #include "Terrain.h"
 #include "Courtyard.h"
 
+#include "Player.h"
+
 #include "Camera_Free.h"
 #include "Camera_TPS.h"
-
-#include "Player.h"
 
 #include "SpiderTank.h"
 
 #include "Chest.h"
 #include "Item.h"
+#include "Monster.h"
+
+#define CurLevel LEVEL::COURTYARD
 
 CLevel_Courtyard::CLevel_Courtyard(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 		: CLevel { pDevice, pContext }
@@ -41,6 +43,10 @@ HRESULT CLevel_Courtyard::Initialize()
 	if (FAILED(Ready_Lights()))
 		return E_FAIL;
 
+	m_pBGM = m_pGameInstance->Get_Single_Sound("Fortress_Courtyard");
+	m_pBGM->Set_Volume(0.5f);
+	m_pBGM->Play();
+
 	return S_OK;
 }
 
@@ -49,15 +55,13 @@ void CLevel_Courtyard::Update(_float fTimeDelta)
 	if (KEY_DOWN(DIK_RETURN))
 	{
 		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
-			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::LOGO))))
+			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::MAIN))))
 			return;
 	}
-
-	if (KEY_DOWN(DIK_ESCAPE))
+	else if (KEY_DOWN(DIK_ESCAPE))
 	{
 		PostQuitMessage(0);
 	}
-
 }
 
 HRESULT CLevel_Courtyard::Render()
@@ -78,7 +82,7 @@ HRESULT CLevel_Courtyard::Ready_Layer_Pawn(const _wstring& strLayerTag)
 	{
 		static_cast<CTransform*>(pPlayer->Get_Component(TEXT("Com_Transform")))
 			->Set_State(STATE::POSITION, XMVectorSetW(XMLoadFloat3(&vInitPosition), 1.f));
-		static_cast<CPawn*>(pPlayer)->Set_Level(LEVEL::COURTYARD);
+		static_cast<CPawn*>(pPlayer)->Set_Level(CurLevel);
 		return S_OK;
 	}
 
@@ -105,7 +109,7 @@ HRESULT CLevel_Courtyard::Ready_Layer_Camera(const _wstring& strLayerTag)
 {
 	//CCamera_Free::DESC tDesc = {};
 
-	//tDesc.eLevelID = LEVEL::COURTYARD;
+	//tDesc.eLevelID = CurLevel;
 	//tDesc.fSensor = 0.1f;
 
 	//auto pPlayer = GET_PLAYER;
@@ -123,7 +127,7 @@ HRESULT CLevel_Courtyard::Ready_Layer_Camera(const _wstring& strLayerTag)
 	//tDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	//tDesc.strName = TEXT("Camera_Free");
 
-	//if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_GameObject_") + tDesc.strName,
+	//if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + tDesc.strName,
 	//	ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
 	//	return E_FAIL;
 
@@ -134,7 +138,7 @@ HRESULT CLevel_Courtyard::Ready_Layer_Camera(const _wstring& strLayerTag)
 	
 	CCamera_TPS::DESC tDesc = {};
 
-	tDesc.eLevelID = LEVEL::COURTYARD;
+	tDesc.eLevelID = CurLevel;
 	tDesc.fSensor = 1.5f;
 	tDesc.vOffset = _float3(-7.f, 11.f, -7.f);
 	tDesc.fDeadZoneX = 2.5f;
@@ -151,7 +155,7 @@ HRESULT CLevel_Courtyard::Ready_Layer_Camera(const _wstring& strLayerTag)
 	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	tDesc.strName = TEXT("Camera_TPS");
 
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_GameObject_") + tDesc.strName,
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + tDesc.strName,
 		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
 		return E_FAIL;
 
@@ -162,14 +166,14 @@ HRESULT CLevel_Courtyard::Ready_Layer_Monster(const _wstring& strLayerTag)
 {
 	CMonster::DESC tDesc = {};
 
-	tDesc.eLevelID = LEVEL::COURTYARD;
+	tDesc.eLevelID = CurLevel;
 	tDesc.fSpeedPerSec = 20.f;
 	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	tDesc.strName = TEXT("SpiderTank");
 	tDesc.WorldMatrix = XMMatrixTranslation(0.f, 0.f, -80.f);
 	tDesc.iNumPartObjects = CSpiderTank::PART_END;
 
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_GameObject_") + tDesc.strName,
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + tDesc.strName,
 		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
 		return E_FAIL;
 
@@ -179,12 +183,12 @@ HRESULT CLevel_Courtyard::Ready_Layer_Monster(const _wstring& strLayerTag)
 HRESULT CLevel_Courtyard::Ready_Layer_Terrain(const _wstring& strLayerTag)
 {
 	CTerrain::DESC tDesc = {};
-	tDesc.eLevelID = LEVEL::COURTYARD;
+	tDesc.eLevelID = CurLevel;
 	tDesc.fSpeedPerSec = 0.f;
 	tDesc.fRotationPerSec = 0.f;
 	tDesc.strName = TEXT("Terrain");
 
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_GameObject_") + tDesc.strName,
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + tDesc.strName,
 		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
 		return E_FAIL;
 
@@ -210,7 +214,7 @@ HRESULT CLevel_Courtyard::Load_Map(const _wstring& strMapFileTag)
 		_float4x4 WorldMatrix{};
 
 		CMap::DESC tDesc{};
-		tDesc.eLevelID = LEVEL::COURTYARD;
+		tDesc.eLevelID = CurLevel;
 
 		LoadFile.read(reinterpret_cast<_char*>(&iLoadLength), sizeof(_int));
 		tDesc.strName.resize(iLoadLength);
@@ -221,7 +225,7 @@ HRESULT CLevel_Courtyard::Load_Map(const _wstring& strMapFileTag)
 
 		tDesc.WorldMatrix = XMLoadFloat4x4(&WorldMatrix);
 
-		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_GameObject_") + tDesc.strName,
+		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + tDesc.strName,
 			ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Map"), &tDesc)))
 			return E_FAIL;
 	}
@@ -234,7 +238,7 @@ HRESULT CLevel_Courtyard::Load_Map(const _wstring& strMapFileTag)
 		_float4x4 WorldMatrix{};
 
 		CEnvironment_Object::DESC tDesc{};
-		tDesc.eLevelID = LEVEL::COURTYARD;
+		tDesc.eLevelID = CurLevel;
 
 		LoadFile.read(reinterpret_cast<_char*>(&iLoadLength), sizeof(_int));
 		tDesc.strName.resize(iLoadLength);
@@ -245,7 +249,7 @@ HRESULT CLevel_Courtyard::Load_Map(const _wstring& strMapFileTag)
 
 		tDesc.WorldMatrix = XMLoadFloat4x4(&WorldMatrix);
 
-		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_GameObject_") + tDesc.strName,
+		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + tDesc.strName,
 			ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Environment_Object"), &tDesc)))
 			return E_FAIL;
 	}
@@ -259,7 +263,7 @@ HRESULT CLevel_Courtyard::Load_Map(const _wstring& strMapFileTag)
 		_float4x4 WorldMatrix{};
 
 		CItem::DESC tDesc{};
-		tDesc.eLevelID = LEVEL::COURTYARD;
+		tDesc.eLevelID = CurLevel;
 
 		LoadFile.read(reinterpret_cast<_char*>(&iLoadLength), sizeof(_int));
 		tDesc.strName.resize(iLoadLength);
@@ -270,7 +274,7 @@ HRESULT CLevel_Courtyard::Load_Map(const _wstring& strMapFileTag)
 
 		tDesc.WorldMatrix = XMLoadFloat4x4(&WorldMatrix);
 
-		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_GameObject_") + tDesc.strName,
+		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + tDesc.strName,
 			ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Item"), &tDesc)))
 			return E_FAIL;
 	}
@@ -284,7 +288,7 @@ HRESULT CLevel_Courtyard::Load_Map(const _wstring& strMapFileTag)
 		_float4x4 WorldMatrix{};
 
 		CChest::DESC tDesc{};
-		tDesc.eLevelID = LEVEL::COURTYARD;
+		tDesc.eLevelID = CurLevel;
 
 		LoadFile.read(reinterpret_cast<_char*>(&iLoadLength), sizeof(_int));
 		tDesc.strName.resize(iLoadLength);
@@ -295,7 +299,7 @@ HRESULT CLevel_Courtyard::Load_Map(const _wstring& strMapFileTag)
 
 		tDesc.WorldMatrix = XMLoadFloat4x4(&WorldMatrix);
 
-		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_GameObject_") + tDesc.strName,
+		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + tDesc.strName,
 			ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Chest"), &tDesc)))
 			return E_FAIL;
 	}
@@ -309,7 +313,7 @@ HRESULT CLevel_Courtyard::Load_Map(const _wstring& strMapFileTag)
 		_float4x4 WorldMatrix{};
 
 		CMonster::DESC tDesc{};
-		tDesc.eLevelID = LEVEL::COURTYARD;
+		tDesc.eLevelID = CurLevel;
 
 		LoadFile.read(reinterpret_cast<_char*>(&iLoadLength), sizeof(_int));
 		tDesc.strName.resize(iLoadLength);
@@ -321,7 +325,7 @@ HRESULT CLevel_Courtyard::Load_Map(const _wstring& strMapFileTag)
 
 		tDesc.WorldMatrix = XMLoadFloat4x4(&WorldMatrix);
 
-		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::COURTYARD), TEXT("Prototype_GameObject_") + tDesc.strName,
+		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + tDesc.strName,
 			ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Monster"), &tDesc)))
 			return E_FAIL;
 	}
@@ -363,5 +367,8 @@ CLevel_Courtyard* CLevel_Courtyard::Create(ID3D11Device* pDevice, ID3D11DeviceCo
 void CLevel_Courtyard::Free()
 {
 	__super::Free();
+
+	m_pBGM->Stop();
+	Safe_Release(m_pBGM);
 
 }

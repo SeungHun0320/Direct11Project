@@ -1,32 +1,33 @@
-#include "Body_Player.h"
+#include "Part_WizardCandleabra.h"
 
 #include "GameInstance.h"
 
-CBody_Player::CBody_Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    : CPartObject {pDevice, pContext}
+CPart_WizardCandleabra::CPart_WizardCandleabra(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+    : CPartObject{ pDevice, pContext }
 {
 }
 
-CBody_Player::CBody_Player(const CBody_Player& Prototype)
+CPart_WizardCandleabra::CPart_WizardCandleabra(const CPart_WizardCandleabra& Prototype)
     : CPartObject(Prototype)
 {
 }
 
-const _float4x4* CBody_Player::Get_SocketMatrix(const _string& strBoneName)
+const _float4x4* CPart_WizardCandleabra::Get_SocketMatrix(const _string& strBoneName)
 {
     return m_pModelCom->Get_BoneMatrix(strBoneName);
 }
 
-HRESULT CBody_Player::Initialize_Prototype()
+HRESULT CPart_WizardCandleabra::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT CBody_Player::Initialize(void* pArg)
+HRESULT CPart_WizardCandleabra::Initialize(void* pArg)
 {
     DESC* pDesc = static_cast<DESC*>(pArg);
 
     m_eLevelID = pDesc->eLevelID;
+    m_pSocketMatrix = pDesc->pSocketMatrix;
 
     if (FAILED(__super::Initialize(pArg)))
         return E_FAIL;
@@ -37,23 +38,31 @@ HRESULT CBody_Player::Initialize(void* pArg)
     return S_OK;
 }
 
-void CBody_Player::Priority_Update(_float fTimeDelta)
+void CPart_WizardCandleabra::Priority_Update(_float fTimeDelta)
 {
+    __super::Priority_Update(fTimeDelta);
 }
 
-LIFE CBody_Player::Update(_float fTimeDelta)
+LIFE CPart_WizardCandleabra::Update(_float fTimeDelta)
 {
-    return LIFE::NONE;
+    return __super::Update(fTimeDelta);
 }
 
-void CBody_Player::Late_Update(_float fTimeDelta)
+void CPart_WizardCandleabra::Late_Update(_float fTimeDelta)
 {
-    XMStoreFloat4x4(&m_CombinedWorldMatrix, XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Float4x4()) * XMLoadFloat4x4(m_pParentMatrix));
+    _matrix		BoneMatrix = XMLoadFloat4x4(m_pSocketMatrix);
+
+    /* 본래 스케일값으로 대입해주기 위해서 */
+    for (_uint i = 0; i < 3; i++)
+        BoneMatrix.r[i] = XMVector3Normalize(BoneMatrix.r[i]);
+
+    XMStoreFloat4x4(&m_CombinedWorldMatrix,
+        XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Float4x4()) * BoneMatrix * XMLoadFloat4x4(m_pParentMatrix));
 
     m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 }
 
-HRESULT CBody_Player::Render()
+HRESULT CPart_WizardCandleabra::Render()
 {
     if (FAILED(Bind_ShaderResources()))
         return E_FAIL;
@@ -70,8 +79,6 @@ HRESULT CBody_Player::Render()
         if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TEX_TYPE::DIFFUSE, 0)))
             return E_FAIL;
 
-        m_pModelCom->Bind_Bone_Matrices(m_pShaderCom, "g_BoneMatrices", i);
-
         if (FAILED(m_pShaderCom->Begin(0)))
             return E_FAIL;
 
@@ -82,42 +89,22 @@ HRESULT CBody_Player::Render()
     return S_OK;
 }
 
-_bool CBody_Player::Play_Animation(_float fTimeDelta)
-{
-    return m_pModelCom->Play_Animation(fTimeDelta);
-}
-
-void CBody_Player::Change_Animation(_uint iNextIndex, _bool isLoop, _float fBlendDuration, _bool isBlend)
-{
-    m_pModelCom->Change_Animation(iNextIndex, isLoop, fBlendDuration, isBlend);
-}
-
-void CBody_Player::Set_MeshVisible(_uint iIndex, _bool IsVisible)
-{
-    m_pModelCom->Set_MeshVisible(iIndex, IsVisible);
-}
-
-void CBody_Player::Set_TrackPosition(_float fTrackPosition)
-{
-    m_pModelCom->Set_CurrnetTrackPosition(fTrackPosition);
-}
-
-HRESULT CBody_Player::Ready_Components(void* pArg)
+HRESULT CPart_WizardCandleabra::Ready_Components(void* pArg)
 {
     /* For.Com_Shader */
-    if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxAnimMesh"),
+    if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxMesh"),
         TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
         return E_FAIL;
 
     /* For.Com_Model */
-    if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Fox"),
+    if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Model_Weapon_WizardCandleabra"),
         TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
         return E_FAIL;
 
     return S_OK;
 }
 
-HRESULT CBody_Player::Bind_ShaderResources()
+HRESULT CPart_WizardCandleabra::Bind_ShaderResources()
 {
     if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix)))
         return E_FAIL;
@@ -143,33 +130,33 @@ HRESULT CBody_Player::Bind_ShaderResources()
     return S_OK;
 }
 
-CBody_Player* CBody_Player::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CPart_WizardCandleabra* CPart_WizardCandleabra::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-    CBody_Player* pInstance = new CBody_Player(pDevice, pContext);
+    CPart_WizardCandleabra* pInstance = new CPart_WizardCandleabra(pDevice, pContext);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CBody_Player");
+        MSG_BOX("Failed to Created : CPart_WizardCandleabra");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-CGameObject* CBody_Player::Clone(void* pArg)
+CGameObject* CPart_WizardCandleabra::Clone(void* pArg)
 {
-    CBody_Player* pInstance = new CBody_Player(*this);
+    CPart_WizardCandleabra* pInstance = new CPart_WizardCandleabra(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
-        MSG_BOX("Failed to Cloned : CBody_Player");
+        MSG_BOX("Failed to Cloned : CPart_WizardCandleabra");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-void CBody_Player::Free()
+void CPart_WizardCandleabra::Free()
 {
     __super::Free();
 

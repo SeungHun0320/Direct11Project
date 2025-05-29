@@ -252,6 +252,7 @@ HRESULT CPlayer::Ready_PartObjects()
 
 	BodyDesc.eLevelID = m_eLevelID;
 	BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	BodyDesc.pParentState = &m_eCurState;
 
 	if (FAILED(__super::Add_PartObject(PART_BODY, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Body_Player"), &BodyDesc)))
 		return E_FAIL;

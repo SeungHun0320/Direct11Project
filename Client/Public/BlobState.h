@@ -95,6 +95,9 @@ public: // CBlobState을(를) 통해 상속됨
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
 
+private:
+	_float3 m_vHitDir = {};
+
 public:
 	virtual void Free() override;
 };

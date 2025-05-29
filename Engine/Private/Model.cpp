@@ -54,6 +54,21 @@ void CModel::Set_MeshVisible(_uint iIndex, _bool IsVisible)
     m_Meshes[iIndex]->Set_MeshVisible(IsVisible);
 }
 
+const _float4x4* CModel::Get_BoneMatrix(const _string& strBoneName)
+{
+    auto iter = find_if(m_Bones.begin(), m_Bones.end(), [&](CBone* pBone)->_bool
+        {
+            if (pBone->Compare_Name(strBoneName))
+                return true;
+            return false;
+        });
+
+    if (iter == m_Bones.end())
+        return nullptr;
+
+    return (*iter)->Get_CombinedTransformationMatrix();
+}
+
 void CModel::Set_CurrnetTrackPosition(_float fTrackPosition)
 {
     m_Animations[m_iCurrentAnimIndex]->Set_CurrentTrackPosition(fTrackPosition);
