@@ -1,33 +1,27 @@
-#include "Body_Blob.h"
+#include "Body_Chest.h"
 
 #include "GameInstance.h"
 
-CBody_Blob::CBody_Blob(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CBody_Chest::CBody_Chest(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : CPartObject{ pDevice, pContext }
 {
 }
 
-CBody_Blob::CBody_Blob(const CBody_Blob& Prototype)
+CBody_Chest::CBody_Chest(const CBody_Chest& Prototype)
     : CPartObject(Prototype)
 {
 }
 
-const _float4x4* CBody_Blob::Get_SocketMatrix(const _string& strBoneName)
-{
-    return m_pModelCom->Get_BoneMatrix(strBoneName);
-}
-
-HRESULT CBody_Blob::Initialize_Prototype()
+HRESULT CBody_Chest::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT CBody_Blob::Initialize(void* pArg)
+HRESULT CBody_Chest::Initialize(void* pArg)
 {
     DESC* pDesc = static_cast<DESC*>(pArg);
 
     m_eLevelID = pDesc->eLevelID;
-    m_pParentMatrix = pDesc->pParentMatrix;
 
     if (FAILED(__super::Initialize(pArg)))
         return E_FAIL;
@@ -35,30 +29,29 @@ HRESULT CBody_Blob::Initialize(void* pArg)
     if (FAILED(Ready_Components(pArg)))
         return E_FAIL;
 
-    /* 본, 애니메이션 얕복의 문제점 */
-    /* 1. 서로 다른 애니메이션을 셋팅했음에도 같은 동작이 재생된다. : 뼈가 공유되기때문에. */
-    /* 2. 같은 애니메이션을 셋했다면 재생속도가 빨라진다. : */
+    m_pModelCom->Set_Animation(0);
+
     return S_OK;
 }
 
-void CBody_Blob::Priority_Update(_float fTimeDelta)
+void CBody_Chest::Priority_Update(_float fTimeDelta)
 {
-
 }
 
-LIFE CBody_Blob::Update(_float fTimeDelta)
+LIFE CBody_Chest::Update(_float fTimeDelta)
 {
+    m_pModelCom->Play_Animation(fTimeDelta);
     return LIFE::NONE;
 }
 
-void CBody_Blob::Late_Update(_float fTimeDelta)
+void CBody_Chest::Late_Update(_float fTimeDelta)
 {
     XMStoreFloat4x4(&m_CombinedWorldMatrix, XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Float4x4()) * XMLoadFloat4x4(m_pParentMatrix));
 
     m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 }
 
-HRESULT CBody_Blob::Render()
+HRESULT CBody_Chest::Render()
 {
     if (FAILED(Bind_ShaderResources()))
         return E_FAIL;
@@ -67,11 +60,6 @@ HRESULT CBody_Blob::Render()
 
     for (_uint i = 0; i < iNumMesh; i++)
     {
-        //m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TEX_TYPE::DIFFUSE, 0);
-
-        if (m_pModelCom->Get_MeshVisible(i))
-            continue;
-
         if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TEX_TYPE::DIFFUSE, 0)))
             return E_FAIL;
 
@@ -87,22 +75,7 @@ HRESULT CBody_Blob::Render()
     return S_OK;
 }
 
-_bool CBody_Blob::Play_Animation(_float fTimeDelta)
-{
-    return m_pModelCom->Play_Animation(fTimeDelta);
-}
-
-void CBody_Blob::Change_Animation(_uint iNextIndex, _bool isLoop, _float fBlendDuration, _bool isBlend)
-{
-    m_pModelCom->Change_Animation(iNextIndex, isLoop, fBlendDuration, isBlend);
-}
-
-void CBody_Blob::Set_TrackPosition(_float fTrackPosition)
-{
-    m_pModelCom->Set_CurrnetTrackPosition(fTrackPosition);
-}
-
-HRESULT CBody_Blob::Ready_Components(void* pArg)
+HRESULT CBody_Chest::Ready_Components(void* pArg)
 {
     /* For.Com_Shader */
     if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxAnimMesh"),
@@ -110,14 +83,14 @@ HRESULT CBody_Blob::Ready_Components(void* pArg)
         return E_FAIL;
 
     /* For.Com_Model */
-    if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Model_Blob"),
+    if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Model_Chest"),
         TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
         return E_FAIL;
 
     return S_OK;
 }
 
-HRESULT CBody_Blob::Bind_ShaderResources()
+HRESULT CBody_Chest::Bind_ShaderResources()
 {
     if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix)))
         return E_FAIL;
@@ -143,33 +116,33 @@ HRESULT CBody_Blob::Bind_ShaderResources()
     return S_OK;
 }
 
-CBody_Blob* CBody_Blob::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CBody_Chest* CBody_Chest::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-    CBody_Blob* pInstance = new CBody_Blob(pDevice, pContext);
+    CBody_Chest* pInstance = new CBody_Chest(pDevice, pContext);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CBody_Blob");
+        MSG_BOX("Failed to Created : CBody_Chest");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-CGameObject* CBody_Blob::Clone(void* pArg)
+CGameObject* CBody_Chest::Clone(void* pArg)
 {
-    CBody_Blob* pInstance = new CBody_Blob(*this);
+    CBody_Chest* pInstance = new CBody_Chest(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
-        MSG_BOX("Failed to Cloned : CBody_Blob");
+        MSG_BOX("Failed to Cloned : CBody_Chest");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-void CBody_Blob::Free()
+void CBody_Chest::Free()
 {
     __super::Free();
 

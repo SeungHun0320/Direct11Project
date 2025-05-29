@@ -14,8 +14,9 @@ public:
 public:
 	enum PART { PART_BODY, PART_SWORD, PART_CANDLEABRA, PART_EFFECT, PART_END };
 
-	enum ANIM_TYPE { IDLE, ATTACK, JUMP, ANIM_END };
-	enum class STATES { IDLE, ATTACK, JUMP, HIT, STATES_END };
+	enum ANIM_TYPE { IDLE, PINCH, DETECTED, ATTACK, DEAD, GUARD, FOWARD, ANIM_END };
+
+	enum class STATES { IDLE, DETECTED, GUARD, ATTACK, MOVE, HIT, DEAD, STATES_END };
 
 private:
 	CWizard_Candleabra(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -46,16 +47,13 @@ public: /* 상태로 넘겨줄 함수들 */
 	void Hit(_fvector vDir, _float fTimeDelta, _float fSpeed = 0.f);
 	void Turn(_fvector vAxis, _float fTimeDelta);
 
-	/* 상태 관련 ?*/
-	_float3 Get_Scaled();
-	void Scaling(_float3 vScale);
-	void Scaling(_float fX = 1.f, _float fY = 1.f, _float fZ = 1.f);
+	void LookAt(_fvector vDir, _float fTimeDelta, _float fSpeed);
 
 private: /* 상태 패턴 변수들 */
 	STATES m_eCurState{ STATES::STATES_END };
 	STATES m_ePreState{ STATES::STATES_END };
-	class CBlobState* m_pCurState = { nullptr };
-	class CBlobState* m_pStates[ENUM_CLASS(STATES::STATES_END)] = { nullptr };
+	class CWizard_CandleabraState* m_pCurState = { nullptr };
+	class CWizard_CandleabraState* m_pStates[ENUM_CLASS(STATES::STATES_END)] = { nullptr };
 
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;

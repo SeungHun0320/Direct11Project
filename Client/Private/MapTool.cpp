@@ -66,7 +66,12 @@ void CMapTool::Add_ListBoxName()
 		for (const auto& KeyWord : EnvironmentFilters)
 		{
 			if (Pair.first.find(KeyWord) != _wstring::npos)
+			{
 				m_ProtoEnvironmentNames.push_back(m_pGameInstance->WStringToString(Pair.first));
+				if (Pair.first.find(L"Body") != _wstring::npos)
+					m_ProtoEnvironmentNames.pop_back();
+			}
+
 		}
 
 		for (const auto& KeyWord : ItemFilters)
@@ -135,6 +140,7 @@ void CMapTool::Update(_float fTimeDelta)
 			tDesc.fSpeedPerSec = 0.f;
 			tDesc.strName = m_strName;
 			tDesc.WorldMatrix = XMMatrixTranslation(vInitPos.x, vInitPos.y, vInitPos.z);
+			tDesc.iNumPartObjects = m_iNumPartObjects;
 
 			if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_") + tDesc.strName,
 				ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Environment_Object"), &tDesc)))
@@ -164,6 +170,7 @@ void CMapTool::Update(_float fTimeDelta)
 			tDesc.fRotationPerSec = m_fRotationPerSec;
 			tDesc.fSpeedPerSec = m_fSpeedPerSec;
 			tDesc.strName = m_strName;
+			tDesc.iNumPartObjects = m_iNumPartObjects;
 			tDesc.WorldMatrix = XMMatrixTranslation(vInitPos.x, vInitPos.y, vInitPos.z);
 
 			if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_") + tDesc.strName,
@@ -195,7 +202,7 @@ void CMapTool::Update(_float fTimeDelta)
 HRESULT CMapTool::Render()
 {
 	MapTool();
-	AnimMesh_Menu();
+	Created_Menu();
 
 	return S_OK;
 }
@@ -555,6 +562,8 @@ HRESULT CMapTool::Environment_ListBox()
 		break;
 	}
 
+	m_iNumPartObjects = CEnvironment_Object::PART_END;
+
 	return S_OK;
 }
 
@@ -663,7 +672,7 @@ HRESULT CMapTool::Monster_ListBox()
 	return S_OK;
 }
 
-void CMapTool::AnimMesh_Menu()
+void CMapTool::Created_Menu()
 {
 	if (ImGui::Begin(u8"하이~ 어 라키"))
 	{
@@ -671,19 +680,19 @@ void CMapTool::AnimMesh_Menu()
 		{
 			if (ImGui::BeginTabItem(u8"환경"))
 			{
-				AnimMesh_Environment_ListBox();
+				Created_Environment_ListBox();
 
 				ImGui::EndTabItem();
 			}
 			if (ImGui::BeginTabItem(u8"상자"))
 			{
-				AnimMesh_Chest_ListBox();
+				Created_Chest_ListBox();
 
 				ImGui::EndTabItem();
 			}
 			if (ImGui::BeginTabItem(u8"적"))
 			{
-				AnimMesh_Monster_ListBox();
+				Created_Monster_ListBox();
 
 				ImGui::EndTabItem();
 			}
@@ -700,7 +709,7 @@ void CMapTool::Add_Modify_ListBox(vector<_string>& vecNames, const _wstring& str
 	vecNames.push_back(strNumObjects + m_pGameInstance->WStringToString(strName));
 }
 
-HRESULT CMapTool::AnimMesh_Chest_ListBox()
+HRESULT CMapTool::Created_Chest_ListBox()
 {
 	static _int iCurrentObjIndex = { -1 }, iOldObjType = { -1 };
 
@@ -731,13 +740,13 @@ HRESULT CMapTool::AnimMesh_Chest_ListBox()
 		ImGui::EndListBox();
 	}
 
-	AnimMesh_Delete(iCurrentObjIndex, m_ChestNames);
+	Created_Delete(iCurrentObjIndex, m_ChestNames);
 
 	return S_OK;
 
 }
 
-HRESULT CMapTool::AnimMesh_Monster_ListBox()
+HRESULT CMapTool::Created_Monster_ListBox()
 {
 	static _int iCurrentObjIndex = { -1 }, iOldObjType = { -1 };
 
@@ -768,12 +777,12 @@ HRESULT CMapTool::AnimMesh_Monster_ListBox()
 		ImGui::EndListBox();
 	}
 
-	AnimMesh_Delete(iCurrentObjIndex, m_MonsterNames);
+	Created_Delete(iCurrentObjIndex, m_MonsterNames);
 
 	return S_OK;
 }
 
-HRESULT CMapTool::AnimMesh_Environment_ListBox()
+HRESULT CMapTool::Created_Environment_ListBox()
 {
 	static _int iCurrentObjIndex = { -1 }, iOldObjType = { -1 };
 
@@ -803,12 +812,12 @@ HRESULT CMapTool::AnimMesh_Environment_ListBox()
 		ImGui::EndListBox();
 	}
 
-	AnimMesh_Delete(iCurrentObjIndex, m_EnvironmentNames);
+	Created_Delete(iCurrentObjIndex, m_EnvironmentNames);
 
 	return S_OK;
 }
 
-HRESULT CMapTool::AnimMesh_Delete(_uint _iCurrentObjIndex, vector<_string>& vecNames)
+HRESULT CMapTool::Created_Delete(_uint _iCurrentObjIndex, vector<_string>& vecNames)
 {
 	if (nullptr == m_pModifyObject)
 		return E_FAIL;
@@ -934,6 +943,7 @@ HRESULT CMapTool::Save_Map(const _string& strMapPath)
 			_float fSpeedPerSec = pTransform->Get_SpeedPerSec();
 			_float fRotationPerSec = pTransform->Get_RotationPerSec();
 			_wstring strPrototype = pObject->Get_Name();
+			_uint    iNumPartObjects = dynamic_cast<CContainerObject*>(pObject)->Get_NumPartObjects();
 			iSaveLength = static_cast<_int>(strPrototype.length());
 
 			OutFile.write(reinterpret_cast<const _char*>(&iSaveLength), sizeof(_int));
@@ -941,7 +951,7 @@ HRESULT CMapTool::Save_Map(const _string& strMapPath)
 			OutFile.write(reinterpret_cast<const _char*>(&WorldMatrix), sizeof(_float4x4));
 			OutFile.write(reinterpret_cast<const _char*>(&fSpeedPerSec), sizeof(_float));
 			OutFile.write(reinterpret_cast<const _char*>(&fRotationPerSec), sizeof(_float));
-
+			OutFile.write(reinterpret_cast<const _char*>(&iNumPartObjects), sizeof(_uint));
 		}
 	}
 	/* 아이템 저장 */
@@ -1004,6 +1014,7 @@ HRESULT CMapTool::Save_Map(const _string& strMapPath)
 			_float fSpeedPerSec = pTransform->Get_SpeedPerSec();
 			_float fRotationPerSec = pTransform->Get_RotationPerSec();
 			_wstring strPrototype = pObject->Get_Name();
+			_uint    iNumPartObjects = dynamic_cast<CContainerObject*>(pObject)->Get_NumPartObjects();
 			iSaveLength = static_cast<_int>(strPrototype.length());
 
 			OutFile.write(reinterpret_cast<const _char*>(&iSaveLength), sizeof(_int));
@@ -1011,7 +1022,7 @@ HRESULT CMapTool::Save_Map(const _string& strMapPath)
 			OutFile.write(reinterpret_cast<const _char*>(&WorldMatrix), sizeof(_float4x4));
 			OutFile.write(reinterpret_cast<const _char*>(&fSpeedPerSec), sizeof(_float));
 			OutFile.write(reinterpret_cast<const _char*>(&fRotationPerSec), sizeof(_float));
-
+			OutFile.write(reinterpret_cast<const _char*>(&iNumPartObjects), sizeof(_uint));
 		}
 	}
 	/* 몬스터 저장 */
@@ -1039,7 +1050,7 @@ HRESULT CMapTool::Save_Map(const _string& strMapPath)
 			_float fSpeedPerSec = pTransform->Get_SpeedPerSec();
 			_float fRotationPerSec = pTransform->Get_RotationPerSec();
 			_wstring strPrototype = pObject->Get_Name();
-			_uint    iNumPartObjects = dynamic_cast<CMonster*>(pObject)->Get_NumPartObjects();
+			_uint    iNumPartObjects = dynamic_cast<CContainerObject*>(pObject)->Get_NumPartObjects();
 			iSaveLength = static_cast<_int>(strPrototype.length());
 			
 			OutFile.write(reinterpret_cast<const _char*>(&iSaveLength), sizeof(_int));
@@ -1156,8 +1167,11 @@ HRESULT CMapTool::Load_Map(const _string& strMapPath)
 		LoadFile.read(reinterpret_cast<_char*>(&WorldMatrix), sizeof(_float4x4));
 		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fSpeedPerSec), sizeof(_float));
 		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fRotationPerSec), sizeof(_float));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.iNumPartObjects), sizeof(_uint));
 
 		tDesc.WorldMatrix = XMLoadFloat4x4(&WorldMatrix);
+
+		tDesc.iNumPartObjects = 4;
 
 		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_") + tDesc.strName,
 			ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Environment_Object"), &tDesc)))
@@ -1208,6 +1222,7 @@ HRESULT CMapTool::Load_Map(const _string& strMapPath)
 		LoadFile.read(reinterpret_cast<_char*>(&WorldMatrix), sizeof(_float4x4));
 		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fSpeedPerSec), sizeof(_float));
 		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fRotationPerSec), sizeof(_float));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.iNumPartObjects), sizeof(_uint));
 
 		tDesc.WorldMatrix = XMLoadFloat4x4(&WorldMatrix);
 

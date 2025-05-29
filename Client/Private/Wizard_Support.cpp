@@ -4,6 +4,8 @@
 #include "Body_WizardSupport.h"
 #include "Part_WizardStaff.h"
 
+#include "Wizard_SupportState.h"
+
 CWizard_Support::CWizard_Support(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CMonster{ pDevice, pContext }
 {
@@ -27,8 +29,8 @@ HRESULT CWizard_Support::Initialize(void* pArg)
 	if (FAILED(Ready_States()))
 		return E_FAIL;
 
-	m_fDetectDistance = 5.f;
-	m_fChaseStopDistance = 10.f;
+	m_fDetectDistance = 12.5f;
+	m_fChaseStopDistance = 30.f;
 
 	//Change_States(STATES::IDLE);
 
@@ -45,10 +47,12 @@ LIFE CWizard_Support::Update(_float fTimeDelta)
 	if (m_bDead)
 		return LIFE::DEAD;
 
-	if (KEY_DOWN(DIK_2))
-	{
-		//Change_States(STATES::HIT);
-	}
+	//if (KEY_DOWN(DIK_2))
+	//{
+	//	//Change_States(STATES::HIT);
+	//}
+	//if (KEY_DOWN(DIK_3))
+	//	//Change_States(STATES::DEAD);
 
 
 	//if (m_pCurState)

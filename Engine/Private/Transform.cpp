@@ -208,7 +208,7 @@ void CTransform::LookAtLerp(_fvector vAt, _float fTimeDelta, _float fLerpSpeed)
 
 	_vector		vTargetDir = XMVector3Normalize(vAt - vPos);
 
-	// Lerp 방식 보간
+	/* Lerp 방식 보간 */
 	_vector vInterpolatedDir = XMVector3Normalize(
 		XMVectorLerp(vLook, vTargetDir, fTimeDelta * fLerpSpeed)
 	);
@@ -220,6 +220,32 @@ void CTransform::LookAtLerp(_fvector vAt, _float fTimeDelta, _float fLerpSpeed)
 	Set_State(STATE::UP, XMVector3Normalize(vUp) * vScaled.y);
 	Set_State(STATE::LOOK, XMVector3Normalize(vInterpolatedDir) * vScaled.z);
 
+}
+
+void CTransform::LookAtLerpEx(_fvector vAt, _float fTimeDelta, _float fLerpSpeed)
+{
+	_float3 vScaled = Get_Scaled();
+	_vector vPos = Get_State(STATE::POSITION);
+	_vector vLook = Get_State(STATE::LOOK);
+
+	_vector vTargetDir = vAt - vPos;
+	vTargetDir = XMVectorSetY(vTargetDir, 0.f);
+	vTargetDir = XMVector3Normalize(vTargetDir);
+
+	vLook = XMVectorSetY(vLook, 0.f);
+	vLook = XMVector3Normalize(vLook);
+
+	_vector vSmoothedDir = XMVector3Normalize(
+		XMVectorLerp(vLook, vTargetDir, fTimeDelta * fLerpSpeed)
+	);
+
+	_vector vRight = XMVector3Normalize(XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vSmoothedDir));
+	_vector vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+
+	// 5. 적용
+	Set_State(STATE::RIGHT, vRight * vScaled.x);
+	Set_State(STATE::UP, vUp * vScaled.y);
+	Set_State(STATE::LOOK, vSmoothedDir * vScaled.z);
 }
 
 void CTransform::LookDir(_fvector vDir)

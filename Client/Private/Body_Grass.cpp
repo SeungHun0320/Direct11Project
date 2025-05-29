@@ -1,28 +1,23 @@
-#include "Body_Blob.h"
+#include "Body_Grass.h"
 
 #include "GameInstance.h"
 
-CBody_Blob::CBody_Blob(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CBody_Grass::CBody_Grass(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : CPartObject{ pDevice, pContext }
 {
 }
 
-CBody_Blob::CBody_Blob(const CBody_Blob& Prototype)
+CBody_Grass::CBody_Grass(const CBody_Grass& Prototype)
     : CPartObject(Prototype)
 {
 }
 
-const _float4x4* CBody_Blob::Get_SocketMatrix(const _string& strBoneName)
-{
-    return m_pModelCom->Get_BoneMatrix(strBoneName);
-}
-
-HRESULT CBody_Blob::Initialize_Prototype()
+HRESULT CBody_Grass::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT CBody_Blob::Initialize(void* pArg)
+HRESULT CBody_Grass::Initialize(void* pArg)
 {
     DESC* pDesc = static_cast<DESC*>(pArg);
 
@@ -35,30 +30,26 @@ HRESULT CBody_Blob::Initialize(void* pArg)
     if (FAILED(Ready_Components(pArg)))
         return E_FAIL;
 
-    /* 본, 애니메이션 얕복의 문제점 */
-    /* 1. 서로 다른 애니메이션을 셋팅했음에도 같은 동작이 재생된다. : 뼈가 공유되기때문에. */
-    /* 2. 같은 애니메이션을 셋했다면 재생속도가 빨라진다. : */
     return S_OK;
 }
 
-void CBody_Blob::Priority_Update(_float fTimeDelta)
+void CBody_Grass::Priority_Update(_float fTimeDelta)
 {
-
 }
 
-LIFE CBody_Blob::Update(_float fTimeDelta)
+LIFE CBody_Grass::Update(_float fTimeDelta)
 {
     return LIFE::NONE;
 }
 
-void CBody_Blob::Late_Update(_float fTimeDelta)
+void CBody_Grass::Late_Update(_float fTimeDelta)
 {
     XMStoreFloat4x4(&m_CombinedWorldMatrix, XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Float4x4()) * XMLoadFloat4x4(m_pParentMatrix));
 
     m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 }
 
-HRESULT CBody_Blob::Render()
+HRESULT CBody_Grass::Render()
 {
     if (FAILED(Bind_ShaderResources()))
         return E_FAIL;
@@ -67,15 +58,8 @@ HRESULT CBody_Blob::Render()
 
     for (_uint i = 0; i < iNumMesh; i++)
     {
-        //m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TEX_TYPE::DIFFUSE, 0);
-
-        if (m_pModelCom->Get_MeshVisible(i))
-            continue;
-
         if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TEX_TYPE::DIFFUSE, 0)))
             return E_FAIL;
-
-        m_pModelCom->Bind_Bone_Matrices(m_pShaderCom, "g_BoneMatrices", i);
 
         if (FAILED(m_pShaderCom->Begin(0)))
             return E_FAIL;
@@ -87,37 +71,22 @@ HRESULT CBody_Blob::Render()
     return S_OK;
 }
 
-_bool CBody_Blob::Play_Animation(_float fTimeDelta)
-{
-    return m_pModelCom->Play_Animation(fTimeDelta);
-}
-
-void CBody_Blob::Change_Animation(_uint iNextIndex, _bool isLoop, _float fBlendDuration, _bool isBlend)
-{
-    m_pModelCom->Change_Animation(iNextIndex, isLoop, fBlendDuration, isBlend);
-}
-
-void CBody_Blob::Set_TrackPosition(_float fTrackPosition)
-{
-    m_pModelCom->Set_CurrnetTrackPosition(fTrackPosition);
-}
-
-HRESULT CBody_Blob::Ready_Components(void* pArg)
+HRESULT CBody_Grass::Ready_Components(void* pArg)
 {
     /* For.Com_Shader */
-    if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxAnimMesh"),
+    if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxMesh"),
         TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
         return E_FAIL;
 
     /* For.Com_Model */
-    if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Model_Blob"),
+    if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Model_Grass"),
         TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
         return E_FAIL;
 
     return S_OK;
 }
 
-HRESULT CBody_Blob::Bind_ShaderResources()
+HRESULT CBody_Grass::Bind_ShaderResources()
 {
     if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix)))
         return E_FAIL;
@@ -143,33 +112,33 @@ HRESULT CBody_Blob::Bind_ShaderResources()
     return S_OK;
 }
 
-CBody_Blob* CBody_Blob::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CBody_Grass* CBody_Grass::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-    CBody_Blob* pInstance = new CBody_Blob(pDevice, pContext);
+    CBody_Grass* pInstance = new CBody_Grass(pDevice, pContext);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CBody_Blob");
+        MSG_BOX("Failed to Created : CBody_Grass");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-CGameObject* CBody_Blob::Clone(void* pArg)
+CGameObject* CBody_Grass::Clone(void* pArg)
 {
-    CBody_Blob* pInstance = new CBody_Blob(*this);
+    CBody_Grass* pInstance = new CBody_Grass(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
-        MSG_BOX("Failed to Cloned : CBody_Blob");
+        MSG_BOX("Failed to Cloned : CBody_Grass");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-void CBody_Blob::Free()
+void CBody_Grass::Free()
 {
     __super::Free();
 

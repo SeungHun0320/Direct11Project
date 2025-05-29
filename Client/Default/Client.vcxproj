@@ -164,6 +164,10 @@
     <ClInclude Include="..\public\Blob.h" />
     <ClInclude Include="..\Public\BlobState.h" />
     <ClInclude Include="..\public\Body_Blob.h" />
+    <ClInclude Include="..\Public\Body_Bush.h" />
+    <ClInclude Include="..\Public\Body_CheckPoint.h" />
+    <ClInclude Include="..\Public\Body_Chest.h" />
+    <ClInclude Include="..\public\Body_Grass.h" />
     <ClInclude Include="..\Public\Body_WizardCandleabra.h" />
     <ClInclude Include="..\public\Body_Player.h" />
     <ClInclude Include="..\public\Body_SpiderTank.h" />
@@ -210,8 +214,11 @@
     <ClInclude Include="..\public\Tool.h" />
     <ClInclude Include="..\Public\UI.h" />
     <ClInclude Include="..\public\Wizard_Candleabra.h" />
+    <ClInclude Include="..\public\Wizard_CandleabraState.h" />
     <ClInclude Include="..\public\Wizard_Support.h" />
+    <ClInclude Include="..\Public\Wizard_SupportState.h" />
     <ClInclude Include="..\public\Wizard_Sword.h" />
+    <ClInclude Include="..\Public\Wizard_SwordState.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="ImGui\backends\imgui_impl_dx11.h" />
@@ -234,6 +241,10 @@
     <ClCompile Include="..\private\Blob.cpp" />
     <ClCompile Include="..\Private\BlobState.cpp" />
     <ClCompile Include="..\private\Body_Blob.cpp" />
+    <ClCompile Include="..\Private\Body_Bush.cpp" />
+    <ClCompile Include="..\Private\Body_CheckPoint.cpp" />
+    <ClCompile Include="..\Private\Body_Chest.cpp" />
+    <ClCompile Include="..\private\Body_Grass.cpp" />
     <ClCompile Include="..\Private\Body_WizardCandleabra.cpp" />
     <ClCompile Include="..\private\Body_Player.cpp" />
     <ClCompile Include="..\private\Body_SpiderTank.cpp" />
@@ -296,8 +307,11 @@
     <ClCompile Include="..\private\Tool.cpp" />
     <ClCompile Include="..\private\UI.cpp" />
     <ClCompile Include="..\private\Wizard_Candleabra.cpp" />
+    <ClCompile Include="..\private\Wizard_CandleabraState.cpp" />
     <ClCompile Include="..\private\Wizard_Support.cpp" />
+    <ClCompile Include="..\Private\Wizard_SupportState.cpp" />
     <ClCompile Include="..\private\Wizard_Sword.cpp" />
+    <ClCompile Include="..\Private\Wizard_SwordState.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="ImGui\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="ImGui\backends\imgui_impl_win32.cpp" />

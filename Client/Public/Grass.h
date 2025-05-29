@@ -26,6 +26,7 @@ public:
 
 private:
 	virtual HRESULT Ready_Components(void* pArg);
+	virtual HRESULT Ready_PartObjects() override;
 
 public:
 	static CGrass* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

@@ -97,6 +97,7 @@ public:
 public:
 	void LookAt(_fvector vAt);
 	void LookAtLerp(_fvector vAt, _float fTimeDelta, _float fLerpSpeed);
+	void LookAtLerpEx(_fvector vAt, _float fTimeDelta, _float fLerpSpeed);
 	void LookDir(_fvector vDir);
 	void LookDirLerp(_fvector vTargetDir, _float fTimeDelta, _float fRatio);
 

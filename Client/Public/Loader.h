@@ -42,12 +42,12 @@ private:
 	_tchar						m_szLoadingText[MAX_PATH] = {};
 
 public:
-	HRESULT Loading_For_Logo();
-	HRESULT Loading_For_Courtyard();
-	HRESULT Loading_For_Main();
-	HRESULT Loading_For_Arena();
-	HRESULT Loading_For_Shop();
-	HRESULT Loading_For_Tools();
+	HRESULT Loading_For_Logo(LEVEL eLevelID);
+	HRESULT Loading_For_Courtyard(LEVEL eLevelID);
+	HRESULT Loading_For_Main(LEVEL eLevelID);
+	HRESULT Loading_For_Arena(LEVEL eLevelID);
+	HRESULT Loading_For_Shop(LEVEL eLevelID);
+	HRESULT Loading_For_Tools(LEVEL eLevelID);
 
 
 public:

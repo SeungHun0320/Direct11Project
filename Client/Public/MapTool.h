@@ -92,12 +92,12 @@ private: /* 리스트 박스들 */
 	HRESULT Monster_ListBox();
 
 private: /* 애님메쉬 제어용 함수들 */
-	void AnimMesh_Menu();
+	void Created_Menu();
 	void Add_Modify_ListBox(vector<_string>& vecNames, const _wstring& strName);
-	HRESULT AnimMesh_Chest_ListBox();
-	HRESULT AnimMesh_Monster_ListBox();
-	HRESULT AnimMesh_Environment_ListBox();
-	HRESULT AnimMesh_Delete(_uint _iCurrentObjIndex, vector<_string>& vecNames);
+	HRESULT Created_Chest_ListBox();
+	HRESULT Created_Monster_ListBox();
+	HRESULT Created_Environment_ListBox();
+	HRESULT Created_Delete(_uint _iCurrentObjIndex, vector<_string>& vecNames);
 
 private: /* 모드 바꾸는 아임구이 버튼 */
 	void Change_Mode();

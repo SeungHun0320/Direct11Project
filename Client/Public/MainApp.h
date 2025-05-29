@@ -29,6 +29,7 @@ private:
 	HRESULT Ready_Prototype_Component();
 	HRESULT Ready_Prototype_Object();
 	HRESULT Ready_For_BGM();
+	HRESULT Ready_For_Fonts();
 	HRESULT Start_Level(LEVEL eStartLevel);
 
 public:

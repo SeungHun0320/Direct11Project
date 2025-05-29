@@ -317,6 +317,10 @@ HRESULT CModel::Ready_Bones(ifstream& _InFile)
             {
                 m_Bones[i]->Set_ParentBoneIndex(3);
             }
+            else if (m_Bones[3]->Compare_Name("wizard_armature"))
+            {
+                m_Bones[i]->Set_ParentBoneIndex(3);
+            }
             else
                 m_Bones[i]->Set_ParentBoneIndex(m_iRootBoneIndex - 1);
         }

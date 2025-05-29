@@ -103,9 +103,6 @@
     <Filter Include="02.GameObjects\05.Environment_Objects\03.Urn\Urn">
       <UniqueIdentifier>{186e6e0c-0b67-49a4-9d17-0257a67c45fe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\05.Environment_Objects\03.Urn\Urn_Smash">
-      <UniqueIdentifier>{fe091b8f-b404-41ff-8891-76247acf3b81}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\05.Environment_Objects\03.Urn\Urn_Firey">
       <UniqueIdentifier>{45438d73-7194-460e-bcbe-e351b8bd8b64}</UniqueIdentifier>
     </Filter>
@@ -247,41 +244,71 @@
     <Filter Include="02.GameObjects\03.Monsters\02.Wizard">
       <UniqueIdentifier>{2ed5755e-46f7-46e2-becd-ae46f84523f4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\Candleabra">
+    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\00. Candleabra">
       <UniqueIdentifier>{4cd31df0-c2d4-4b0e-b34e-b0b3f7a1d42e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\Support">
+    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\01. Support">
       <UniqueIdentifier>{be378bc8-0e22-4f86-a8f8-e30d87453b9f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\Sword">
+    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\02. Sword">
       <UniqueIdentifier>{45c0bdea-2f0c-46b6-805b-c19501147a6b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\Sword\Body">
-      <UniqueIdentifier>{e7241204-558b-48a8-81d3-8aa9ea536934}</UniqueIdentifier>
+    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\State">
+      <UniqueIdentifier>{5103ca6d-9e53-4a52-9796-5fdc685554c6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\Support\Body">
-      <UniqueIdentifier>{0feb1736-751e-4285-9cda-2be2b4c8543e}</UniqueIdentifier>
+    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\PartObjects">
+      <UniqueIdentifier>{6eeb7246-5c76-4ea2-8743-c7742d6c7786}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\Candleabra\Body">
-      <UniqueIdentifier>{5416de23-8dcc-4f82-8e84-81639b4b9e80}</UniqueIdentifier>
+    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\PartObjects\Body">
+      <UniqueIdentifier>{7d1924e6-5f39-4a16-8c26-debc668973b3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\Candleabra\State">
-      <UniqueIdentifier>{6d8c6df2-9bbb-4b70-835a-d4bd1f6e150d}</UniqueIdentifier>
+    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\PartObjects\Body\Candleabra">
+      <UniqueIdentifier>{46a99504-774b-4a85-a6bc-15a6bc4cedd5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\Support\State">
-      <UniqueIdentifier>{a2b25d01-6deb-4509-b60f-3cafdf44af4a}</UniqueIdentifier>
+    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\PartObjects\Body\Support">
+      <UniqueIdentifier>{f1ea60cf-e6b0-4bc8-8700-f57848e86276}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\Sword\State">
-      <UniqueIdentifier>{442e3122-f3b5-45b0-b54b-ae7cd1af28fa}</UniqueIdentifier>
+    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\PartObjects\Body\Sword">
+      <UniqueIdentifier>{7b4c80a8-990c-4d77-9c94-bd0a1bfd40d7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\Candleabra\Candleabra">
-      <UniqueIdentifier>{c86425d1-7a76-4071-8522-2ceff5714bda}</UniqueIdentifier>
+    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\PartObjects\Weapons">
+      <UniqueIdentifier>{f1c9c5f6-2dbf-45ce-aa0f-fd0126780e11}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\Support\Staff">
-      <UniqueIdentifier>{e037e139-4e36-415d-a0b7-583f2fd835ed}</UniqueIdentifier>
+    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\PartObjects\Weapons\Candleabra">
+      <UniqueIdentifier>{bf22463e-b3d3-4776-924a-9d8e13132c98}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\Sword\Sword">
-      <UniqueIdentifier>{b5d2b2c9-0a64-4c7d-a41a-c037c54c7df7}</UniqueIdentifier>
+    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\PartObjects\Weapons\Sword">
+      <UniqueIdentifier>{7f0d5e27-10ca-4b93-b27e-73aa6ed13497}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\PartObjects\Weapons\Staff">
+      <UniqueIdentifier>{e689c07c-70bc-4a92-b94b-fbc9cb91f421}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05.Environment_Objects\00.Grass\Body">
+      <UniqueIdentifier>{91a919f0-fb8c-48af-80d9-29e0eb10dba7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05.Environment_Objects\01.Bush\Body">
+      <UniqueIdentifier>{37a0ec89-35ac-4003-9b29-8145d999b3a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05.Environment_Objects\02.CheckPoint\Body">
+      <UniqueIdentifier>{570c83ab-159a-4e0c-a527-636f055cb471}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05.Environment_Objects\03.Urn\PartObjects">
+      <UniqueIdentifier>{c9bd6b49-875a-409b-a5d2-234b775295b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05.Environment_Objects\03.Urn\PartObjects\Body">
+      <UniqueIdentifier>{df653adc-26b8-4d38-8131-329cd467ee34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05.Environment_Objects\04.Chest\Body">
+      <UniqueIdentifier>{6a275086-9851-4651-a708-f79968b94766}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\State\Candleabra">
+      <UniqueIdentifier>{6788a5d5-cce3-4642-8f09-d209c9d22467}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\State\Sword">
+      <UniqueIdentifier>{3fa5e618-79aa-4fac-9671-8cf061b8965b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\State\Support">
+      <UniqueIdentifier>{27f7f9e3-bdef-47d0-823e-fa15693a094c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -463,31 +490,52 @@
       <Filter>02.GameObjects\03.Monsters\01. Blob\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Wizard_Candleabra.h">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\Candleabra</Filter>
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\00. Candleabra</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Wizard_Support.h">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\Support</Filter>
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\01. Support</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Wizard_Sword.h">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\Sword</Filter>
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\02. Sword</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Body_WizardCandleabra.h">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\Candleabra\Body</Filter>
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Body\Candleabra</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Body_WizardSupport.h">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\Support\Body</Filter>
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Body\Support</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Body_WizardSword.h">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\Sword\Body</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Part_WizardSword.h">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\Sword\Sword</Filter>
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Body\Sword</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Part_WizardCandleabra.h">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\Candleabra\Candleabra</Filter>
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Weapons\Candleabra</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Part_WizardStaff.h">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\Support\Staff</Filter>
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Weapons\Staff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Part_WizardSword.h">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Weapons\Sword</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Body_Grass.h">
+      <Filter>02.GameObjects\05.Environment_Objects\00.Grass\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Body_Bush.h">
+      <Filter>02.GameObjects\05.Environment_Objects\01.Bush\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Body_CheckPoint.h">
+      <Filter>02.GameObjects\05.Environment_Objects\02.CheckPoint\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Body_Chest.h">
+      <Filter>02.GameObjects\05.Environment_Objects\04.Chest\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Wizard_CandleabraState.h">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\State\Candleabra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Wizard_SupportState.h">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\State\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Wizard_SwordState.h">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\State\Sword</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -712,34 +760,55 @@
       <Filter>02.GameObjects\03.Monsters\00. Boss\SpiderTank\Body_SpiderTank</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Wizard_Candleabra.cpp">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\Candleabra</Filter>
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\00. Candleabra</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Wizard_Support.cpp">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\Support</Filter>
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\01. Support</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Wizard_Sword.cpp">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\Sword</Filter>
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\02. Sword</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BlobState.cpp">
       <Filter>02.GameObjects\03.Monsters\01. Blob\State</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Body_WizardCandleabra.cpp">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\Candleabra\Body</Filter>
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Body\Candleabra</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Body_WizardSupport.cpp">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\Support\Body</Filter>
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Body\Support</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Body_WizardSword.cpp">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\Sword\Body</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Part_WizardSword.cpp">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\Sword\Sword</Filter>
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Body\Sword</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Part_WizardCandleabra.cpp">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\Candleabra\Candleabra</Filter>
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Weapons\Candleabra</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Part_WizardStaff.cpp">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\Support\Staff</Filter>
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Weapons\Staff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Part_WizardSword.cpp">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Weapons\Sword</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Body_Grass.cpp">
+      <Filter>02.GameObjects\05.Environment_Objects\00.Grass\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Body_Bush.cpp">
+      <Filter>02.GameObjects\05.Environment_Objects\01.Bush\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Body_CheckPoint.cpp">
+      <Filter>02.GameObjects\05.Environment_Objects\02.CheckPoint\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Body_Chest.cpp">
+      <Filter>02.GameObjects\05.Environment_Objects\04.Chest\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Wizard_CandleabraState.cpp">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\State\Candleabra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Wizard_SupportState.cpp">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\State\Support</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Wizard_SwordState.cpp">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\State\Sword</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,8 @@
 #include "Grass.h"
 #include "GameInstance.h"
 
+#include "Body_Grass.h"
+
 CGrass::CGrass(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CEnvironment_Object{ pDevice, pContext }
 {
@@ -53,9 +55,17 @@ HRESULT CGrass::Ready_Components(void* pArg)
 	if (__super::Ready_Components(pArg))
 		return E_FAIL;
 
-	/* For.Com_Model */
-	if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Model_Grass"),
-		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
+	return S_OK;
+}
+
+HRESULT CGrass::Ready_PartObjects()
+{
+	CBody_Grass::DESC BodyDesc{};
+
+	BodyDesc.eLevelID = m_eLevelID;
+	BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+
+	if (FAILED(__super::Add_PartObject(PART_BODY, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Body_Grass"), &BodyDesc)))
 		return E_FAIL;
 
 	return S_OK;

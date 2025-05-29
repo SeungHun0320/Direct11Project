@@ -35,6 +35,8 @@ HRESULT CPart_WizardSword::Initialize(void* pArg)
     if (FAILED(Ready_Components(pArg)))
         return E_FAIL;
 
+    m_pTransformCom->Scaling(pDesc->vScale);
+
     return S_OK;
 }
 

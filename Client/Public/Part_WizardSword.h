@@ -17,8 +17,10 @@ class CPart_WizardSword final : public CPartObject
 public:
 	typedef struct tagPartSwordDesc : public CPartObject::DESC
 	{
-		const _float4x4* pSocketMatrix = { nullptr };
 		LEVEL eLevelID;
+		const _float4x4* pSocketMatrix = { nullptr };
+		_float3 vScale{};
+
 	}DESC;
 private:
 	CPart_WizardSword(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

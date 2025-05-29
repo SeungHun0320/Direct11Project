@@ -35,6 +35,7 @@ HRESULT CPart_WizardCandleabra::Initialize(void* pArg)
     if (FAILED(Ready_Components(pArg)))
         return E_FAIL;
 
+    m_pTransformCom->Rotation(XMConvertToRadians(0.f), XMConvertToRadians(90.f), XMConvertToRadians(0.f));
     return S_OK;
 }
 

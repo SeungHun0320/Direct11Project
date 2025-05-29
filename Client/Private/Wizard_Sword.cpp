@@ -27,8 +27,8 @@ HRESULT CWizard_Sword::Initialize(void* pArg)
 	if (FAILED(Ready_States()))
 		return E_FAIL;
 
-	m_fDetectDistance = 5.f;
-	m_fChaseStopDistance = 10.f;
+	m_fDetectDistance = 12.5f;
+	m_fChaseStopDistance = 30.f;
 
 	//Change_States(STATES::IDLE);
 
@@ -172,6 +172,7 @@ HRESULT CWizard_Sword::Ready_PartObjects()
 	SwordDesc.eLevelID = m_eLevelID;
 	SwordDesc.pSocketMatrix = dynamic_cast<CBody_WizardSword*>(m_PartObjects[PART_BODY])->Get_SocketMatrix("held_L");
 	SwordDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	SwordDesc.vScale = m_pTransformCom->Get_Scaled();
 
 	if (FAILED(__super::Add_PartObject(PART_SWORD, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Part_WizardSword"), &SwordDesc)))
 		return E_FAIL;

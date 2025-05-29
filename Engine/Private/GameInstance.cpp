@@ -5,6 +5,7 @@
 #include "PipeLine.h"
 #include "Sound_Device.h"
 #include "Input_Device.h"
+#include "Font_Manager.h"
 #include "Light_Manager.h"
 #include "Level_Manager.h"
 #include "Timer_Manager.h"
@@ -62,6 +63,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ ID
 
 	m_pLight_Manager = CLight_Manager::Create();
 	if (nullptr == m_pLight_Manager)
+		return E_FAIL;
+
+	m_pFont_Manager = CFont_Manager::Create(*ppDeviceOut, *ppContextOut);
+	if (nullptr == m_pFont_Manager)
 		return E_FAIL;
 
 	return S_OK;
@@ -279,8 +284,6 @@ const _float3& CGameInstance::Get_LocalMousePos()
 #pragma endregion
 
 #pragma region INPUT_DEVICE
-
-
 _byte CGameInstance::Get_DIKeyState(_ubyte eKeyID)
 {
 	return m_pInputDevice->Get_DIKeyState(eKeyID);
@@ -375,6 +378,7 @@ const _float4* CGameInstance::Get_CamPosition() const
 }
 #pragma endregion
 
+
 #pragma region LIGHT_MANAGER
 const LIGHT_DESC* CGameInstance::Get_Light(_uint iIndex)
 {
@@ -386,8 +390,22 @@ HRESULT CGameInstance::Add_Light(const LIGHT_DESC& LightDesc)
 }
 #pragma endregion
 
+
+#pragma region FONT_MANAGER
+HRESULT CGameInstance::Add_Font(const _wstring& strFontTag, const _tchar* pFontFilePath)
+{
+	return m_pFont_Manager->Add_Font(strFontTag, pFontFilePath);
+}
+void CGameInstance::Draw_Font(const _wstring& strFontTag, const _tchar* pText, const _float2& vPosition, _fvector vColor, _float fRotation, const _float2& vOrigin, _float fScale)
+{
+	m_pFont_Manager->Draw(strFontTag, pText, vPosition, vColor, fRotation, vOrigin, fScale);
+}
+#pragma endregion
+
 void CGameInstance::Release_Engine()
 {
+	Safe_Release(m_pFont_Manager);
+
 	Safe_Release(m_pPicking);
 
 	Safe_Release(m_pTimer_Manager);

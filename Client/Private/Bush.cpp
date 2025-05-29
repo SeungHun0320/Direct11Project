@@ -1,6 +1,8 @@
 #include "Bush.h"
 #include "GameInstance.h"
 
+#include "Body_Bush.h"
+
 CBush::CBush(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CEnvironment_Object{pDevice, pContext}
 {
@@ -49,12 +51,17 @@ HRESULT CBush::Render()
 
 HRESULT CBush::Ready_Components(void* pArg)
 {
-	if (__super::Ready_Components(pArg))
-		return E_FAIL;
+	return S_OK;
+}
 
-	/* For.Com_Model */
-	if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Model_Bush"),
-		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
+HRESULT CBush::Ready_PartObjects()
+{
+	CBody_Bush::DESC BodyDesc{};
+
+	BodyDesc.eLevelID = m_eLevelID;
+	BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+
+	if (FAILED(__super::Add_PartObject(PART_BODY, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Body_Bush"), &BodyDesc)))
 		return E_FAIL;
 
 	return S_OK;

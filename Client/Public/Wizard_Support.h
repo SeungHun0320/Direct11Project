@@ -54,8 +54,8 @@ public: /* 상태로 넘겨줄 함수들 */
 private: /* 상태 패턴 변수들 */
 	STATES m_eCurState{ STATES::STATES_END };
 	STATES m_ePreState{ STATES::STATES_END };
-	class CBlobState* m_pCurState = { nullptr };
-	class CBlobState* m_pStates[ENUM_CLASS(STATES::STATES_END)] = { nullptr };
+	class CWizard_SupportState* m_pCurState = { nullptr };
+	class CWizard_SupportState* m_pStates[ENUM_CLASS(STATES::STATES_END)] = { nullptr };
 
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;

@@ -1,6 +1,8 @@
 #include "CheckPoint.h"
 #include "GameInstance.h"
 
+#include "Body_CheckPoint.h"
+
 CCheckPoint::CCheckPoint(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CEnvironment_Object{pDevice, pContext}
 {
@@ -51,10 +53,17 @@ HRESULT CCheckPoint::Ready_Components(void* pArg)
 {
 	if (__super::Ready_Components(pArg))
 		return E_FAIL;
+	return S_OK;
+}
 
-	/* For.Com_Model */
-	if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Model_CheckPoint"),
-		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
+HRESULT CCheckPoint::Ready_PartObjects()
+{
+	CBody_CheckPoint::DESC BodyDesc{};
+
+	BodyDesc.eLevelID = m_eLevelID;
+	BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+
+	if (FAILED(__super::Add_PartObject(PART_BODY, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Body_CheckPoint"), &BodyDesc)))
 		return E_FAIL;
 
 	return S_OK;

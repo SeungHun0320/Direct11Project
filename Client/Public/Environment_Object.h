@@ -1,22 +1,23 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "GameObject.h"
+#include "ContainerObject.h"
 
-BEGIN(Engine)
-class CShader;
-class CModel;
-END
+
 
 BEGIN(Client)
 
-class CEnvironment_Object abstract : public CGameObject
+class CEnvironment_Object abstract : public CContainerObject
 {
 public:
-	typedef struct tagEnvironmentObjectDesc : public CGameObject::DESC
+	typedef struct tagEnvironmentObjectDesc : public CContainerObject::DESC
 	{
 		LEVEL eLevelID;
 	}DESC;
+
+public:
+	enum PART { PART_BODY, PART_EFFECT, PART_END };
+
 protected:
 	CEnvironment_Object(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CEnvironment_Object(const CEnvironment_Object& Prototype);
@@ -31,15 +32,11 @@ public:
 	virtual HRESULT Render();
 
 protected:
-	CShader* m_pShaderCom = { nullptr };
-	CModel* m_pModelCom = { nullptr };
-
-protected:
 	LEVEL m_eLevelID = { LEVEL::LEVEL_END };
 
 protected:
 	virtual HRESULT Ready_Components(void* pArg);
-	virtual HRESULT Bind_ShaderResources();
+	virtual HRESULT Ready_PartObjects() { return S_OK; };
 
 public:
 	virtual CGameObject* Clone(void* pArg) PURE;

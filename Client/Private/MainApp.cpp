@@ -42,6 +42,9 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(m_pGameInstance->Initialize_Engine(EngineDesc, &m_pDevice, &m_pContext)))
 		return E_FAIL;
 
+	if (FAILED(Ready_For_Fonts()))
+		return E_FAIL;
+
 	if (FAILED(Ready_Prototype_Component()))
 		return E_FAIL;
 
@@ -67,6 +70,8 @@ HRESULT CMainApp::Render()
 	m_pGameInstance->Begin_Draw();
 
 	m_pGameInstance->Draw();
+
+	//m_pGameInstance->Draw_Font(TEXT("Font_Money"), TEXT("배가 고파요"), _float2(0.f, 0.f), XMVectorSet(1.f, 0.f, 0.f, 1.f));
 
 	m_pGameInstance->End_Draw();
 
@@ -127,6 +132,21 @@ HRESULT CMainApp::Ready_Prototype_Object()
 HRESULT CMainApp::Ready_For_BGM()
 {
 	return m_pGameInstance->LoadSound("../Bin/Resources/Sounds/BGM", false, true);
+}
+
+HRESULT CMainApp::Ready_For_Fonts()
+{
+	/*MakeSpriteFont "배찌체" /FontSize:20 /FastPack /CharacterRegion:0x0020-0x00FF /CharacterRegion:0x3131-0x3163 /CharacterRegion:0xAC00-0xD800 /DefaultCharacter:0xAC00 151ex.spritefont */
+	/*MakeSpriteFont "국민연금체 Bold" /FontSize:20 /FastPack /CharacterRegion:0x0020-0x00FF /CharacterRegion:0x3131-0x3163 /CharacterRegion:0xAC00-0xD800 /DefaultCharacter:0xAC00 OdinRounded.spritefont */
+	/* MakeSpriteFont "예스체" /FontSize:20 /FastPack /CharacterRegion:0x0020-0x00FF /CharacterRegion:0x3131-0x3163 /CharacterRegion:0xAC00-0xD800 /DefaultCharacter:0xAC00 OdinRounded.spritefont*/
+	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font_151"), TEXT("../Bin/Resources/Fonts/151ex.spritefont"))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font_Money"), TEXT("../Bin/Resources/Fonts/CityzenMoney.spritefont"))))
+		return E_FAIL;
+
+
+	return S_OK;
 }
 
 HRESULT CMainApp::Start_Level(LEVEL eStartLevel)
