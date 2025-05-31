@@ -36,7 +36,6 @@ private:
 
 private:
 	LEVEL m_eLevelID = { LEVEL::LEVEL_END };
-	_int m_iSoonseo = {};
 
 private:
 	HRESULT Ready_Components(void* pArg);
