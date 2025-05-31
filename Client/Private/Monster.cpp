@@ -87,7 +87,10 @@ _bool CMonster::Find_Player()
 
 const _vector CMonster::Get_TargetPosition() const
 {
-	return m_pTargetTransform->Get_State(STATE::POSITION);
+	if(nullptr != m_pTargetTransform)
+		return m_pTargetTransform->Get_State(STATE::POSITION);
+
+	return XMVectorSet(0.f, 0.f, 0.f, 0.f);
 }
 
 HRESULT CMonster::Ready_Components(void* pArg)

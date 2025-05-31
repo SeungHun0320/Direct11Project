@@ -100,6 +100,7 @@ public:
 	void LookAtLerpEx(_fvector vAt, _float fTimeDelta, _float fLerpSpeed);
 	void LookDir(_fvector vDir);
 	void LookDirLerp(_fvector vTargetDir, _float fTimeDelta, _float fRatio);
+	void LookAtYaw(_vector vDir, _float fLerpRatio);
 
 public:
 	HRESULT Bind_ShaderResource(class CShader* pShader, const _char* pConstantName);

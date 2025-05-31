@@ -29,6 +29,11 @@ public:
 	virtual HRESULT Render();
 
 public:
+	virtual _bool Is_CurrentAnim(_uint iNextIndex) override;
+	virtual _bool Play_Animation(_float fTimeDelta) override;
+	virtual void  Change_Animation(_uint iNextIndex, _bool isLoop = true, _float fBlendDuration = 0.f, _bool isBlend = true) override;
+	virtual void  Set_TrackPosition(_float fTrackPosition) override;
+	virtual void  Set_TickPerSecond(_float fTickPerSecond) override;
 
 private:
 	CShader* m_pShaderCom = { nullptr };
@@ -36,6 +41,7 @@ private:
 
 private:
 	LEVEL m_eLevelID = { LEVEL::LEVEL_END };
+	_int m_iSoonseo = {};
 
 private:
 	HRESULT Ready_Components(void* pArg);

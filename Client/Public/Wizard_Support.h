@@ -14,8 +14,8 @@ public:
 public:
 	enum PART { PART_BODY, PART_STAFF, PART_EFFECT, PART_END };
 
-	enum ANIM_TYPE { IDLE, ATTACK, JUMP, ANIM_END };
-	enum class STATES { IDLE, ATTACK, JUMP, HIT, STATES_END };
+	enum ANIM_TYPE { IDLE, CASTING_START, PINCH, TELEPORT, FORWARD, CASTING, DEAD, ANIM_END };
+	enum class STATES { IDLE, CASTING, HIT, TELEPORT, MOVE, DEAD, STATES_END };
 
 private:
 	CWizard_Support(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -33,6 +33,7 @@ public:
 public: /* 상태패턴 관련 함수들 */
 	void Change_States(STATES eStates);
 	_vector Get_State(STATE eState);
+	void    Set_State(STATE eState, _fvector vState);
 
 public: /* 상태로 넘겨줄 함수들 */
 	/* 애니메이션 관련 */
@@ -45,17 +46,20 @@ public: /* 상태로 넘겨줄 함수들 */
 	void Move(_fvector vDir, _float fTimeDelta, _float fSpeed = 0.f);
 	void Hit(_fvector vDir, _float fTimeDelta, _float fSpeed = 0.f);
 	void Turn(_fvector vAxis, _float fTimeDelta);
+	void LookAt(_fvector vDir, _float fTimeDelta, _float fSpeed);
 
-	/* 상태 관련 ?*/
-	_float3 Get_Scaled();
-	void Scaling(_float3 vScale);
-	void Scaling(_float fX = 1.f, _float fY = 1.f, _float fZ = 1.f);
+	_float Get_CastingDistance() {
+		return m_fCastingDistance;
+	}
 
 private: /* 상태 패턴 변수들 */
 	STATES m_eCurState{ STATES::STATES_END };
 	STATES m_ePreState{ STATES::STATES_END };
 	class CWizard_SupportState* m_pCurState = { nullptr };
 	class CWizard_SupportState* m_pStates[ENUM_CLASS(STATES::STATES_END)] = { nullptr };
+
+private: /* 이 놈 전용 변수들 */
+	_float m_fCastingDistance = {};
 
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;

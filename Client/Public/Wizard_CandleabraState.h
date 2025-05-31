@@ -83,7 +83,7 @@ public: // CWizard_Candleabra을(를) 통해 상속됨
 private:
 	_float m_fChaseDistance{};
 	_float m_fAttackDistnace{};
-	_float3 m_vTargetDir{};
+	_float3 m_vTargetPos{};
 
 public:
 	virtual void Free() override;
@@ -102,7 +102,7 @@ public: // CWizard_Candleabra을(를) 통해 상속됨
 
 private:
 	_float m_fChaseDistance{};
-	_float3 m_vTargetDir{};
+	_float3 m_vTargetPos{};
 
 public:
 	virtual void Free() override;
@@ -121,7 +121,7 @@ public: // CWizard_Candleabra을(를) 통해 상속됨
 
 private:
 	_float m_fMaxDistance{};
-	_float3 m_vTargetDir{};
+	_float3 m_vTargetPos{};
 
 public:
 	virtual void Free() override;

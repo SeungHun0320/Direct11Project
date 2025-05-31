@@ -59,7 +59,7 @@ LIFE CPlayer::Update(_float fTimeDelta)
 	//if (m_bDead)
 	//	return LIFE::DEAD;
 
-	Key_Input(fTimeDelta);
+	//Key_Input(fTimeDelta);
 	Stamina_Recovery(fTimeDelta);
 
 	if (m_eCurState != m_ePreState)
@@ -165,6 +165,7 @@ _vector CPlayer::Get_InputDirection()
 	if (KeyPressing(DIK_D))
 		vInputDir += DIR_BACKWARDRIGHT;
 
+	// 인풋 Dir이 입력 받지 않았다면, 본래 플레이어의 룩을 갖고옴
 	if (XMVector3Equal(vInputDir, XMVectorZero()))
 		vInputDir = m_pTransformCom->Get_State(STATE::LOOK);
 

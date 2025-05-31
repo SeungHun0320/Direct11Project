@@ -28,6 +28,7 @@ HRESULT CPart_WizardStaff::Initialize(void* pArg)
 
     m_eLevelID = pDesc->eLevelID;
     m_pSocketMatrix = pDesc->pSocketMatrix;
+    m_pParentState = pDesc->pParentState;
 
     if (FAILED(__super::Initialize(pArg)))
         return E_FAIL;
@@ -58,6 +59,9 @@ void CPart_WizardStaff::Late_Update(_float fTimeDelta)
 
     XMStoreFloat4x4(&m_CombinedWorldMatrix,
         XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Float4x4()) * BoneMatrix * XMLoadFloat4x4(m_pParentMatrix));
+
+    if (CWizard_Support::STATES::TELEPORT == *m_pParentState)
+        return;
 
     m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 }

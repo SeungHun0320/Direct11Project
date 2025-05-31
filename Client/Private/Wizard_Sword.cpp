@@ -4,6 +4,8 @@
 #include "Body_WizardSword.h"
 #include "Part_WizardSword.h"
 
+#include "Wizard_SwordState.h"
+
 CWizard_Sword::CWizard_Sword(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CMonster{ pDevice, pContext }
 {
@@ -30,7 +32,13 @@ HRESULT CWizard_Sword::Initialize(void* pArg)
 	m_fDetectDistance = 12.5f;
 	m_fChaseStopDistance = 30.f;
 
-	//Change_States(STATES::IDLE);
+	if (LEVEL::TOOLS != m_eLevelID)
+	{
+		if (1.f == m_pTransformCom->Get_SpeedPerSec())
+			Change_States(STATES::PRAY);
+		else
+			Change_States(STATES::IDLE);
+	}
 
 	return S_OK;
 }
@@ -47,20 +55,22 @@ LIFE CWizard_Sword::Update(_float fTimeDelta)
 
 	if (KEY_DOWN(DIK_2))
 	{
-		//Change_States(STATES::HIT);
+		Change_States(STATES::HIT);
 	}
+	if (KEY_DOWN(DIK_3))
+		Change_States(STATES::DEAD);
 
 
-	//if (m_pCurState)
-	//{
-	//	if (m_eCurState != m_ePreState)
-	//	{
-	//		m_pCurState->Enter(fTimeDelta);
-	//		m_ePreState = m_eCurState;
-	//	}
+	if (m_pCurState)
+	{
+		if (m_eCurState != m_ePreState)
+		{
+			m_pCurState->Enter(fTimeDelta);
+			m_ePreState = m_eCurState;
+		}
 
-	//	m_pCurState->Execute(fTimeDelta);
-	//}
+		m_pCurState->Execute(fTimeDelta);
+	}
 
 	return	__super::Update(fTimeDelta);
 }
@@ -77,16 +87,16 @@ HRESULT CWizard_Sword::Render()
 
 void CWizard_Sword::Change_States(STATES eStates)
 {
-	//if (m_pCurState)
-	//	m_pCurState->Exit();
+	if (m_pCurState)
+		m_pCurState->Exit();
 
-	//if (nullptr != m_pCurState)
-	//	Safe_Release(m_pCurState);
+	if (nullptr != m_pCurState)
+		Safe_Release(m_pCurState);
 
-	//m_pCurState = m_pStates[ENUM_CLASS(eStates)];
-	//Safe_AddRef(m_pCurState);
+	m_pCurState = m_pStates[ENUM_CLASS(eStates)];
+	Safe_AddRef(m_pCurState);
 
-	//m_eCurState = eStates;
+	m_eCurState = eStates;
 }
 
 _vector CWizard_Sword::Get_State(STATE eState)
@@ -134,19 +144,9 @@ void CWizard_Sword::Turn(_fvector vAxis, _float fTimeDelta)
 	m_pTransformCom->Turn(vAxis, fTimeDelta);
 }
 
-_float3 CWizard_Sword::Get_Scaled()
+void CWizard_Sword::LookAt(_fvector vDir, _float fTimeDelta, _float fSpeed)
 {
-	return m_pTransformCom->Get_Scaled();
-}
-
-void CWizard_Sword::Scaling(_float3 vScale)
-{
-	m_pTransformCom->Scaling(vScale);
-}
-
-void CWizard_Sword::Scaling(_float fX, _float fY, _float fZ)
-{
-	m_pTransformCom->Scaling(fX, fY, fZ);
+	m_pTransformCom->LookAtLerpEx(vDir, fTimeDelta, fSpeed);
 }
 
 HRESULT CWizard_Sword::Ready_Components(void* pArg)
@@ -184,6 +184,19 @@ HRESULT CWizard_Sword::Ready_PartObjects()
 
 HRESULT CWizard_Sword::Ready_States()
 {
+	m_pStates[ENUM_CLASS(STATES::IDLE)]		= new CWizard_SwordState_Idle(this);
+	m_pStates[ENUM_CLASS(STATES::PRAY)]		= new CWizard_SwordState_Pray(this);
+	m_pStates[ENUM_CLASS(STATES::DETECTED)] = new CWizard_SwordState_Detected(this);
+	m_pStates[ENUM_CLASS(STATES::ATTACK)]	= new CWizard_SwordState_Attack(this);
+	m_pStates[ENUM_CLASS(STATES::MOVE)]		= new CWizard_SwordState_Move(this);
+	m_pStates[ENUM_CLASS(STATES::HIT)]		= new CWizard_SwordState_Hit(this);
+	m_pStates[ENUM_CLASS(STATES::DEAD)]		= new CWizard_SwordState_Dead(this);
+
+	for (_uint i = 0; i < ENUM_CLASS(STATES::STATES_END); i++)
+	{
+		if (nullptr == m_pStates[i])
+			return E_FAIL;
+	}
 
 	return S_OK;
 }
@@ -218,8 +231,8 @@ void CWizard_Sword::Free()
 {
 	__super::Free();
 
-	//Safe_Release(m_pCurState);
+	Safe_Release(m_pCurState);
 
-	//for (_uint i = 0; i < ENUM_CLASS(STATES::STATES_END); i++)
-	//	Safe_Release(m_pStates[i]);
+	for (_uint i = 0; i < ENUM_CLASS(STATES::STATES_END); i++)
+		Safe_Release(m_pStates[i]);
 }

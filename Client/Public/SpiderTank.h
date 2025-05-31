@@ -15,6 +15,29 @@ public:
 public:
 	enum PART { PART_BODY, PART_EFFECT, PART_END };
 
+	enum ANIM_STATE {
+		//NONE은 사용안함 ( 나중에 혹시 모름 )
+		SLEEP, WAKE_UP,
+		FORWARD, BACKWARD, RIGHT, LEFT, NONE1, NONE2,
+		IDLE, KNOCKBACK, DEAD_START, DEAD, NONE3,
+		NONE4, REVERSE, LAGER, SPAWNMOB,
+		L_ATTACK, MID_ATTACK, R_ATTACK,
+		NONE5, NONE6, R_SWING,
+		READY_SHOT, SHOT, END_SHOT, NONE7, NONE8,
+		FULLSWING, L_SWING,
+		READY_BOMB, SHOT_BOMB, END_BOMB, PINCH
+	};
+
+	enum class STATES {
+		SLEEP, WAKE_UP, IDLE,
+		FORWARD, BACKWARD, RTURN, LTURN, REVERSE,
+		LAGER, SPAWNMOB,
+		FAST_ATTACK, SWING, FULLSWING,
+		READY_SHOT, SHOT, END_SHOT,
+		READY_BOMB, SHOT_BOMB, END_BOMB,
+		PINCH, KNOCKBACK, DEAD, STATES_END
+	};
+
 private:
 	CSpiderTank(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CSpiderTank(const CSpiderTank& Prototype);
@@ -28,9 +51,43 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public: /* 상태패턴 관련 함수들 */
+	void Change_States(STATES eStates);
+	_vector Get_State(STATE eState);
+
+public: /* 상태로 넘겨줄 함수들 */
+	/* 애니메이션 관련 */
+	_bool Is_CurrentAnim(PART ePart, _uint iNextIndex);
+	_bool Play_Animation(PART ePart, _float fTimeDelta);
+	void  Change_Animation(PART ePart, _uint iNextIndex, _bool isLoop = true, _float fBlendDuration = 0.f, _bool isBlend = true);
+	void  Set_TrackPosition(PART ePart, _float fTrackPosition);
+	void  Set_TickPerSecond(PART ePart, _float fTickPerSecond);
+
+	/* 이동 관련 */
+	void Go_Straight(_float fTimeDelta);
+	void Go_Dir(_fvector vDir, _float fTimeDelta, _float fSpeed);
+	_bool Go_Target(_fvector vTarget, _float fTimeDelta, _float fSpeed = 0.f, _float fMinDistance = 2.f);
+	void Move(_fvector vDir, _float fTimeDelta, _float fSpeed = 0.f);
+	void Hit(_fvector vDir, _float fTimeDelta, _float fSpeed = 0.f);
+
+	void Turn(_fvector vAxis, _float fTimeDelta);
+	void LookAt(_fvector vDir, _float fTimeDelta, _float fSpeed);
+	void LookAtYaw(_vector vDir, _float fLerpRatio);
+
+	_float Compute_AngleToPlayer();
+	_bool Is_TargetOnRight();
+
+
+private: /* 상태 패턴들 */
+	STATES m_eCurState{ STATES::STATES_END };
+	STATES m_ePreState{ STATES::STATES_END };
+	class CSpiderTankState* m_pCurState = { nullptr };
+	class CSpiderTankState* m_pStates[ENUM_CLASS(STATES::STATES_END)] = { nullptr };
+
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;
 	virtual HRESULT Ready_PartObjects() override;
+	virtual HRESULT Ready_States() override;
 
 public:
 	static CSpiderTank* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

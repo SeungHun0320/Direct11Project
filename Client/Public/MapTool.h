@@ -109,7 +109,7 @@ private: /* 저장 불러오기, 오브젝트 배치 수정 완 */
 
 private:
 	HRESULT Craete_Camera(const _wstring& strLayerTag);
-
+	HRESULT Create_Sky(const _wstring& strLayerTag);
 
 public:
 	static CMapTool* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

@@ -25,7 +25,9 @@ public:
 	virtual HRESULT Render() override;
 
 public:
+	virtual _bool Is_CurrentAnim(_uint iNextIndex) { return true; };
 	virtual _bool Play_Animation(_float fTimeDelta) { return true; };
+	virtual void Set_TickPerSecond(_float fTickPerSecond) {};
 	virtual void Change_Animation(_uint iNextIndex, _bool isLoop, _float fBlendDuration, _bool isBlend) {};
 	virtual void Set_MeshVisible(_uint iIndex, _bool IsVisible) {};
 	virtual void Set_TrackPosition(_float fTrackPosition) {};

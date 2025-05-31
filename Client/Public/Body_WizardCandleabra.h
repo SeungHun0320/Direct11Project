@@ -36,9 +36,9 @@ public:
 	virtual HRESULT Render();
 
 public:
-	_bool Play_Animation(_float fTimeDelta);
-	 void Change_Animation(_uint iNextIndex, _bool isLoop = true, _float fBlendDuration = 0.f, _bool isBlend = true);
-	 void  Set_TrackPosition(_float fTrackPosition);
+	virtual _bool Play_Animation(_float fTimeDelta) override;
+	virtual void Change_Animation(_uint iNextIndex, _bool isLoop = true, _float fBlendDuration = 0.f, _bool isBlend = true) override;
+	virtual void  Set_TrackPosition(_float fTrackPosition) override;
 
 private:
 	CShader* m_pShaderCom = { nullptr };

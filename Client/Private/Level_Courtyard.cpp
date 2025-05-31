@@ -2,6 +2,7 @@
 #include "Level_Loading.h"
 
 #include "Terrain.h"
+#include "Sky.h"
 #include "Courtyard.h"
 
 #include "Player.h"
@@ -25,7 +26,7 @@ CLevel_Courtyard::CLevel_Courtyard(ID3D11Device* pDevice, ID3D11DeviceContext* p
 
 HRESULT CLevel_Courtyard::Initialize()
 {
-	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
+	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
 		return E_FAIL;
 
 	//if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
@@ -162,25 +163,7 @@ HRESULT CLevel_Courtyard::Ready_Layer_Camera(const _wstring& strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_Courtyard::Ready_Layer_Monster(const _wstring& strLayerTag)
-{
-	CMonster::DESC tDesc = {};
-
-	tDesc.eLevelID = CurLevel;
-	tDesc.fSpeedPerSec = 20.f;
-	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
-	tDesc.strName = TEXT("SpiderTank");
-	tDesc.WorldMatrix = XMMatrixTranslation(0.f, 0.f, -80.f);
-	tDesc.iNumPartObjects = CSpiderTank::PART_END;
-
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + tDesc.strName,
-		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
-		return E_FAIL;
-
-	return S_OK;
-}
-
-HRESULT CLevel_Courtyard::Ready_Layer_Terrain(const _wstring& strLayerTag)
+HRESULT CLevel_Courtyard::Ready_Layer_BackGround(const _wstring& strLayerTag)
 {
 	CTerrain::DESC tDesc = {};
 	tDesc.eLevelID = CurLevel;
@@ -190,6 +173,16 @@ HRESULT CLevel_Courtyard::Ready_Layer_Terrain(const _wstring& strLayerTag)
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + tDesc.strName,
 		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
+		return E_FAIL;
+
+	CSky::DESC tSkyDesc = {};
+	tSkyDesc.eLevelID = CurLevel;
+	tSkyDesc.fSpeedPerSec = 0.f;
+	tSkyDesc.fRotationPerSec = 0.f;
+	tSkyDesc.strName = TEXT("Sky");
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + tSkyDesc.strName,
+		ENUM_CLASS(tSkyDesc.eLevelID), strLayerTag, &tSkyDesc)))
 		return E_FAIL;
 
 	return S_OK;

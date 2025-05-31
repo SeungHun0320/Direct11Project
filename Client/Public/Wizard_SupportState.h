@@ -39,7 +39,46 @@ public:
 	CWizard_SupportState_Idle(class CWizard_Support* pOwner);
 	virtual ~CWizard_SupportState_Idle() = default;
 
-public: // CWizard_Candleabra을(를) 통해 상속됨
+public: // CWizard_SupportState을(를) 통해 상속됨
+	void Enter(_float fTimeDelta) override;
+	void Execute(_float fTimeDelta) override;
+	void Exit() override;
+
+private:
+	_float m_fCheckTime = {};
+
+public:
+	virtual void Free() override;
+};
+
+class CWizard_SupportState_Casting final : public CWizard_SupportState
+{
+public:
+	CWizard_SupportState_Casting(class CWizard_Support* pOwner);
+	virtual ~CWizard_SupportState_Casting() = default;
+
+public: // CWizard_SupportState을(를) 통해 상속됨
+	void Enter(_float fTimeDelta) override;
+	void Execute(_float fTimeDelta) override;
+	void Exit() override;
+
+private:
+	_bool  m_IsCasting = { false };
+	_float m_fCastingTimeAcc = {};
+	_float m_fCastingTime = {};
+	_float3 m_vTargetDir{};
+
+public:
+	virtual void Free() override;
+};
+
+class CWizard_SupportState_Hit final : public CWizard_SupportState
+{
+public:
+	CWizard_SupportState_Hit(class CWizard_Support* pOwner);
+	virtual ~CWizard_SupportState_Hit() = default;
+
+public: // CWizard_SupportState을(를) 통해 상속됨
 	void Enter(_float fTimeDelta) override;
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
@@ -48,43 +87,13 @@ public:
 	virtual void Free() override;
 };
 
-class CWizard_SupportState_Detected final : public CWizard_SupportState
+class CWizard_SupportState_Teleport final : public CWizard_SupportState
 {
 public:
-	CWizard_SupportState_Detected(class CWizard_Support* pOwner);
-	virtual ~CWizard_SupportState_Detected() = default;
+	CWizard_SupportState_Teleport(class CWizard_Support* pOwner);
+	virtual ~CWizard_SupportState_Teleport() = default;
 
-public: // CWizard_Candleabra을(를) 통해 상속됨
-	void Enter(_float fTimeDelta) override;
-	void Execute(_float fTimeDelta) override;
-	void Exit() override;
-
-public:
-	virtual void Free() override;
-};
-
-class CWizard_SupportState_Guard final : public CWizard_SupportState
-{
-public:
-	CWizard_SupportState_Guard(class CWizard_Support* pOwner);
-	virtual ~CWizard_SupportState_Guard() = default;
-
-public: // CWizard_Candleabra을(를) 통해 상속됨
-	void Enter(_float fTimeDelta) override;
-	void Execute(_float fTimeDelta) override;
-	void Exit() override;
-
-public:
-	virtual void Free() override;
-};
-
-class CWizard_SupportState_Attack final : public CWizard_SupportState
-{
-public:
-	CWizard_SupportState_Attack(class CWizard_Support* pOwner);
-	virtual ~CWizard_SupportState_Attack() = default;
-
-public: // CWizard_Candleabra을(를) 통해 상속됨
+public: // CWizard_SupportState을(를) 통해 상속됨
 	void Enter(_float fTimeDelta) override;
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
@@ -99,25 +108,13 @@ public:
 	CWizard_SupportState_Move(class CWizard_Support* pOwner);
 	virtual ~CWizard_SupportState_Move() = default;
 
-public: // CWizard_Candleabra을(를) 통해 상속됨
+public: // CWizard_SupportState을(를) 통해 상속됨
 	void Enter(_float fTimeDelta) override;
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
 
-public:
-	virtual void Free() override;
-};
-
-class CWizard_SupportState_Hit final : public CWizard_SupportState
-{
-public:
-	CWizard_SupportState_Hit(class CWizard_Support* pOwner);
-	virtual ~CWizard_SupportState_Hit() = default;
-
-public: // CWizard_Candleabra을(를) 통해 상속됨
-	void Enter(_float fTimeDelta) override;
-	void Execute(_float fTimeDelta) override;
-	void Exit() override;
+private:
+	_float3 m_vTargetDir{};
 
 public:
 	virtual void Free() override;
@@ -129,7 +126,7 @@ public:
 	CWizard_SupportState_Dead(class CWizard_Support* pOwner);
 	virtual ~CWizard_SupportState_Dead() = default;
 
-public: // CWizard_Candleabra을(를) 통해 상속됨
+public: // CWizard_SupportState을(를) 통해 상속됨
 	void Enter(_float fTimeDelta) override;
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
@@ -137,5 +134,6 @@ public: // CWizard_Candleabra을(를) 통해 상속됨
 public:
 	virtual void Free() override;
 };
+
 
 END

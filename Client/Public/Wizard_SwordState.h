@@ -39,10 +39,31 @@ public:
 	CWizard_SwordState_Idle(class CWizard_Sword* pOwner);
 	virtual ~CWizard_SwordState_Idle() = default;
 
-public: // CWizard_Candleabra을(를) 통해 상속됨
+public: // CWizard_SwordState을(를) 통해 상속됨
 	void Enter(_float fTimeDelta) override;
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
+
+private:
+	_float m_fCheckTime = {};
+
+public:
+	virtual void Free() override;
+};
+
+class CWizard_SwordState_Pray final : public CWizard_SwordState
+{
+public:
+	CWizard_SwordState_Pray(class CWizard_Sword* pOwner);
+	virtual ~CWizard_SwordState_Pray() = default;
+
+public: // CWizard_SwordState을(를) 통해 상속됨
+	void Enter(_float fTimeDelta) override;
+	void Execute(_float fTimeDelta) override;
+	void Exit() override;
+
+private:
+	_float m_fCheckTime = {};
 
 public:
 	virtual void Free() override;
@@ -54,22 +75,7 @@ public:
 	CWizard_SwordState_Detected(class CWizard_Sword* pOwner);
 	virtual ~CWizard_SwordState_Detected() = default;
 
-public: // CWizard_Candleabra을(를) 통해 상속됨
-	void Enter(_float fTimeDelta) override;
-	void Execute(_float fTimeDelta) override;
-	void Exit() override;
-
-public:
-	virtual void Free() override;
-};
-
-class CWizard_SwordState_Guard final : public CWizard_SwordState
-{
-public:
-	CWizard_SwordState_Guard(class CWizard_Sword* pOwner);
-	virtual ~CWizard_SwordState_Guard() = default;
-
-public: // CWizard_Candleabra을(를) 통해 상속됨
+public: // CWizard_SwordState을(를) 통해 상속됨
 	void Enter(_float fTimeDelta) override;
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
@@ -84,14 +90,19 @@ public:
 	CWizard_SwordState_Attack(class CWizard_Sword* pOwner);
 	virtual ~CWizard_SwordState_Attack() = default;
 
-public: // CWizard_Candleabra을(를) 통해 상속됨
+public: // CWizard_SwordState을(를) 통해 상속됨
 	void Enter(_float fTimeDelta) override;
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
 
+private:
+	_byte m_byRandom{};
+	_float3 m_vTargetPos{};
+
 public:
 	virtual void Free() override;
 };
+
 
 class CWizard_SwordState_Move final : public CWizard_SwordState
 {
@@ -99,10 +110,13 @@ public:
 	CWizard_SwordState_Move(class CWizard_Sword* pOwner);
 	virtual ~CWizard_SwordState_Move() = default;
 
-public: // CWizard_Candleabra을(를) 통해 상속됨
+public: // CWizard_SwordState을(를) 통해 상속됨
 	void Enter(_float fTimeDelta) override;
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
+
+private:
+	_float3 m_vTargetPos{};
 
 public:
 	virtual void Free() override;
@@ -114,7 +128,7 @@ public:
 	CWizard_SwordState_Hit(class CWizard_Sword* pOwner);
 	virtual ~CWizard_SwordState_Hit() = default;
 
-public: // CWizard_Candleabra을(를) 통해 상속됨
+public: // CWizard_SwordState을(를) 통해 상속됨
 	void Enter(_float fTimeDelta) override;
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
@@ -129,7 +143,7 @@ public:
 	CWizard_SwordState_Dead(class CWizard_Sword* pOwner);
 	virtual ~CWizard_SwordState_Dead() = default;
 
-public: // CWizard_Candleabra을(를) 통해 상속됨
+public: // CWizard_SwordState을(를) 통해 상속됨
 	void Enter(_float fTimeDelta) override;
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;

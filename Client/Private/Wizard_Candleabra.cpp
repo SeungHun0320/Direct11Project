@@ -33,7 +33,9 @@ HRESULT CWizard_Candleabra::Initialize(void* pArg)
 	m_fDetectDistance = 12.5f;
 	m_fChaseStopDistance = 30.f;
 
-	Change_States(STATES::IDLE);
+	if(LEVEL::TOOLS != m_eLevelID)
+		Change_States(STATES::IDLE);
+
 	return S_OK;
 }
 
@@ -44,8 +46,6 @@ void CWizard_Candleabra::Priority_Update(_float fTimeDelta)
 
 LIFE CWizard_Candleabra::Update(_float fTimeDelta)
 {
-	if (m_bDead)
-		return LIFE::DEAD;
 
 	if (KEY_DOWN(DIK_2))
 	{
@@ -165,7 +165,7 @@ HRESULT CWizard_Candleabra::Ready_PartObjects()
 	SwordDesc.eLevelID = m_eLevelID;
 	SwordDesc.pSocketMatrix = dynamic_cast<CBody_WizardCandleabra*>(m_PartObjects[PART_BODY])->Get_SocketMatrix("held_L");
 	SwordDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
-	SwordDesc.vScale = m_pTransformCom->Get_Scaled();
+	SwordDesc.vScale = _float3(1.25f, 1.25f, 1.25f);
 
 	if (FAILED(__super::Add_PartObject(PART_SWORD, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Part_WizardSword"), &SwordDesc)))
 		return E_FAIL;

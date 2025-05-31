@@ -54,6 +54,14 @@ public:
 		return m_fDetectDistance;
 	}
 
+	const _float Get_PreferredDistance() const {
+		return m_fPreferredDistance;
+	}
+
+	void Set_PreferrendDistance(_float fPreferredDistance) {
+		m_fPreferredDistance = fPreferredDistance;
+	}
+
 	const _vector Get_TargetPosition() const;
 
 
@@ -68,6 +76,7 @@ protected: /* 상태 관련 변수들 */
 	_float m_fDistanceToPlayer = {};
 	_float m_fDetectDistance = {};
 	_float m_fChaseStopDistance = {};
+	_float m_fPreferredDistance = {};
 	_bool  m_IsFind = {};
 
 protected:

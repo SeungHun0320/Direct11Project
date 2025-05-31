@@ -11,6 +11,9 @@
 #include "Item.h"
 #include "Monster.h"
 
+#include "SpiderTank.h"
+#include "Sky.h"
+
 #define CurLevel LEVEL::ARENA
 
 CLevel_Arena::CLevel_Arena(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -21,10 +24,16 @@ CLevel_Arena::CLevel_Arena(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 HRESULT CLevel_Arena::Initialize()
 {
+	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_Pawn(TEXT("Layer_Pawn"))))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
 		return E_FAIL;
 
 	if (FAILED(Load_Map(TEXT("Arena.Map"))))
@@ -56,7 +65,7 @@ void CLevel_Arena::Update(_float fTimeDelta)
 
 HRESULT CLevel_Arena::Render()
 {
-	SetWindowText(g_hWnd, TEXT("상점레벨입니다."));
+	SetWindowText(g_hWnd, TEXT("보스레벨입니다."));
 
 	return S_OK;
 }
@@ -64,7 +73,7 @@ HRESULT CLevel_Arena::Render()
 HRESULT CLevel_Arena::Ready_Layer_Pawn(const _wstring& strLayerTag)
 {
 	//이 레벨의 플레이어 생성위치
-	_float3 vInitPosition = { 0.f, 10.f, 190.f };
+	_float3 vInitPosition = { 0.f, 8.f, 190.f };
 
 	// 플레이어가 있는지 체크하고 있으면 위치만 변경해줌.
 	auto pPlayer = GET_PLAYER;
@@ -105,7 +114,7 @@ HRESULT CLevel_Arena::Ready_Layer_Camera(const _wstring& strLayerTag)
 
 	tDesc.eLevelID = CurLevel;
 	tDesc.fSensor = 1.5f;
-	tDesc.vOffset = _float3(-7.f, 11.f, -7.f);
+	tDesc.vOffset = _float3(-15.f, 30.f, -15.f);
 	tDesc.fDeadZoneX = 2.5f;
 	tDesc.fDeadZoneZ = 2.5f;
 	tDesc.pTarget = pPlayer;
@@ -122,6 +131,40 @@ HRESULT CLevel_Arena::Ready_Layer_Camera(const _wstring& strLayerTag)
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + tDesc.strName,
 		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Arena::Ready_Layer_Monster(const _wstring& strLayerTag)
+{
+	CMonster::DESC tDesc = {};
+
+	tDesc.eLevelID = CurLevel;
+	tDesc.fSpeedPerSec = 20.f;
+	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
+	tDesc.strName = TEXT("SpiderTank");
+	tDesc.WorldMatrix = XMMatrixTranslation( 0.f, 8.f, 200.f );
+	tDesc.iNumPartObjects = CSpiderTank::PART_END;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + tDesc.strName,
+		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
+		return E_FAIL;
+
+	return S_OK;
+
+}
+
+HRESULT CLevel_Arena::Ready_Layer_BackGround(const _wstring& strLayerTag)
+{
+	CSky::DESC tSkyDesc = {};
+	tSkyDesc.eLevelID = CurLevel;
+	tSkyDesc.fSpeedPerSec = 0.f;
+	tSkyDesc.fRotationPerSec = 0.f;
+	tSkyDesc.strName = TEXT("Sky");
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + tSkyDesc.strName,
+		ENUM_CLASS(tSkyDesc.eLevelID), strLayerTag, &tSkyDesc)))
 		return E_FAIL;
 
 	return S_OK;

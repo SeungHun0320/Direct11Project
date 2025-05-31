@@ -3,6 +3,8 @@
 
 #include "Camera_Free.h"
 
+#include "Sky.h"
+
 /* ¸Ê */
 #include "Courtyard.h"
 #include "Arena.h"
@@ -68,7 +70,7 @@ void CMapTool::Add_ListBoxName()
 			if (Pair.first.find(KeyWord) != _wstring::npos)
 			{
 				m_ProtoEnvironmentNames.push_back(m_pGameInstance->WStringToString(Pair.first));
-				if (Pair.first.find(L"Body") != _wstring::npos)
+				if (Pair.first.find(L"Body") != _wstring::npos || Pair.first.find(L"Part") != _wstring::npos)
 					m_ProtoEnvironmentNames.pop_back();
 			}
 
@@ -1086,6 +1088,12 @@ HRESULT CMapTool::Load_Map(const _string& strMapPath)
 		return E_FAIL;
 	}
 
+	if (FAILED(Create_Sky(TEXT("Layer_Sky"))))
+	{
+		MSG_BOX("Àú´Â ¹¹ ¾îÂ¼±¸");
+		return E_FAIL;
+	}
+
 	ifstream LoadFile(strMapPath, ios::binary);
 
 	if (!LoadFile.is_open())
@@ -1285,6 +1293,21 @@ HRESULT CMapTool::Craete_Camera(const _wstring& strLayerTag)
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_") + tDesc.strName,
 		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CMapTool::Create_Sky(const _wstring& strLayerTag)
+{
+	CSky::DESC tSkyDesc = {};
+	tSkyDesc.eLevelID = LEVEL::TOOLS;
+	tSkyDesc.fSpeedPerSec = 0.f;
+	tSkyDesc.fRotationPerSec = 0.f;
+	tSkyDesc.strName = TEXT("Sky");
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_") + tSkyDesc.strName,
+		ENUM_CLASS(tSkyDesc.eLevelID), strLayerTag, &tSkyDesc)))
 		return E_FAIL;
 
 	return S_OK;

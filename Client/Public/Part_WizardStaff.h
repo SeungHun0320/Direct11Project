@@ -3,7 +3,7 @@
 #include "Client_Defines.h"
 #include "PartObject.h"
 
-#include "Wizard_Sword.h"
+#include "Wizard_Support.h"
 
 BEGIN(Engine)
 class CShader;
@@ -18,6 +18,7 @@ public:
 	typedef struct tagPartStaffDesc : public CPartObject::DESC
 	{
 		const _float4x4* pSocketMatrix = { nullptr };
+		CWizard_Support::STATES* pParentState;
 		LEVEL eLevelID;
 	}DESC;
 private:
@@ -42,7 +43,7 @@ private:
 
 private:
 	const _float4x4* m_pSocketMatrix = { nullptr };
-	CWizard_Sword::STATES* m_pParentState = { nullptr };
+	CWizard_Support::STATES* m_pParentState = { nullptr };
 
 private:
 	LEVEL m_eLevelID = { LEVEL::LEVEL_END };

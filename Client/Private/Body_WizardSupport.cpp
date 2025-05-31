@@ -34,10 +34,8 @@ HRESULT CBody_WizardSupport::Initialize(void* pArg)
     if (FAILED(Ready_Components(pArg)))
         return E_FAIL;
 
-    /* 본, 애니메이션 얕복의 문제점 */
-    /* 1. 서로 다른 애니메이션을 셋팅했음에도 같은 동작이 재생된다. : 뼈가 공유되기때문에. */
-    /* 2. 같은 애니메이션을 셋했다면 재생속도가 빨라진다. : */
-    m_pModelCom->Set_Animation(4, true);
+    if (LEVEL::TOOLS == m_eLevelID)
+        m_pModelCom->Set_Animation(0, true);
 
     return S_OK;
 }
@@ -49,7 +47,8 @@ void CBody_WizardSupport::Priority_Update(_float fTimeDelta)
 
 LIFE CBody_WizardSupport::Update(_float fTimeDelta)
 {
-    m_pModelCom->Play_Animation(fTimeDelta);
+    if (LEVEL::TOOLS == m_eLevelID)
+        m_pModelCom->Play_Animation(fTimeDelta);
 
     return __super::Update(fTimeDelta);
 }
@@ -58,7 +57,7 @@ void CBody_WizardSupport::Late_Update(_float fTimeDelta)
 {
     XMStoreFloat4x4(&m_CombinedWorldMatrix, XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Float4x4()) * XMLoadFloat4x4(m_pParentMatrix));
 
-    m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+   m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 }
 
 HRESULT CBody_WizardSupport::Render()

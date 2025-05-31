@@ -31,8 +31,10 @@ HRESULT CWizard_Support::Initialize(void* pArg)
 
 	m_fDetectDistance = 12.5f;
 	m_fChaseStopDistance = 30.f;
+	m_fCastingDistance = 10.f;
 
-	//Change_States(STATES::IDLE);
+	if (LEVEL::TOOLS != m_eLevelID)
+		Change_States(STATES::IDLE);
 
 	return S_OK;
 }
@@ -47,24 +49,23 @@ LIFE CWizard_Support::Update(_float fTimeDelta)
 	if (m_bDead)
 		return LIFE::DEAD;
 
-	//if (KEY_DOWN(DIK_2))
-	//{
-	//	//Change_States(STATES::HIT);
-	//}
-	//if (KEY_DOWN(DIK_3))
-	//	//Change_States(STATES::DEAD);
+	if (KEY_DOWN(DIK_2))
+	{
+		Change_States(STATES::HIT);
+	}
+	if (KEY_DOWN(DIK_3))
+		Change_States(STATES::DEAD);
 
+	if (m_pCurState)
+	{
+		if (m_eCurState != m_ePreState)
+		{
+			m_pCurState->Enter(fTimeDelta);
+			m_ePreState = m_eCurState;
+		}
 
-	//if (m_pCurState)
-	//{
-	//	if (m_eCurState != m_ePreState)
-	//	{
-	//		m_pCurState->Enter(fTimeDelta);
-	//		m_ePreState = m_eCurState;
-	//	}
-
-	//	m_pCurState->Execute(fTimeDelta);
-	//}
+		m_pCurState->Execute(fTimeDelta);
+	}
 
 	return	__super::Update(fTimeDelta);
 }
@@ -81,21 +82,26 @@ HRESULT CWizard_Support::Render()
 
 void CWizard_Support::Change_States(STATES eStates)
 {
-	//if (m_pCurState)
-	//	m_pCurState->Exit();
+	if (m_pCurState)
+		m_pCurState->Exit();
 
-	//if (nullptr != m_pCurState)
-	//	Safe_Release(m_pCurState);
+	if (nullptr != m_pCurState)
+		Safe_Release(m_pCurState);
 
-	//m_pCurState = m_pStates[ENUM_CLASS(eStates)];
-	//Safe_AddRef(m_pCurState);
+	m_pCurState = m_pStates[ENUM_CLASS(eStates)];
+	Safe_AddRef(m_pCurState);
 
-	//m_eCurState = eStates;
+	m_eCurState = eStates;
 }
 
 _vector CWizard_Support::Get_State(STATE eState)
 {
 	return m_pTransformCom->Get_State(eState);
+}
+
+void CWizard_Support::Set_State(STATE eState, _fvector vState)
+{
+	m_pTransformCom->Set_State(eState, vState);
 }
 
 _bool CWizard_Support::Play_Animation(PART ePart, _float fTimeDelta)
@@ -138,19 +144,9 @@ void CWizard_Support::Turn(_fvector vAxis, _float fTimeDelta)
 	m_pTransformCom->Turn(vAxis, fTimeDelta);
 }
 
-_float3 CWizard_Support::Get_Scaled()
+void CWizard_Support::LookAt(_fvector vDir, _float fTimeDelta, _float fSpeed)
 {
-	return m_pTransformCom->Get_Scaled();
-}
-
-void CWizard_Support::Scaling(_float3 vScale)
-{
-	m_pTransformCom->Scaling(vScale);
-}
-
-void CWizard_Support::Scaling(_float fX, _float fY, _float fZ)
-{
-	m_pTransformCom->Scaling(fX, fY, fZ);
+	m_pTransformCom->LookAtLerpEx(vDir, fTimeDelta, fSpeed);
 }
 
 HRESULT CWizard_Support::Ready_Components(void* pArg)
@@ -176,6 +172,7 @@ HRESULT CWizard_Support::Ready_PartObjects()
 	StaffDesc.eLevelID = m_eLevelID;
 	StaffDesc.pSocketMatrix = dynamic_cast<CBody_WizardSupport*>(m_PartObjects[PART_BODY])->Get_SocketMatrix("held_L");
 	StaffDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	StaffDesc.pParentState = &m_eCurState;
 
 	if (FAILED(__super::Add_PartObject(PART_STAFF, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Part_WizardStaff"), &StaffDesc)))
 		return E_FAIL;
@@ -185,6 +182,18 @@ HRESULT CWizard_Support::Ready_PartObjects()
 
 HRESULT CWizard_Support::Ready_States()
 {
+	m_pStates[ENUM_CLASS(STATES::IDLE)]     = new CWizard_SupportState_Idle(this);
+	m_pStates[ENUM_CLASS(STATES::CASTING)]  = new CWizard_SupportState_Casting(this);
+	m_pStates[ENUM_CLASS(STATES::HIT)]      = new CWizard_SupportState_Hit(this);
+	m_pStates[ENUM_CLASS(STATES::TELEPORT)] = new CWizard_SupportState_Teleport(this);
+	m_pStates[ENUM_CLASS(STATES::MOVE)]     = new CWizard_SupportState_Move(this);
+	m_pStates[ENUM_CLASS(STATES::DEAD)]     = new CWizard_SupportState_Dead(this);
+
+	for (_uint i = 0; i < ENUM_CLASS(STATES::STATES_END); i++)
+	{
+		if (nullptr == m_pStates[i])
+			return E_FAIL;
+	}
 
 	return S_OK;
 }
@@ -219,8 +228,8 @@ void CWizard_Support::Free()
 {
 	__super::Free();
 
-	//Safe_Release(m_pCurState);
+	Safe_Release(m_pCurState);
 
-	//for (_uint i = 0; i < ENUM_CLASS(STATES::STATES_END); i++)
-	//	Safe_Release(m_pStates[i]);
+	for (_uint i = 0; i < ENUM_CLASS(STATES::STATES_END); i++)
+		Safe_Release(m_pStates[i]);
 }

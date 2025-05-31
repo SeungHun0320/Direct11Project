@@ -32,10 +32,12 @@ private:
 
 private:
 	HRESULT Ready_Layer_Camera(const _wstring& strLayerTag);
+	HRESULT Ready_For_BackGround(const _wstring& strLayerTag);
 	HRESULT Ready_Tools();
 
 private:
 	virtual HRESULT Ready_Lights() override;
+
 
 public:
 	static CLevel_Tools* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

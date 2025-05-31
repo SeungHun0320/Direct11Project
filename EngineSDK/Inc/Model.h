@@ -21,6 +21,7 @@ public:
 	const _float4x4* Get_BoneMatrix(const _string& strBoneName);
 
 	void  Set_CurrnetTrackPosition(_float fTrackPosition);
+	void  Set_NextTickPerSecond(_float fTickPerSecond);
 
 	void Set_Animation(_uint iIndex, _bool isLoop = true, _float fBlendDuration = 0.f, _bool isBlended = false) {
 		m_iCurrentAnimIndex = iIndex;
@@ -47,13 +48,15 @@ public:
 	virtual HRESULT Initialize(void* pArg);
 	virtual HRESULT Render(_uint iMeshIndex);
 
-public:
+public: /* 애니메이션 블렌드 용 */
 	_matrix MatrixLerp(_fmatrix CurrentTransfomaionMatrix, _cmatrix NextTransformMatrix, _float fRatio);
+	void  Animation_Blend(_float fTimeDelta);
 
 public:
 	_bool Play_Animation(_float fTimeDelta);
-	void  Animation_Blend(_float fTimeDelta);
-
+	_bool Is_CurrentAnim(_uint iNextIndex) {
+		return m_iCurrentAnimIndex == iNextIndex;
+	};
 	void     Update_RootPosition();
 
 public: /* 맵툴용,,,? */

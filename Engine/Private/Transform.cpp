@@ -290,6 +290,30 @@ void CTransform::LookDirLerp(_fvector vTargetDir, _float fTimeDelta, _float fRat
 	Set_State(STATE::LOOK, vLook * vScale.z);
 }
 
+void CTransform::LookAtYaw(_vector vDir, _float fLerpRatio)
+{
+	vDir = XMVector3Normalize(vDir);
+	vDir = XMVectorSetY(vDir, 0.f); // 수평만 유지
+
+	// 목표 Yaw
+	_float fTargetYaw = atan2f(XMVectorGetX(vDir), XMVectorGetZ(vDir));
+
+	// 현재 Yaw 추출 (LOOK 벡터 기반)
+	_vector vLook = XMVector3Normalize(Get_State(STATE::LOOK));
+	_float fCurrentYaw = atan2f(XMVectorGetX(vLook), XMVectorGetZ(vLook));
+
+	// 부드럽게 보간
+	_float fLerpedYaw = fCurrentYaw + (fTargetYaw - fCurrentYaw) * fLerpRatio;
+
+	// 회전 행렬 생성
+	_matrix rotMat = XMMatrixRotationY(fLerpedYaw);
+
+	_float3 vScale = Get_Scaled();
+	Set_State(STATE::RIGHT, XMVector4Transform(XMVectorSet(1, 0, 0, 0) * vScale.x, rotMat));
+	Set_State(STATE::UP, XMVector4Transform(XMVectorSet(0, 1, 0, 0) * vScale.y, rotMat));
+	Set_State(STATE::LOOK, XMVector4Transform(XMVectorSet(0, 0, 1, 0) * vScale.z, rotMat));
+}
+
 HRESULT CTransform::Bind_ShaderResource(CShader* pShader, const _char* pConstantName)
 {
 	return pShader->Bind_Matrix(pConstantName, &m_WorldMatrix);

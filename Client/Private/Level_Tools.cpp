@@ -3,6 +3,7 @@
 
 #include "MapTool.h"
 #include "Camera_Free.h"
+#include "Sky.h"
 
 CLevel_Tools::CLevel_Tools(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel{ pDevice, pContext }
@@ -14,6 +15,9 @@ CLevel_Tools::CLevel_Tools(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 HRESULT CLevel_Tools::Initialize()
 {
 	if(FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_For_BackGround(TEXT("Layer_BackGround"))))
 		return E_FAIL;
 
 	if (FAILED(Ready_ImGui()))
@@ -128,6 +132,21 @@ HRESULT CLevel_Tools::Ready_Layer_Camera(const _wstring& strLayerTag)
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_") + tDesc.strName,
 		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Tools::Ready_For_BackGround(const _wstring& strLayerTag)
+{
+	CSky::DESC tSkyDesc = {};
+	tSkyDesc.eLevelID = LEVEL::TOOLS;
+	tSkyDesc.fSpeedPerSec = 0.f;
+	tSkyDesc.fRotationPerSec = 0.f;
+	tSkyDesc.strName = TEXT("Sky");
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_") + tSkyDesc.strName,
+		ENUM_CLASS(tSkyDesc.eLevelID), strLayerTag, &tSkyDesc)))
 		return E_FAIL;
 
 	return S_OK;

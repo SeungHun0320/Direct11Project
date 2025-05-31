@@ -32,8 +32,6 @@ HRESULT CBody_SpiderTank::Initialize(void* pArg)
 	/* 본, 애니메이션 얕복의 문제점 */
 	/* 1. 서로 다른 애니메이션을 셋팅했음에도 같은 동작이 재생된다. : 뼈가 공유되기때문에. */
 	/* 2. 같은 애니메이션을 셋했다면 재생속도가 빨라진다. : */
-	m_pModelCom->Set_Animation(2, true);
-
 	return S_OK;
 }
 
@@ -43,17 +41,6 @@ void CBody_SpiderTank::Priority_Update(_float fTimeDelta)
 
 LIFE CBody_SpiderTank::Update(_float fTimeDelta)
 {
-	m_pModelCom->Play_Animation(fTimeDelta);
-
-	if (KEY_DOWN(DIK_UP))
-	{
-		m_pModelCom->Change_Animation(++m_iSoonseo, true, 1.f, true);
-	}
-	if (KEY_DOWN(DIK_DOWN))
-	{
-		m_pModelCom->Change_Animation(--m_iSoonseo, true, 1.f, true);
-	}
-
 	return LIFE::NONE;
 }
 
@@ -88,6 +75,31 @@ HRESULT CBody_SpiderTank::Render()
 	}
 
 	return S_OK;
+}
+
+_bool CBody_SpiderTank::Is_CurrentAnim(_uint iNextIndex)
+{
+	return m_pModelCom->Is_CurrentAnim(iNextIndex);
+}
+
+_bool CBody_SpiderTank::Play_Animation(_float fTimeDelta)
+{
+	return m_pModelCom->Play_Animation(fTimeDelta);
+}
+
+void CBody_SpiderTank::Change_Animation(_uint iNextIndex, _bool isLoop, _float fBlendDuration, _bool isBlend)
+{
+	m_pModelCom->Change_Animation(iNextIndex, isLoop, fBlendDuration, isBlend);
+}
+
+void CBody_SpiderTank::Set_TrackPosition(_float fTrackPosition)
+{
+	m_pModelCom->Set_CurrnetTrackPosition(fTrackPosition);
+}
+
+void CBody_SpiderTank::Set_TickPerSecond(_float fTickPerSecond)
+{
+	m_pModelCom->Set_NextTickPerSecond(fTickPerSecond);
 }
 
 HRESULT CBody_SpiderTank::Ready_Components(void* pArg)

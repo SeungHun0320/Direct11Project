@@ -209,7 +209,9 @@
     <ClInclude Include="..\Public\Player_IAttackStrategy.h" />
     <ClInclude Include="..\public\Potion.h" />
     <ClInclude Include="..\public\Shop.h" />
+    <ClInclude Include="..\public\Sky.h" />
     <ClInclude Include="..\public\SpiderTank.h" />
+    <ClInclude Include="..\Public\SpiderTankState.h" />
     <ClInclude Include="..\public\Terrain.h" />
     <ClInclude Include="..\public\Tool.h" />
     <ClInclude Include="..\Public\UI.h" />
@@ -302,7 +304,12 @@
     <ClCompile Include="..\Private\Player_SwordAttack.cpp" />
     <ClCompile Include="..\private\Potion.cpp" />
     <ClCompile Include="..\private\Shop.cpp" />
+    <ClCompile Include="..\private\Sky.cpp" />
     <ClCompile Include="..\private\SpiderTank.cpp" />
+    <ClCompile Include="..\Private\SpiderTankState_Hit.cpp" />
+    <ClCompile Include="..\Private\SpiderTankState_Attack.cpp" />
+    <ClCompile Include="..\Private\SpiderTankState_Move.cpp" />
+    <ClCompile Include="..\Private\SpiderTankState_Idle.cpp" />
     <ClCompile Include="..\private\Terrain.cpp" />
     <ClCompile Include="..\private\Tool.cpp" />
     <ClCompile Include="..\private\UI.cpp" />
@@ -332,12 +339,10 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimMesh.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCube.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Bin\ShaderFiles\Engine_Shader_Defines.hlsli" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
