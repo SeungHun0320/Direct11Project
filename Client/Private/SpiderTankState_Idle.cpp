@@ -93,6 +93,7 @@ CSpiderTankState_Idle::CSpiderTankState_Idle(CSpiderTank* pOwner)
 void CSpiderTankState_Idle::Enter(_float fTimeDelta)
 {
 	m_fTimeAcc = 0.f;
+	m_fAttackDelay = 1.f;
 
 	m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::IDLE, true, 0.2f);
 }
@@ -105,11 +106,40 @@ void CSpiderTankState_Idle::Execute(_float fTimeDelta)
 	const _float fAngle = m_pOwner->Compute_AngleToPlayer();
 	const _float fDistance = m_pOwner->Get_DistanceToPlayer();
 	const _float fPreferredDist = m_pOwner->Get_PreferredDistance();
-	const _float fBackOffset{ 5.f }, fForOffset{ 1.f };
+	const _float fBackOffset{ 3.5f }, fForOffset{ 1.5f };
 
-	if (fDistance <= 15.f && fAngle <= XMConvertToRadians(60.f))
+	m_pOwner->AttackCoolDownAcc(fTimeDelta);
+
+	_float fRandom = CGameInstance::Get_Instance()->Compute_Random(0.f, 1.f);
+
+	if (fAngle >= XMConvertToRadians(45.f))
 	{
-		_float fRandom = CGameInstance::Get_Instance()->Compute_Random(0.f, 1.f);
+		Decide_Rotation();
+		return;
+	}
+
+	if (fDistance < 5.f)
+	{
+		m_pOwner->Change_States(CSpiderTank::STATES::REVERSE);
+		return;
+	}
+
+	if (fDistance < fPreferredDist - fBackOffset)
+	{
+		m_pOwner->Change_States(CSpiderTank::STATES::BACKWARD);
+		return;
+	}
+	else if (fDistance > fPreferredDist + fForOffset)
+	{
+		m_pOwner->Change_States(CSpiderTank::STATES::FORWARD);
+		return;
+	}
+
+	if (fDistance >= fPreferredDist - fBackOffset &&
+		fDistance <= fPreferredDist + fForOffset &&
+		m_pOwner->Is_AttackCoolDownReady(m_fAttackDelay))
+	{
+		m_pOwner->Reset_AttackCoolDown();
 
 		if (fRandom < 0.2f)
 		{
@@ -126,50 +156,28 @@ void CSpiderTankState_Idle::Execute(_float fTimeDelta)
 			m_pOwner->Change_States(CSpiderTank::STATES::SWING);
 			return;
 		}
-		else if (fRandom < 0.8f)
+		else if (fRandom < 0.7f)
 		{
+			m_pOwner->Change_States(CSpiderTank::STATES::READY_BOMB);
 			return;
 		}
-		
-		m_pOwner->Change_States(CSpiderTank::STATES::READY_SHOT);
-		return;
+		else if (fRandom < 0.8f)
+		{
+			m_pOwner->Change_States(CSpiderTank::STATES::READY_SHOT);
+			return;
+		}
+		else
+		{
+			m_pOwner->Change_States(CSpiderTank::STATES::LAGER);
+			return;
+		}
 	}
-
-	if (fAngle >= XMConvertToRadians(100.f))
-	{
-		Decide_Rotation();
-		return;
-	}
-
-	if (fDistance < 5.f)
-	{
-		m_pOwner->Change_States(CSpiderTank::STATES::REVERSE);
-		return;
-	}
-
-	//if (fDistance >= fPreferredDist - fOffset &&
-	//	fDistance <= fPreferredDist + fOffset)
-	//{
-	//	m_pOwner->Change_States(CSpiderTank::STATES::READY_BOMB);
-	//	return;
-	//}
-
-	if (fDistance < fPreferredDist - fBackOffset)
-	{
-		m_pOwner->Change_States(CSpiderTank::STATES::BACKWARD);
-		return;
-	}
-	else if (fDistance > fPreferredDist + fForOffset)
-	{
-		m_pOwner->Change_States(CSpiderTank::STATES::FORWARD);
-		return;
-	}
-
 }
 
 void CSpiderTankState_Idle::Exit()
 {
 	m_fTimeAcc = 0.f;
+	m_fAttackDelay = 0.f;
 }
 
 void CSpiderTankState_Idle::Decide_Rotation()

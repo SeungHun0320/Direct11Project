@@ -11,7 +11,7 @@ CSpiderTankState_Pinch::CSpiderTankState_Pinch(CSpiderTank* pOwner)
 
 void CSpiderTankState_Pinch::Enter(_float fTimeDelta)
 {
-	m_fDuration = 0.25f;
+	m_fDuration = 1.f;
 	m_fTimeAcc = 0.f;
 
 	m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::PINCH, false, 0.2f);
@@ -27,7 +27,7 @@ void CSpiderTankState_Pinch::Execute(_float fTimeDelta)
 
 void CSpiderTankState_Pinch::Exit()
 {
-	m_fDuration = 0.25f;
+	m_fDuration = 1.f;
 	m_fTimeAcc = 0.f;
 }
 
@@ -50,6 +50,12 @@ void CSpiderTankState_KnockBack::Enter(_float fTimeDelta)
 	m_fDuration = 1.95f;
 	m_fTimeAcc = 0.f;
 
+	_vector vPos = m_pOwner->Get_State(STATE::POSITION);
+	_vector vTarget = m_pOwner->Get_TargetPosition();
+
+	_vector vDir = XMVector3Normalize(vPos - vTarget);
+	XMStoreFloat3(&m_vMoveDir, vDir);
+
 	m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::KNOCKBACK, false, 0.2f);
 }
 
@@ -59,6 +65,8 @@ void CSpiderTankState_KnockBack::Execute(_float fTimeDelta)
 
 	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CSpiderTank::PART_BODY, fTimeDelta))
 		m_pOwner->Change_States(CSpiderTank::STATES::IDLE);
+	else
+		m_pOwner->Go_Dir(XMVectorSetW(XMLoadFloat3(&m_vMoveDir), 0.f), fTimeDelta, 6.f);
 }
 
 void CSpiderTankState_KnockBack::Exit()

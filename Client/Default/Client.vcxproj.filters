@@ -331,6 +331,18 @@
     <Filter Include="02.GameObjects\03.Monsters\01.Blob\Body">
       <UniqueIdentifier>{b28d4db8-20a2-4af4-804c-c248659e00e3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\08. Bullet">
+      <UniqueIdentifier>{11dec82b-3c18-4060-8509-a17eb0649034}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Monsters\00. Boss\SpiderTank\99. SpiderTank_Bullet">
+      <UniqueIdentifier>{3f9f217f-02ba-4c43-8adb-14e5ff7e8739}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Monsters\00. Boss\SpiderTank\99. SpiderTank_Bullet\SpiderTank_Orb">
+      <UniqueIdentifier>{6fbd672e-4e82-4602-bd80-1008054f24cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Monsters\00. Boss\SpiderTank\99. SpiderTank_Bullet\SpiderTank_Bullet">
+      <UniqueIdentifier>{96ef8008-4030-4f1d-8d2e-860dc8c5c8bc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">

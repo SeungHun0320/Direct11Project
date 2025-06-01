@@ -1,6 +1,8 @@
 #include "SpiderTankState.h"
 #include "SpiderTank.h"
 
+#include "GameInstance.h"
+
 /* --------------------------
 		    ÀüÁø
 ------------------------- */
@@ -11,15 +13,47 @@ CSpiderTankState_Forward::CSpiderTankState_Forward(CSpiderTank* pOwner)
 
 void CSpiderTankState_Forward::Enter(_float fTimeDelta)
 {
+	m_fDuration = 2.f;
+	m_fTimeAcc = 0.f;
+
 	m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::FORWARD, true, 0.2f);
 }
 
 void CSpiderTankState_Forward::Execute(_float fTimeDelta)
 {
+	m_fTimeAcc += fTimeDelta;
+	m_pOwner->AttackCoolDownAcc(fTimeDelta);
+
 	m_pOwner->Play_Animation(CSpiderTank::PART_BODY, fTimeDelta);
+
+	_float fRandom = CGameInstance::Get_Instance()->Compute_Random(0.f, 1.f);
 
 	if (m_pOwner->Go_Target(m_pOwner->Get_TargetPosition(), fTimeDelta, 5.f, m_pOwner->Get_PreferredDistance()))
 	{
+		if (m_fDuration <= m_fTimeAcc)
+		{
+			if (fRandom < 0.25f)
+			{
+				m_pOwner->Change_States(CSpiderTank::STATES::FULLSWING);
+				return;
+			}
+			else if (fRandom < 0.5f)
+			{
+				m_pOwner->Change_States(CSpiderTank::STATES::READY_BOMB);
+				return;
+			}
+			else if (fRandom < 0.75f)
+			{
+				m_pOwner->Change_States(CSpiderTank::STATES::READY_SHOT);
+				return;
+			}
+			else
+			{
+				m_pOwner->Change_States(CSpiderTank::STATES::LAGER);
+				return;
+			}
+		}
+
 	}
 	else
 		m_pOwner->Change_States(CSpiderTank::STATES::IDLE);
@@ -45,6 +79,9 @@ CSpiderTankState_Backward::CSpiderTankState_Backward(CSpiderTank* pOwner)
 
 void CSpiderTankState_Backward::Enter(_float fTimeDelta)
 {
+	m_fDuration = 2.f;
+	m_fTimeAcc = 0.f;
+
 	_vector vPos = m_pOwner->Get_State(STATE::POSITION);
 	_vector vTarget = m_pOwner->Get_TargetPosition();
 
@@ -56,6 +93,9 @@ void CSpiderTankState_Backward::Enter(_float fTimeDelta)
 
 void CSpiderTankState_Backward::Execute(_float fTimeDelta)
 {
+	m_fTimeAcc += fTimeDelta;
+	m_pOwner->AttackCoolDownAcc(fTimeDelta);
+
 	m_pOwner->Play_Animation(CSpiderTank::PART_BODY, fTimeDelta);
 
 	if (m_pOwner->Get_DistanceToPlayer() > m_pOwner->Get_PreferredDistance() ||
@@ -64,8 +104,35 @@ void CSpiderTankState_Backward::Execute(_float fTimeDelta)
 		m_pOwner->Change_States(CSpiderTank::STATES::IDLE);
 	}
 	else
+	{
+		_float fRandom = CGameInstance::Get_Instance()->Compute_Random(0.f, 1.f);
+
 		m_pOwner->Go_Dir(XMVectorSetW(XMLoadFloat3(&m_vMoveDir), 0.f), fTimeDelta, 4.f);
 
+		if (m_fDuration <= m_fTimeAcc)
+		{
+			if (fRandom < 0.25f)
+			{
+				m_pOwner->Change_States(CSpiderTank::STATES::FULLSWING);
+				return;
+			}
+			else if (fRandom < 0.5f)
+			{
+				m_pOwner->Change_States(CSpiderTank::STATES::FAST_ATTACK);
+				return;
+			}
+			else if (fRandom < 0.75f)
+			{
+				m_pOwner->Change_States(CSpiderTank::STATES::READY_SHOT);
+				return;
+			}
+			else
+			{
+				m_pOwner->Change_States(CSpiderTank::STATES::SWING);
+				return;
+			}
+		}
+	}
 }
 
 void CSpiderTankState_Backward::Exit()
@@ -89,20 +156,38 @@ CSpiderTankState_TurnRight::CSpiderTankState_TurnRight(CSpiderTank* pOwner)
 
 void CSpiderTankState_TurnRight::Enter(_float fTimeDelta)
 {
+	m_fTimeAcc = 0.f;
+	m_fDuration = 2.f;
+
 	m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::RIGHT, true, 0.3f);
 	m_pOwner->Set_TickPerSecond(CSpiderTank::PART_BODY, 90.f);
 }
 
 void CSpiderTankState_TurnRight::Execute(_float fTimeDelta)
 {
+	m_fTimeAcc += fTimeDelta;
+	m_pOwner->AttackCoolDownAcc(fTimeDelta);
+
 	m_pOwner->Play_Animation(CSpiderTank::PART_BODY, fTimeDelta);
 
 	_vector vLook = m_pOwner->Get_State(STATE::LOOK);
 	_vector vDir = XMVector3Normalize(m_pOwner->Get_TargetPosition() - m_pOwner->Get_State(STATE::POSITION));
 
 	_float fAngle = XMVectorGetX(XMVector3AngleBetweenNormals(vLook, vDir));
+	_float fLerpSpeed = m_pOwner->Compute_LookSppedByAngle(fAngle);
 
-	m_pOwner->LookAt(XMVectorSetW(m_pOwner->Get_TargetPosition(), 1.f), fTimeDelta, 1.f);
+	if (m_fDuration <= m_fTimeAcc)
+	{
+		_float fRandom = CGameInstance::Get_Instance()->Compute_Random(0.f, 1.f);
+
+		if (fRandom < 0.2f)
+			m_pOwner->Change_States(CSpiderTank::STATES::SPAWNMOB);
+		else
+			fLerpSpeed = 5.f;
+	}
+		
+
+	m_pOwner->LookAt(XMVectorSetW(m_pOwner->Get_TargetPosition(), 1.f), fTimeDelta, fLerpSpeed);
 
 	if (fAngle < XMConvertToRadians(10.f))
 	{
@@ -129,20 +214,38 @@ CSpiderTankState_TurnLeft::CSpiderTankState_TurnLeft(CSpiderTank* pOwner)
 
 void CSpiderTankState_TurnLeft::Enter(_float fTimeDelta)
 {
+	m_fTimeAcc = 0.f;
+	m_fDuration = 2.f;
+
 	m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::LEFT, true, 0.3f);
 	m_pOwner->Set_TickPerSecond(CSpiderTank::PART_BODY, 90.f);
 }
 
 void CSpiderTankState_TurnLeft::Execute(_float fTimeDelta)
 {
+	m_fTimeAcc += fTimeDelta;
+	m_pOwner->AttackCoolDownAcc(fTimeDelta);
+
 	m_pOwner->Play_Animation(CSpiderTank::PART_BODY, fTimeDelta);
 
 	_vector vLook = m_pOwner->Get_State(STATE::LOOK);
 	_vector vDir = XMVector3Normalize(m_pOwner->Get_TargetPosition() - m_pOwner->Get_State(STATE::POSITION));
 
 	_float fAngle = XMVectorGetX(XMVector3AngleBetweenNormals(vLook, vDir));
+	_float fLerpSpeed = m_pOwner->Compute_LookSppedByAngle(fAngle);
 
-	m_pOwner->LookAt(XMVectorSetW(m_pOwner->Get_TargetPosition(), 1.f), fTimeDelta, 1.f);
+	if (m_fDuration <= m_fTimeAcc)
+	{
+		_float fRandom = CGameInstance::Get_Instance()->Compute_Random(0.f, 1.f);
+
+		if (fRandom < 0.2f)
+			m_pOwner->Change_States(CSpiderTank::STATES::SPAWNMOB);
+		else
+			fLerpSpeed = 5.f;
+	}
+		
+
+	m_pOwner->LookAt(XMVectorSetW(m_pOwner->Get_TargetPosition(), 1.f), fTimeDelta, fLerpSpeed);
 
 	if (fAngle < XMConvertToRadians(10.f))
 	{
@@ -186,6 +289,7 @@ void CSpiderTankState_Reverse::Enter(_float fTimeDelta)
 void CSpiderTankState_Reverse::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
+	m_pOwner->AttackCoolDownAcc(fTimeDelta);
 
 	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CSpiderTank::PART_BODY, fTimeDelta))
 	{

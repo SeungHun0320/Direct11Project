@@ -54,9 +54,9 @@ LIFE CSpiderTank::Update(_float fTimeDelta)
 	if (KEY_DOWN(DIK_2))
 		Change_States(STATES::KNOCKBACK);
 	if (KEY_DOWN(DIK_3))
-		Change_States(STATES::DEAD);
-	if (KEY_DOWN(DIK_4))
 		Change_States(STATES::PINCH);
+	if (KEY_DOWN(DIK_4))
+		Change_States(STATES::DEAD);
 
 	if (m_pCurState)
 	{
@@ -192,6 +192,24 @@ _float CSpiderTank::Compute_AngleToPlayer()
 	fDot = clamp(fDot, -1.f, 1.f);
 
 	return acosf(fDot);
+}
+
+_float CSpiderTank::Compute_LookSppedByAngle(_float fAngle)
+{
+	// 각도에 따른 회전 속도 동적 조절
+	_float fLerpSpeed = 1.f;
+	if (fAngle > XMConvertToRadians(150.f))
+		fLerpSpeed = 2.f;
+	else if (fAngle > XMConvertToRadians(90.f))
+		fLerpSpeed = 1.75f;
+	else if (fAngle > XMConvertToRadians(45.f))
+		fLerpSpeed = 1.5f;
+	else if (fAngle > XMConvertToRadians(20.f))
+		fLerpSpeed = 1.25f;
+	else
+		fLerpSpeed = 1.f;
+
+	return fLerpSpeed;
 }
 
 _bool CSpiderTank::Is_TargetOnRight()

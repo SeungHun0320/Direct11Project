@@ -75,14 +75,27 @@ public: /* 상태로 넘겨줄 함수들 */
 	void LookAtYaw(_vector vDir, _float fLerpRatio);
 
 	_float Compute_AngleToPlayer();
+	_float Compute_LookSppedByAngle(_float fAngle);
 	_bool Is_TargetOnRight();
 
+	void AttackCoolDownAcc(_float fTimeDelta) {
+		m_fAttackCoolDown += fTimeDelta;
+	};
+	_bool Is_AttackCoolDownReady(_float fAttackDelay) {
+		return m_fAttackCoolDown >= fAttackDelay;
+	};
+	void Reset_AttackCoolDown() {
+		m_fAttackCoolDown = 0.f;
+	};
 
 private: /* 상태 패턴들 */
 	STATES m_eCurState{ STATES::STATES_END };
 	STATES m_ePreState{ STATES::STATES_END };
 	class CSpiderTankState* m_pCurState = { nullptr };
 	class CSpiderTankState* m_pStates[ENUM_CLASS(STATES::STATES_END)] = { nullptr };
+
+private:
+	_float m_fAttackCoolDown = {};
 
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;

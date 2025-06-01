@@ -188,7 +188,7 @@ void CSpiderTankState_FullSwing::Enter(_float fTimeDelta)
 	XMStoreFloat3(&m_vMoveDir, vDir);
 	m_pOwner->LookAtYaw(vDir, 0.5f);
 
-	m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::FULLSWING, false, 0.2f);
+	m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::FULLSWING, false, 0.4f);
 }
 
 void CSpiderTankState_FullSwing::Execute(_float fTimeDelta)

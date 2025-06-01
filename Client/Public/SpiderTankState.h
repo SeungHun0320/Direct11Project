@@ -76,6 +76,9 @@ public: // CSpiderTankState을(를) 통해 상속됨
 public:
 	void Decide_Rotation();
 
+private:
+	_float m_fAttackDelay{};
+
 public:
 	virtual void Free() override;
 
@@ -396,6 +399,9 @@ public: // CSpiderTankState을(를) 통해 상속됨
 	void Enter(_float fTimeDelta) override;
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
+
+private:
+	_float3 m_vMoveDir{};
 
 public:
 	virtual void Free() override;

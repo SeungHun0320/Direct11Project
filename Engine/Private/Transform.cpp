@@ -242,7 +242,6 @@ void CTransform::LookAtLerpEx(_fvector vAt, _float fTimeDelta, _float fLerpSpeed
 	_vector vRight = XMVector3Normalize(XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vSmoothedDir));
 	_vector vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f);
 
-	// 5. Àû¿ë
 	Set_State(STATE::RIGHT, vRight * vScaled.x);
 	Set_State(STATE::UP, vUp * vScaled.y);
 	Set_State(STATE::LOOK, vSmoothedDir * vScaled.z);
