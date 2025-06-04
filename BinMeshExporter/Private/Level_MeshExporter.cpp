@@ -646,7 +646,7 @@ HRESULT CLevel_MeshExporter::Ready_Anim_Meshes(_uint iNumMeshes, aiMesh** ppMesh
 				//{
 				//	pMesh->BoneIndices.push_back(52);
 				//}
-			
+
 				pMesh->BoneIndices.push_back(--iBoneIndex);
 			}
 			else

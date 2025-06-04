@@ -49,13 +49,15 @@ LIFE CBody_Wizard::Update(_float fTimeDelta)
 	if (LEVEL::TOOLS == m_eLevelID)
 		m_pModelCom->Play_Animation(fTimeDelta);
 
-	return LIFE();
+    XMStoreFloat4x4(&m_CombinedWorldMatrix, m_pTransformCom->Get_WorldMatrix() * XMLoadFloat4x4(m_pParentMatrix));
+
+    m_pColliderCom->Update(XMLoadFloat4x4(&m_CombinedWorldMatrix));
+
+    return LIFE::NONE;
 }
 
 void CBody_Wizard::Late_Update(_float fTimeDelta)
 {
-	XMStoreFloat4x4(&m_CombinedWorldMatrix, m_pTransformCom->Get_WorldMatrix() * XMLoadFloat4x4(m_pParentMatrix));
-
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 }
 
@@ -85,6 +87,12 @@ HRESULT CBody_Wizard::Render()
             return E_FAIL;
     }
 
+#ifdef _DEBUG
+
+    m_pColliderCom->Render();
+
+#endif
+
     return S_OK;
 }
 
@@ -108,6 +116,15 @@ HRESULT CBody_Wizard::Ready_Components(void* pArg)
     /* For.Com_Shader */
     if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxAnimMesh"),
         TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
+        return E_FAIL;
+
+    /* For.Com_Collider */
+    CBounding_AABB::AABB_DESC	AABBDesc{};
+    AABBDesc.vExtents = _float3(0.8f, 1.8f, 0.8f);
+    AABBDesc.vCenter = _float3(0.0f, AABBDesc.vExtents.y, 0.f);
+
+    if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_AABB"),
+        TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
         return E_FAIL;
 
     return S_OK;

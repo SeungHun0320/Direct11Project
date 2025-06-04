@@ -4,6 +4,7 @@
 #include "PartObject.h"
 
 BEGIN(Engine)
+class CCollider;
 class CShader;
 class CModel;
 END
@@ -15,6 +16,8 @@ public:
 	{
 		LEVEL eLevelID;
 	}DESC;
+
+	enum COL_TYPE { HEAD, WEAK, COL_END };
 private:
 	CBody_SpiderTank(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CBody_SpiderTank(const CBody_SpiderTank& Prototype);
@@ -36,12 +39,15 @@ public:
 	virtual void  Set_TickPerSecond(_float fTickPerSecond) override;
 
 private:
-	CShader* m_pShaderCom = { nullptr };
-	CModel* m_pModelCom = { nullptr };
+	CCollider* m_pColliderCom[COL_END] = {nullptr};
+	CShader*   m_pShaderCom = { nullptr };
+	CModel*    m_pModelCom = { nullptr };
+
+private:
+	const _float4x4* m_pColMatrix[COL_END] = {nullptr};
 
 private:
 	LEVEL m_eLevelID = { LEVEL::LEVEL_END };
-	_int m_iSoonseo = {};
 
 private:
 	HRESULT Ready_Components(void* pArg);

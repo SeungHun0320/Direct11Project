@@ -172,10 +172,28 @@ void CCamera_TPS::Update_BossCamera(_float fTimeDelta)
 	_float  fWeightPlayer = 0.7f;
 	_vector vFocus = vPlayerPos * fWeightPlayer + vBossPos * (1.f - fWeightPlayer);
 
-	_vector vDir = XMVector3Normalize(vPlayerPos - vBossPos);
-	_float3 vDirF;
-	XMStoreFloat3(&vDirF, vDir);
-	_float fYawAngle = atan2f(vDirF.x, vDirF.z);
+	_vector vRawDir = vPlayerPos - vBossPos;
+	_float fDistSq = XMVectorGetX(XMVector3LengthSq(vRawDir));
+
+	// 거의 겹쳤다면 디폴트 방향으로
+	if (fDistSq < 0.0001f)
+	{
+		if (!m_bAdjustableCamDir)
+		{
+			vRawDir = XMVectorSet(0.f, 0.f, 1.f, 0.f); // 기본 전방 방향 (z+)
+			m_bAdjustableCamDir = true;
+		}
+	}
+	else
+	{
+		m_bAdjustableCamDir = false;
+		vRawDir = XMVector3Normalize(vRawDir);
+	}
+	
+
+	_float3 vDir{};
+	XMStoreFloat3(&vDir, vRawDir);
+	_float fYawAngle = atan2f(vDir.x, vDir.z);
 
 	_float fXZRadius = sqrtf(m_vOffset.x * m_vOffset.x + m_vOffset.z * m_vOffset.z);
 
@@ -196,27 +214,18 @@ void CCamera_TPS::Update_BossCamera(_float fTimeDelta)
 	_float fPosX = sinf(fYawAngle) * fPosXZ;
 	_float fPosZ = cosf(fYawAngle) * fPosXZ;
 
-	_vector vTargetPos = m_pTargetTransformCom->Get_State(STATE::POSITION);
-
-	if (CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pTarget))
-	{
-		if (pPlayer->Get_IsTarget()) 
-		{
-			_vector vEnemy = pPlayer->Get_TargetState(STATE::POSITION);
-
-			_float fDist = XMVectorGetX(XMVector3Length(vEnemy - vTargetPos));
-
-			if (fDist <= pPlayer->Get_FindDistance())
-				vTargetPos = (vTargetPos + vEnemy) * 0.5f;
-		}
-	}
-
 	//XMStoreFloat3(&m_vTargetFocusPos, vTargetPos);
 	XMStoreFloat3(&m_vTargetFocusPos, vFocus);
 	XMStoreFloat3(&m_vCurrentFocusPos, XMVectorLerp(XMLoadFloat3(&m_vCurrentFocusPos), XMLoadFloat3(&m_vTargetFocusPos), 5.f * fTimeDelta));
 	//_vector vFocus = XMVectorSetW(XMLoadFloat3(&m_vCurrentFocusPos), 1.f);
 
-	m_pTransformCom->Set_State(STATE::POSITION, vFocus + XMVectorSet(fPosX, fPosY, fPosZ, 0.f));
+	_vector vCamPos = vFocus + XMVectorSet(fPosX, fPosY, fPosZ, 0.f);
+
+	// focus와 너무 가까우면 보정
+	if (XMVectorGetX(XMVector3LengthSq(vCamPos - vFocus)) < 0.0001f)
+		vCamPos += XMVectorSet(0.f, 0.f, -1.f, 0.f); // 뒤로 살짝 밀기
+
+	m_pTransformCom->Set_State(STATE::POSITION, vCamPos);
 	m_pTransformCom->LookAt(XMVectorSetW(vFocus, 1.f));
 }
 

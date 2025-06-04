@@ -64,6 +64,7 @@ private: /* 일반 TPS 카메라 */
 private: /* 보스 카메라용으로 */
 	_float m_fBossAngle = {};
 	_bool  m_bBossMode = { false };
+	_bool  m_bAdjustableCamDir = { false };
 
 
 private: /* 일반 카메라 */

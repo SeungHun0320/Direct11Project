@@ -123,7 +123,7 @@ void CSpiderTankState_Idle::Execute(_float fTimeDelta)
 		return;
 	}
 
-	if (fDistance < 5.f)
+	if (fDistance < 5.f && fRandom < 0.2f)
 	{
 		m_pOwner->Change_States(CSpiderTank::STATES::REVERSE);
 		return;

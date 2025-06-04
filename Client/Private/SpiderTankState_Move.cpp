@@ -180,7 +180,7 @@ void CSpiderTankState_TurnRight::Execute(_float fTimeDelta)
 	{
 		_float fRandom = CGameInstance::Get_Instance()->Compute_Random(0.f, 1.f);
 
-		if (fRandom < 0.2f)
+		if (fRandom < 0.1f)
 			m_pOwner->Change_States(CSpiderTank::STATES::SPAWNMOB);
 		else
 			fLerpSpeed = 5.f;
@@ -238,7 +238,7 @@ void CSpiderTankState_TurnLeft::Execute(_float fTimeDelta)
 	{
 		_float fRandom = CGameInstance::Get_Instance()->Compute_Random(0.f, 1.f);
 
-		if (fRandom < 0.2f)
+		if (fRandom < 0.1f)
 			m_pOwner->Change_States(CSpiderTank::STATES::SPAWNMOB);
 		else
 			fLerpSpeed = 5.f;

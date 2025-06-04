@@ -167,15 +167,15 @@ HRESULT CWizard_Support::Ready_PartObjects()
 	if (FAILED(__super::Add_PartObject(PART_BODY, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Body_Support"), &BodyDesc)))
 		return E_FAIL;
 
-	CPart_WizardStaff::DESC StaffDesc{};
+	//CPart_WizardStaff::DESC StaffDesc{};
 
-	StaffDesc.eLevelID = m_eLevelID;
-	StaffDesc.pSocketMatrix = dynamic_cast<CBody_WizardSupport*>(m_PartObjects[PART_BODY])->Get_SocketMatrix("held_L");
-	StaffDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
-	StaffDesc.pParentState = &m_eCurState;
+	//StaffDesc.eLevelID = m_eLevelID;
+	//StaffDesc.pSocketMatrix = dynamic_cast<CBody_WizardSupport*>(m_PartObjects[PART_BODY])->Get_SocketMatrix("held_L");
+	//StaffDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	//StaffDesc.pParentState = &m_eCurState;
 
-	if (FAILED(__super::Add_PartObject(PART_STAFF, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Part_WizardStaff"), &StaffDesc)))
-		return E_FAIL;
+	//if (FAILED(__super::Add_PartObject(PART_STAFF, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Part_WizardStaff"), &StaffDesc)))
+	//	return E_FAIL;
 
 	return S_OK;
 }

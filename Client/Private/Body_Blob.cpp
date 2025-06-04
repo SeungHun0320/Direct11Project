@@ -35,9 +35,6 @@ HRESULT CBody_Blob::Initialize(void* pArg)
     if (FAILED(Ready_Components(pArg)))
         return E_FAIL;
 
-    /* 본, 애니메이션 얕복의 문제점 */
-    /* 1. 서로 다른 애니메이션을 셋팅했음에도 같은 동작이 재생된다. : 뼈가 공유되기때문에. */
-    /* 2. 같은 애니메이션을 셋했다면 재생속도가 빨라진다. : */
     return S_OK;
 }
 
@@ -57,8 +54,6 @@ LIFE CBody_Blob::Update(_float fTimeDelta)
 
 void CBody_Blob::Late_Update(_float fTimeDelta)
 {
-
-
     m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 }
 

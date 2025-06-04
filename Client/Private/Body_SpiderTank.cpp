@@ -28,10 +28,10 @@ HRESULT CBody_SpiderTank::Initialize(void* pArg)
 
 	if (FAILED(Ready_Components(pArg)))
 		return E_FAIL;
+	
+	m_pColMatrix[HEAD] = m_pModelCom->Get_BoneMatrix("head");
+	m_pColMatrix[WEAK] = m_pModelCom->Get_BoneMatrix("powercell");
 
-	/* 본, 애니메이션 얕복의 문제점 */
-	/* 1. 서로 다른 애니메이션을 셋팅했음에도 같은 동작이 재생된다. : 뼈가 공유되기때문에. */
-	/* 2. 같은 애니메이션을 셋했다면 재생속도가 빨라진다. : */
 	return S_OK;
 }
 
@@ -41,12 +41,16 @@ void CBody_SpiderTank::Priority_Update(_float fTimeDelta)
 
 LIFE CBody_SpiderTank::Update(_float fTimeDelta)
 {
+	XMStoreFloat4x4(&m_CombinedWorldMatrix, m_pTransformCom->Get_WorldMatrix() * XMLoadFloat4x4(m_pParentMatrix));
+
+	m_pColliderCom[HEAD]->Update(XMLoadFloat4x4(m_pColMatrix[HEAD]) * XMLoadFloat4x4(&m_CombinedWorldMatrix));
+	m_pColliderCom[WEAK]->Update(XMLoadFloat4x4(m_pColMatrix[WEAK]) * XMLoadFloat4x4(&m_CombinedWorldMatrix));
+
 	return LIFE::NONE;
 }
 
 void CBody_SpiderTank::Late_Update(_float fTimeDelta)
 {
-	XMStoreFloat4x4(&m_CombinedWorldMatrix, m_pTransformCom->Get_WorldMatrix() * XMLoadFloat4x4(m_pParentMatrix));
 
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 }
@@ -73,6 +77,13 @@ HRESULT CBody_SpiderTank::Render()
 		if (FAILED(m_pModelCom->Render(i)))
 			return E_FAIL;
 	}
+
+#ifdef _DEBUG
+
+	m_pColliderCom[HEAD]->Render();
+	m_pColliderCom[WEAK]->Render();
+
+#endif
 
 	return S_OK;
 }
@@ -112,6 +123,23 @@ HRESULT CBody_SpiderTank::Ready_Components(void* pArg)
 	/* For.Com_Model */
 	if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Model_SpiderTank"),
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
+		return E_FAIL;
+
+	/* For.Com_Collider */
+	CBounding_Sphere::SPHERE_DESC	ColDesc{};
+
+	ColDesc.vCenter = _float3(0.f, 0.f, -100.f);
+	ColDesc.fRadius = 300.f;
+
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_Sphere"),
+		TEXT("Com_Collider_Head"), reinterpret_cast<CComponent**>(&m_pColliderCom[HEAD]), &ColDesc)))
+		return E_FAIL;
+
+	ColDesc.vCenter = _float3(0.f, 0.f, 0.f);
+	ColDesc.fRadius = 250.f;
+
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_Sphere"),
+		TEXT("Com_Collider_Weak"), reinterpret_cast<CComponent**>(&m_pColliderCom[WEAK]), &ColDesc)))
 		return E_FAIL;
 
 	return S_OK;
@@ -172,6 +200,9 @@ CGameObject* CBody_SpiderTank::Clone(void* pArg)
 void CBody_SpiderTank::Free()
 {
 	__super::Free();
+
+	for (_uint i = 0; i < COL_END; i++)
+		Safe_Release(m_pColliderCom[i]);
 
 	Safe_Release(m_pModelCom);
 	Safe_Release(m_pShaderCom);
