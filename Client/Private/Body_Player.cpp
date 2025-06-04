@@ -43,13 +43,15 @@ void CBody_Player::Priority_Update(_float fTimeDelta)
 
 LIFE CBody_Player::Update(_float fTimeDelta)
 {
+    XMStoreFloat4x4(&m_CombinedWorldMatrix, m_pTransformCom->Get_WorldMatrix() * XMLoadFloat4x4(m_pParentMatrix));
+
+    m_pColliderCom->Update(XMLoadFloat4x4(&m_CombinedWorldMatrix));
+
     return LIFE::NONE;
 }
 
 void CBody_Player::Late_Update(_float fTimeDelta)
 {
-    XMStoreFloat4x4(&m_CombinedWorldMatrix, XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Float4x4()) * XMLoadFloat4x4(m_pParentMatrix));
-
     m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 }
 
@@ -79,6 +81,12 @@ HRESULT CBody_Player::Render()
             return E_FAIL;
     }
 
+#ifdef _DEBUG
+
+   m_pColliderCom->Render();
+
+#endif
+
     return S_OK;
 }
 
@@ -102,8 +110,22 @@ void CBody_Player::Set_TrackPosition(_float fTrackPosition)
     m_pModelCom->Set_CurrnetTrackPosition(fTrackPosition);
 }
 
+_bool CBody_Player::Is_CurrentAnim(_uint iNextIndex)
+{
+    return m_pModelCom->Is_CurrentAnim(iNextIndex);
+}
+
 HRESULT CBody_Player::Ready_Components(void* pArg)
 {
+    /* For.Com_Collider */
+    CBounding_AABB::AABB_DESC	AABBDesc{};
+    AABBDesc.vExtents = _float3(0.6f, 1.2f, 0.6f);
+    AABBDesc.vCenter = _float3(0.0f, AABBDesc.vExtents.y, 0.f);
+
+    if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_AABB"),
+        TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
+        return E_FAIL;
+
     /* For.Com_Shader */
     if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxAnimMesh"),
         TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
@@ -175,4 +197,5 @@ void CBody_Player::Free()
 
     Safe_Release(m_pModelCom);
     Safe_Release(m_pShaderCom);
+    Safe_Release(m_pColliderCom);
 }

@@ -16,6 +16,7 @@ private:
 public:
 	class CComponent* Get_Component(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strComponentTag, _uint iIndex);
 	class CGameObject* Find_Object(_uint iLevelIndex, const _wstring& strLayerTag, _uint iIndex = 0);
+	class CGameObject* Find_ObjectByName(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strObjectName);
 	class CGameObject* Find_Picked_Object(_uint iLevelIndex, const _wstring& strLayerTag);
 	list<class CGameObject*>* Find_ObjectList(_uint iLevelIndex, const _wstring& strLayerTag);
 
@@ -26,6 +27,7 @@ public:
 	void Update(_float fTimeDelta);
 	void Late_Update(_float fTimeDelta);
 	void Clear(_uint iLevelIndex);
+
 private:	
 	_uint								m_iNumLevels = {};
 	map<const _wstring, class CLayer*>* m_pLayers = { nullptr };

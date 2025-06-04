@@ -5,6 +5,9 @@
 
 #include "SpiderTankState.h"
 
+#include "SpiderTank_Bullet.h"
+#include "SpiderTank_Orb.h"
+
 CSpiderTank::CSpiderTank(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CBoss{pDevice, pContext}
 {
@@ -126,11 +129,6 @@ void CSpiderTank::Set_TickPerSecond(PART ePart, _float fTickPerSecond)
 	m_PartObjects[ePart]->Set_TickPerSecond(fTickPerSecond);
 }
 
-void CSpiderTank::Go_Straight(_float fTimeDelta)
-{
-	m_pTransformCom->Go_Straight(fTimeDelta);
-}
-
 _bool CSpiderTank::Go_Target(_fvector vTarget, _float fTimeDelta, _float fSpeed, _float fMinDistance)
 {
 	if (m_fDistanceToPlayer <= fMinDistance)
@@ -223,9 +221,59 @@ _bool CSpiderTank::Is_TargetOnRight()
 	return XMVectorGetX(XMVector3Dot(vDir, vRight)) > 0.f;
 }
 
+HRESULT CSpiderTank::Shot_Bullet()
+{
+	CSpiderTank_Bullet::DESC tDesc{};
+
+	tDesc.eLevelID = m_eLevelID;
+	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
+	tDesc.fSpeedPerSec = 50.f;
+	tDesc.strName = TEXT("SpiderTank_Bullet");
+	_float3 vPos{};
+	XMStoreFloat3(&vPos, m_pTransformCom->Get_State(STATE::POSITION));
+
+	_vector vTarget = Get_TargetPosition();
+
+	XMStoreFloat3(&tDesc.vDir, vTarget);
+
+	tDesc.WorldMatrix = XMMatrixTranslation(vPos.x, vPos.y + 7.5f, vPos.z);
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_") + tDesc.strName,
+		ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_MonsterBullet"), &tDesc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CSpiderTank::Shot_Bomb()
+{
+	CSpiderTank_Orb::DESC tDesc{};
+	
+	tDesc.eLevelID = m_eLevelID;
+	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
+	tDesc.fSpeedPerSec = 10.f;
+	tDesc.strName = TEXT("SpiderTank_Orb");
+	XMStoreFloat3(&tDesc.vDir, m_pTransformCom->Get_State(STATE::LOOK));
+	_float3 vPos{};
+	XMStoreFloat3(&vPos, m_pTransformCom->Get_State(STATE::POSITION));
+
+	tDesc.WorldMatrix = XMMatrixTranslation(vPos.x , vPos.y + 13.f , vPos.z);
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_") + tDesc.strName,
+		ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_MonsterBullet"), &tDesc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 void CSpiderTank::LookAtYaw(_vector vDir, _float fLerpRatio)
 {
 	m_pTransformCom->LookAtYaw(vDir, fLerpRatio);
+}
+
+void CSpiderTank::Change_Camera(CAM_MODE eMode)
+{
+	m_pGameInstance->Set_CameraMode(ENUM_CLASS(m_eLevelID), TEXT("Camera_TPS"), ENUM_CLASS(eMode));
 }
 
 HRESULT CSpiderTank::Ready_Components(void* pArg)

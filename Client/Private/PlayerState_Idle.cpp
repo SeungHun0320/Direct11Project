@@ -16,7 +16,7 @@ void CPlayerState_Idle::Enter(_float fTimeDelta)
 		m_fDuration = 0.4f;
 	}
 	else
-		m_fDuration = 0.15f;
+		m_fDuration = 0.2f;
 
 	m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::IDLE, true, m_fDuration);
 }

@@ -10,7 +10,7 @@ CPlayerState_Move::CPlayerState_Move(CPlayer* pOwner)
 
 void CPlayerState_Move::Enter(_float fTimeDelta)
 {
-	m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::GO_STRAIGHT, true, 0.1f);
+	m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::GO_STRAIGHT, true, 0.3f);
 }
 
 void CPlayerState_Move::Execute(_float fTimeDelta)
@@ -23,7 +23,18 @@ void CPlayerState_Move::Execute(_float fTimeDelta)
 	if (m_pOwner->Get_IsHit())
 		m_pOwner->Change_States(CPlayer::STATES::HIT);
 
-	m_pOwner->Move(m_pOwner->Get_InputDirection(), fTimeDelta, SPEED);
+	if (m_pOwner->IsLockOn())
+	{
+		m_pOwner->LockOn();
+		m_pOwner->LockOnMove(m_pOwner->Get_TargetState(STATE::POSITION), fTimeDelta, 5.f);
+	}
+	else
+	{
+		m_pOwner->LockOff();
+		m_pOwner->CheckChange_Anim(CPlayer::PART_BODY, CPlayer::GO_STRAIGHT, true, 0.2f);
+		m_pOwner->Move(m_pOwner->Get_InputDirectionEx(), fTimeDelta, SPEED);
+	}
+
 
 	if (m_pOwner->KeyDown(DIK_SPACE))
 		m_pOwner->Change_States(CPlayer::STATES::DODGE);

@@ -33,6 +33,8 @@ HRESULT CPlayer::Initialize(void* pArg)
 	m_fMaxStamina = 100.f;
 	m_fStamina = m_fMaxStamina;
 
+	m_fFindDistance = 20.f;
+
 	m_IsShield = true;
 
 	for (_uint i = 0; i < CPlayer::MESHES_END; i++)
@@ -59,7 +61,7 @@ LIFE CPlayer::Update(_float fTimeDelta)
 	//if (m_bDead)
 	//	return LIFE::DEAD;
 
-	//Key_Input(fTimeDelta);
+	Key_Input(fTimeDelta);
 	Stamina_Recovery(fTimeDelta);
 
 	if (m_eCurState != m_ePreState)
@@ -81,6 +83,33 @@ void CPlayer::Late_Update(_float fTimeDelta)
 HRESULT CPlayer::Render()
 {
 	return S_OK;
+}
+
+CGameObject* CPlayer::Find_Target(_float fFindDistance)
+{
+	CGameObject* pTarget = { nullptr };
+	_float fMinDist = { FLT_MAX };
+
+	list<CGameObject*>* pTargets = m_pGameInstance->Find_ObjectList(ENUM_CLASS(m_eLevelID), TEXT("Layer_Monster"));
+	if (nullptr == pTargets)
+		return nullptr;
+
+	for (auto& pObj : *pTargets)
+	{
+		if (nullptr == pObj || pObj->Get_Dead())
+			continue;
+
+		_float fDist = XMVectorGetX(XMVector3Length(dynamic_cast<CTransform*>(pObj->Get_Component(TEXT("Com_Transform")))->Get_State(STATE::POSITION) -
+			m_pTransformCom->Get_State(STATE::POSITION)));
+
+		if (fDist < fFindDistance && fDist < fMinDist)
+		{
+			fMinDist = fDist;
+			pTarget = pObj;
+		}
+	}
+
+	return pTarget;
 }
 
 void CPlayer::Change_States(STATES eStates)
@@ -117,6 +146,17 @@ void CPlayer::Set_MeshVisible(PART ePart, _uint iIndex, _bool IsVisible)
 	m_PartObjects[ePart]->Set_MeshVisible(iIndex, IsVisible);
 }
 
+_bool CPlayer::Is_CurrentAnim(PART ePart, _uint iNextIndex)
+{
+	return m_PartObjects[ePart]->Is_CurrentAnim(iNextIndex);
+}
+
+void CPlayer::CheckChange_Anim(PART ePart, _uint iNextIndex, _bool isLoop, _float fBlendDuration, _bool isBlend)
+{
+	if(!Is_CurrentAnim(ePart, iNextIndex))
+		Change_Animation(ePart, iNextIndex, true, 0.2f);
+}
+
 void CPlayer::Dodge(_fvector vDir, _float fTimeDelta, _float fSpeed)
 {
 	m_pTransformCom->Set_SpeedPerSec(fSpeed);
@@ -131,7 +171,81 @@ void CPlayer::Move(_fvector vDir, _float fTimeDelta, _float fSpeed)
 	m_pTransformCom->Go_Dir(vDir, fTimeDelta);
 }
 
-void CPlayer::Stagger(_fvector vDir, _float fTimeDelta, _float fSpeed)
+void CPlayer::LockOn()
+{
+	if (!m_IsTarget)
+	{
+		CGameObject* pTarget = Find_Target(m_fFindDistance);
+		if (nullptr == pTarget || pTarget->Get_Dead())
+		{
+			m_IsTarget = false;
+			return;
+		}
+
+		m_pTargetTransform = dynamic_cast<CTransform*>(pTarget->Get_Component((TEXT("Com_Transform"))));
+		if (nullptr == m_pTargetTransform)
+		{
+			m_IsTarget = false;
+			return;
+		}
+
+		Safe_AddRef(m_pTargetTransform);
+		m_IsTarget = true;
+	}
+}
+
+void CPlayer::LockOff()
+{
+	if (m_IsTarget)
+	{
+		if (nullptr != m_pTargetTransform)
+			Safe_Release(m_pTargetTransform);
+		m_IsTarget = false;
+	}
+}
+
+void CPlayer::LockOnMove(_fvector vDir, _float fTimeDelta, _float fSpeed)
+{
+	if (m_IsTarget && nullptr != m_pTargetTransform)
+	{
+		m_pTransformCom->LookAtLerpEx(m_pTargetTransform->Get_State(STATE::POSITION), fTimeDelta, 10.f);
+	}
+
+	_vector vInputDir = Get_InputDirectionEx();
+
+	_vector vLook = XMVector3Normalize(m_pTransformCom->Get_State(STATE::LOOK));
+	_vector vRight = XMVector3Normalize(m_pTransformCom->Get_State(STATE::RIGHT));
+
+	_float fForwardDot = XMVectorGetX(XMVector3Dot(vInputDir, vLook));
+	_float fRightDot = XMVectorGetX(XMVector3Dot(vInputDir, vRight));
+
+	if (fForwardDot > 0.7f)
+		CheckChange_Anim(PART_BODY, GO_STRAIGHT, true, 0.3f);
+	else if (fForwardDot < -0.7f)
+		CheckChange_Anim(PART_BODY, GO_BACK, true, 0.3f);
+	else if (fRightDot > 0.f)
+		CheckChange_Anim(PART_BODY, GO_RIGHT, true, 0.3f);
+	else
+		CheckChange_Anim(PART_BODY, GO_LEFT, true, 0.3f);
+
+	Go_Dir(vInputDir, fTimeDelta, fSpeed);
+
+}
+
+_vector CPlayer::Get_TargetState(STATE eState)
+{
+	if (!m_IsTarget && nullptr == m_pTargetTransform)
+		return XMVectorZero();
+
+	return m_pTargetTransform->Get_State(eState);
+}
+
+void CPlayer::Set_Target(CTransform* pTargerTransform)
+{
+	m_pTargetTransform = pTargerTransform;
+}
+
+void CPlayer::Go_Dir(_fvector vDir, _float fTimeDelta, _float fSpeed)
 {
 	m_pTransformCom->Set_SpeedPerSec(fSpeed);
 	m_pTransformCom->Go_Dir(vDir, fTimeDelta);
@@ -147,6 +261,14 @@ void CPlayer::Go_Down(_float fTimeDelta, _float fSpeed)
 {
 	m_pTransformCom->Set_SpeedPerSec(fSpeed);
 	m_pTransformCom->Go_Down(fTimeDelta);
+}
+
+void CPlayer::LookTarget(_float fTimeDelta)
+{
+	if (m_IsTarget && nullptr != m_pTargetTransform)
+	{
+		m_pTransformCom->LookAt(m_pTargetTransform->Get_State(STATE::POSITION));
+	}
 }
 
 _vector CPlayer::Get_InputDirection()
@@ -165,10 +287,42 @@ _vector CPlayer::Get_InputDirection()
 	if (KeyPressing(DIK_D))
 		vInputDir += DIR_BACKWARDRIGHT;
 
-	// 인풋 Dir이 입력 받지 않았다면, 본래 플레이어의 룩을 갖고옴
 	if (XMVector3Equal(vInputDir, XMVectorZero()))
 		vInputDir = m_pTransformCom->Get_State(STATE::LOOK);
 
+	return XMVector3Normalize(vInputDir);
+}
+
+_vector CPlayer::Get_InputDirectionEx()
+{
+	_float fInputX{}, fInputZ{};
+
+	/* 상 하 좌 우*/
+	if (KeyPressing(DIK_W))
+		fInputZ += 1.f;
+	if (KeyPressing(DIK_S))
+		fInputZ -= 1.f;
+	if (KeyPressing(DIK_D))
+		fInputX += 1.f;
+	if (KeyPressing(DIK_A))
+		fInputX -= 1.f;
+
+	// 1. 카메라 기준 벡터
+	_vector vCamRight = m_pGameInstance->Get_CameraState(ENUM_CLASS(m_eLevelID), TEXT("Camera_TPS"), STATE::RIGHT);
+	_vector vCamLook = m_pGameInstance->Get_CameraState(ENUM_CLASS(m_eLevelID), TEXT("Camera_TPS"), STATE::LOOK);
+	
+	// 2. Y축 제거
+	vCamRight = XMVector3Normalize(XMVectorSetY(vCamRight, 0.f));
+	vCamLook = XMVector3Normalize(XMVectorSetY(vCamLook, 0.f));
+
+	// 3. 입력 방향 계산
+	_vector vInputDir = vCamRight * fInputX + vCamLook * fInputZ;
+	
+
+	if (XMVector3Equal(vInputDir, XMVectorZero()))
+		vInputDir = m_pTransformCom->Get_State(STATE::LOOK);
+
+	/* 정규화 */
 	return XMVector3Normalize(vInputDir);
 }
 
@@ -204,6 +358,11 @@ _bool CPlayer::IsMoveKeyPressed()
 {
 	return KEY_PRESSING(DIK_W) || KEY_PRESSING(DIK_A) ||
 		KEY_PRESSING(DIK_S) || KEY_PRESSING(DIK_D);
+}
+
+_bool CPlayer::IsLockOn() const
+{
+	return KEY_PRESSING(DIK_LSHIFT);
 }
 
 void CPlayer::Set_AttackStrategy(CPlayer_IAttackStrategy* pStrategy)
@@ -329,6 +488,7 @@ void CPlayer::Free()
 
 	Safe_Release(m_pCurState);
 	Safe_Release(m_pAttackStrategy);
+	Safe_Release(m_pTargetTransform);
 
 	for (_uint i = 0; i < ENUM_CLASS(STATES::STATES_END); i++)
 		Safe_Release(m_pStates[i]);

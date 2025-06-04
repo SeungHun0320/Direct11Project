@@ -28,6 +28,9 @@ public:
 	virtual void Late_Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
+public:
+	virtual void Set_Mode(_uint iModeIndex) {};
+
 protected:
 	_float				m_fFov = { };
 	_float				m_fNear = { };

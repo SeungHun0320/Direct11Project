@@ -64,19 +64,23 @@ public: /* 상태로 넘겨줄 함수들 */
 	void  Set_TickPerSecond(PART ePart, _float fTickPerSecond);
 
 	/* 이동 관련 */
-	void Go_Straight(_float fTimeDelta);
-	void Go_Dir(_fvector vDir, _float fTimeDelta, _float fSpeed);
 	_bool Go_Target(_fvector vTarget, _float fTimeDelta, _float fSpeed = 0.f, _float fMinDistance = 2.f);
+	void Go_Dir(_fvector vDir, _float fTimeDelta, _float fSpeed);
 	void Move(_fvector vDir, _float fTimeDelta, _float fSpeed = 0.f);
 	void Hit(_fvector vDir, _float fTimeDelta, _float fSpeed = 0.f);
-
 	void Turn(_fvector vAxis, _float fTimeDelta);
 	void LookAt(_fvector vDir, _float fTimeDelta, _float fSpeed);
 	void LookAtYaw(_vector vDir, _float fLerpRatio);
 
+	void Change_Camera(CAM_MODE eMode);
+
 	_float Compute_AngleToPlayer();
 	_float Compute_LookSppedByAngle(_float fAngle);
 	_bool Is_TargetOnRight();
+
+	/* 공격 관련 */
+	HRESULT Shot_Bullet();
+	HRESULT Shot_Bomb();
 
 	void AttackCoolDownAcc(_float fTimeDelta) {
 		m_fAttackCoolDown += fTimeDelta;
@@ -88,6 +92,18 @@ public: /* 상태로 넘겨줄 함수들 */
 		m_fAttackCoolDown = 0.f;
 	};
 
+	_uint Get_Sequence() {
+		return m_iSequence;
+	}
+
+	void Add_Sequence() {
+		++m_iSequence;
+	}
+
+	void Reset_Sequence() {
+		m_iSequence = 0;
+	}
+
 private: /* 상태 패턴들 */
 	STATES m_eCurState{ STATES::STATES_END };
 	STATES m_ePreState{ STATES::STATES_END };
@@ -96,6 +112,9 @@ private: /* 상태 패턴들 */
 
 private:
 	_float m_fAttackCoolDown = {};
+
+private:
+	_uint  m_iSequence = {};
 
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;

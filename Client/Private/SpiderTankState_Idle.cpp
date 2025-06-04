@@ -68,7 +68,11 @@ void CSpiderTankState_WakeUp::Execute(_float fTimeDelta)
 	m_fTimeAcc += fTimeDelta;
 
 	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CSpiderTank::PART_BODY, fTimeDelta))
+	{
+		m_pOwner->Change_Camera(CAM_MODE::BOSS);
 		m_pOwner->Change_States(CSpiderTank::STATES::IDLE);
+	}
+
 }
 
 void CSpiderTankState_WakeUp::Exit()
@@ -93,7 +97,7 @@ CSpiderTankState_Idle::CSpiderTankState_Idle(CSpiderTank* pOwner)
 void CSpiderTankState_Idle::Enter(_float fTimeDelta)
 {
 	m_fTimeAcc = 0.f;
-	m_fAttackDelay = 1.f;
+	m_fAttackDelay = 0.7f;
 
 	m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::IDLE, true, 0.2f);
 }
@@ -110,9 +114,10 @@ void CSpiderTankState_Idle::Execute(_float fTimeDelta)
 
 	m_pOwner->AttackCoolDownAcc(fTimeDelta);
 
+	/* 총알 테스트용 0.61 ~ 0.79*/
 	_float fRandom = CGameInstance::Get_Instance()->Compute_Random(0.f, 1.f);
 
-	if (fAngle >= XMConvertToRadians(45.f))
+	if (fAngle >= XMConvertToRadians(55.f))
 	{
 		Decide_Rotation();
 		return;
@@ -141,36 +146,64 @@ void CSpiderTankState_Idle::Execute(_float fTimeDelta)
 	{
 		m_pOwner->Reset_AttackCoolDown();
 
-		if (fRandom < 0.2f)
+		switch (m_pOwner->Get_Sequence())
 		{
+		case 0:
 			m_pOwner->Change_States(CSpiderTank::STATES::FULLSWING);
-			return;
-		}
-		else if (fRandom < 0.4f)
-		{
+			break;
+		case 1:
 			m_pOwner->Change_States(CSpiderTank::STATES::FAST_ATTACK);
-			return;
-		}
-		else if (fRandom < 0.6f)
-		{
+			break;
+		case 2:
 			m_pOwner->Change_States(CSpiderTank::STATES::SWING);
-			return;
-		}
-		else if (fRandom < 0.7f)
-		{
+			break;
+		case 3:
 			m_pOwner->Change_States(CSpiderTank::STATES::READY_BOMB);
-			return;
-		}
-		else if (fRandom < 0.8f)
-		{
+			break;
+		case 4:
 			m_pOwner->Change_States(CSpiderTank::STATES::READY_SHOT);
-			return;
-		}
-		else
-		{
+			break;
+		case 5:
 			m_pOwner->Change_States(CSpiderTank::STATES::LAGER);
-			return;
+			break;
+		default:
+			m_pOwner->Reset_Sequence();
+			break;
 		}
+
+		m_pOwner->Add_Sequence();
+		return;
+
+		//if (fRandom < 0.2f)
+		//{
+		//	m_pOwner->Change_States(CSpiderTank::STATES::FULLSWING);
+		//	return;
+		//}
+		//else if (fRandom < 0.4f)
+		//{
+		//	m_pOwner->Change_States(CSpiderTank::STATES::FAST_ATTACK);
+		//	return;
+		//}
+		//else if (fRandom < 0.6f)
+		//{
+		//	m_pOwner->Change_States(CSpiderTank::STATES::SWING);
+		//	return;
+		//}
+		//else if (fRandom < 0.7f)
+		//{
+		//	m_pOwner->Change_States(CSpiderTank::STATES::READY_BOMB);
+		//	return;
+		//}
+		//else if (fRandom < 0.8f)
+		//{
+		//	m_pOwner->Change_States(CSpiderTank::STATES::READY_SHOT);
+		//	return;
+		//}
+		//else
+		//{
+		//	m_pOwner->Change_States(CSpiderTank::STATES::LAGER);
+		//	return;
+		//}
 	}
 }
 

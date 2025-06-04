@@ -5,6 +5,7 @@
 
 
 BEGIN(Engine)
+class CCollider;
 class CShader;
 class CModel;
 END
@@ -66,7 +67,6 @@ public:
 
 
 protected: /* 맵툴에선 굳이 넣어줄 필요가 없어서 그냥 이니셜라이즈에서 때려박는게 나은거 같기도 */
-	class CGameObject* m_pTarget = { nullptr };
 	CTransform*  m_pTargetTransform = { nullptr };
 
 protected:

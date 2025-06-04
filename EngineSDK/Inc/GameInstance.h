@@ -51,6 +51,8 @@ public:
 	list<class CGameObject*>* Find_ObjectList(_uint iLevelIndex, const _wstring& strLayerTag);
 	/* 피킹된 오브젝트를 반환한다. */
 	class CGameObject* Find_Picked_Object(_uint iLevelIndex, const _wstring& strLayerTag);
+	/* 이거 좀 이상하긴 함 ㅋㅋ*/
+	class CGameObject* Find_ObjectByName(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strObjectName);
 #pragma endregion
 
 #pragma region RENDERER
@@ -113,6 +115,11 @@ public:
 	void Draw_Font(const _wstring& strFontTag, const _tchar* pText, const _float2& vPosition, _fvector vColor = XMVectorSet(1.f, 1.f, 1.f, 1.f), _float fRotation = 0.f, const _float2& vOrigin = _float2(0.f, 0.f), _float fScale = 1.f);
 #pragma endregion
 
+#pragma region CAMERA_MANAGER
+	HRESULT Add_Camera(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strCameraTag);
+	void    Set_CameraMode(_uint iLevelIndex, const _wstring& strCameraTag, _uint iModeIndex);
+	_vector Get_CameraState(_uint iLevelIndex, const _wstring& strCameraTag, STATE eState);
+#pragma endregion
 
 private:
 	class CGraphic_Device*		m_pGraphic_Device = { nullptr };
@@ -127,6 +134,7 @@ private:
 	class CPicking*				m_pPicking = { nullptr };
 	class CLight_Manager*		m_pLight_Manager = { nullptr };
 	class CFont_Manager*		m_pFont_Manager = { nullptr };
+	class CCamera_Manager*		m_pCamera_Manager = { nullptr };
 
 public:
 	void Release_Engine();

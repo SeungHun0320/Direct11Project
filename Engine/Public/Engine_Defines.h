@@ -4,7 +4,7 @@
 
 #include <d3d11.h>
 #include <DirectXMath.h>
-#include "DirectXCollision.h"
+#include <DirectXCollision.h>
 
 #include <fstream>
 #include <filesystem>
@@ -13,13 +13,16 @@ namespace fs = std::filesystem;
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
 
-// #include "DirectXTK/VertexTypes.h" 마소에서 만들어 준 정점타입. 참고용으로 쓰삼
 #include "DirectXTK/DDSTextureLoader.h"
 #include "DirectXTK/WICTextureLoader.h"
+#include "DirectXTK/VertexTypes.h" // 마소에서 만들어 준 정점타입. 참고용으로 쓰삼
 #include "DirectXTK/SpriteBatch.h"
 #include "DirectXTK/SpriteFont.h"
+#include "DirectXTK/PrimitiveBatch.h"
+#include "DirectXTK/Effects.h"
 
 #include "FX11/d3dx11effect.h"
+
 #include <d3dcompiler.h>
 using namespace DirectX;
 

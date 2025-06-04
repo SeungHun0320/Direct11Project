@@ -168,14 +168,17 @@
     <ClInclude Include="..\Public\Body_CheckPoint.h" />
     <ClInclude Include="..\Public\Body_Chest.h" />
     <ClInclude Include="..\public\Body_Grass.h" />
+    <ClInclude Include="..\public\Body_Wizard.h" />
     <ClInclude Include="..\Public\Body_WizardCandleabra.h" />
     <ClInclude Include="..\public\Body_Player.h" />
     <ClInclude Include="..\public\Body_SpiderTank.h" />
     <ClInclude Include="..\Public\Body_WizardSupport.h" />
     <ClInclude Include="..\Public\Body_WizardSword.h" />
     <ClInclude Include="..\public\Boss.h" />
+    <ClInclude Include="..\public\Bullet.h" />
     <ClInclude Include="..\public\Bush.h" />
     <ClInclude Include="..\public\Button.h" />
+    <ClInclude Include="..\public\Camera_CutScene.h" />
     <ClInclude Include="..\public\Camera_Free.h" />
     <ClInclude Include="..\public\Camera_TPS.h" />
     <ClInclude Include="..\public\CheckPoint.h" />
@@ -200,6 +203,7 @@
     <ClInclude Include="..\public\Map.h" />
     <ClInclude Include="..\public\MapTool.h" />
     <ClInclude Include="..\public\Monster.h" />
+    <ClInclude Include="..\public\Monster_Bullet.h" />
     <ClInclude Include="..\Public\Part_WizardCandleabra.h" />
     <ClInclude Include="..\Public\Part_WizardStaff.h" />
     <ClInclude Include="..\public\Part_WizardSword.h" />
@@ -212,6 +216,8 @@
     <ClInclude Include="..\public\Sky.h" />
     <ClInclude Include="..\public\SpiderTank.h" />
     <ClInclude Include="..\Public\SpiderTankState.h" />
+    <ClInclude Include="..\public\SpiderTank_Bullet.h" />
+    <ClInclude Include="..\public\SpiderTank_Orb.h" />
     <ClInclude Include="..\public\Terrain.h" />
     <ClInclude Include="..\public\Tool.h" />
     <ClInclude Include="..\Public\UI.h" />
@@ -221,6 +227,7 @@
     <ClInclude Include="..\Public\Wizard_SupportState.h" />
     <ClInclude Include="..\public\Wizard_Sword.h" />
     <ClInclude Include="..\Public\Wizard_SwordState.h" />
+    <ClInclude Include="..\public\Wizard_Weapon.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="ImGui\backends\imgui_impl_dx11.h" />
@@ -247,14 +254,17 @@
     <ClCompile Include="..\Private\Body_CheckPoint.cpp" />
     <ClCompile Include="..\Private\Body_Chest.cpp" />
     <ClCompile Include="..\private\Body_Grass.cpp" />
+    <ClCompile Include="..\private\Body_Wizard.cpp" />
     <ClCompile Include="..\Private\Body_WizardCandleabra.cpp" />
     <ClCompile Include="..\private\Body_Player.cpp" />
     <ClCompile Include="..\private\Body_SpiderTank.cpp" />
     <ClCompile Include="..\Private\Body_WizardSupport.cpp" />
     <ClCompile Include="..\Private\Body_WizardSword.cpp" />
     <ClCompile Include="..\private\Boss.cpp" />
+    <ClCompile Include="..\private\Bullet.cpp" />
     <ClCompile Include="..\private\Bush.cpp" />
     <ClCompile Include="..\private\Button.cpp" />
+    <ClCompile Include="..\private\Camera_CutScene.cpp" />
     <ClCompile Include="..\private\Camera_Free.cpp" />
     <ClCompile Include="..\private\Camera_TPS.cpp" />
     <ClCompile Include="..\private\CheckPoint.cpp" />
@@ -276,6 +286,7 @@
     <ClCompile Include="..\private\Map.cpp" />
     <ClCompile Include="..\private\MapTool.cpp" />
     <ClCompile Include="..\private\Monster.cpp" />
+    <ClCompile Include="..\private\Monster_Bullet.cpp" />
     <ClCompile Include="..\Private\Part_WizardCandleabra.cpp" />
     <ClCompile Include="..\Private\Part_WizardStaff.cpp" />
     <ClCompile Include="..\private\Part_WizardSword.cpp" />
@@ -310,6 +321,8 @@
     <ClCompile Include="..\Private\SpiderTankState_Attack.cpp" />
     <ClCompile Include="..\Private\SpiderTankState_Move.cpp" />
     <ClCompile Include="..\Private\SpiderTankState_Idle.cpp" />
+    <ClCompile Include="..\private\SpiderTank_Bullet.cpp" />
+    <ClCompile Include="..\private\SpiderTank_Orb.cpp" />
     <ClCompile Include="..\private\Terrain.cpp" />
     <ClCompile Include="..\private\Tool.cpp" />
     <ClCompile Include="..\private\UI.cpp" />
@@ -319,6 +332,7 @@
     <ClCompile Include="..\Private\Wizard_SupportState.cpp" />
     <ClCompile Include="..\private\Wizard_Sword.cpp" />
     <ClCompile Include="..\Private\Wizard_SwordState.cpp" />
+    <ClCompile Include="..\private\Wizard_Weapon.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="ImGui\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="ImGui\backends\imgui_impl_win32.cpp" />

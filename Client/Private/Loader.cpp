@@ -12,6 +12,9 @@
 /* 몬스터들 */
 #include "SpiderTank.h"
 #include "Body_SpiderTank.h"
+// 총알 추가
+#include "SpiderTank_Orb.h"
+#include "SpiderTank_Bullet.h"
 
 #include "Blob.h"
 #include "Body_Blob.h"
@@ -558,6 +561,12 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 		CModel::Create(m_pDevice, m_pContext, MODEL::ANIM, TEXT("../Bin/Resources/Models/Anim/Monster/Spidertank/Spidertank.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
+	/*For.Prototype_Component_Model_SpiderTankOrb*/
+	PreTransformMatrix = XMMatrixScaling(0.008f, 0.008f, 0.008f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_SpiderTankOrb"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/Anim/Monster/Spidertank/Orb/Spidertank_Orb.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
 	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
 
 
@@ -579,6 +588,16 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 	/* For.Prototype_GameObject_SpiderTank */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_SpiderTank"),
 		CSpiderTank::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_SpiderTank_Bullet */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_SpiderTank_Bullet"),
+		CSpiderTank_Bullet::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_SpiderTank_Orb */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_SpiderTank_Orb"),
+		CSpiderTank_Orb::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Sky */

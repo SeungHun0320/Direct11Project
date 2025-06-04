@@ -11,6 +11,7 @@
 #include "Timer_Manager.h"
 #include "Graphic_Device.h"
 #include "Object_Manager.h"
+#include "Camera_Manager.h"
 #include "Prototype_Manager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance);
@@ -71,6 +72,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ ID
 	if (nullptr == m_pFont_Manager)
 		return E_FAIL;
 
+	m_pCamera_Manager = CCamera_Manager::Create(EngineDesc.iNumLevels);
+	if (nullptr == m_pCamera_Manager)
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -122,7 +127,8 @@ HRESULT CGameInstance::End_Draw()
 void CGameInstance::Clear(_uint iLevelIndex)
 {
 	/* 특정 레벨의 자원을 삭제한다. */
-	
+	m_pCamera_Manager->Clear(iLevelIndex);
+
 	/* 특정 레벨의 객체을 삭제한다. */
 	m_pObject_Manager->Clear(iLevelIndex);
 
@@ -218,6 +224,11 @@ list<class CGameObject*>* CGameInstance::Find_ObjectList(_uint iLevelIndex, cons
 CGameObject* CGameInstance::Find_Picked_Object(_uint iLevelIndex, const _wstring& strLayerTag)
 {
 	return m_pObject_Manager->Find_Picked_Object(iLevelIndex, strLayerTag);
+}
+
+CGameObject* CGameInstance::Find_ObjectByName(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strObjectName)
+{
+	return m_pObject_Manager->Find_ObjectByName(iLevelIndex, strLayerTag, strObjectName);
 }
 
 #pragma endregion
@@ -404,6 +415,22 @@ void CGameInstance::Draw_Font(const _wstring& strFontTag, const _tchar* pText, c
 }
 #pragma endregion
 
+
+#pragma region CAMERA_MANAGER
+HRESULT CGameInstance::Add_Camera(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strCameraTag)
+{
+	return m_pCamera_Manager->Add_Camera(iLevelIndex, strLayerTag, strCameraTag);
+}
+void CGameInstance::Set_CameraMode(_uint iLevelIndex, const _wstring& strCameraTag, _uint iModeIndex)
+{
+	m_pCamera_Manager->Set_CameraMode(iLevelIndex, strCameraTag, iModeIndex);
+}
+_vector CGameInstance::Get_CameraState(_uint iLevelIndex, const _wstring& strCameraTag, STATE eState)
+{
+	return m_pCamera_Manager->Get_CameraState(iLevelIndex, strCameraTag, eState);
+}
+#pragma endregion
+
 void CGameInstance::Release_Engine()
 {
 	Safe_Release(m_pFont_Manager);
@@ -415,6 +442,8 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pRenderer);
 
 	Safe_Release(m_pObject_Manager);
+
+	Safe_Release(m_pCamera_Manager);
 
 	Safe_Release(m_pPrototype_Manager);
 

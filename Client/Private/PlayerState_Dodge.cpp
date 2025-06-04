@@ -24,7 +24,7 @@ void CPlayerState_Dodge::Enter(_float fTimeDelta)
 
 	m_fTimeAcc = 0.f;
 
-	XMStoreFloat3(&m_vInputDir, m_pOwner->Get_InputDirection());
+	XMStoreFloat3(&m_vInputDir, m_pOwner->Get_InputDirectionEx());
 
 	m_pOwner->Use_Stamina(50);
 }
@@ -35,6 +35,8 @@ void CPlayerState_Dodge::Execute(_float fTimeDelta)
 
 	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta)) /* 재생 시간 */
 	{
+		m_pOwner->LookTarget(fTimeDelta);
+
 		if (m_pOwner->KeyPressing(DIK_J) || m_pOwner->KeyDown(DIK_K) || m_pOwner->KeyDown(DIK_L))
 		{
 			WEAPON_TYPE eWeaponType = m_pOwner->Get_AttackStrategy()->Get_WeaponType();
@@ -47,11 +49,13 @@ void CPlayerState_Dodge::Execute(_float fTimeDelta)
 				m_pOwner->Change_States(CPlayer::STATES::ATTACK1);
 				break;
 			}
-
 		}
 		else if (m_pOwner->KeyPressing(DIK_SPACE))
 		{
-			m_pOwner->Change_States(CPlayer::STATES::SPRINT);
+			if(!m_pOwner->IsLockOn())
+				m_pOwner->Change_States(CPlayer::STATES::SPRINT);
+			else
+				m_pOwner->Change_States(CPlayer::STATES::IDLE);
 		}
 		else if (m_pOwner->IsAnyMoveKeyPressed())
 		{

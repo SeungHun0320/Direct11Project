@@ -3,9 +3,6 @@
 #include "Client_Defines.h"
 #include "ContainerObject.h"
 
-BEGIN(Engine)
-END
-
 BEGIN(Client)
 
 class CPawn abstract : public CContainerObject

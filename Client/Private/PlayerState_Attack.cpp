@@ -42,7 +42,7 @@ void CPlayerState_Attack1::Enter(_float fTimeDelta)
 
     m_fTimeAcc = 0.f;
 
-    XMStoreFloat3(&m_vInputDir, m_pOwner->Get_InputDirection());
+    XMStoreFloat3(&m_vInputDir, m_pOwner->Get_State(STATE::LOOK));
 	m_pOwner->Change_Animation(CPlayer::PART_BODY, eCombo, false, 0.1f);
 }
 
@@ -72,7 +72,7 @@ void CPlayerState_Attack1::Execute(_float fTimeDelta)
             }
         }
         else if(0.3f <= m_fTimeAcc)
-            m_pOwner->Move(XMLoadFloat3(&m_vInputDir), fTimeDelta, 1.5f);
+            m_pOwner->Go_Dir(XMLoadFloat3(&m_vInputDir), fTimeDelta, 1.5f);
     }
     else if (WEAPON_TYPE::SWORD == m_eWeaponType)
     {
@@ -93,7 +93,7 @@ void CPlayerState_Attack1::Execute(_float fTimeDelta)
             }
         }
         else if (0.3f <= m_fTimeAcc)
-            m_pOwner->Move(XMLoadFloat3(&m_vInputDir), fTimeDelta, 3.f);
+            m_pOwner->Go_Dir(XMLoadFloat3(&m_vInputDir), fTimeDelta, 3.f);
     }
     else if (WEAPON_TYPE::DAGGER == m_eWeaponType)
     {
@@ -109,7 +109,7 @@ void CPlayerState_Attack1::Execute(_float fTimeDelta)
             }
         }
         else if (0.3f <= m_fTimeAcc)
-            m_pOwner->Move(XMLoadFloat3(&m_vInputDir), fTimeDelta, 3.f);
+            m_pOwner->Go_Dir(XMLoadFloat3(&m_vInputDir), fTimeDelta, 3.f);
     }
 
 
@@ -171,7 +171,7 @@ void CPlayerState_Attack2::Enter(_float fTimeDelta)
         break;
     }
 
-    XMStoreFloat3(&m_vInputDir, m_pOwner->Get_InputDirection());
+    XMStoreFloat3(&m_vInputDir, m_pOwner->Get_State(STATE::LOOK));
 	m_pOwner->Change_Animation(CPlayer::PART_BODY, eCombo, false, 0.1f);
 
 }
@@ -206,7 +206,7 @@ void CPlayerState_Attack2::Execute(_float fTimeDelta)
             }
         }
         else if (0.3f <= m_fTimeAcc)
-            m_pOwner->Move(XMLoadFloat3(&m_vInputDir), fTimeDelta, 3.f);
+            m_pOwner->Go_Dir(XMLoadFloat3(&m_vInputDir), fTimeDelta, 3.f);
     }
     else if (WEAPON_TYPE::SWORD == m_eWeaponType)
     {
@@ -226,7 +226,7 @@ void CPlayerState_Attack2::Execute(_float fTimeDelta)
                 m_pOwner->Change_States(CPlayer::STATES::IDLE);
         }
         else if (0.3f <= m_fTimeAcc)
-            m_pOwner->Move(XMLoadFloat3(&m_vInputDir), fTimeDelta, 2.f);
+            m_pOwner->Go_Dir(XMLoadFloat3(&m_vInputDir), fTimeDelta, 2.f);
     }
 }
 
@@ -263,7 +263,7 @@ void CPlayerState_Attack3::Enter(_float fTimeDelta)
 
     m_fTimeAcc = 0.f;
 
-    XMStoreFloat3(&m_vInputDir, m_pOwner->Get_InputDirection());
+    XMStoreFloat3(&m_vInputDir, m_pOwner->Get_State(STATE::LOOK));
 	m_pOwner->Change_Animation(CPlayer::PART_BODY, eCombo, false, 0.1f);
 }
 
@@ -297,7 +297,7 @@ void CPlayerState_Attack3::Execute(_float fTimeDelta)
             }
         }
         else if (0.3f <= m_fTimeAcc)
-            m_pOwner->Move(XMLoadFloat3(&m_vInputDir), fTimeDelta, 7.5f);
+            m_pOwner->Go_Dir(XMLoadFloat3(&m_vInputDir), fTimeDelta, 7.5f);
     }
 }
 

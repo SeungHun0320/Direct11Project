@@ -1,32 +1,23 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "PartObject.h"
+#include "Wizard_Weapon.h"
 
 #include "Wizard_Sword.h"
 
-BEGIN(Engine)
-class CShader;
-class CModel;
-END
-
 BEGIN(Client)
 
-class CPart_WizardCandleabra final : public CPartObject
+class CPart_WizardCandleabra final : public CWizard_Weapon
 {
 public:
-	typedef struct tagPartCandleabraDesc : public CPartObject::DESC
+	typedef struct tagPartCandleabraDesc : public CWizard_Weapon::DESC
 	{
-		const _float4x4* pSocketMatrix = { nullptr };
-		LEVEL eLevelID;
+
 	}DESC;
 private:
 	CPart_WizardCandleabra(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CPart_WizardCandleabra(const CPart_WizardCandleabra& Prototype);
 	virtual ~CPart_WizardCandleabra() = default;
-
-public:
-	const _float4x4* Get_SocketMatrix(const _string& strBoneName);
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -37,19 +28,10 @@ public:
 	virtual HRESULT Render();
 
 private:
-	CShader* m_pShaderCom = { nullptr };
-	CModel* m_pModelCom = { nullptr };
-
-private:
-	const _float4x4* m_pSocketMatrix = { nullptr };
 	CWizard_Sword::STATES* m_pParentState = { nullptr };
 
 private:
-	LEVEL m_eLevelID = { LEVEL::LEVEL_END };
-
-private:
 	HRESULT Ready_Components(void* pArg);
-	HRESULT Bind_ShaderResources();
 
 public:
 	static CPart_WizardCandleabra* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

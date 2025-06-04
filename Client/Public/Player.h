@@ -67,6 +67,9 @@ public:
 	virtual void Late_Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
+public:
+	CGameObject* Find_Target(_float fFindDistance);
+
 public: /* 상태패턴 관련 함수들 */
 	void Change_States(STATES eStates);
 	_vector Get_State(STATE eState);
@@ -77,24 +80,35 @@ public: /* 키 입력 관련 함수들*/
 	_bool KeyUp(_ubyte eKeyID);
 	_bool IsAnyMoveKeyPressed() const;
 	_bool IsMoveKeyPressed();
+	_bool IsLockOn() const;
 	
-
 public: /* 상태로 넘겨줄 함수들 */
 	/* 애니메이션 관련 */
 	_bool Play_Animation(PART ePart, _float fTimeDelta);
 	void  Set_TrackPosition(PART ePart, _float fTrackPosition);
 	void  Change_Animation(PART ePart, _uint iNextIndex, _bool isLoop = true, _float fBlendDuration = 0.f, _bool isBlend = true);
 	void  Set_MeshVisible(PART ePart, _uint iIndex, _bool IsVisible);
+	void  CheckChange_Anim(PART ePart, _uint iNextIndex, _bool isLoop = true, _float fBlendDuration = 0.f, _bool isBlend = true);
 
 	/* 이동 관련 */
 	void  Dodge(_fvector vDir,_float fTimeDelta, _float fSpeed);
 	void  Move(_fvector vDir, _float fTimeDelta, _float fSpeed = 0.f);
-	void  Stagger(_fvector vDir, _float fTimeDelta, _float fSpeed = 0.f);
+	void  Go_Dir(_fvector vDir, _float fTimeDelta, _float fSpeed = 0.f);
 	void  Go_Up(_float fTimeDelta, _float fSpeed);
 	void  Go_Down(_float fTimeDelta, _float fSpeed);
+	void  LookTarget(_float fTimeDelta);
 
-public: /* 키입력에 따른 룩 갖고오는 함수 */
+public:/* 락온 관련 */
+	void     LockOn();
+	void     LockOff();
+	void     LockOnMove(_fvector vDir, _float fTimeDelta, _float fSpeed = 0.f);
+	_vector  Get_TargetState(STATE eState);
+	void	 Set_Target(CTransform* pTargerTransform);
+
+public: /* 키입력에 따른 방향을 결정해주는 함수 */
 	_vector Get_InputDirection();
+	_vector Get_InputDirectionEx();
+
 
 public: /* 스테이트 갖고오기 */
 	STATES Get_CurState() {
@@ -134,6 +148,23 @@ public: /* 방패 관련 */
 		m_IsShield = IsShield;
 	}
 
+public: /* 타깃 관련 */
+	_bool Get_IsTarget() {
+		return m_IsTarget;
+	}
+
+	void Set_IsTarget(_bool IsTarget) {
+		m_IsTarget = IsTarget;
+	}
+
+	_float Get_FindDistance() {
+		return m_fFindDistance;
+	}
+
+	void Set_FindDistance(_float fFindDistance) {
+		m_fFindDistance = fFindDistance;
+	}
+
 public: /* 전략패턴 트라이 */
 	void Set_AttackStrategy(class CPlayer_IAttackStrategy* pStrategy);
 	class CPlayer_IAttackStrategy* Get_AttackStrategy() const {
@@ -163,8 +194,16 @@ private: /* 전략 패턴 트라이*/
 	HIT_TYPE    m_eHitType = {};
 	_bool       m_IsHit = {};
 
+private: /* 락온 상태관련 변수들 */
+	CTransform* m_pTargetTransform = { nullptr };
+	_bool       m_IsTarget = { false };
+	_float		m_fFindDistance = {};
+
 private:
 	void Stamina_Recovery(_float fTimeDelta);
+
+private: /* 애니 관련 */
+	_bool Is_CurrentAnim(PART ePart, _uint iNextIndex);
 
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;

@@ -23,7 +23,7 @@ void CPlayerState_Sprint::Execute(_float fTimeDelta)
 	if (m_pOwner->Get_IsHit())
 		m_pOwner->Change_States(CPlayer::STATES::HIT);
 
-	m_pOwner->Move(m_pOwner->Get_InputDirection(), fTimeDelta, SPEED);
+	m_pOwner->Move(m_pOwner->Get_InputDirectionEx(), fTimeDelta, SPEED);
 
 	if (m_pOwner->KeyDown(DIK_SPACE))
 	{

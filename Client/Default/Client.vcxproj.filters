@@ -334,14 +334,20 @@
     <Filter Include="02.GameObjects\08. Bullet">
       <UniqueIdentifier>{11dec82b-3c18-4060-8509-a17eb0649034}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\00. Boss\SpiderTank\99. SpiderTank_Bullet">
+    <Filter Include="02.GameObjects\08. Bullet\Monster_Bullet">
+      <UniqueIdentifier>{8118d390-521a-4127-b71f-a2a5e2a715ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08. Bullet\Monster_Bullet\SpiderTank_Bullet">
       <UniqueIdentifier>{3f9f217f-02ba-4c43-8adb-14e5ff7e8739}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\00. Boss\SpiderTank\99. SpiderTank_Bullet\SpiderTank_Orb">
+    <Filter Include="02.GameObjects\08. Bullet\Monster_Bullet\SpiderTank_Bullet\SpiderTank_Orb">
       <UniqueIdentifier>{6fbd672e-4e82-4602-bd80-1008054f24cf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\00. Boss\SpiderTank\99. SpiderTank_Bullet\SpiderTank_Bullet">
+    <Filter Include="02.GameObjects\08. Bullet\Monster_Bullet\SpiderTank_Bullet\SpiderTank_Bullet">
       <UniqueIdentifier>{96ef8008-4030-4f1d-8d2e-860dc8c5c8bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.Camera\Camera_CutScene">
+      <UniqueIdentifier>{5676f453-d74f-4938-9b07-9f9821224c97}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -537,9 +543,6 @@
     <ClInclude Include="..\Public\Body_WizardSupport.h">
       <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Body\Support</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Body_WizardSword.h">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Body\Sword</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Part_WizardCandleabra.h">
       <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Weapons\Candleabra</Filter>
     </ClInclude>
@@ -575,6 +578,30 @@
     </ClInclude>
     <ClInclude Include="..\Public\SpiderTankState.h">
       <Filter>02.GameObjects\03.Monsters\00. Boss\SpiderTank\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Bullet.h">
+      <Filter>02.GameObjects\08. Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SpiderTank_Orb.h">
+      <Filter>02.GameObjects\08. Bullet\Monster_Bullet\SpiderTank_Bullet\SpiderTank_Orb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SpiderTank_Bullet.h">
+      <Filter>02.GameObjects\08. Bullet\Monster_Bullet\SpiderTank_Bullet\SpiderTank_Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Monster_Bullet.h">
+      <Filter>02.GameObjects\08. Bullet\Monster_Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Camera_CutScene.h">
+      <Filter>02.GameObjects\02.Camera\Camera_CutScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Wizard_Weapon.h">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Body_Wizard.h">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Body_WizardSword.h">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Body\Sword</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -863,6 +890,27 @@
     </ClCompile>
     <ClCompile Include="..\Private\SpiderTankState_Hit.cpp">
       <Filter>02.GameObjects\03.Monsters\00. Boss\SpiderTank\State\Hit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Bullet.cpp">
+      <Filter>02.GameObjects\08. Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SpiderTank_Orb.cpp">
+      <Filter>02.GameObjects\08. Bullet\Monster_Bullet\SpiderTank_Bullet\SpiderTank_Orb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SpiderTank_Bullet.cpp">
+      <Filter>02.GameObjects\08. Bullet\Monster_Bullet\SpiderTank_Bullet\SpiderTank_Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Monster_Bullet.cpp">
+      <Filter>02.GameObjects\08. Bullet\Monster_Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Camera_CutScene.cpp">
+      <Filter>02.GameObjects\02.Camera\Camera_CutScene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Wizard_Weapon.cpp">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Body_Wizard.cpp">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Body</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

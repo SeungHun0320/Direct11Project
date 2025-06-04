@@ -27,11 +27,7 @@ HRESULT CMonster::Initialize(void* pArg)
 
 	if (m_eLevelID != LEVEL::TOOLS)
 	{
-		m_pTarget = GET_PLAYER;
-		if(nullptr != m_pTarget)
-			Safe_AddRef(m_pTarget);
-
-		m_pTargetTransform = dynamic_cast<CTransform*>(m_pTarget->Get_Component(TEXT("Com_Transform")));
+		m_pTargetTransform = dynamic_cast<CTransform*>(GET_PLAYER->Get_Component(TEXT("Com_Transform")));
 		if (nullptr != m_pTargetTransform)
 			Safe_AddRef(m_pTargetTransform);
 	}
@@ -102,6 +98,5 @@ void CMonster::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pTarget);
 	Safe_Release(m_pTargetTransform);
 }

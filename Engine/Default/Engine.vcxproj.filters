@@ -148,6 +148,18 @@
     <ClInclude Include="..\public\Bounding_AABB.h">
       <Filter>01.Utility\04.Components\Collider\Bounding\AABB</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Camera_Manager.h">
+      <Filter>01.Utility\03.GameObject\Objects\Camera\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DebugDraw.h">
+      <Filter>01.Utility\04.Components\Collider\DebugDraw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Bounding_OBB.h">
+      <Filter>01.Utility\04.Components\Collider\Bounding\OBB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Bounding_Sphere.h">
+      <Filter>01.Utility\04.Components\Collider\Bounding\Sphere</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Timer.cpp">
@@ -281,6 +293,18 @@
     </ClCompile>
     <ClCompile Include="..\private\Bounding_AABB.cpp">
       <Filter>01.Utility\04.Components\Collider\Bounding\AABB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Manager.cpp">
+      <Filter>01.Utility\03.GameObject\Objects\Camera\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DebugDraw.cpp">
+      <Filter>01.Utility\04.Components\Collider\DebugDraw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Bounding_OBB.cpp">
+      <Filter>01.Utility\04.Components\Collider\Bounding\OBB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Bounding_Sphere.cpp">
+      <Filter>01.Utility\04.Components\Collider\Bounding\Sphere</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -445,6 +469,12 @@
     </Filter>
     <Filter Include="01.Utility\04.Components\Collider\Bounding\Sphere">
       <UniqueIdentifier>{bdab3695-cd16-4dce-976b-e11b53ddc5f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.GameObject\Objects\Camera\Manager">
+      <UniqueIdentifier>{8eb58df7-4073-4e8d-a4cc-0335e44a49cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\Collider\DebugDraw">
+      <UniqueIdentifier>{e8795063-b873-42dd-8272-90d9f35ed6d8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

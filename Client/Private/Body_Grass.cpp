@@ -44,7 +44,7 @@ LIFE CBody_Grass::Update(_float fTimeDelta)
 
 void CBody_Grass::Late_Update(_float fTimeDelta)
 {
-    XMStoreFloat4x4(&m_CombinedWorldMatrix, XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Float4x4()) * XMLoadFloat4x4(m_pParentMatrix));
+    XMStoreFloat4x4(&m_CombinedWorldMatrix, m_pTransformCom->Get_WorldMatrix() * XMLoadFloat4x4(m_pParentMatrix));
 
     m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 }

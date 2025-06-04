@@ -59,7 +59,7 @@ void CPlayerState_Hit::Execute(_float fTimeDelta)
 	{
 		if (HIT_TYPE::STAGGER == m_eHitType)
 		{
-			m_pOwner->Stagger(XMLoadFloat3(&m_vStaggerDir), fTimeDelta, SPEED);
+			m_pOwner->Go_Dir(XMLoadFloat3(&m_vStaggerDir), fTimeDelta, SPEED);
 		}
 	}
 }

@@ -275,12 +275,16 @@ void CSpiderTankState_Shot::Enter(_float fTimeDelta)
 	m_fDuration = 6.f;
 	m_fTimeAcc = 0.f;
 
+	m_fReloadTime = 0.1f;
+	m_fShotTime = 0.f;
+
 	m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::SHOT, true, 0.2f);
 }
 
 void CSpiderTankState_Shot::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
+	m_fShotTime += fTimeDelta;
 
 	_vector vPos = m_pOwner->Get_State(STATE::POSITION);
 	_vector vTarget = m_pOwner->Get_TargetPosition();
@@ -288,6 +292,14 @@ void CSpiderTankState_Shot::Execute(_float fTimeDelta)
 	_vector vDir = XMVector3Normalize(vTarget - vPos);
 
 	m_pOwner->Play_Animation(CSpiderTank::PART_BODY, fTimeDelta);
+
+	if (m_fReloadTime <= m_fShotTime)
+	{
+		if(m_pOwner->Compute_AngleToPlayer() <= XMConvertToRadians(60.f))
+			m_pOwner->Shot_Bullet();
+
+		m_fShotTime = 0.f;
+	}
 
 	if (m_fDuration <= m_fTimeAcc)
 	{
@@ -308,6 +320,9 @@ void CSpiderTankState_Shot::Exit()
 {
 	m_fDuration = 6.f;
 	m_fTimeAcc = 0.f;
+
+	m_fReloadTime = 0.1f;
+	m_fShotTime = 0.f;
 }
 
 void CSpiderTankState_Shot::Free()
@@ -406,13 +421,25 @@ void CSpiderTankState_ShotBomb::Enter(_float fTimeDelta)
 	m_fDuration = 1.5f;
 	m_fTimeAcc = 0.f;
 
+	m_iShotCount = 0;
+	m_fReloadTime = 0.5f;
+	m_fShotTime = 0.f;
+
 	m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::SHOT_BOMB, true, 0.3f);
 }
 
 void CSpiderTankState_ShotBomb::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
+	m_fShotTime += fTimeDelta;
 
+	if (m_fReloadTime <= m_fShotTime && 3 != m_iShotCount)
+	{
+		m_pOwner->Shot_Bomb();
+		m_fShotTime = 0.f;
+		++m_iShotCount;
+	}
+	
 	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CSpiderTank::PART_BODY, fTimeDelta))
 	{
 		m_pOwner->Change_States(CSpiderTank::STATES::END_BOMB);
@@ -423,6 +450,10 @@ void CSpiderTankState_ShotBomb::Exit()
 {
 	m_fDuration = 0.f;
 	m_fTimeAcc = 0.f;
+
+	m_iShotCount = 0;
+	m_fReloadTime = 0.f;
+	m_fShotTime = 0.f;
 }
 
 void CSpiderTankState_ShotBomb::Free()

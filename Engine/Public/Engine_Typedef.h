@@ -32,11 +32,11 @@ namespace Engine
 	
 
 	/* SIMD 연산 */
-	typedef XMVECTOR					_vector;
-	typedef FXMVECTOR					_fvector;
-	typedef GXMVECTOR					_gvector;
-	typedef HXMVECTOR					_hvector;
-	typedef CXMVECTOR					_cvector;
+	typedef XMVECTOR					_vector;  
+	typedef FXMVECTOR					_fvector; /* 두개 까지 */
+	typedef GXMVECTOR					_gvector; /* 3개 부터*/
+	typedef HXMVECTOR					_hvector; /* 4개 */
+	typedef CXMVECTOR					_cvector; /* 이 후 */
 
 	typedef XMMATRIX					_matrix;
 	typedef FXMMATRIX					_fmatrix;

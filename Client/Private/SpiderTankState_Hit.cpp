@@ -104,7 +104,11 @@ void CSpiderTankState_Dead::Execute(_float fTimeDelta)
 	m_pOwner->Play_Animation(CSpiderTank::PART_BODY, fTimeDelta);
 
 	if (m_fDuration <= m_fTimeAcc)
+	{
+		m_pOwner->Change_Camera(CAM_MODE::TPS);
 		m_pOwner->Change_States(CSpiderTank::STATES::IDLE);
+	}
+		
 }
 
 void CSpiderTankState_Dead::Exit()

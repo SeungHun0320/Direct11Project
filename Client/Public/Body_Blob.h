@@ -6,6 +6,7 @@
 #include "Blob.h"
 
 BEGIN(Engine)
+class CCollider;
 class CShader;
 class CModel;
 END
@@ -41,8 +42,9 @@ public:
 	virtual void  Set_TrackPosition(_float fTrackPosition) override;
 
 private:
-	CShader* m_pShaderCom = { nullptr };
-	CModel* m_pModelCom = { nullptr };
+	CCollider* m_pColliderCom = { nullptr };
+	CShader*   m_pShaderCom = { nullptr };
+	CModel*	   m_pModelCom = { nullptr };
 
 	CBlob::STATES* m_pParentState = { nullptr };
 

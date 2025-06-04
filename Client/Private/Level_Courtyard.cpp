@@ -44,6 +44,8 @@ HRESULT CLevel_Courtyard::Initialize()
 	if (FAILED(Ready_Lights()))
 		return E_FAIL;
 
+	m_pGameInstance->Set_CameraMode(ENUM_CLASS(CurLevel), TEXT("Camera_TPS"), ENUM_CLASS(CAM_MODE::TPS));
+
 	m_pBGM = m_pGameInstance->Get_Single_Sound("Fortress_Courtyard");
 	m_pBGM->Set_Volume(0.5f);
 	m_pBGM->Play();
@@ -89,7 +91,7 @@ HRESULT CLevel_Courtyard::Ready_Layer_Pawn(const _wstring& strLayerTag)
 
 	//없으면 새로 생성해서 넣어줌
 	CPlayer::DESC tDesc{};
-	tDesc.eLevelID = LEVEL::STATIC;
+	tDesc.eLevelID = CurLevel;
 	tDesc.fSpeedPerSec = 5.f;
 	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	tDesc.strName = TEXT("Player");
@@ -108,30 +110,6 @@ HRESULT CLevel_Courtyard::Ready_Layer_Pawn(const _wstring& strLayerTag)
 
 HRESULT CLevel_Courtyard::Ready_Layer_Camera(const _wstring& strLayerTag)
 {
-	//CCamera_Free::DESC tDesc = {};
-
-	//tDesc.eLevelID = CurLevel;
-	//tDesc.fSensor = 0.1f;
-
-	//auto pPlayer = GET_PLAYER;
-
-	//_float3 vPos = {};
-	//XMStoreFloat3(&vPos, static_cast<CTransform*>(pPlayer->Get_Component(TEXT("Com_Transform")))
-	//	->Get_State(STATE::POSITION));
-
-	//tDesc.vEye = _float3(-12.5f, 15.5f, -112.5f);
-	//tDesc.vAt = _float3(vPos.x, vPos.y, vPos.z);
-	//tDesc.fFov = XMConvertToRadians(60.f);
-	//tDesc.fNear = 0.1f;
-	//tDesc.fFar = 5000.f;
-	//tDesc.fSpeedPerSec = 30.f;
-	//tDesc.fRotationPerSec = XMConvertToRadians(180.f);
-	//tDesc.strName = TEXT("Camera_Free");
-
-	//if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + tDesc.strName,
-	//	ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
-	//	return E_FAIL;
-
 	CGameObject* pPlayer = GET_PLAYER;
 
 	_float3 vPos = {};
@@ -141,7 +119,7 @@ HRESULT CLevel_Courtyard::Ready_Layer_Camera(const _wstring& strLayerTag)
 
 	tDesc.eLevelID = CurLevel;
 	tDesc.fSensor = 1.5f;
-	tDesc.vOffset = _float3(-7.f, 11.f, -7.f);
+	tDesc.vOffset = _float3(-11.f, 15.f, -11.f);
 	tDesc.fDeadZoneX = 2.5f;
 	tDesc.fDeadZoneZ = 2.5f;
 	tDesc.pTarget = pPlayer;
@@ -158,6 +136,9 @@ HRESULT CLevel_Courtyard::Ready_Layer_Camera(const _wstring& strLayerTag)
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + tDesc.strName,
 		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Camera(ENUM_CLASS(CurLevel), strLayerTag, tDesc.strName)))
 		return E_FAIL;
 
 	return S_OK;
@@ -365,5 +346,4 @@ void CLevel_Courtyard::Free()
 
 	m_pBGM->Stop();
 	Safe_Release(m_pBGM);
-
 }

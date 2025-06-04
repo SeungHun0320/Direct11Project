@@ -1,31 +1,23 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "PartObject.h"
+#include "Body_Wizard.h"
 
 #include "Wizard_Support.h"
 
-BEGIN(Engine)
-class CShader;
-class CModel;
-END
-
 BEGIN(Client)
 
-class CBody_WizardSupport final : public CPartObject
+class CBody_WizardSupport final : public CBody_Wizard
 {
 public:
-	typedef struct tagBodySupportDesc : public CPartObject::DESC
+	typedef struct tagBodySupportDesc : public CBody_Wizard::DESC
 	{
-		LEVEL eLevelID;
+
 	}DESC;
 private:
 	CBody_WizardSupport(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CBody_WizardSupport(const CBody_WizardSupport& Prototype);
 	virtual ~CBody_WizardSupport() = default;
-
-public:
-	const _float4x4* Get_SocketMatrix(const _string& strBoneName);
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -35,24 +27,11 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
-public:
-	virtual _bool Play_Animation(_float fTimeDelta) override;
-	virtual void Change_Animation(_uint iNextIndex, _bool isLoop = true, _float fBlendDuration = 0.f, _bool isBlend = true) override;
-	virtual void  Set_TrackPosition(_float fTrackPosition) override;
-
 private:
-	CShader* m_pShaderCom = { nullptr };
-	CModel* m_pModelCom = { nullptr };
-
 	CWizard_Support::STATES* m_pParentState = { nullptr };
 
 private:
-	LEVEL m_eLevelID = { LEVEL::LEVEL_END };
-	_int m_iSoonseo = {};
-
-private:
-	HRESULT Ready_Components(void* pArg);
-	HRESULT Bind_ShaderResources();
+	virtual HRESULT Ready_Components(void* pArg) override;
 
 public:
 	static CBody_WizardSupport* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

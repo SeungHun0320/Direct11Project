@@ -3,18 +3,13 @@
 #include "GameInstance.h"
 
 CBody_WizardSupport::CBody_WizardSupport(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    : CPartObject{ pDevice, pContext }
+    : CBody_Wizard{ pDevice, pContext }
 {
 }
 
 CBody_WizardSupport::CBody_WizardSupport(const CBody_WizardSupport& Prototype)
-    : CPartObject(Prototype)
+    : CBody_Wizard(Prototype)
 {
-}
-
-const _float4x4* CBody_WizardSupport::Get_SocketMatrix(const _string& strBoneName)
-{
-    return m_pModelCom->Get_BoneMatrix(strBoneName);
 }
 
 HRESULT CBody_WizardSupport::Initialize_Prototype()
@@ -26,16 +21,8 @@ HRESULT CBody_WizardSupport::Initialize(void* pArg)
 {
     DESC* pDesc = static_cast<DESC*>(pArg);
 
-    m_eLevelID = pDesc->eLevelID;
-
     if (FAILED(__super::Initialize(pArg)))
         return E_FAIL;
-
-    if (FAILED(Ready_Components(pArg)))
-        return E_FAIL;
-
-    if (LEVEL::TOOLS == m_eLevelID)
-        m_pModelCom->Set_Animation(0, true);
 
     return S_OK;
 }
@@ -47,99 +34,27 @@ void CBody_WizardSupport::Priority_Update(_float fTimeDelta)
 
 LIFE CBody_WizardSupport::Update(_float fTimeDelta)
 {
-    if (LEVEL::TOOLS == m_eLevelID)
-        m_pModelCom->Play_Animation(fTimeDelta);
-
     return __super::Update(fTimeDelta);
 }
 
 void CBody_WizardSupport::Late_Update(_float fTimeDelta)
 {
-    XMStoreFloat4x4(&m_CombinedWorldMatrix, XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Float4x4()) * XMLoadFloat4x4(m_pParentMatrix));
-
-   m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+    __super::Late_Update(fTimeDelta);
 }
 
 HRESULT CBody_WizardSupport::Render()
 {
-    if (FAILED(Bind_ShaderResources()))
-        return E_FAIL;
-
-    _uint		iNumMesh = m_pModelCom->Get_NumMeshes();
-
-    for (_uint i = 0; i < iNumMesh; i++)
-    {
-        //m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TEX_TYPE::DIFFUSE, 0);
-
-        if (m_pModelCom->Get_MeshVisible(i))
-            continue;
-
-        if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TEX_TYPE::DIFFUSE, 0)))
-            return E_FAIL;
-
-        m_pModelCom->Bind_Bone_Matrices(m_pShaderCom, "g_BoneMatrices", i);
-
-        if (FAILED(m_pShaderCom->Begin(0)))
-            return E_FAIL;
-
-        if (FAILED(m_pModelCom->Render(i)))
-            return E_FAIL;
-    }
-
-    return S_OK;
-}
-
-_bool CBody_WizardSupport::Play_Animation(_float fTimeDelta)
-{
-    return m_pModelCom->Play_Animation(fTimeDelta);
-}
-
-void CBody_WizardSupport::Change_Animation(_uint iNextIndex, _bool isLoop, _float fBlendDuration, _bool isBlend)
-{
-    m_pModelCom->Change_Animation(iNextIndex, isLoop, fBlendDuration, isBlend);
-}
-
-void CBody_WizardSupport::Set_TrackPosition(_float fTrackPosition)
-{
-    m_pModelCom->Set_CurrnetTrackPosition(fTrackPosition);
+    return __super::Render();
 }
 
 HRESULT CBody_WizardSupport::Ready_Components(void* pArg)
 {
-    /* For.Com_Shader */
-    if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxAnimMesh"),
-        TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
+    if (FAILED(__super::Ready_Components(pArg)))
         return E_FAIL;
 
     /* For.Com_Model */
     if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Model_Wizard_Support"),
         TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
-        return E_FAIL;
-
-    return S_OK;
-}
-
-HRESULT CBody_WizardSupport::Bind_ShaderResources()
-{
-    if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix)))
-        return E_FAIL;
-    if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::VIEW))))
-        return E_FAIL;
-    if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::PROJ))))
-        return E_FAIL;
-
-    if (FAILED(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4))))
-        return E_FAIL;
-
-    const LIGHT_DESC* pLightDesc = m_pGameInstance->Get_Light(0);
-
-    if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightDir", &pLightDesc->vDirection, sizeof(_float4))))
-        return E_FAIL;
-    if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4))))
-        return E_FAIL;
-    if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4))))
-        return E_FAIL;
-    if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4))))
         return E_FAIL;
 
     return S_OK;
@@ -174,7 +89,4 @@ CGameObject* CBody_WizardSupport::Clone(void* pArg)
 void CBody_WizardSupport::Free()
 {
     __super::Free();
-
-    Safe_Release(m_pModelCom);
-    Safe_Release(m_pShaderCom);
 }

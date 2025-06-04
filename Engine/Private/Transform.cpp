@@ -246,7 +246,7 @@ void CTransform::LookAtLerpEx(_fvector vAt, _float fTimeDelta, _float fLerpSpeed
 	Set_State(STATE::UP, vUp * vScaled.y);
 	Set_State(STATE::LOOK, vSmoothedDir * vScaled.z);
 }
-
+	
 void CTransform::LookDir(_fvector vDir)
 {
 	_float3		vScaled = Get_Scaled();

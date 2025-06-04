@@ -55,7 +55,7 @@ public: /* 애니메이션 블렌드 용 */
 public:
 	_bool Play_Animation(_float fTimeDelta);
 	_bool Is_CurrentAnim(_uint iNextIndex) {
-		return m_iCurrentAnimIndex == iNextIndex;
+		return  m_iCurrentAnimIndex == iNextIndex || m_iNextAnimIndex == iNextIndex;
 	};
 	void     Update_RootPosition();
 

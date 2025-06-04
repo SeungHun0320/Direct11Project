@@ -31,6 +31,16 @@ CGameObject* CObject_Manager::Find_Object(_uint iLevelIndex, const _wstring& str
 	return pLayer->Find_Object(iIndex);
 }
 
+CGameObject* CObject_Manager::Find_ObjectByName(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strObjectName)
+{
+	CLayer* pLayer = Find_Layer(iLevelIndex, strLayerTag);
+
+	if (nullptr == pLayer)
+		return nullptr;
+
+	return pLayer->Find_ObjectByName(strObjectName);
+}
+
 CGameObject* CObject_Manager::Find_Picked_Object(_uint iLevelIndex, const _wstring& strLayerTag)
 {
 	list<CGameObject*>* pGameObjects = Find_ObjectList(iLevelIndex, strLayerTag);

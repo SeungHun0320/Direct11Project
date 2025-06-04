@@ -305,6 +305,7 @@ HRESULT CModel::Ready_Bones(ifstream& _InFile)
     }
 
     
+    /* 루트본을 찾아서 루트본인덱스에 담은 뒤에 */
     for (_uint i = 0; i < m_Bones.size(); i++)
     {
         if (m_Bones[i]->Compare_Name("root") || m_Bones[i]->Compare_Name("Blob"))
@@ -314,6 +315,7 @@ HRESULT CModel::Ready_Bones(ifstream& _InFile)
         }
     }
 
+    /* 다시 돌면서 루트본이 부모인덱스인 뼈들의 부모인덱스를 변경 */
     for (_uint i = 0; i < m_Bones.size(); i++)
     {
         if (m_Bones[i]->Compare_ParentBoneIndex(m_iRootBoneIndex))

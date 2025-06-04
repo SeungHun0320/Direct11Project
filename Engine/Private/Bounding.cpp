@@ -15,6 +15,8 @@ HRESULT CBounding::Initialzie()
 
 void CBounding::Free()
 {
+    __super::Free();
+
     Safe_Release(m_pDevice);
     Safe_Release(m_pContext);
 }

@@ -30,10 +30,10 @@ HRESULT CLevel_Arena::Initialize()
 	if (FAILED(Ready_Layer_Pawn(TEXT("Layer_Pawn"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
+	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
+	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
 	if (FAILED(Load_Map(TEXT("Arena.Map"))))
@@ -41,6 +41,8 @@ HRESULT CLevel_Arena::Initialize()
 
 	if (FAILED(Ready_Lights()))
 		return E_FAIL;
+
+	m_pGameInstance->Set_CameraMode(ENUM_CLASS(CurLevel), TEXT("Camera_TPS"), ENUM_CLASS(CAM_MODE::TPS));
 
 	m_pBGM = m_pGameInstance->Get_Single_Sound("Fortress_Boss");
 	m_pBGM->Set_Volume(0.5f);
@@ -87,7 +89,7 @@ HRESULT CLevel_Arena::Ready_Layer_Pawn(const _wstring& strLayerTag)
 
 	//없으면 새로 생성해서 넣어줌
 	CPlayer::DESC tDesc{};
-	tDesc.eLevelID = LEVEL::STATIC;
+	tDesc.eLevelID = CurLevel;
 	tDesc.fSpeedPerSec = 5.f;
 	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	tDesc.strName = TEXT("Player");
@@ -114,7 +116,7 @@ HRESULT CLevel_Arena::Ready_Layer_Camera(const _wstring& strLayerTag)
 
 	tDesc.eLevelID = CurLevel;
 	tDesc.fSensor = 1.5f;
-	tDesc.vOffset = _float3(-15.f, 30.f, -15.f);
+	tDesc.vOffset = _float3(-20.f, 35.f, -20.f);
 	tDesc.fDeadZoneX = 2.5f;
 	tDesc.fDeadZoneZ = 2.5f;
 	tDesc.pTarget = pPlayer;
@@ -131,6 +133,9 @@ HRESULT CLevel_Arena::Ready_Layer_Camera(const _wstring& strLayerTag)
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + tDesc.strName,
 		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Camera(ENUM_CLASS(CurLevel), strLayerTag, tDesc.strName)))
 		return E_FAIL;
 
 	return S_OK;

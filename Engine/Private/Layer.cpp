@@ -29,6 +29,18 @@ CGameObject* CLayer::Find_Object(_uint iIndex)
 	return *Iter;
 }
 
+CGameObject* CLayer::Find_ObjectByName(const _wstring& strObjectName)
+{
+	for (auto& pObject : m_GameObjects)
+	{
+		if (pObject->Get_Name() == strObjectName)
+		{
+			return pObject;
+		}
+	}
+	return nullptr;
+}
+
 list<class CGameObject*>* CLayer::Find_ObjectList()
 {
 	if (m_GameObjects.empty())
