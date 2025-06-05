@@ -117,15 +117,6 @@ _bool CBody_Player::Is_CurrentAnim(_uint iNextIndex)
 
 HRESULT CBody_Player::Ready_Components(void* pArg)
 {
-    /* For.Com_Collider */
-    CBounding_AABB::AABB_DESC	AABBDesc{};
-    AABBDesc.vExtents = _float3(0.6f, 1.2f, 0.6f);
-    AABBDesc.vCenter = _float3(0.0f, AABBDesc.vExtents.y, 0.f);
-
-    if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_AABB"),
-        TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
-        return E_FAIL;
-
     /* For.Com_Shader */
     if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxAnimMesh"),
         TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
@@ -134,6 +125,19 @@ HRESULT CBody_Player::Ready_Components(void* pArg)
     /* For.Com_Model */
     if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Fox"),
         TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
+        return E_FAIL;
+
+
+    /* For.Com_Collider */
+    CBounding_AABB::DESC	AABBDesc{};
+    AABBDesc.vExtents = _float3(0.6f, 1.2f, 0.6f);
+    AABBDesc.vCenter = _float3(0.0f, AABBDesc.vExtents.y, 0.f);
+    AABBDesc.iColliderGroupID = ENUM_CLASS(COLLIDER_GROUP::PAWN);
+    AABBDesc.iColliderID = ENUM_CLASS(COLLIDER_ID::PLAYER);
+    AABBDesc.pOwner = this;
+
+    if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_AABB"),
+        TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
         return E_FAIL;
 
     return S_OK;

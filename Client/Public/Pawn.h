@@ -18,9 +18,7 @@ protected:
 	virtual ~CPawn() = default;
 
 public:
-	void Set_Level(LEVEL eLevelID) {
-		m_eLevelID = eLevelID;
-	}
+	void Set_Level(LEVEL eLevelID);
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -32,6 +30,9 @@ public:
 
 protected:
 	LEVEL m_eLevelID = { LEVEL::LEVEL_END };
+
+protected:
+	void Change_Level();
 
 protected:
 	virtual HRESULT Ready_Components(void* pArg);

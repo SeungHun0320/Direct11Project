@@ -349,6 +349,9 @@
     <Filter Include="02.GameObjects\02.Camera\Camera_CutScene">
       <UniqueIdentifier>{5676f453-d74f-4938-9b07-9f9821224c97}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\05.Environment_Objects\Body">
+      <UniqueIdentifier>{706e1dd6-fdeb-450f-9ed5-4a5b324d066e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -602,6 +605,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\Body_WizardSword.h">
       <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Body\Sword</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Body_Environment_Object.h">
+      <Filter>02.GameObjects\05.Environment_Objects\Body</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -911,6 +917,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Body_Wizard.cpp">
       <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Body_Environment_Object.cpp">
+      <Filter>02.GameObjects\05.Environment_Objects\Body</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -9,7 +9,8 @@ namespace Engine
 		bool			isWindowed;
 		unsigned int	iWinSizeX;
 		unsigned int	iWinSizeY;
-		unsigned int	iNumLevels;		
+		unsigned int	iNumLevels;	
+		unsigned int    iNumColliderGroups;
 	}ENGINE_DESC;
 
 	typedef struct tagKeyFrame

@@ -1,13 +1,19 @@
+
 #include "Bounding_Sphere.h"
+#include "Bounding_AABB.h"
+#include "Bounding_OBB.h"
 
 CBounding_Sphere::CBounding_Sphere(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CBounding {pDevice, pContext}
 {
 }
 
-HRESULT CBounding_Sphere::Initialize(const CBounding::BOUNDING_DESC* pDesc)
+HRESULT CBounding_Sphere::Initialize(const CBounding::DESC* pDesc)
 {
-	const SPHERE_DESC* pSphereDesc = static_cast<const SPHERE_DESC*>(pDesc);
+	if (FAILED(__super::Initialize(pDesc)))
+		return E_FAIL;
+
+	const DESC* pSphereDesc = static_cast<const DESC*>(pDesc);
 
 	m_pOriginalDesc = new BoundingSphere(pSphereDesc->vCenter, pSphereDesc->fRadius);
 	m_pDesc = new BoundingSphere(*m_pOriginalDesc);
@@ -18,6 +24,27 @@ HRESULT CBounding_Sphere::Initialize(const CBounding::BOUNDING_DESC* pDesc)
 void CBounding_Sphere::Update(_fmatrix WorldMatrix)
 {
 	m_pOriginalDesc->Transform(*m_pDesc, WorldMatrix);
+}
+
+_bool CBounding_Sphere::Intersect(CBounding* pTarget)
+{
+	_bool		isColl = { false };
+
+	switch (pTarget->Get_Type())
+	{
+	case COLLIDER::AABB:
+		isColl = m_pDesc->Intersects(*static_cast<CBounding_AABB*>(pTarget)->Get_Desc());
+		break;
+	case COLLIDER::OBB:
+		isColl = m_pDesc->Intersects(*static_cast<CBounding_OBB*>(pTarget)->Get_Desc());
+		break;
+	case COLLIDER::SPHERE:
+		isColl = m_pDesc->Intersects(*static_cast<CBounding_Sphere*>(pTarget)->Get_Desc());
+		break;
+
+	}
+
+	return isColl;
 }
 
 #ifdef _DEBUG
@@ -31,7 +58,7 @@ HRESULT CBounding_Sphere::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _f
 
 #endif
 
-CBounding_Sphere* CBounding_Sphere::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const CBounding::BOUNDING_DESC* pDesc)
+CBounding_Sphere* CBounding_Sphere::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const CBounding::DESC* pDesc)
 {
 	CBounding_Sphere* pInstance = new CBounding_Sphere(pDevice, pContext);
 

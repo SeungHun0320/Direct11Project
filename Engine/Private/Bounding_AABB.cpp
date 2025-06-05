@@ -1,13 +1,18 @@
 #include "Bounding_AABB.h"
+#include "Bounding_OBB.h"
+#include "Bounding_Sphere.h"
 
 CBounding_AABB::CBounding_AABB(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CBounding {pDevice, pContext}
 {
 }
 
-HRESULT CBounding_AABB::Initialize(const CBounding::BOUNDING_DESC* pDesc)
+HRESULT CBounding_AABB::Initialize(const CBounding::DESC* pDesc)
 {
-	const AABB_DESC* pAABBDesc = static_cast<const AABB_DESC*>(pDesc);
+	if (FAILED(__super::Initialize(pDesc)))
+		return E_FAIL;
+
+	const DESC* pAABBDesc = static_cast<const DESC*>(pDesc);
 
 	m_pOriginalDesc = new BoundingBox(pAABBDesc->vCenter, pAABBDesc->vExtents);
 	m_pDesc = new BoundingBox(*m_pOriginalDesc);
@@ -29,6 +34,28 @@ void CBounding_AABB::Update(_fmatrix WorldMatrix)
 	m_pOriginalDesc->Transform(*m_pDesc, TransformMatrix);
 }
 
+_bool CBounding_AABB::Intersect(CBounding* pTarget)
+{
+	_bool		isColl = { false };
+
+	switch (pTarget->Get_Type())
+	{
+	case COLLIDER::AABB:
+		isColl = m_pDesc->Intersects(*static_cast<CBounding_AABB*>(pTarget)->Get_Desc());
+		//isColl = Intersect_ToAABB(pTarget);
+		break;
+	case COLLIDER::OBB:
+		isColl = m_pDesc->Intersects(*static_cast<CBounding_OBB*>(pTarget)->Get_Desc());
+		break;
+	case COLLIDER::SPHERE:
+		isColl = m_pDesc->Intersects(*static_cast<CBounding_Sphere*>(pTarget)->Get_Desc());
+		break;
+
+	}
+
+	return isColl;
+}
+
 #ifdef _DEBUG
 
 HRESULT CBounding_AABB::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvector vColor)
@@ -40,7 +67,47 @@ HRESULT CBounding_AABB::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fve
 
 #endif
 
-CBounding_AABB* CBounding_AABB::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const CBounding::BOUNDING_DESC* pDesc)
+_bool CBounding_AABB::Intersect_ToAABB(CBounding* pTarget)
+{
+	/* 본인의 Min과 Max를 */
+	_float3		vSourMin = Compute_Min();
+	_float3		vSourMax = Compute_Max();
+
+	/* 타깃의 Min과 Max와 */
+	_float3		vDestMin = static_cast<CBounding_AABB*>(pTarget)->Compute_Min();
+	_float3		vDestMax = static_cast<CBounding_AABB*>(pTarget)->Compute_Max();
+
+	/* 너비상으로 겹쳤는지 체크 */
+	/* Min중의 Max, Max중의 Min */
+	if (max(vSourMin.x, vDestMin.x) > min(vSourMax.x, vDestMax.x))
+		return false;
+	/* 세 축 다 확인 */
+	if (max(vSourMin.y, vDestMin.y) > min(vSourMax.y, vDestMax.y))
+		return false;
+
+	if (max(vSourMin.z, vDestMin.z) > min(vSourMax.z, vDestMax.z))
+		return false;
+
+	return true;
+}
+
+_float3 CBounding_AABB::Compute_Min()
+{
+	/* 큐브의 앞 왼쪽 아래 */
+	return _float3(m_pDesc->Center.x - m_pDesc->Extents.x,
+		m_pDesc->Center.y - m_pDesc->Extents.y,
+		m_pDesc->Center.z - m_pDesc->Extents.z);
+}
+
+_float3 CBounding_AABB::Compute_Max()
+{
+	/* 큐브의 뒤 오른쪽 위*/
+	return _float3(m_pDesc->Center.x + m_pDesc->Extents.x,
+		m_pDesc->Center.y + m_pDesc->Extents.y,
+		m_pDesc->Center.z + m_pDesc->Extents.z);
+}
+
+CBounding_AABB* CBounding_AABB::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const CBounding::DESC* pDesc)
 {
 	CBounding_AABB* pInstance = new CBounding_AABB(pDevice, pContext);
 

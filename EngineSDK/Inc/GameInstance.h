@@ -34,6 +34,7 @@ public:
 #pragma region LEVEL_MANAGER
 public:
 	HRESULT Change_Level(_uint iLevelIndex, class CLevel* pNewLevel);
+	void Change_Level(_uint iLevelIndex);
 #pragma endregion
 
 #pragma region PROTOTYPE_MANAGER
@@ -121,6 +122,12 @@ public:
 	_vector Get_CameraState(_uint iLevelIndex, const _wstring& strCameraTag, STATE eState);
 #pragma endregion
 
+#pragma region COLLIDER_MANAGER
+	void Clear_Colliders();
+	HRESULT Add_Collider(class CCollider* pCollider, _uint iColliderGroupID);
+	void    Intersect(_uint iColliderGroupID1, _uint iColliderGroupID2);
+#pragma endregion
+
 private:
 	class CGraphic_Device*		m_pGraphic_Device = { nullptr };
 	class CInput_Device*		m_pInputDevice = { nullptr };
@@ -135,6 +142,7 @@ private:
 	class CLight_Manager*		m_pLight_Manager = { nullptr };
 	class CFont_Manager*		m_pFont_Manager = { nullptr };
 	class CCamera_Manager*		m_pCamera_Manager = { nullptr };
+	class CCollider_Manager*	m_pCollider_Manager = { nullptr };
 
 public:
 	void Release_Engine();

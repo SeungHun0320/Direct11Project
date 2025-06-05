@@ -40,6 +40,9 @@ public:
 	virtual LIFE Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
+	
+public:
+	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID) {};
 
 protected:
 	ID3D11Device*				m_pDevice = { nullptr };

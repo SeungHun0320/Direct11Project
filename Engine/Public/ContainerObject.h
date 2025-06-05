@@ -21,6 +21,9 @@ public: /* ¸ÊÅø ¹Ó´Ù. */
 	}
 
 public:
+	CComponent* Get_Component(_uint iPartID, const _wstring& strComponentTag);
+
+public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
 	virtual void Priority_Update(_float fTimeDelta) override;

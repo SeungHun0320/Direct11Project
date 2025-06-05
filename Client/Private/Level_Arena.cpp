@@ -55,13 +55,20 @@ void CLevel_Arena::Update(_float fTimeDelta)
 {
 	if (KEY_DOWN(DIK_RETURN))
 	{
-		if (FAILED(m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
-			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::SHOP))))
-			return;
+		Change_Level(ENUM_CLASS(LEVEL::SHOP));
 	}
 	else if (KEY_DOWN(DIK_ESCAPE))
 	{
 		PostQuitMessage(0);
+	}
+
+	Check_Collision();
+
+	if (m_iNextLevel)
+	{
+		m_pGameInstance->Clear_Colliders();
+		m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
+			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::SHOP));
 	}
 }
 
@@ -83,7 +90,7 @@ HRESULT CLevel_Arena::Ready_Layer_Pawn(const _wstring& strLayerTag)
 	{
 		static_cast<CTransform*>(pPlayer->Get_Component(TEXT("Com_Transform")))
 			->Set_State(STATE::POSITION, XMVectorSetW(XMLoadFloat3(&vInitPosition), 1.f));
-		static_cast<CPawn*>(pPlayer)->Set_Level(CurLevel);
+		static_cast<CPlayer*>(pPlayer)->Set_Level(CurLevel);
 		return S_OK;
 	}
 
@@ -330,6 +337,10 @@ HRESULT CLevel_Arena::Ready_Lights()
 		return E_FAIL;
 
 	return S_OK;
+}
+
+void CLevel_Arena::Check_Collision()
+{
 }
 
 

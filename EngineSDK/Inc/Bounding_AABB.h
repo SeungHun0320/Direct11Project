@@ -7,18 +7,26 @@ BEGIN(Engine)
 class CBounding_AABB final : public CBounding
 {
 public:
-	typedef struct tagBoundingBoxDesc : public CBounding::BOUNDING_DESC
+	typedef struct tagBoundingBoxDesc : public CBounding::DESC
 	{
 		/* 반지름 */
 		_float3		vExtents;
-	}AABB_DESC;
+	}DESC;
 private:
 	CBounding_AABB(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual ~CBounding_AABB() = default;
 
 public:
-	HRESULT Initialize(const CBounding::BOUNDING_DESC* pDesc);
+	const BoundingBox* Get_Desc() const {
+		return m_pDesc;
+	}
+
+public:
+	virtual HRESULT Initialize(const CBounding::DESC* pDesc) override;
 	virtual void Update(_fmatrix WorldMatrix) override;
+	virtual _bool Intersect(CBounding* pTarget) override;
+
+
 
 #ifdef _DEBUG
 public:
@@ -31,8 +39,13 @@ private:
 	/* 실제 충돌을 할 월드 좌표의 콜라이더 */
 	BoundingBox* m_pDesc = { nullptr };
 
+private:
+	_bool Intersect_ToAABB(CBounding* pTarget);
+	_float3 Compute_Min();
+	_float3 Compute_Max();
+
 public:
-	static CBounding_AABB* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const CBounding::BOUNDING_DESC* pDesc);
+	static CBounding_AABB* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const CBounding::DESC* pDesc);
 	virtual void Free()override;
 };
 

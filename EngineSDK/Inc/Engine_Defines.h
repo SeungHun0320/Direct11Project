@@ -6,6 +6,7 @@
 #include <DirectXMath.h>
 #include <DirectXCollision.h>
 
+#include <iostream>
 #include <fstream>
 #include <filesystem>
 namespace fs = std::filesystem;

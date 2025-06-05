@@ -26,6 +26,7 @@ private:
 private:
 	virtual HRESULT Load_Map(const _wstring& strMapFileTag) override;
 	virtual HRESULT Ready_Lights() override;
+	virtual void    Check_Collision() override;
 
 public:
 	static CLevel_Shop* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

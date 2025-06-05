@@ -122,7 +122,7 @@ void CWizard_Sword::Set_TrackPosition(PART ePart, _float fTrackPosition)
 void CWizard_Sword::Go_Target(_fvector vTarget, _float fTimeDelta, _float fSpeed, _float fMinDistance)
 {
 	m_pTransformCom->Set_SpeedPerSec(fSpeed);
-	m_pTransformCom->LookAtLerp(vTarget, fTimeDelta, 10.f);
+	m_pTransformCom->LookAtLerpEx(vTarget, fTimeDelta, 10.f);
 	m_pTransformCom->Go_Target(vTarget, fTimeDelta, fMinDistance);
 }
 

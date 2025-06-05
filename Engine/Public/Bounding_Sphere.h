@@ -7,18 +7,27 @@ BEGIN(Engine)
 class CBounding_Sphere final : public CBounding
 {
 public:
-	typedef struct tagBoundingSphereDesc : public CBounding::BOUNDING_DESC
+	typedef struct tagBoundingSphereDesc : public CBounding::DESC
 	{
 		/* ¹ÝÁö¸§ */
 		_float		fRadius;
-	}SPHERE_DESC;
+	}DESC;
 private:
 	CBounding_Sphere(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual ~CBounding_Sphere() = default;
 
 public:
-	HRESULT Initialize(const CBounding::BOUNDING_DESC* pDesc);
+	const BoundingSphere* Get_Desc() const {
+		return m_pDesc;
+	}
+
+public:
+	virtual HRESULT Initialize(const CBounding::DESC* pDesc) override;
 	virtual void Update(_fmatrix WorldMatrix) override;
+	virtual _bool Intersect(CBounding* pTarget) override;
+
+
+
 
 #ifdef _DEBUG
 public:
@@ -32,7 +41,7 @@ private:
 	BoundingSphere* m_pDesc = { nullptr };
 
 public:
-	static CBounding_Sphere* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const CBounding::BOUNDING_DESC* pDesc);
+	static CBounding_Sphere* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const CBounding::DESC* pDesc);
 	virtual void Free()override;
 };
 

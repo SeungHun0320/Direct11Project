@@ -120,9 +120,12 @@ HRESULT CBody_Blob::Ready_Components(void* pArg)
         return E_FAIL;
 
     /* For.Com_Collider */
-    CBounding_AABB::AABB_DESC	AABBDesc{};
+    CBounding_AABB::DESC	AABBDesc{};
     AABBDesc.vExtents = _float3(0.8f, 0.8f, 0.8f);
     AABBDesc.vCenter = _float3(0.0f, AABBDesc.vExtents.y, 0.f);
+    AABBDesc.iColliderGroupID = ENUM_CLASS(COLLIDER_GROUP::MONSTER);
+    AABBDesc.iColliderID = ENUM_CLASS(COLLIDER_ID::BLOB);
+    AABBDesc.pOwner = this;
    
     if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_AABB"),
         TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))

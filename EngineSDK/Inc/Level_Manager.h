@@ -16,12 +16,14 @@ private:
 
 public:
 	HRESULT Change_Level(_uint iLevelIndex, class CLevel* pNewLevel);
+	void Change_Level(_uint iLevelIndex);
 	void Update(_float fTimeDelta);
 	HRESULT Render();
 
 
 private:
 	_uint					m_iCurrentLevelIndex = {};
+	_uint					m_iPreviousLevelIndex = {};
 	class CLevel*			m_pCurrentLevel = { nullptr };
 	class CGameInstance*	m_pGameInstance = { nullptr };
 

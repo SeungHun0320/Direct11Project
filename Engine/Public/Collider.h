@@ -10,12 +10,31 @@ private:
 	CCollider(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CCollider(const CCollider& Prototype);
 	virtual ~CCollider() = default;
+	
+public:
+	class CGameObject* Get_Owner() const;
+
+	const _uint Get_ID() const {
+		return m_iColliderID;
+	}
+
+	_bool Get_IsActive() const {
+		return m_isActive;
+	}
+
+	void Set_Active(_bool IsActive) {
+		m_isActive = IsActive;
+	}
+
+	void Reset_Collsion() {
+		m_isColl = false;
+	}
 
 public:
 	virtual HRESULT Initialize_Prototype(COLLIDER eType);
 	virtual HRESULT Initialize(void* pArg) override;
-
-	void Update(_fmatrix WorldMatrix);
+	void	Update(_fmatrix WorldMatrix);
+	_bool	Intersect(CCollider* pTargetCollider);
 
 #ifdef _DEBUG
 	HRESULT Render();
@@ -26,6 +45,12 @@ private:
 	class CBounding* m_pBounding = { nullptr };
 
 	_bool			 m_isColl = { false };
+	_bool            m_isActive = { true };
+
+private:
+	class CGameObject* m_pOwner = { nullptr };
+	_uint m_iColliderID = {};
+
 
 #ifdef _DEBUG
 private:	/* 그리기용으로 만든 친구들 */

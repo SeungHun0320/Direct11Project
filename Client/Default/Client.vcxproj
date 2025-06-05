@@ -167,6 +167,7 @@
     <ClInclude Include="..\Public\Body_Bush.h" />
     <ClInclude Include="..\Public\Body_CheckPoint.h" />
     <ClInclude Include="..\Public\Body_Chest.h" />
+    <ClInclude Include="..\public\Body_Environment_Object.h" />
     <ClInclude Include="..\public\Body_Grass.h" />
     <ClInclude Include="..\public\Body_Wizard.h" />
     <ClInclude Include="..\Public\Body_WizardCandleabra.h" />
@@ -253,6 +254,7 @@
     <ClCompile Include="..\Private\Body_Bush.cpp" />
     <ClCompile Include="..\Private\Body_CheckPoint.cpp" />
     <ClCompile Include="..\Private\Body_Chest.cpp" />
+    <ClCompile Include="..\private\Body_Environment_Object.cpp" />
     <ClCompile Include="..\private\Body_Grass.cpp" />
     <ClCompile Include="..\private\Body_Wizard.cpp" />
     <ClCompile Include="..\Private\Body_WizardCandleabra.cpp" />

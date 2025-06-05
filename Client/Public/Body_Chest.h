@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "PartObject.h"
+#include "Body_Environment_Object.h"
 
 BEGIN(Engine)
 class CShader;
@@ -10,12 +10,12 @@ END
 
 BEGIN(Client)
 
-class CBody_Chest final : public CPartObject
+class CBody_Chest final : public CBody_Environment_Object
 {
 public:
-	typedef struct tagBodyChestDesc : public CPartObject::DESC
+	typedef struct tagBodyChestDesc : public CBody_Environment_Object::DESC
 	{
-		LEVEL eLevelID;
+
 	}DESC;
 private:
 	CBody_Chest(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -31,15 +31,11 @@ public:
 	virtual HRESULT Render() override;
 
 private:
-	CShader* m_pShaderCom = { nullptr };
-	CModel* m_pModelCom = { nullptr };
+	virtual HRESULT Ready_Components(void* pArg) override;
 
 private:
-	LEVEL m_eLevelID = { LEVEL::LEVEL_END };
+	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID)override;
 
-private:
-	HRESULT Ready_Components(void* pArg);
-	HRESULT Bind_ShaderResources();
 
 public:
 	static CBody_Chest* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

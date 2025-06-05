@@ -3,12 +3,12 @@
 #include "GameInstance.h"
 
 CBody_Chest::CBody_Chest(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    : CPartObject{ pDevice, pContext }
+    : CBody_Environment_Object{ pDevice, pContext }
 {
 }
 
 CBody_Chest::CBody_Chest(const CBody_Chest& Prototype)
-    : CPartObject(Prototype)
+    : CBody_Environment_Object(Prototype)
 {
 }
 
@@ -21,15 +21,8 @@ HRESULT CBody_Chest::Initialize(void* pArg)
 {
     DESC* pDesc = static_cast<DESC*>(pArg);
 
-    m_eLevelID = pDesc->eLevelID;
-
     if (FAILED(__super::Initialize(pArg)))
         return E_FAIL;
-
-    if (FAILED(Ready_Components(pArg)))
-        return E_FAIL;
-
-    m_pModelCom->Set_Animation(0);
 
     return S_OK;
 }
@@ -41,14 +34,13 @@ void CBody_Chest::Priority_Update(_float fTimeDelta)
 LIFE CBody_Chest::Update(_float fTimeDelta)
 {
     m_pModelCom->Play_Animation(fTimeDelta);
-    return LIFE::NONE;
+
+    return __super::Update(fTimeDelta);
 }
 
 void CBody_Chest::Late_Update(_float fTimeDelta)
 {
-    XMStoreFloat4x4(&m_CombinedWorldMatrix, m_pTransformCom->Get_WorldMatrix() * XMLoadFloat4x4(m_pParentMatrix));
-
-    m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+    __super::Late_Update(fTimeDelta);
 }
 
 HRESULT CBody_Chest::Render()
@@ -72,6 +64,12 @@ HRESULT CBody_Chest::Render()
             return E_FAIL;
     }
 
+#ifdef _DEBUG
+
+    m_pColliderCom->Render();
+
+#endif
+
     return S_OK;
 }
 
@@ -87,34 +85,26 @@ HRESULT CBody_Chest::Ready_Components(void* pArg)
         TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
         return E_FAIL;
 
+    /* For.Com_Collider */
+    CBounding_AABB::DESC	AABBDesc{};
+    AABBDesc.vExtents = _float3(1.f, 1.f, 1.f);
+    AABBDesc.vCenter = _float3(0.0f, AABBDesc.vExtents.y, 0.f);
+    AABBDesc.iColliderGroupID = ENUM_CLASS(COLLIDER_GROUP::ENVIRONMENT);
+    AABBDesc.iColliderID = ENUM_CLASS(COLLIDER_ID::CHEST);
+    AABBDesc.pOwner = this;
+
+    if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_AABB"),
+        TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
+        return E_FAIL;
+
     return S_OK;
 }
 
-HRESULT CBody_Chest::Bind_ShaderResources()
+void CBody_Chest::On_Collision(_uint MyColliderID, _uint OtherColliderID)
 {
-    if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix)))
-        return E_FAIL;
-    if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::VIEW))))
-        return E_FAIL;
-    if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::PROJ))))
-        return E_FAIL;
-
-    if (FAILED(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4))))
-        return E_FAIL;
-
-    const LIGHT_DESC* pLightDesc = m_pGameInstance->Get_Light(0);
-
-    if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightDir", &pLightDesc->vDirection, sizeof(_float4))))
-        return E_FAIL;
-    if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4))))
-        return E_FAIL;
-    if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4))))
-        return E_FAIL;
-    if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4))))
-        return E_FAIL;
-
-    return S_OK;
+    cout << "»óÀÚ" << endl;
 }
+
 
 CBody_Chest* CBody_Chest::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
@@ -145,7 +135,4 @@ CGameObject* CBody_Chest::Clone(void* pArg)
 void CBody_Chest::Free()
 {
     __super::Free();
-
-    Safe_Release(m_pModelCom);
-    Safe_Release(m_pShaderCom);
 }

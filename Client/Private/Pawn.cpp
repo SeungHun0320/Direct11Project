@@ -13,6 +13,11 @@ CPawn::CPawn(const CPawn& Prototype)
 {
 }
 
+void CPawn::Set_Level(LEVEL eLevelID)
+{
+	m_eLevelID = eLevelID;
+}
+
 HRESULT CPawn::Initialize_Prototype()
 {
 	return S_OK;
@@ -23,6 +28,8 @@ HRESULT CPawn::Initialize(void* pArg)
 	DESC* pDesc = static_cast<DESC*>(pArg);
 
 	m_eLevelID = pDesc->eLevelID;
+
+	Set_Level(m_eLevelID);
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -54,6 +61,26 @@ void CPawn::Late_Update(_float fTimeDelta)
 HRESULT CPawn::Render()
 {
 	return S_OK;
+}
+
+void CPawn::Change_Level()
+{
+	LEVEL eNextLevelID{};
+
+	switch (m_eLevelID)
+	{
+	case LEVEL::COURTYARD:
+		eNextLevelID = LEVEL::MAIN;
+		break;
+	case LEVEL::MAIN:
+		eNextLevelID = LEVEL::ARENA;
+		break;
+	case LEVEL::ARENA:
+		eNextLevelID = LEVEL::SHOP;
+		break;
+	}
+
+	m_pGameInstance->Change_Level(ENUM_CLASS(eNextLevelID));
 }
 
 HRESULT CPawn::Ready_Components(void* pArg)

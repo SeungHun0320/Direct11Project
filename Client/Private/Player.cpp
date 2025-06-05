@@ -16,6 +16,13 @@ CPlayer::CPlayer(const CPlayer& Prototype)
 {
 }
 
+void CPlayer::Set_Level(LEVEL eLevelID)
+{
+	__super::Set_Level(eLevelID);
+
+	m_pGameInstance->Add_Collider(dynamic_cast<CCollider*>(m_PartObjects[PART_BODY]->Get_Component(TEXT("Com_Collider"))), ENUM_CLASS(COLLIDER_GROUP::PAWN));
+}
+
 HRESULT CPlayer::Initialize_Prototype()
 {
 	return S_OK;
@@ -413,6 +420,7 @@ HRESULT CPlayer::Ready_PartObjects()
 	BodyDesc.eLevelID = m_eLevelID;
 	BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
 	BodyDesc.pParentState = &m_eCurState;
+	BodyDesc.strName = TEXT("Body_Player");
 
 	if (FAILED(__super::Add_PartObject(PART_BODY, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Body_Player"), &BodyDesc)))
 		return E_FAIL;

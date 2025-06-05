@@ -8,8 +8,10 @@ CBounding::CBounding(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     Safe_AddRef(m_pContext);
 }
 
-HRESULT CBounding::Initialzie()
+HRESULT CBounding::Initialize(const CBounding::DESC* pDesc)
 {
+    m_eType = pDesc->eType;
+
     return S_OK;
 }
 

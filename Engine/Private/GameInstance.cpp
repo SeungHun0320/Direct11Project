@@ -12,7 +12,9 @@
 #include "Graphic_Device.h"
 #include "Object_Manager.h"
 #include "Camera_Manager.h"
+#include "Collider_Manager.h"
 #include "Prototype_Manager.h"
+
 
 IMPLEMENT_SINGLETON(CGameInstance);
 
@@ -74,6 +76,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ ID
 
 	m_pCamera_Manager = CCamera_Manager::Create(EngineDesc.iNumLevels);
 	if (nullptr == m_pCamera_Manager)
+		return E_FAIL;
+
+	m_pCollider_Manager = CCollider_Manager::Create(EngineDesc.iNumColliderGroups);
+	if (nullptr == m_pCollider_Manager)
 		return E_FAIL;
 
 	return S_OK;
@@ -179,6 +185,10 @@ _wstring CGameInstance::StringToWString(const _string& str)
 HRESULT CGameInstance::Change_Level(_uint iLevelIndex, CLevel* pNewLevel)
 {
 	return m_pLevel_Manager->Change_Level(iLevelIndex, pNewLevel);
+}
+void CGameInstance::Change_Level(_uint iLevelIndex)
+{
+	m_pLevel_Manager->Change_Level(iLevelIndex);
 }
 #pragma endregion
 
@@ -431,8 +441,27 @@ _vector CGameInstance::Get_CameraState(_uint iLevelIndex, const _wstring& strCam
 }
 #pragma endregion
 
+
+#pragma region COLLIDER_MANAGER
+void CGameInstance::Clear_Colliders()
+{
+	m_pCollider_Manager->Clear();
+}
+HRESULT CGameInstance::Add_Collider(CCollider* pCollider, _uint iColliderGroupID)
+{
+	return m_pCollider_Manager->Add_Collider(pCollider, iColliderGroupID);
+}
+void CGameInstance::Intersect(_uint iColliderGroupID1, _uint iColliderGroupID2)
+{
+	m_pCollider_Manager->Intersect(iColliderGroupID1, iColliderGroupID2);
+}
+#pragma endregion
+
+
 void CGameInstance::Release_Engine()
 {
+	Safe_Release(m_pCollider_Manager);
+
 	Safe_Release(m_pFont_Manager);
 
 	Safe_Release(m_pPicking);

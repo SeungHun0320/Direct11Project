@@ -55,9 +55,7 @@ private:
 	virtual ~CPlayer() = default;
 
 public:
-	virtual void Set_Level(LEVEL eLevelID) {
-		__super::Set_Level(eLevelID);
-	}
+	virtual void Set_Level(LEVEL eLevelID);
 
 public:
 	virtual HRESULT Initialize_Prototype() override;

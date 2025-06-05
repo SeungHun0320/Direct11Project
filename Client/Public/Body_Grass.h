@@ -1,21 +1,16 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "PartObject.h"
-
-BEGIN(Engine)
-class CShader;
-class CModel;
-END
+#include "Body_Environment_Object.h"
 
 BEGIN(Client)
 
-class CBody_Grass final : public CPartObject
+class CBody_Grass final : public CBody_Environment_Object
 {
 public:
-	typedef struct tagBodyGrassDesc : public CPartObject::DESC
+	typedef struct tagBodyGrassDesc : public CBody_Environment_Object::DESC
 	{
-		LEVEL eLevelID;
+
 	}DESC;
 private:
 	CBody_Grass(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -31,15 +26,10 @@ public:
 	virtual HRESULT Render() override;
 
 private:
-	CShader* m_pShaderCom = { nullptr };
-	CModel* m_pModelCom = { nullptr };
-
+	virtual HRESULT Ready_Components(void* pArg) override;
+	
 private:
-	LEVEL m_eLevelID = { LEVEL::LEVEL_END };
-
-private:
-	HRESULT Ready_Components(void* pArg);
-	HRESULT Bind_ShaderResources();
+	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID)override;
 
 public:
 	static CBody_Grass* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

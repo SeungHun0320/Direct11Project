@@ -1,6 +1,7 @@
 #include "Collider.h"
 
 #include "GameInstance.h"
+#include "GameObject.h"
 
 CCollider::CCollider(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :CComponent{ pDevice, pContext }
@@ -20,6 +21,11 @@ CCollider::CCollider(const CCollider& Prototype)
 #ifdef _DEBUG
 	Safe_AddRef(m_pInputLayout);
 #endif
+}
+
+CGameObject* CCollider::Get_Owner() const
+{
+	return m_pOwner;
 }
 
 HRESULT CCollider::Initialize_Prototype(COLLIDER eType)
@@ -48,7 +54,10 @@ HRESULT CCollider::Initialize_Prototype(COLLIDER eType)
 
 HRESULT CCollider::Initialize(void* pArg)
 {
-	CBounding::BOUNDING_DESC* pDesc = static_cast<CBounding::BOUNDING_DESC*>(pArg);
+	CBounding::DESC* pDesc = static_cast<CBounding::DESC*>(pArg);
+
+	m_pOwner = pDesc->pOwner;
+	m_iColliderID = pDesc->iColliderID;
 
 	switch (m_eType)
 	{
@@ -63,12 +72,24 @@ HRESULT CCollider::Initialize(void* pArg)
 		break;
 	}
 
+
+	m_pGameInstance->Add_Collider(this, pDesc->iColliderGroupID);
+
 	return S_OK;
 }
 
 void CCollider::Update(_fmatrix WorldMatrix)
 {
 	m_pBounding->Update(WorldMatrix);
+}
+
+_bool CCollider::Intersect(CCollider* pTargetCollider)
+{
+	_bool bNowColl =  m_pBounding->Intersect(pTargetCollider->m_pBounding);
+
+	m_isColl = m_isColl || bNowColl;
+
+	return bNowColl;
 }
 
 #ifdef _DEBUG

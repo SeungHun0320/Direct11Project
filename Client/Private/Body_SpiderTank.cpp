@@ -126,7 +126,7 @@ HRESULT CBody_SpiderTank::Ready_Components(void* pArg)
 		return E_FAIL;
 
 	/* For.Com_Collider */
-	CBounding_Sphere::SPHERE_DESC	ColDesc{};
+	CBounding_Sphere::DESC	ColDesc{};
 
 	ColDesc.vCenter = _float3(0.f, 0.f, -100.f);
 	ColDesc.fRadius = 300.f;

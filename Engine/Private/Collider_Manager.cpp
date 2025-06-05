@@ -1,0 +1,93 @@
+#include "Collider_Manager.h"
+#include "Collider.h"
+
+#include "GameObject.h"
+
+CCollider_Manager::CCollider_Manager()
+{
+}
+
+void CCollider_Manager::Clear()
+{
+    for (_uint i = 0; i < m_iNumGroups; ++i)
+    {
+        for (auto Collider : m_pColliders[i])
+            Safe_Release(Collider);
+        m_pColliders[i].clear();
+    }
+}
+
+HRESULT CCollider_Manager::Initialize(_uint iNumGroups)
+{
+    m_iNumGroups = iNumGroups;
+
+    m_pColliders = new list<CCollider*>[iNumGroups];
+
+    return S_OK;
+}
+
+HRESULT CCollider_Manager::Add_Collider(CCollider* pCollider, _uint iColliderGroupID)
+{
+    if (iColliderGroupID >= m_iNumGroups ||
+        nullptr == pCollider)
+        return E_FAIL;
+
+    m_pColliders[iColliderGroupID].push_back(pCollider);
+    Safe_AddRef(pCollider);
+
+    return S_OK;
+}
+
+void CCollider_Manager::Intersect(_uint iColliderGroupID1, _uint iColliderGroupID2)
+{
+    if (iColliderGroupID1 >= m_iNumGroups ||
+        iColliderGroupID2 >= m_iNumGroups)
+        return;
+
+    for (auto& pCollider : m_pColliders[iColliderGroupID1])
+        if (pCollider && pCollider->Get_IsActive())
+            pCollider->Reset_Collsion();
+
+    for (auto& pCollider : m_pColliders[iColliderGroupID2])
+        if (pCollider && pCollider->Get_IsActive())
+            pCollider->Reset_Collsion();
+
+
+    for (auto& pCollider1 : m_pColliders[iColliderGroupID1])
+    {
+        if (nullptr == pCollider1 || !pCollider1->Get_IsActive())
+            continue;
+
+        for (auto& pCollider2 : m_pColliders[iColliderGroupID2])
+        {
+            if (nullptr == pCollider2 || !pCollider2->Get_IsActive())
+                continue;
+
+            if (pCollider1->Intersect(pCollider2) && pCollider2->Intersect(pCollider1))
+            {
+                pCollider1->Get_Owner()->On_Collision(pCollider1->Get_ID(), pCollider2->Get_ID());
+                pCollider2->Get_Owner()->On_Collision(pCollider2->Get_ID(), pCollider1->Get_ID());
+            }
+        }
+    }
+}
+
+CCollider_Manager* CCollider_Manager::Create(_uint iNumGroups)
+{
+    CCollider_Manager* pInstance = new CCollider_Manager();
+
+    if (FAILED(pInstance->Initialize(iNumGroups)))
+    {
+        MSG_BOX("Failed to Created : CCollider_Manager");
+        Safe_Release(pInstance);
+    }
+
+    return pInstance;
+}
+
+void CCollider_Manager::Free()
+{
+    __super::Free();
+    Clear();
+    Safe_Delete_Array(m_pColliders);
+}

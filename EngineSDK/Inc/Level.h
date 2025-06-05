@@ -32,6 +32,8 @@ protected:
 protected:
 	virtual HRESULT Load_Map(const _wstring& strMapFileTag) { return S_OK; };
 	virtual HRESULT Ready_Lights() { return S_OK; };
+	virtual void	Check_Collision() {};
+
 public:	
 	virtual void Free() override;
 
