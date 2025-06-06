@@ -80,6 +80,11 @@ HRESULT CWizard_Support::Render()
 	return S_OK;
 }
 
+void CWizard_Support::On_Collision(_uint MyColliderID, _uint OtherColliderID)
+{
+	cout << "위자드서포트 개같이 성공\n";
+}
+
 void CWizard_Support::Change_States(STATES eStates)
 {
 	if (m_pCurState)
@@ -163,6 +168,7 @@ HRESULT CWizard_Support::Ready_PartObjects()
 
 	BodyDesc.eLevelID = m_eLevelID;
 	BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	BodyDesc.pOwner = this;
 
 	if (FAILED(__super::Add_PartObject(PART_BODY, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Body_Support"), &BodyDesc)))
 		return E_FAIL;

@@ -142,9 +142,6 @@
     <Filter Include="02.GameObjects\02.Camera\Camera_TPS">
       <UniqueIdentifier>{97e7a38c-428b-43ee-a37a-d122f2b03502}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player\Body">
-      <UniqueIdentifier>{406309c7-f51e-41b2-837e-f1003f11d560}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\06.Pawn\Player\State">
       <UniqueIdentifier>{fd392b1e-16e0-4bb9-8427-f6f1c3b47ff7}</UniqueIdentifier>
     </Filter>
@@ -352,6 +349,15 @@
     <Filter Include="02.GameObjects\05.Environment_Objects\Body">
       <UniqueIdentifier>{706e1dd6-fdeb-450f-9ed5-4a5b324d066e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\06.Pawn\Player\Part">
+      <UniqueIdentifier>{a0a60c31-5070-4c41-8e65-4285acbad62e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Pawn\Player\Part\Body">
+      <UniqueIdentifier>{406309c7-f51e-41b2-837e-f1003f11d560}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Pawn\Player\Part\Weapon">
+      <UniqueIdentifier>{18702f0a-a4ac-44c0-97b7-a8b65d047a6b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -520,7 +526,7 @@
       <Filter>02.GameObjects\02.Camera\Camera_TPS</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Body_Player.h">
-      <Filter>02.GameObjects\06.Pawn\Player\Body</Filter>
+      <Filter>02.GameObjects\06.Pawn\Player\Part\Body</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Body_Blob.h">
       <Filter>02.GameObjects\03.Monsters\01.Blob\Body</Filter>
@@ -608,6 +614,12 @@
     </ClInclude>
     <ClInclude Include="..\public\Body_Environment_Object.h">
       <Filter>02.GameObjects\05.Environment_Objects\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Part_Player.h">
+      <Filter>02.GameObjects\06.Pawn\Player\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Weapon_Player.h">
+      <Filter>02.GameObjects\06.Pawn\Player\Part\Weapon</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -823,7 +835,7 @@
       <Filter>02.GameObjects\02.Camera\Camera_TPS</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Body_Player.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\Body</Filter>
+      <Filter>02.GameObjects\06.Pawn\Player\Part\Body</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Body_Blob.cpp">
       <Filter>02.GameObjects\03.Monsters\01.Blob\Body</Filter>
@@ -920,6 +932,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Body_Environment_Object.cpp">
       <Filter>02.GameObjects\05.Environment_Objects\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Part_Player.cpp">
+      <Filter>02.GameObjects\06.Pawn\Player\Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\public\Weapon_Player.cpp">
+      <Filter>02.GameObjects\06.Pawn\Player\Part\Weapon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

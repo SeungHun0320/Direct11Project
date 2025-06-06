@@ -443,6 +443,13 @@ _vector CGameInstance::Get_CameraState(_uint iLevelIndex, const _wstring& strCam
 
 
 #pragma region COLLIDER_MANAGER
+#ifdef _DEBUG
+void CGameInstance::Reset_Colliders()
+{
+	m_pCollider_Manager->Reset_Colliders();
+}
+#endif
+
 void CGameInstance::Clear_Colliders()
 {
 	m_pCollider_Manager->Clear();

@@ -27,10 +27,6 @@ public:
 private:
 	virtual HRESULT Ready_Components(void* pArg)override;
 
-private:
-	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID)override;
-
-
 public:
 	static CBody_Bush* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;

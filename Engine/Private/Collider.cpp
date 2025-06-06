@@ -72,7 +72,6 @@ HRESULT CCollider::Initialize(void* pArg)
 		break;
 	}
 
-
 	m_pGameInstance->Add_Collider(this, pDesc->iColliderGroupID);
 
 	return S_OK;
@@ -80,11 +79,17 @@ HRESULT CCollider::Initialize(void* pArg)
 
 void CCollider::Update(_fmatrix WorldMatrix)
 {
+	if (!m_isActive)
+		return;
+
 	m_pBounding->Update(WorldMatrix);
 }
 
 _bool CCollider::Intersect(CCollider* pTargetCollider)
 {
+	if (!m_isActive)
+		return false;
+
 	_bool bNowColl =  m_pBounding->Intersect(pTargetCollider->m_pBounding);
 
 	m_isColl = m_isColl || bNowColl;
@@ -95,6 +100,9 @@ _bool CCollider::Intersect(CCollider* pTargetCollider)
 #ifdef _DEBUG
 HRESULT CCollider::Render()
 {
+	if (!m_isActive)
+		return E_FAIL;
+
 	m_pEffect->SetWorld(XMMatrixIdentity());
 	m_pEffect->SetView(m_pGameInstance->Get_Transform_Matrix(D3DTS::VIEW));
 	m_pEffect->SetProjection(m_pGameInstance->Get_Transform_Matrix(D3DTS::PROJ));

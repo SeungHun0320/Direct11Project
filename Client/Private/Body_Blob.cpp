@@ -47,7 +47,8 @@ LIFE CBody_Blob::Update(_float fTimeDelta)
 {
     XMStoreFloat4x4(&m_CombinedWorldMatrix, m_pTransformCom->Get_WorldMatrix() * XMLoadFloat4x4(m_pParentMatrix));
 
-    m_pColliderCom->Update(XMLoadFloat4x4(&m_CombinedWorldMatrix));
+    for(auto& pCollider : m_pColliderCom)
+        pCollider->Update(XMLoadFloat4x4(&m_CombinedWorldMatrix));
 
     return LIFE::NONE;
 }
@@ -85,7 +86,8 @@ HRESULT CBody_Blob::Render()
 
 #ifdef _DEBUG
 
-    m_pColliderCom->Render();
+    for (auto& pCollider : m_pColliderCom)
+        pCollider->Render();
 
 #endif
 
@@ -109,6 +111,8 @@ void CBody_Blob::Set_TrackPosition(_float fTrackPosition)
 
 HRESULT CBody_Blob::Ready_Components(void* pArg)
 {
+    DESC* pDesc = static_cast<DESC*>(pArg);
+
     /* For.Com_Shader */
     if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxAnimMesh"),
         TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
@@ -125,10 +129,21 @@ HRESULT CBody_Blob::Ready_Components(void* pArg)
     AABBDesc.vCenter = _float3(0.0f, AABBDesc.vExtents.y, 0.f);
     AABBDesc.iColliderGroupID = ENUM_CLASS(COLLIDER_GROUP::MONSTER);
     AABBDesc.iColliderID = ENUM_CLASS(COLLIDER_ID::BLOB);
-    AABBDesc.pOwner = this;
-   
+    AABBDesc.pOwner = pDesc->pOwner;
+
     if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_AABB"),
-        TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
+        TEXT("Com_Collider_Body"), reinterpret_cast<CComponent**>(&m_pColliderCom[BODY]), &AABBDesc)))
+        return E_FAIL;
+
+    CBounding_OBB::DESC	OBBDesc{};
+    OBBDesc.vExtents = _float3(1.f, 1.4f, 1.f);
+    OBBDesc.vCenter = _float3(0.0f, OBBDesc.vExtents.y, OBBDesc.vExtents.z + OBBDesc.vExtents.z);
+    OBBDesc.iColliderGroupID = ENUM_CLASS(COLLIDER_GROUP::MONSTER_ATTACK);
+    OBBDesc.iColliderID = ENUM_CLASS(COLLIDER_ID::BLOB_ATTACK);
+    OBBDesc.pOwner = pDesc->pOwner;
+
+    if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_OBB"),
+        TEXT("Com_Collider_Attack"), reinterpret_cast<CComponent**>(&m_pColliderCom[ATTACK]), &OBBDesc)))
         return E_FAIL;
 
     return S_OK;
@@ -190,7 +205,9 @@ void CBody_Blob::Free()
 {
     __super::Free();
 
+    for (auto& pCollider : m_pColliderCom)
+        Safe_Release(pCollider);
+
     Safe_Release(m_pModelCom);
     Safe_Release(m_pShaderCom);
-    Safe_Release(m_pColliderCom);
 }

@@ -33,6 +33,8 @@ using namespace DirectX;
 #include <vector>
 #include <unordered_map>
 #include <memory>
+#include <set>
+#include <unordered_set>
 using namespace std;
 
 #include "Engine_Macro.h"

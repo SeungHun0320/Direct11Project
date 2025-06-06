@@ -51,7 +51,6 @@ LIFE CBody_SpiderTank::Update(_float fTimeDelta)
 
 void CBody_SpiderTank::Late_Update(_float fTimeDelta)
 {
-
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 }
 
@@ -115,6 +114,8 @@ void CBody_SpiderTank::Set_TickPerSecond(_float fTickPerSecond)
 
 HRESULT CBody_SpiderTank::Ready_Components(void* pArg)
 {
+	DESC* pDesc = static_cast<DESC*>(pArg);
+
 	/* For.Com_Shader */
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxAnimMesh"),
 		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
@@ -130,6 +131,7 @@ HRESULT CBody_SpiderTank::Ready_Components(void* pArg)
 
 	ColDesc.vCenter = _float3(0.f, 0.f, -100.f);
 	ColDesc.fRadius = 300.f;
+	ColDesc.pOwner = pDesc->pOwner;
 
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_Sphere"),
 		TEXT("Com_Collider_Head"), reinterpret_cast<CComponent**>(&m_pColliderCom[HEAD]), &ColDesc)))

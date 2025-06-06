@@ -11,11 +11,22 @@ void CCollider_Manager::Clear()
 {
     for (_uint i = 0; i < m_iNumGroups; ++i)
     {
-        for (auto Collider : m_pColliders[i])
+        for (auto& Collider : m_pColliders[i])
             Safe_Release(Collider);
         m_pColliders[i].clear();
     }
 }
+
+#ifdef _DEBUG
+void CCollider_Manager::Reset_Colliders()
+{
+    for (_uint i = 0; i < m_iNumGroups; i++)
+    {
+        for (auto& Collider : m_pColliders[i])
+            Collider->Reset_Collsion();
+    }
+}
+#endif // _DEBUG
 
 HRESULT CCollider_Manager::Initialize(_uint iNumGroups)
 {
@@ -44,15 +55,6 @@ void CCollider_Manager::Intersect(_uint iColliderGroupID1, _uint iColliderGroupI
         iColliderGroupID2 >= m_iNumGroups)
         return;
 
-    for (auto& pCollider : m_pColliders[iColliderGroupID1])
-        if (pCollider && pCollider->Get_IsActive())
-            pCollider->Reset_Collsion();
-
-    for (auto& pCollider : m_pColliders[iColliderGroupID2])
-        if (pCollider && pCollider->Get_IsActive())
-            pCollider->Reset_Collsion();
-
-
     for (auto& pCollider1 : m_pColliders[iColliderGroupID1])
     {
         if (nullptr == pCollider1 || !pCollider1->Get_IsActive())
@@ -63,7 +65,11 @@ void CCollider_Manager::Intersect(_uint iColliderGroupID1, _uint iColliderGroupI
             if (nullptr == pCollider2 || !pCollider2->Get_IsActive())
                 continue;
 
-            if (pCollider1->Intersect(pCollider2) && pCollider2->Intersect(pCollider1))
+            if (pCollider1 == pCollider2)
+                continue;
+           
+
+            if (pCollider1->Intersect(pCollider2))
             {
                 pCollider1->Get_Owner()->On_Collision(pCollider1->Get_ID(), pCollider2->Get_ID());
                 pCollider2->Get_Owner()->On_Collision(pCollider2->Get_ID(), pCollider1->Get_ID());

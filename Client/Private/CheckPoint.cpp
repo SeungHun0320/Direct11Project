@@ -49,6 +49,11 @@ HRESULT CCheckPoint::Render()
 	return __super::Render();
 }
 
+void CCheckPoint::On_Collision(_uint MyColliderID, _uint OtherColliderID)
+{
+	cout << "첵포 개같이 성공\n";
+}
+
 HRESULT CCheckPoint::Ready_Components(void* pArg)
 {
 	if (__super::Ready_Components(pArg))
@@ -62,6 +67,7 @@ HRESULT CCheckPoint::Ready_PartObjects()
 
 	BodyDesc.eLevelID = m_eLevelID;
 	BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	BodyDesc.pOwner = this;
 
 	if (FAILED(__super::Add_PartObject(PART_BODY, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Body_CheckPoint"), &BodyDesc)))
 		return E_FAIL;

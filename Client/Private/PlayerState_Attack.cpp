@@ -40,6 +40,8 @@ void CPlayerState_Attack1::Enter(_float fTimeDelta)
         break;
     }
 
+    m_pOwner->Set_Active(m_eWeaponType);
+
     m_fTimeAcc = 0.f;
 
     XMStoreFloat3(&m_vInputDir, m_pOwner->Get_State(STATE::LOOK));
@@ -50,13 +52,15 @@ void CPlayerState_Attack1::Execute(_float fTimeDelta)
 {
     m_fTimeAcc += fTimeDelta;
 
-    if (m_pOwner->KeyDown(DIK_J)) // m_fTimeAcc >= m_fDuration && 
+    if (m_pOwner->KeyDown(DIK_J))
         m_isAttackCombo = true;
 
     if (WEAPON_TYPE::STICK == m_eWeaponType)
     {
         if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta))
         {
+            m_pOwner->Set_Active(m_eWeaponType, false);
+
             if (m_isAttackCombo)
             {
                 m_isAttackCombo = false;
@@ -78,6 +82,8 @@ void CPlayerState_Attack1::Execute(_float fTimeDelta)
     {
         if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta))
         {
+            m_pOwner->Set_Active(m_eWeaponType, false);
+
             if (m_isAttackCombo)
             {
                 m_isAttackCombo = false;
@@ -99,6 +105,8 @@ void CPlayerState_Attack1::Execute(_float fTimeDelta)
     {
         if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta))
         {
+            m_pOwner->Set_Active(m_eWeaponType, false);
+
             if (m_pOwner->IsAnyMoveKeyPressed())
             {
                 m_pOwner->Change_States(CPlayer::STATES::MOVE);
@@ -171,6 +179,8 @@ void CPlayerState_Attack2::Enter(_float fTimeDelta)
         break;
     }
 
+    m_pOwner->Set_Active(m_eWeaponType);
+
     XMStoreFloat3(&m_vInputDir, m_pOwner->Get_State(STATE::LOOK));
 	m_pOwner->Change_Animation(CPlayer::PART_BODY, eCombo, false, 0.1f);
 
@@ -191,6 +201,8 @@ void CPlayerState_Attack2::Execute(_float fTimeDelta)
     {
         if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta))
         {
+            m_pOwner->Set_Active(m_eWeaponType, false);
+
             if (m_isAttackCombo)
             {
                 m_isAttackCombo = false;
@@ -212,6 +224,8 @@ void CPlayerState_Attack2::Execute(_float fTimeDelta)
     {
         if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta))
         {
+            m_pOwner->Set_Active(m_eWeaponType, false);
+
             if (m_isAttackCombo)
             {
                 m_isAttackCombo = false;
@@ -263,6 +277,8 @@ void CPlayerState_Attack3::Enter(_float fTimeDelta)
 
     m_fTimeAcc = 0.f;
 
+    m_pOwner->Set_Active(m_eWeaponType);
+
     XMStoreFloat3(&m_vInputDir, m_pOwner->Get_State(STATE::LOOK));
 	m_pOwner->Change_Animation(CPlayer::PART_BODY, eCombo, false, 0.1f);
 }
@@ -282,6 +298,9 @@ void CPlayerState_Attack3::Execute(_float fTimeDelta)
     {
         if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta))
         {
+
+            m_pOwner->Set_Active(m_eWeaponType, false);
+
             if (m_isAttackCombo)
             {
                 m_isAttackCombo = false;

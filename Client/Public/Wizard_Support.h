@@ -30,6 +30,9 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public: /* 충 돌 */
+	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID);
+
 public: /* 상태패턴 관련 함수들 */
 	void Change_States(STATES eStates);
 	_vector Get_State(STATE eState);

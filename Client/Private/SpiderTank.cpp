@@ -85,6 +85,10 @@ HRESULT CSpiderTank::Render()
 	return S_OK;
 }
 
+void CSpiderTank::On_Collision(_uint MyColliderID, _uint OtherColliderID)
+{
+}
+
 void CSpiderTank::Change_States(STATES eStates)
 {
 	if (m_pCurState)
@@ -290,6 +294,7 @@ HRESULT CSpiderTank::Ready_PartObjects()
 
 	BodyDesc.eLevelID = m_eLevelID;
 	BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	BodyDesc.pOwner = this;
 
 	if (FAILED(__super::Add_PartObject(PART_BODY, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Body_SpiderTank"), &BodyDesc)))
 		return E_FAIL;

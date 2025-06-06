@@ -78,6 +78,11 @@ HRESULT CWizard_Candleabra::Render()
 	return S_OK;
 }
 
+void CWizard_Candleabra::On_Collision(_uint MyColliderID, _uint OtherColliderID)
+{
+	cout << "촛불 개같이 성공\n";
+}
+
 void CWizard_Candleabra::Change_States(STATES eStates)
 {
 	if (m_pCurState)
@@ -156,6 +161,7 @@ HRESULT CWizard_Candleabra::Ready_PartObjects()
 
 	BodyDesc.eLevelID = m_eLevelID;
 	BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	BodyDesc.pOwner = this;
 
 	if (FAILED(__super::Add_PartObject(PART_BODY, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Body_Candleabra"), &BodyDesc)))
 		return E_FAIL;
@@ -166,6 +172,7 @@ HRESULT CWizard_Candleabra::Ready_PartObjects()
 	SwordDesc.pSocketMatrix = dynamic_cast<CBody_WizardCandleabra*>(m_PartObjects[PART_BODY])->Get_SocketMatrix("held_L");
 	SwordDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
 	SwordDesc.vScale = _float3(1.25f, 1.25f, 1.25f);
+	SwordDesc.pOwner = this;
 
 	if (FAILED(__super::Add_PartObject(PART_SWORD, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Part_WizardSword"), &SwordDesc)))
 		return E_FAIL;
@@ -175,7 +182,7 @@ HRESULT CWizard_Candleabra::Ready_PartObjects()
 	CandleabraDesc.eLevelID = m_eLevelID;
 	CandleabraDesc.pSocketMatrix = dynamic_cast<CBody_WizardCandleabra*>(m_PartObjects[PART_BODY])->Get_SocketMatrix("held_R");
 	CandleabraDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
-
+	CandleabraDesc.pOwner = this;
 
 	if (FAILED(__super::Add_PartObject(PART_CANDLEABRA, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Part_WizardCandleabra"), &CandleabraDesc)))
 		return E_FAIL;

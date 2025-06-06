@@ -115,7 +115,6 @@ HRESULT CLevel_Courtyard::Ready_Layer_Pawn(const _wstring& strLayerTag)
 	return S_OK;
 }
 
-
 HRESULT CLevel_Courtyard::Ready_Layer_Camera(const _wstring& strLayerTag)
 {
 	CGameObject* pPlayer = GET_PLAYER;
@@ -336,10 +335,23 @@ HRESULT CLevel_Courtyard::Ready_Lights()
 
 void CLevel_Courtyard::Check_Collision()
 {
+#ifdef _DEBUG
+	m_pGameInstance->Reset_Colliders();
+#endif // _DEBUG
+
+	/* 플레이어 */
 	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::PAWN), ENUM_CLASS(COLLIDER_GROUP::ENVIRONMENT));
 	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::PAWN), ENUM_CLASS(COLLIDER_GROUP::MONSTER));
 
-	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::ENVIRONMENT), ENUM_CLASS(COLLIDER_GROUP::PAWN));
+	/* 무기 */
+	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::WEAPON), ENUM_CLASS(COLLIDER_GROUP::MONSTER));
+
+	/* 몬스터 */
+	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::MONSTER), ENUM_CLASS(COLLIDER_GROUP::MONSTER));
+	/* 몬스터 공격*/
+	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::MONSTER_ATTACK), ENUM_CLASS(COLLIDER_GROUP::PAWN));
+
+
 }
 
 CLevel_Courtyard* CLevel_Courtyard::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

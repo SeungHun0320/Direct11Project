@@ -26,6 +26,9 @@ private:
 	virtual ~CBody_Blob() = default;
 
 public:
+	enum COL_TYPE { BODY, ATTACK, CT_END };
+
+public:
 	const _float4x4* Get_SocketMatrix(const _string& strBoneName);
 
 public:
@@ -42,7 +45,7 @@ public:
 	virtual void  Set_TrackPosition(_float fTrackPosition) override;
 
 private:
-	CCollider* m_pColliderCom = { nullptr };
+	CCollider* m_pColliderCom[CT_END] = {nullptr};
 	CShader*   m_pShaderCom = { nullptr };
 	CModel*	   m_pModelCom = { nullptr };
 
@@ -50,7 +53,6 @@ private:
 
 private:
 	LEVEL m_eLevelID = { LEVEL::LEVEL_END };
-	_int m_iSoonseo = {};
 
 private:
 	HRESULT Ready_Components(void* pArg);

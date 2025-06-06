@@ -24,6 +24,9 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public: /* Ãæ µ¹ */
+	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID);
+
 private:
 	virtual HRESULT Ready_Components(void* pArg);
 	virtual HRESULT Ready_PartObjects() override;

@@ -123,6 +123,10 @@ public:
 #pragma endregion
 
 #pragma region COLLIDER_MANAGER
+#ifdef _DEBUG
+	void Reset_Colliders();
+#endif // _DEBUG
+	void Begin_Colliders();
 	void Clear_Colliders();
 	HRESULT Add_Collider(class CCollider* pCollider, _uint iColliderGroupID);
 	void    Intersect(_uint iColliderGroupID1, _uint iColliderGroupID2);

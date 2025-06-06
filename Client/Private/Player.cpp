@@ -3,6 +3,8 @@
 #include "GameInstance.h"
 
 #include "Body_Player.h"
+#include "Weapon_Player.h"
+
 #include "PlayerState.h"
 #include "Player_IAttackStrategy.h"
 
@@ -21,6 +23,9 @@ void CPlayer::Set_Level(LEVEL eLevelID)
 	__super::Set_Level(eLevelID);
 
 	m_pGameInstance->Add_Collider(dynamic_cast<CCollider*>(m_PartObjects[PART_BODY]->Get_Component(TEXT("Com_Collider"))), ENUM_CLASS(COLLIDER_GROUP::PAWN));
+	m_pGameInstance->Add_Collider(dynamic_cast<CCollider*>(m_PartObjects[PART_WEAPON]->Get_Component(TEXT("Com_Collider_Stick"))), ENUM_CLASS(COLLIDER_GROUP::WEAPON));
+	m_pGameInstance->Add_Collider(dynamic_cast<CCollider*>(m_PartObjects[PART_WEAPON]->Get_Component(TEXT("Com_Collider_Sword"))), ENUM_CLASS(COLLIDER_GROUP::WEAPON));
+	m_pGameInstance->Add_Collider(dynamic_cast<CCollider*>(m_PartObjects[PART_WEAPON]->Get_Component(TEXT("Com_Collider_Dagger"))), ENUM_CLASS(COLLIDER_GROUP::WEAPON));
 }
 
 HRESULT CPlayer::Initialize_Prototype()
@@ -164,6 +169,16 @@ void CPlayer::CheckChange_Anim(PART ePart, _uint iNextIndex, _bool isLoop, _floa
 		Change_Animation(ePart, iNextIndex, true, 0.2f);
 }
 
+void CPlayer::Set_Active(PART ePart, _bool isActive)
+{
+	m_PartObjects[ePart]->Set_Active(isActive);
+}
+
+void CPlayer::Set_Active(WEAPON_TYPE eType, _bool isActive)
+{
+	m_pWeaponPart->Set_Active(eType, isActive);
+}
+
 void CPlayer::Dodge(_fvector vDir, _float fTimeDelta, _float fSpeed)
 {
 	m_pTransformCom->Set_SpeedPerSec(fSpeed);
@@ -304,7 +319,7 @@ _vector CPlayer::Get_InputDirectionEx()
 {
 	_float fInputX{}, fInputZ{};
 
-	/* 상 하 좌 우*/
+	/* 상 하 좌 우 */
 	if (KeyPressing(DIK_W))
 		fInputZ += 1.f;
 	if (KeyPressing(DIK_S))
@@ -314,18 +329,18 @@ _vector CPlayer::Get_InputDirectionEx()
 	if (KeyPressing(DIK_A))
 		fInputX -= 1.f;
 
-	// 1. 카메라 기준 벡터
+	/* 카메라 기준 라이트, 룩 */
 	_vector vCamRight = m_pGameInstance->Get_CameraState(ENUM_CLASS(m_eLevelID), TEXT("Camera_TPS"), STATE::RIGHT);
 	_vector vCamLook = m_pGameInstance->Get_CameraState(ENUM_CLASS(m_eLevelID), TEXT("Camera_TPS"), STATE::LOOK);
 	
-	// 2. Y축 제거
+	/* Y축 제거 */
 	vCamRight = XMVector3Normalize(XMVectorSetY(vCamRight, 0.f));
 	vCamLook = XMVector3Normalize(XMVectorSetY(vCamLook, 0.f));
 
-	// 3. 입력 방향 계산
+	/* 입력 방향 계산 라이트는 좌우, 룩은 앞 뒤 */
 	_vector vInputDir = vCamRight * fInputX + vCamLook * fInputZ;
 	
-
+	/* 입력받지 않았다면 원래의 룩 */
 	if (XMVector3Equal(vInputDir, XMVectorZero()))
 		vInputDir = m_pTransformCom->Get_State(STATE::LOOK);
 
@@ -333,6 +348,10 @@ _vector CPlayer::Get_InputDirectionEx()
 	return XMVector3Normalize(vInputDir);
 }
 
+void CPlayer::On_Collision(_uint MyColliderID, _uint OtherColliderID)
+{
+	cout << "플레이어 개같이 성공\n";
+}
 
 _vector CPlayer::Get_State(STATE eState)
 {
@@ -421,9 +440,27 @@ HRESULT CPlayer::Ready_PartObjects()
 	BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
 	BodyDesc.pParentState = &m_eCurState;
 	BodyDesc.strName = TEXT("Body_Player");
+	BodyDesc.pOwner = this;
 
 	if (FAILED(__super::Add_PartObject(PART_BODY, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Body_Player"), &BodyDesc)))
 		return E_FAIL;
+
+	CWeapon_Player::DESC	WeaponDesc{};
+
+	WeaponDesc.eLevelID = m_eLevelID;
+	WeaponDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	WeaponDesc.pParentState = &m_eCurState;
+	WeaponDesc.strName = TEXT("Weapon_Player");
+	WeaponDesc.pOwner = this;
+
+	if (FAILED(__super::Add_PartObject(PART_WEAPON, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Weapon_Player"), &WeaponDesc)))
+		return E_FAIL;
+
+	m_pWeaponPart = dynamic_cast<CWeapon_Player*>(m_PartObjects[PART_WEAPON]);
+	if (nullptr == m_pWeaponPart)
+		return E_FAIL;
+
+	Safe_AddRef(m_pWeaponPart);
 
 	return S_OK;
 }
@@ -493,6 +530,8 @@ CGameObject* CPlayer::Clone(void* pArg)
 void CPlayer::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_pWeaponPart);
 
 	Safe_Release(m_pCurState);
 	Safe_Release(m_pAttackStrategy);

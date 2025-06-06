@@ -1,28 +1,28 @@
-#include "Body_Wizard.h"
+#include "Part_Player.h"
 
 #include "GameInstance.h"
 
-CBody_Wizard::CBody_Wizard(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CPartObject{ pDevice, pContext }
+CPart_Player::CPart_Player(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+    : CPartObject{pDevice, pContext}
 {
 }
 
-CBody_Wizard::CBody_Wizard(const CBody_Wizard& Prototype)
-	: CPartObject(Prototype)
+CPart_Player::CPart_Player(const CPart_Player& Prototype)
+    : CPartObject(Prototype)
 {
 }
 
-const _float4x4* CBody_Wizard::Get_SocketMatrix(const _string& strBoneName)
+const _float4x4* CPart_Player::Get_SocketMatrix(const _string& strBoneName)
 {
-	return m_pModelCom->Get_BoneMatrix(strBoneName);
+    return m_pModelCom->Get_BoneMatrix(strBoneName);
 }
 
-HRESULT CBody_Wizard::Initialize_Prototype()
+HRESULT CPart_Player::Initialize_Prototype()
 {
-	return S_OK;
+    return S_OK;
 }
 
-HRESULT CBody_Wizard::Initialize(void* pArg)
+HRESULT CPart_Player::Initialize(void* pArg)
 {
     DESC* pDesc = static_cast<DESC*>(pArg);
 
@@ -34,21 +34,15 @@ HRESULT CBody_Wizard::Initialize(void* pArg)
     if (FAILED(Ready_Components(pArg)))
         return E_FAIL;
 
-	if (LEVEL::TOOLS == m_eLevelID)
-		m_pModelCom->Set_Animation(0, true);
-
     return S_OK;
 }
 
-void CBody_Wizard::Priority_Update(_float fTimeDelta)
+void CPart_Player::Priority_Update(_float fTimeDelta)
 {
 }
 
-LIFE CBody_Wizard::Update(_float fTimeDelta)
+LIFE CPart_Player::Update(_float fTimeDelta)
 {
-	if (LEVEL::TOOLS == m_eLevelID)
-		m_pModelCom->Play_Animation(fTimeDelta);
-
     XMStoreFloat4x4(&m_CombinedWorldMatrix, m_pTransformCom->Get_WorldMatrix() * XMLoadFloat4x4(m_pParentMatrix));
 
     m_pColliderCom->Update(XMLoadFloat4x4(&m_CombinedWorldMatrix));
@@ -56,12 +50,12 @@ LIFE CBody_Wizard::Update(_float fTimeDelta)
     return LIFE::NONE;
 }
 
-void CBody_Wizard::Late_Update(_float fTimeDelta)
+void CPart_Player::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+    m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 }
 
-HRESULT CBody_Wizard::Render()
+HRESULT CPart_Player::Render()
 {
     if (FAILED(Bind_ShaderResources()))
         return E_FAIL;
@@ -96,46 +90,47 @@ HRESULT CBody_Wizard::Render()
     return S_OK;
 }
 
-_bool CBody_Wizard::Play_Animation(_float fTimeDelta)
+_bool CPart_Player::Play_Animation(_float fTimeDelta)
 {
     return m_pModelCom->Play_Animation(fTimeDelta);
 }
 
-void CBody_Wizard::Change_Animation(_uint iNextIndex, _bool isLoop, _float fBlendDuration, _bool isBlend)
+void CPart_Player::Change_Animation(_uint iNextIndex, _bool isLoop, _float fBlendDuration, _bool isBlend)
 {
     m_pModelCom->Change_Animation(iNextIndex, isLoop, fBlendDuration, isBlend);
 }
 
-void CBody_Wizard::Set_TrackPosition(_float fTrackPosition)
+void CPart_Player::Set_MeshVisible(_uint iIndex, _bool IsVisible)
+{
+    m_pModelCom->Set_MeshVisible(iIndex, IsVisible);
+}
+
+void CPart_Player::Set_TrackPosition(_float fTrackPosition)
 {
     m_pModelCom->Set_CurrnetTrackPosition(fTrackPosition);
 }
 
-HRESULT CBody_Wizard::Ready_Components(void* pArg)
+_bool CPart_Player::Is_CurrentAnim(_uint iNextIndex)
 {
-    DESC* pDesc = static_cast<DESC*>(pArg);
+    return m_pModelCom->Is_CurrentAnim(iNextIndex);
+}
 
+void CPart_Player::Set_Active(_bool isActive)
+{
+    m_pColliderCom->Set_Active(isActive);
+}
+
+HRESULT CPart_Player::Ready_Components(void* pArg)
+{
     /* For.Com_Shader */
     if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxAnimMesh"),
         TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
         return E_FAIL;
 
-    /* For.Com_Collider */
-    CBounding_AABB::DESC	AABBDesc{};
-    AABBDesc.vExtents = _float3(0.8f, 1.8f, 0.8f);
-    AABBDesc.vCenter = _float3(0.0f, AABBDesc.vExtents.y, 0.f);
-    AABBDesc.iColliderGroupID = ENUM_CLASS(COLLIDER_GROUP::MONSTER);
-    AABBDesc.iColliderID = ENUM_CLASS(COLLIDER_ID::WIZARD);
-    AABBDesc.pOwner = pDesc->pOwner;
-
-    if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_AABB"),
-        TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
-        return E_FAIL;
-
     return S_OK;
 }
 
-HRESULT CBody_Wizard::Bind_ShaderResources()
+HRESULT CPart_Player::Bind_ShaderResources()
 {
     if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix)))
         return E_FAIL;
@@ -161,12 +156,7 @@ HRESULT CBody_Wizard::Bind_ShaderResources()
     return S_OK;
 }
 
-CGameObject* CBody_Wizard::Clone(void* pArg)
-{
-	return nullptr;
-}
-
-void CBody_Wizard::Free()
+void CPart_Player::Free()
 {
     __super::Free();
 

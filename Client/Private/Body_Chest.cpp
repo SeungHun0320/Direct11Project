@@ -75,6 +75,8 @@ HRESULT CBody_Chest::Render()
 
 HRESULT CBody_Chest::Ready_Components(void* pArg)
 {
+    DESC* pDesc = static_cast<DESC*>(pArg);
+
     /* For.Com_Shader */
     if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxAnimMesh"),
         TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
@@ -91,7 +93,7 @@ HRESULT CBody_Chest::Ready_Components(void* pArg)
     AABBDesc.vCenter = _float3(0.0f, AABBDesc.vExtents.y, 0.f);
     AABBDesc.iColliderGroupID = ENUM_CLASS(COLLIDER_GROUP::ENVIRONMENT);
     AABBDesc.iColliderID = ENUM_CLASS(COLLIDER_ID::CHEST);
-    AABBDesc.pOwner = this;
+    AABBDesc.pOwner = pDesc->pOwner;
 
     if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_AABB"),
         TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
@@ -99,12 +101,6 @@ HRESULT CBody_Chest::Ready_Components(void* pArg)
 
     return S_OK;
 }
-
-void CBody_Chest::On_Collision(_uint MyColliderID, _uint OtherColliderID)
-{
-    cout << "»óÀÚ" << endl;
-}
-
 
 CBody_Chest* CBody_Chest::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {

@@ -205,6 +205,7 @@
     <ClInclude Include="..\public\MapTool.h" />
     <ClInclude Include="..\public\Monster.h" />
     <ClInclude Include="..\public\Monster_Bullet.h" />
+    <ClInclude Include="..\public\Part_Player.h" />
     <ClInclude Include="..\Public\Part_WizardCandleabra.h" />
     <ClInclude Include="..\Public\Part_WizardStaff.h" />
     <ClInclude Include="..\public\Part_WizardSword.h" />
@@ -212,6 +213,7 @@
     <ClInclude Include="..\public\Player.h" />
     <ClInclude Include="..\Public\PlayerState.h" />
     <ClInclude Include="..\Public\Player_IAttackStrategy.h" />
+    <ClInclude Include="..\public\Weapon_Player.h" />
     <ClInclude Include="..\public\Potion.h" />
     <ClInclude Include="..\public\Shop.h" />
     <ClInclude Include="..\public\Sky.h" />
@@ -289,6 +291,7 @@
     <ClCompile Include="..\private\MapTool.cpp" />
     <ClCompile Include="..\private\Monster.cpp" />
     <ClCompile Include="..\private\Monster_Bullet.cpp" />
+    <ClCompile Include="..\private\Part_Player.cpp" />
     <ClCompile Include="..\Private\Part_WizardCandleabra.cpp" />
     <ClCompile Include="..\Private\Part_WizardStaff.cpp" />
     <ClCompile Include="..\private\Part_WizardSword.cpp" />
@@ -335,6 +338,7 @@
     <ClCompile Include="..\private\Wizard_Sword.cpp" />
     <ClCompile Include="..\Private\Wizard_SwordState.cpp" />
     <ClCompile Include="..\private\Wizard_Weapon.cpp" />
+    <ClCompile Include="..\public\Weapon_Player.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="ImGui\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="ImGui\backends\imgui_impl_win32.cpp" />

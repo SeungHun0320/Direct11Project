@@ -20,6 +20,7 @@ void CPlayerState_Dodge::Enter(_float fTimeDelta)
 	{
 		m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::DODGE, false, 0.1f);
 		m_fDuration = 0.7f;
+		m_pOwner->Set_Active(CPlayer::PART_BODY, false);
 	}
 
 	m_fTimeAcc = 0.f;
@@ -35,6 +36,7 @@ void CPlayerState_Dodge::Execute(_float fTimeDelta)
 
 	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta)) /* 재생 시간 */
 	{
+		m_pOwner->Set_Active(CPlayer::PART_BODY);
 		m_pOwner->LookTarget(fTimeDelta);
 
 		if (m_pOwner->KeyPressing(DIK_J) || m_pOwner->KeyDown(DIK_K) || m_pOwner->KeyDown(DIK_L))

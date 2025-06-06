@@ -341,6 +341,9 @@ HRESULT CLevel_Arena::Ready_Lights()
 
 void CLevel_Arena::Check_Collision()
 {
+#ifdef _DEBUG
+	m_pGameInstance->Reset_Colliders();
+#endif // _DEBUG
 }
 
 

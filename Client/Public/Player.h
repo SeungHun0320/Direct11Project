@@ -13,7 +13,7 @@ public:
 	}DESC;
 
 public:
-	enum PART { PART_BODY, PART_EFFECT, PART_END };
+	enum PART { PART_BODY, PART_WEAPON, PART_EFFECT, PART_END };
 
 	enum MESHES	{
 		MESH_SHILED, MESH_SWORD, MESH_POTION, MESH_POTION2, MESH_STICK, MESH_DAGGER, MESHES_END
@@ -88,6 +88,10 @@ public: /* 상태로 넘겨줄 함수들 */
 	void  Set_MeshVisible(PART ePart, _uint iIndex, _bool IsVisible);
 	void  CheckChange_Anim(PART ePart, _uint iNextIndex, _bool isLoop = true, _float fBlendDuration = 0.f, _bool isBlend = true);
 
+	/* 충돌 관련 */
+	void Set_Active(PART ePart, _bool isActive = true);
+	void Set_Active(WEAPON_TYPE eType, _bool isActive = true);
+
 	/* 이동 관련 */
 	void  Dodge(_fvector vDir,_float fTimeDelta, _float fSpeed);
 	void  Move(_fvector vDir, _float fTimeDelta, _float fSpeed = 0.f);
@@ -106,7 +110,9 @@ public:/* 락온 관련 */
 public: /* 키입력에 따른 방향을 결정해주는 함수 */
 	_vector Get_InputDirection();
 	_vector Get_InputDirectionEx();
-
+	
+public: /* 충 돌 */
+	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID);
 
 public: /* 스테이트 갖고오기 */
 	STATES Get_CurState() {
@@ -196,6 +202,9 @@ private: /* 락온 상태관련 변수들 */
 	CTransform* m_pTargetTransform = { nullptr };
 	_bool       m_IsTarget = { false };
 	_float		m_fFindDistance = {};
+
+private: /* 매번 캐스팅 해주기 싫어서 따로 변수로 받아왔음 */
+	class CWeapon_Player* m_pWeaponPart = { nullptr };
 
 private:
 	void Stamina_Recovery(_float fTimeDelta);
