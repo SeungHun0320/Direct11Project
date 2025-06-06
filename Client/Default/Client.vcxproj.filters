@@ -621,6 +621,9 @@
     <ClInclude Include="..\public\Weapon_Player.h">
       <Filter>02.GameObjects\06.Pawn\Player\Part\Weapon</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Wizard.h">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -938,6 +941,9 @@
     </ClCompile>
     <ClCompile Include="..\public\Weapon_Player.cpp">
       <Filter>02.GameObjects\06.Pawn\Player\Part\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Wizard.cpp">
+      <Filter>02.GameObjects\03.Monsters\02.Wizard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

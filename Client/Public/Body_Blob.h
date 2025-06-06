@@ -41,8 +41,9 @@ public:
 
 public:
 	virtual _bool Play_Animation(_float fTimeDelta) override;
-	virtual void Change_Animation(_uint iNextIndex, _bool isLoop = true, _float fBlendDuration = 0.f, _bool isBlend = true) override;
+	virtual void  Change_Animation(_uint iNextIndex, _bool isLoop = true, _float fBlendDuration = 0.f, _bool isBlend = true) override;
 	virtual void  Set_TrackPosition(_float fTrackPosition) override;
+	virtual void  Set_Active(_bool isActive) override;
 
 private:
 	CCollider* m_pColliderCom[CT_END] = {nullptr};

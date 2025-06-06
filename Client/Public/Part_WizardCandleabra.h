@@ -27,6 +27,9 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public:
+	virtual void Set_Active(_bool isActive) override;
+
 private:
 	CWizard_Sword::STATES* m_pParentState = { nullptr };
 

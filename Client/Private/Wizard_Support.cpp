@@ -7,12 +7,12 @@
 #include "Wizard_SupportState.h"
 
 CWizard_Support::CWizard_Support(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CMonster{ pDevice, pContext }
+	: CWizard{ pDevice, pContext }
 {
 }
 
 CWizard_Support::CWizard_Support(const CWizard_Support& Prototype)
-	: CMonster(Prototype)
+	: CWizard(Prototype)
 {
 }
 
@@ -99,11 +99,6 @@ void CWizard_Support::Change_States(STATES eStates)
 	m_eCurState = eStates;
 }
 
-_vector CWizard_Support::Get_State(STATE eState)
-{
-	return m_pTransformCom->Get_State(eState);
-}
-
 void CWizard_Support::Set_State(STATE eState, _fvector vState)
 {
 	m_pTransformCom->Set_State(eState, vState);
@@ -124,36 +119,6 @@ void CWizard_Support::Set_TrackPosition(PART ePart, _float fTrackPosition)
 	m_PartObjects[ePart]->Set_TrackPosition(fTrackPosition);
 }
 
-void CWizard_Support::Go_Target(_fvector vTarget, _float fTimeDelta, _float fSpeed, _float fMinDistance)
-{
-	m_pTransformCom->Set_SpeedPerSec(fSpeed);
-	m_pTransformCom->LookAtLerp(vTarget, fTimeDelta, 10.f);
-	m_pTransformCom->Go_Target(vTarget, fTimeDelta, fMinDistance);
-}
-
-void CWizard_Support::Move(_fvector vDir, _float fTimeDelta, _float fSpeed)
-{
-	m_pTransformCom->Set_SpeedPerSec(fSpeed);
-	m_pTransformCom->LookDirLerp(vDir, fTimeDelta, fSpeed * 1.5f);
-	m_pTransformCom->Go_Dir(vDir, fTimeDelta);
-}
-
-void CWizard_Support::Hit(_fvector vDir, _float fTimeDelta, _float fSpeed)
-{
-	m_pTransformCom->Set_SpeedPerSec(fSpeed);
-	m_pTransformCom->Go_Dir(vDir, fTimeDelta);
-}
-
-void CWizard_Support::Turn(_fvector vAxis, _float fTimeDelta)
-{
-	m_pTransformCom->Turn(vAxis, fTimeDelta);
-}
-
-void CWizard_Support::LookAt(_fvector vDir, _float fTimeDelta, _float fSpeed)
-{
-	m_pTransformCom->LookAtLerpEx(vDir, fTimeDelta, fSpeed);
-}
-
 HRESULT CWizard_Support::Ready_Components(void* pArg)
 {
 	if (FAILED(__super::Ready_Components(pArg)))
@@ -172,17 +137,6 @@ HRESULT CWizard_Support::Ready_PartObjects()
 
 	if (FAILED(__super::Add_PartObject(PART_BODY, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Body_Support"), &BodyDesc)))
 		return E_FAIL;
-
-	//CPart_WizardStaff::DESC StaffDesc{};
-
-	//StaffDesc.eLevelID = m_eLevelID;
-	//StaffDesc.pSocketMatrix = dynamic_cast<CBody_WizardSupport*>(m_PartObjects[PART_BODY])->Get_SocketMatrix("held_L");
-	//StaffDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
-	//StaffDesc.pParentState = &m_eCurState;
-
-	//if (FAILED(__super::Add_PartObject(PART_STAFF, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Part_WizardStaff"), &StaffDesc)))
-	//	return E_FAIL;
-
 	return S_OK;
 }
 

@@ -44,11 +44,6 @@ void CWizard_Weapon::Priority_Update(_float fTimeDelta)
 
 LIFE CWizard_Weapon::Update(_float fTimeDelta)
 {
-	return LIFE::NONE;
-}
-
-void CWizard_Weapon::Late_Update(_float fTimeDelta)
-{
 	_matrix		BoneMatrix = XMLoadFloat4x4(m_pSocketMatrix);
 
 	/* 본래 스케일값으로 대입해주기 위해서 */
@@ -58,6 +53,13 @@ void CWizard_Weapon::Late_Update(_float fTimeDelta)
 	XMStoreFloat4x4(&m_CombinedWorldMatrix,
 		m_pTransformCom->Get_WorldMatrix() * BoneMatrix * XMLoadFloat4x4(m_pParentMatrix));
 
+	m_pColliderCom->Update(XMLoadFloat4x4(m_pParentMatrix));
+
+	return LIFE::NONE;
+}
+
+void CWizard_Weapon::Late_Update(_float fTimeDelta)
+{
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 }
 
@@ -84,6 +86,12 @@ HRESULT CWizard_Weapon::Render()
 		if (FAILED(m_pModelCom->Render(i)))
 			return E_FAIL;
 	}
+
+#ifdef _DEBUG
+
+	m_pColliderCom->Render();
+
+#endif
 
 	return S_OK;
 }

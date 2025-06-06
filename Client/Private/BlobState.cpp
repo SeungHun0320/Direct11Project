@@ -60,15 +60,25 @@ CBlobState_Attack::CBlobState_Attack(CBlob* pOwner)
 
 void CBlobState_Attack::Enter(_float fTimeDelta)
 {
+    m_fDuration = 0.8f;
+    m_fTimeAcc = 0.f;
+
     m_iAttackCount = 0;
 
     m_pOwner->Change_Animation(CBlob::PART_BODY, CBlob::ANIM_TYPE::ATTACK, false, 0.2f);
+
 }
 
 void CBlobState_Attack::Execute(_float fTimeDelta)
 {
+    m_fTimeAcc += fTimeDelta;
+
+    if (m_fDuration <= m_fTimeAcc)
+        m_pOwner->Set_Active();
+
     if (m_pOwner->Play_Animation(CBlob::PART_BODY, fTimeDelta))
     {
+        m_pOwner->Set_Active(false);
         if (4.f <= m_pOwner->Get_DistanceToPlayer())
         {
             m_pOwner->Change_States(CBlob::STATES::JUMP);
@@ -80,6 +90,8 @@ void CBlobState_Attack::Execute(_float fTimeDelta)
 
 void CBlobState_Attack::Exit()
 {
+    m_fDuration = 0.f;
+    m_fTimeAcc = 0.f;
     m_iAttackCount = 0;
 }
 
@@ -111,13 +123,13 @@ void CBlobState_Jump::Execute(_float fTimeDelta)
 
     m_pOwner->Play_Animation(CBlob::PART_BODY, fTimeDelta);
 
-    if (m_pOwner->Get_DistanceToPlayer() >= m_pOwner->Get_ChaseStopDistance())
-    {
-        m_pOwner->Change_States(CBlob::STATES::IDLE);
-    }
-    else if (2.f <= m_pOwner->Get_DistanceToPlayer())
+    if (2.f <= m_pOwner->Get_DistanceToPlayer())
     {
         m_pOwner->Go_Target(m_pOwner->Get_TargetPosition(), fTimeDelta, 4.f);
+    }
+    else if (m_pOwner->Get_DistanceToPlayer() >= m_pOwner->Get_ChaseStopDistance())
+    {
+        m_pOwner->Change_States(CBlob::STATES::IDLE);
     }
     else if(m_fDuration <= m_fTimeAcc)
     {

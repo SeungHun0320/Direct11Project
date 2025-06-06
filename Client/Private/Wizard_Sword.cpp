@@ -7,12 +7,12 @@
 #include "Wizard_SwordState.h"
 
 CWizard_Sword::CWizard_Sword(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CMonster{ pDevice, pContext }
+	: CWizard{ pDevice, pContext }
 {
 }
 
 CWizard_Sword::CWizard_Sword(const CWizard_Sword& Prototype)
-	: CMonster(Prototype)
+	: CWizard(Prototype)
 {
 }
 
@@ -104,11 +104,6 @@ void CWizard_Sword::Change_States(STATES eStates)
 	m_eCurState = eStates;
 }
 
-_vector CWizard_Sword::Get_State(STATE eState)
-{
-	return m_pTransformCom->Get_State(eState);
-}
-
 _bool CWizard_Sword::Play_Animation(PART ePart, _float fTimeDelta)
 {
 	return m_PartObjects[ePart]->Play_Animation(fTimeDelta);
@@ -124,34 +119,9 @@ void CWizard_Sword::Set_TrackPosition(PART ePart, _float fTrackPosition)
 	m_PartObjects[ePart]->Set_TrackPosition(fTrackPosition);
 }
 
-void CWizard_Sword::Go_Target(_fvector vTarget, _float fTimeDelta, _float fSpeed, _float fMinDistance)
+void CWizard_Sword::Set_Active(_bool isActive)
 {
-	m_pTransformCom->Set_SpeedPerSec(fSpeed);
-	m_pTransformCom->LookAtLerpEx(vTarget, fTimeDelta, 10.f);
-	m_pTransformCom->Go_Target(vTarget, fTimeDelta, fMinDistance);
-}
-
-void CWizard_Sword::Move(_fvector vDir, _float fTimeDelta, _float fSpeed)
-{
-	m_pTransformCom->Set_SpeedPerSec(fSpeed);
-	m_pTransformCom->LookDirLerp(vDir, fTimeDelta, fSpeed * 1.5f);
-	m_pTransformCom->Go_Dir(vDir, fTimeDelta);
-}
-
-void CWizard_Sword::Hit(_fvector vDir, _float fTimeDelta, _float fSpeed)
-{
-	m_pTransformCom->Set_SpeedPerSec(fSpeed);
-	m_pTransformCom->Go_Dir(vDir, fTimeDelta);
-}
-
-void CWizard_Sword::Turn(_fvector vAxis, _float fTimeDelta)
-{
-	m_pTransformCom->Turn(vAxis, fTimeDelta);
-}
-
-void CWizard_Sword::LookAt(_fvector vDir, _float fTimeDelta, _float fSpeed)
-{
-	m_pTransformCom->LookAtLerpEx(vDir, fTimeDelta, fSpeed);
+	m_PartObjects[PART_SWORD]->Set_Active(isActive);
 }
 
 HRESULT CWizard_Sword::Ready_Components(void* pArg)
@@ -183,8 +153,6 @@ HRESULT CWizard_Sword::Ready_PartObjects()
 
 	if (FAILED(__super::Add_PartObject(PART_SWORD, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Part_WizardSword"), &SwordDesc)))
 		return E_FAIL;
-
-
 
 	return S_OK;
 }

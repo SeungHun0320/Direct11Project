@@ -35,6 +35,8 @@ HRESULT CBody_Blob::Initialize(void* pArg)
     if (FAILED(Ready_Components(pArg)))
         return E_FAIL;
 
+    m_pColliderCom[ATTACK]->Set_Active(false);
+
     return S_OK;
 }
 
@@ -109,6 +111,11 @@ void CBody_Blob::Set_TrackPosition(_float fTrackPosition)
     m_pModelCom->Set_CurrnetTrackPosition(fTrackPosition);
 }
 
+void CBody_Blob::Set_Active(_bool isActive)
+{
+    m_pColliderCom[ATTACK]->Set_Active(isActive);
+}
+
 HRESULT CBody_Blob::Ready_Components(void* pArg)
 {
     DESC* pDesc = static_cast<DESC*>(pArg);
@@ -131,6 +138,7 @@ HRESULT CBody_Blob::Ready_Components(void* pArg)
     AABBDesc.iColliderID = ENUM_CLASS(COLLIDER_ID::BLOB);
     AABBDesc.pOwner = pDesc->pOwner;
 
+    /* For.Com_Collider_Body */
     if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_AABB"),
         TEXT("Com_Collider_Body"), reinterpret_cast<CComponent**>(&m_pColliderCom[BODY]), &AABBDesc)))
         return E_FAIL;
@@ -142,6 +150,7 @@ HRESULT CBody_Blob::Ready_Components(void* pArg)
     OBBDesc.iColliderID = ENUM_CLASS(COLLIDER_ID::BLOB_ATTACK);
     OBBDesc.pOwner = pDesc->pOwner;
 
+    /* For.Com_Collider_Attack */
     if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_OBB"),
         TEXT("Com_Collider_Attack"), reinterpret_cast<CComponent**>(&m_pColliderCom[ATTACK]), &OBBDesc)))
         return E_FAIL;

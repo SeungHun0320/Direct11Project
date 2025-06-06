@@ -8,12 +8,12 @@
 #include "Wizard_CandleabraState.h"
 
 CWizard_Candleabra::CWizard_Candleabra(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CMonster{ pDevice, pContext }
+	: CWizard{ pDevice, pContext }
 {
 }
 
 CWizard_Candleabra::CWizard_Candleabra(const CWizard_Candleabra& Prototype)
-	: CMonster(Prototype)
+	: CWizard(Prototype)
 {
 }
 
@@ -35,6 +35,8 @@ HRESULT CWizard_Candleabra::Initialize(void* pArg)
 
 	if(LEVEL::TOOLS != m_eLevelID)
 		Change_States(STATES::IDLE);
+
+	m_PartObjects[PART_SWORD]->Set_Active(false);
 
 	return S_OK;
 }
@@ -97,11 +99,6 @@ void CWizard_Candleabra::Change_States(STATES eStates)
 	m_eCurState = eStates;
 }
 
-_vector CWizard_Candleabra::Get_State(STATE eState)
-{
-	return m_pTransformCom->Get_State(eState);
-}
-
 _bool CWizard_Candleabra::Play_Animation(PART ePart, _float fTimeDelta)
 {
 	return m_PartObjects[ePart]->Play_Animation(fTimeDelta);
@@ -117,34 +114,9 @@ void CWizard_Candleabra::Set_TrackPosition(PART ePart, _float fTrackPosition)
 	m_PartObjects[ePart]->Set_TrackPosition(fTrackPosition);
 }
 
-void CWizard_Candleabra::Go_Target(_fvector vTarget, _float fTimeDelta, _float fSpeed, _float fMinDistance)
+void CWizard_Candleabra::Set_Active(PART ePart, _bool isActive)
 {
-	m_pTransformCom->Set_SpeedPerSec(fSpeed);
-	m_pTransformCom->LookAtLerpEx(vTarget, fTimeDelta, 10.f);
-	m_pTransformCom->Go_Target(vTarget, fTimeDelta, fMinDistance);
-}
-
-void CWizard_Candleabra::Move(_fvector vDir, _float fTimeDelta, _float fSpeed)
-{
-	m_pTransformCom->Set_SpeedPerSec(fSpeed);
-	m_pTransformCom->LookDirLerp(vDir, fTimeDelta, fSpeed * 1.5f);
-	m_pTransformCom->Go_Dir(vDir, fTimeDelta);
-}
-
-void CWizard_Candleabra::Hit(_fvector vDir, _float fTimeDelta, _float fSpeed)
-{
-	m_pTransformCom->Set_SpeedPerSec(fSpeed);
-	m_pTransformCom->Go_Dir(vDir, fTimeDelta);
-}
-
-void CWizard_Candleabra::Turn(_fvector vAxis, _float fTimeDelta)
-{
-	m_pTransformCom->Turn(vAxis, fTimeDelta);
-}
-
-void CWizard_Candleabra::LookAt(_fvector vDir, _float fTimeDelta, _float fSpeed)
-{
-	m_pTransformCom->LookAtLerpEx(vDir, fTimeDelta, fSpeed);
+	m_PartObjects[ePart]->Set_Active(isActive);
 }
 
 HRESULT CWizard_Candleabra::Ready_Components(void* pArg)

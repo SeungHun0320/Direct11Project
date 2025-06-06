@@ -114,6 +114,11 @@ void CBlob::Set_TrackPosition(PART ePart, _float fTrackPosition)
 	m_PartObjects[ePart]->Set_TrackPosition(fTrackPosition);
 }
 
+void CBlob::Set_Active(_bool isActive)
+{
+	m_PartObjects[PART_BODY]->Set_Active(isActive);
+}
+
 void CBlob::Go_Target(_fvector vTarget, _float fTimeDelta, _float fSpeed, _float fMinDistance)
 {
 	m_pTransformCom->Set_SpeedPerSec(fSpeed);

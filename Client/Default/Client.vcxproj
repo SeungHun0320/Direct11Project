@@ -224,6 +224,7 @@
     <ClInclude Include="..\public\Terrain.h" />
     <ClInclude Include="..\public\Tool.h" />
     <ClInclude Include="..\Public\UI.h" />
+    <ClInclude Include="..\public\Wizard.h" />
     <ClInclude Include="..\public\Wizard_Candleabra.h" />
     <ClInclude Include="..\public\Wizard_CandleabraState.h" />
     <ClInclude Include="..\public\Wizard_Support.h" />
@@ -331,6 +332,7 @@
     <ClCompile Include="..\private\Terrain.cpp" />
     <ClCompile Include="..\private\Tool.cpp" />
     <ClCompile Include="..\private\UI.cpp" />
+    <ClCompile Include="..\private\Wizard.cpp" />
     <ClCompile Include="..\private\Wizard_Candleabra.cpp" />
     <ClCompile Include="..\private\Wizard_CandleabraState.cpp" />
     <ClCompile Include="..\private\Wizard_Support.cpp" />

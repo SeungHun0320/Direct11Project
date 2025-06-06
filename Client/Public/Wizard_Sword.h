@@ -1,12 +1,12 @@
 #pragma once
-#include "Monster.h"
+#include "Wizard.h"
 
 BEGIN(Client)
 
-class CWizard_Sword final : public CMonster
+class CWizard_Sword final : public CWizard
 {
 public:
-	typedef struct tagWizardSwordDesc : public CMonster::DESC
+	typedef struct tagWizardSwordDesc : public CWizard::DESC
 	{
 
 	}DESC;
@@ -35,7 +35,6 @@ public: /* 충 돌 */
 
 public: /* 상태패턴 관련 함수들 */
 	void Change_States(STATES eStates);
-	_vector Get_State(STATE eState);
 
 public: /* 상태로 넘겨줄 함수들 */
 	/* 애니메이션 관련 */
@@ -43,12 +42,8 @@ public: /* 상태로 넘겨줄 함수들 */
 	void  Change_Animation(PART ePart, _uint iNextIndex, _bool isLoop = true, _float fBlendDuration = 0.f, _bool isBlend = true);
 	void  Set_TrackPosition(PART ePart, _float fTrackPosition);
 
-	/* 이동 관련 */
-	void Go_Target(_fvector vTarget, _float fTimeDelta, _float fSpeed = 0.f, _float fMinDistance = 2.f);
-	void Move(_fvector vDir, _float fTimeDelta, _float fSpeed = 0.f);
-	void Hit(_fvector vDir, _float fTimeDelta, _float fSpeed = 0.f);
-	void Turn(_fvector vAxis, _float fTimeDelta);
-	void LookAt(_fvector vDir, _float fTimeDelta, _float fSpeed);
+	/* 충돌 관련 */
+	void Set_Active(_bool isActive);
 
 private: /* 상태 패턴 변수들 */
 	STATES m_eCurState{ STATES::STATES_END };

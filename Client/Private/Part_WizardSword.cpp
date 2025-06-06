@@ -49,14 +49,32 @@ HRESULT CPart_WizardSword::Render()
     return __super::Render();
 }
 
+void CPart_WizardSword::Set_Active(_bool isActive)
+{
+    m_pColliderCom->Set_Active(isActive);
+}
+
 HRESULT CPart_WizardSword::Ready_Components(void* pArg)
 {
     if (FAILED(__super::Ready_Components(pArg)))
         return E_FAIL;
 
+    DESC* pDesc = static_cast<DESC*>(pArg);
+
     /* For.Com_Model */
     if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Model_Weapon_WizardSword"),
         TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
+        return E_FAIL;
+
+    CBounding_OBB::DESC	OBBDesc{};
+    OBBDesc.vExtents = _float3(2.5f, 1.2f, 1.75f);
+    OBBDesc.vCenter = _float3(0.0f, OBBDesc.vExtents.y, OBBDesc.vExtents.z);
+    OBBDesc.iColliderGroupID = ENUM_CLASS(COLLIDER_GROUP::MONSTER_ATTACK);
+    OBBDesc.iColliderID = ENUM_CLASS(COLLIDER_ID::WIZARD_ATTACK);
+    OBBDesc.pOwner = pDesc->pOwner;
+
+    if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_OBB"),
+        TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &OBBDesc)))
         return E_FAIL;
 
     return S_OK;

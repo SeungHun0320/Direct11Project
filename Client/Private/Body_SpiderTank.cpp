@@ -126,13 +126,14 @@ HRESULT CBody_SpiderTank::Ready_Components(void* pArg)
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
 		return E_FAIL;
 
-	/* For.Com_Collider */
+
 	CBounding_Sphere::DESC	ColDesc{};
 
 	ColDesc.vCenter = _float3(0.f, 0.f, -100.f);
 	ColDesc.fRadius = 300.f;
 	ColDesc.pOwner = pDesc->pOwner;
 
+	/* For.Com_Collider_Head */
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_Sphere"),
 		TEXT("Com_Collider_Head"), reinterpret_cast<CComponent**>(&m_pColliderCom[HEAD]), &ColDesc)))
 		return E_FAIL;
@@ -140,6 +141,7 @@ HRESULT CBody_SpiderTank::Ready_Components(void* pArg)
 	ColDesc.vCenter = _float3(0.f, 0.f, 0.f);
 	ColDesc.fRadius = 250.f;
 
+	/* For.Com_Collider_Weak */
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_Sphere"),
 		TEXT("Com_Collider_Weak"), reinterpret_cast<CComponent**>(&m_pColliderCom[WEAK]), &ColDesc)))
 		return E_FAIL;

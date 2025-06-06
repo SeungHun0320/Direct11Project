@@ -44,6 +44,9 @@ public: /* 상태로 넘겨줄 함수들 */
 	void  Change_Animation(PART ePart, _uint iNextIndex, _bool isLoop = true, _float fBlendDuration = 0.f, _bool isBlend = true);
 	void  Set_TrackPosition(PART ePart, _float fTrackPosition);
 
+	/* 충돌 관련 */
+	void  Set_Active(_bool isActive = true);
+
 	/* 이동 관련 */
 	void Go_Target(_fvector vTarget, _float fTimeDelta, _float fSpeed = 0.f, _float fMinDistance = 2.f);
 	void Move(_fvector vDir, _float fTimeDelta, _float fSpeed = 0.f);
