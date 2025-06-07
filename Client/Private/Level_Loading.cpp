@@ -5,7 +5,6 @@
 #include "Level_Arena.h"
 #include "Level_Tools.h"
 #include "Level_Shop.h"
-#include "Level_Main.h"
 #include "Level_Logo.h"
 #include "Loader.h"
 
@@ -48,9 +47,6 @@ void CLevel_Loading::Update(_float fTimeDelta)
 				break;
 			case LEVEL::COURTYARD:
 				pLevel = CLevel_Courtyard::Create(m_pDevice, m_pContext);
-				break;
-			case LEVEL::MAIN:
-				pLevel = CLevel_Main::Create(m_pDevice, m_pContext);
 				break;
 			case LEVEL::ARENA:
 				pLevel = CLevel_Arena::Create(m_pDevice, m_pContext);

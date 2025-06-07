@@ -195,7 +195,6 @@
     <ClInclude Include="..\Public\Level_Courtyard.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\Public\Level_Logo.h" />
-    <ClInclude Include="..\public\Level_Main.h" />
     <ClInclude Include="..\public\Level_Shop.h" />
     <ClInclude Include="..\Public\Loader.h" />
     <ClInclude Include="..\public\Main.h" />
@@ -285,7 +284,6 @@
     <ClCompile Include="..\Private\Level_Courtyard.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />
     <ClCompile Include="..\Private\Level_Logo.cpp" />
-    <ClCompile Include="..\private\Level_Main.cpp" />
     <ClCompile Include="..\private\Level_Shop.cpp" />
     <ClCompile Include="..\Private\Loader.cpp" />
     <ClCompile Include="..\private\Main.cpp" />
@@ -295,6 +293,7 @@
     <ClCompile Include="..\private\MapTool.cpp" />
     <ClCompile Include="..\private\Monster.cpp" />
     <ClCompile Include="..\private\Monster_Bullet.cpp" />
+    <ClCompile Include="..\Private\Monster_Bullet_AOE.cpp" />
     <ClCompile Include="..\private\Part_Player.cpp" />
     <ClCompile Include="..\Private\Part_WizardCandleabra.cpp" />
     <ClCompile Include="..\Private\Part_WizardStaff.cpp" />
@@ -336,6 +335,7 @@
     <ClCompile Include="..\private\Terrain.cpp" />
     <ClCompile Include="..\private\Tool.cpp" />
     <ClCompile Include="..\private\UI.cpp" />
+    <ClCompile Include="..\Private\Weapon_Player.cpp" />
     <ClCompile Include="..\private\Wizard.cpp" />
     <ClCompile Include="..\private\Wizard_Candleabra.cpp" />
     <ClCompile Include="..\private\Wizard_CandleabraState.cpp" />
@@ -345,8 +345,6 @@
     <ClCompile Include="..\private\Wizard_Sword.cpp" />
     <ClCompile Include="..\Private\Wizard_SwordState.cpp" />
     <ClCompile Include="..\private\Wizard_Weapon.cpp" />
-    <ClCompile Include="..\public\Monster_Bullet_AOE.cpp" />
-    <ClCompile Include="..\public\Weapon_Player.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="ImGui\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="ImGui\backends\imgui_impl_win32.cpp" />

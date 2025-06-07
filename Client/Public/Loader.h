@@ -44,7 +44,6 @@ private:
 public:
 	HRESULT Loading_For_Logo(LEVEL eLevelID);
 	HRESULT Loading_For_Courtyard(LEVEL eLevelID);
-	HRESULT Loading_For_Main(LEVEL eLevelID);
 	HRESULT Loading_For_Arena(LEVEL eLevelID);
 	HRESULT Loading_For_Shop(LEVEL eLevelID);
 	HRESULT Loading_For_Tools(LEVEL eLevelID);

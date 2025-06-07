@@ -57,7 +57,7 @@ void CLevel_Courtyard::Update(_float fTimeDelta)
 {
 	if (KEY_DOWN(DIK_RETURN))
 	{
-		Change_Level(ENUM_CLASS(LEVEL::MAIN));
+		Change_Level(ENUM_CLASS(LEVEL::ARENA));
 	}
 
 	else if (KEY_DOWN(DIK_ESCAPE))
@@ -71,7 +71,7 @@ void CLevel_Courtyard::Update(_float fTimeDelta)
 	{
 		m_pGameInstance->Clear_Colliders();
 		m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
-			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::MAIN));
+			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::ARENA));
 	}
 }
 

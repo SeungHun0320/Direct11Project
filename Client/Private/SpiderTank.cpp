@@ -40,6 +40,9 @@ HRESULT CSpiderTank::Initialize(void* pArg)
 
 	m_pHeadBoneMatrix = m_PartObjects[PART_BODY]->Get_BoneMatrix("head");
 
+	m_pBodyPart->Set_Active(LEFT_ARM, false);
+	m_pBodyPart->Set_Active(RIGHT_ARM, false);
+
 	Change_States(STATES::SLEEP);
 
 	return S_OK;
@@ -138,6 +141,11 @@ void CSpiderTank::Set_TrackPosition(PART ePart, _float fTrackPosition)
 void CSpiderTank::Set_TickPerSecond(PART ePart, _float fTickPerSecond)
 {
 	m_PartObjects[ePart]->Set_TickPerSecond(fTickPerSecond);
+}
+
+void CSpiderTank::Set_Active(COL_TYPE eColTypeIndex, _bool isActive)
+{
+	m_pBodyPart->Set_Active(eColTypeIndex, isActive);
 }
 
 _bool CSpiderTank::Go_Target(_fvector vTarget, _float fTimeDelta, _float fSpeed, _float fMinDistance)
@@ -339,6 +347,12 @@ HRESULT CSpiderTank::Ready_PartObjects()
 	if (FAILED(__super::Add_PartObject(PART_BODY, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Body_SpiderTank"), &BodyDesc)))
 		return E_FAIL;
 
+	m_pBodyPart = dynamic_cast<CBody_SpiderTank*>(m_PartObjects[PART_BODY]);
+	if (nullptr == m_pBodyPart)
+		return E_FAIL;
+
+	Safe_AddRef(m_pBodyPart);
+
 	return S_OK;
 }
 
@@ -406,6 +420,8 @@ void CSpiderTank::Free()
 {
 	__super::Free();
 
+
+	Safe_Release(m_pBodyPart);
 	Safe_Release(m_pCurState);
 
 	for (_uint i = 0; i < ENUM_CLASS(STATES::STATES_END); i++)

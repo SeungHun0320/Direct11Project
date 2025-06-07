@@ -109,12 +109,24 @@ void CSpiderTankState_FastAttack::Enter(_float fTimeDelta)
 		m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::L_ATTACK, false, 0.2f);
 	else
 		m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::MID_ATTACK, false, 0.2f);
+
+
+	m_fAttackStartTime = 1.f;
 }
 
 void CSpiderTankState_FastAttack::Execute(_float fTimeDelta)
 {
+	m_fTimeAcc += fTimeDelta;
+
+	if (m_fAttackStartTime <= m_fTimeAcc)
+	{
+		m_pOwner->Set_Active(CSpiderTank::LEFT_ARM);
+	}
+
 	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CSpiderTank::PART_BODY, fTimeDelta))
 	{
+		m_pOwner->Set_Active(CSpiderTank::LEFT_ARM, false);
+
 		m_pOwner->Change_States(CSpiderTank::STATES::IDLE);
 	}
 }
@@ -151,17 +163,39 @@ void CSpiderTankState_Swing::Enter(_float fTimeDelta)
 	_float fDot = XMVectorGetX(XMVector3Dot(vRight, vDir));
 
 	if (-0.2f <= fDot)
+	{
 		m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::R_SWING, false, 0.2f);
+		m_eArm = RIGHT;
+	}
 	else
+	{
 		m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::L_SWING, false, 0.2f);
+		m_eArm = LEFT;
+	}
+
+	m_fAttackStartTime = 0.75f;
+
 }
 
 void CSpiderTankState_Swing::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 
+	if (m_fAttackStartTime <= m_fTimeAcc)
+	{
+		if (LEFT == m_eArm)
+			m_pOwner->Set_Active(CSpiderTank::LEFT_ARM);
+		else if (RIGHT == m_eArm)
+			m_pOwner->Set_Active(CSpiderTank::RIGHT_ARM);
+	}
+
 	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CSpiderTank::PART_BODY, fTimeDelta))
 	{
+		if (LEFT == m_eArm)
+			m_pOwner->Set_Active(CSpiderTank::LEFT_ARM, false);
+		else if (RIGHT == m_eArm)
+			m_pOwner->Set_Active(CSpiderTank::RIGHT_ARM, false);
+
 		m_pOwner->Change_States(CSpiderTank::STATES::IDLE);
 	}
 }

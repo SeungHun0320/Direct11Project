@@ -3,11 +3,15 @@
 #include "Client_Defines.h"
 #include "PartObject.h"
 
+#include "SpiderTank.h"
+
 BEGIN(Engine)
 class CCollider;
 class CShader;
 class CModel;
 END
+
+BEGIN(Client)
 
 class CBody_SpiderTank final : public CPartObject
 {
@@ -17,7 +21,6 @@ public:
 		LEVEL eLevelID;
 	}DESC;
 
-	enum COL_TYPE { HEAD, WEAK, LEFT_ARM, RIGHT_ARM, COL_END };
 private:
 	CBody_SpiderTank(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CBody_SpiderTank(const CBody_SpiderTank& Prototype);
@@ -39,15 +42,18 @@ public:
 	virtual void  Set_TickPerSecond(_float fTickPerSecond) override;
 
 public:
+	void  Set_Active(CSpiderTank::COL_TYPE eType, _bool isActive);
+
+public:
 	virtual const _float4x4* Get_BoneMatrix(const _string& strBoneName) const override;
 
 private:
-	CCollider* m_pColliderCom[COL_END] = {nullptr};
+	CCollider* m_pColliderCom[CSpiderTank::COL_END] = {nullptr};
 	CShader*   m_pShaderCom = { nullptr };
 	CModel*    m_pModelCom = { nullptr };
 
 private:
-	const _float4x4* m_pColMatrix[COL_END] = {nullptr};
+	const _float4x4* m_pColMatrix[CSpiderTank::COL_END] = {nullptr};
 
 private:
 	LEVEL m_eLevelID = { LEVEL::LEVEL_END };
@@ -62,3 +68,4 @@ public:
 	virtual void Free() override;
 };
 
+END

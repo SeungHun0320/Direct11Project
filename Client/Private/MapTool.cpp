@@ -87,7 +87,7 @@ void CMapTool::Add_ListBoxName()
 			if (Pair.first.find(KeyWord) != _wstring::npos)
 			{
 				m_ProtoMonsterNames.push_back(m_pGameInstance->WStringToString(Pair.first));
-				if (Pair.first.find(L"Body") != _wstring::npos)
+				if (Pair.first.find(L"Body") != _wstring::npos || Pair.first.find(L"Part") != _wstring::npos)
 					m_ProtoMonsterNames.pop_back();
 			}
 				
@@ -285,7 +285,7 @@ HRESULT CMapTool::MapTool()
 
 void CMapTool::Map_Menu()
 {
-	const _char* szMaps[] = { "CourtYard", "Main", "Arena", "Shop"};
+	const _char* szMaps[] = { "CourtYard", "Arena", "Shop"};
 
 	if (ImGui::BeginCombo(u8"∏  º±≈√", m_eCurrentMap == MAP_END ? u8"º±≈√" : szMaps[m_eCurrentMap]))
 	{
@@ -356,11 +356,6 @@ HRESULT CMapTool::Craete_Map(MAP iMapIdx, const _wstring& strLayerTag)
 	case MAP::COURTYARD:
 		m_strMapFileTag = "Courtyard.Map";
 		strName = TEXT("Courtyard");
-		break;
-
-	case MAP::MAIN:
-		m_strMapFileTag = "Main.Map";
-		strName = TEXT("Main");
 		break;
 
 	case MAP::ARENA:
@@ -1130,12 +1125,6 @@ HRESULT CMapTool::Load_Map(const _string& strMapPath)
 		{
 			m_strMapFileTag = "Courtyard.Map";
 			m_eCurrentMap = COURTYARD;
-		}
-
-		else if (tDesc.strName == L"Main")
-		{
-			m_strMapFileTag = "Main.Map";
-			m_eCurrentMap = MAIN;
 		}
 
 		else if (tDesc.strName == L"Arena")

@@ -70,13 +70,13 @@ void CPawn::Change_Level()
 	switch (m_eLevelID)
 	{
 	case LEVEL::COURTYARD:
-		eNextLevelID = LEVEL::MAIN;
-		break;
-	case LEVEL::MAIN:
 		eNextLevelID = LEVEL::ARENA;
 		break;
 	case LEVEL::ARENA:
 		eNextLevelID = LEVEL::SHOP;
+		break;
+	case LEVEL::SHOP:
+		eNextLevelID = LEVEL::COURTYARD;
 		break;
 	}
 

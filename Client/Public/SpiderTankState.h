@@ -229,6 +229,9 @@ public: // CSpiderTankState을(를) 통해 상속됨
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
 
+private:
+	_float m_fAttackStartTime{};
+
 public:
 	virtual void Free() override;
 
@@ -238,6 +241,8 @@ public:
 class CSpiderTankState_Swing final : public CSpiderTankState
 {
 public:
+	enum ARM { LEFT, RIGHT, ARM_END };
+public:
 	CSpiderTankState_Swing(class CSpiderTank* pOwner);
 	virtual ~CSpiderTankState_Swing() = default;
 
@@ -245,6 +250,10 @@ public: // CSpiderTankState을(를) 통해 상속됨
 	void Enter(_float fTimeDelta) override;
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
+
+private:
+	ARM	   m_eArm{ ARM_END };
+	_float m_fAttackStartTime{};
 
 public:
 	virtual void Free() override;

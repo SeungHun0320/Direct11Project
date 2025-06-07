@@ -68,7 +68,7 @@ void CWizard_SwordState_Pray::Execute(_float fTimeDelta)
 	{
 		if (m_pOwner->Find_Player())
 		{
-			m_pOwner->Change_States(CWizard_Sword::STATES::MOVE);
+			m_pOwner->Change_States(CWizard_Sword::STATES::DETECTED);
 		}
 
 		m_fTimeAcc = 0.f;
@@ -107,7 +107,7 @@ void CWizard_SwordState_Detected::Execute(_float fTimeDelta)
 
 	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CWizard_Sword::PART_BODY, fTimeDelta))
 	{
-		if (10.f <= m_pOwner->Get_DistanceToPlayer())
+		if (10.f <= m_pOwner->Get_DistanceToPlayer() && m_pOwner->Get_ChaseStopDistance() >= m_pOwner->Get_DistanceToPlayer())
 		{
 			m_pOwner->Change_States(CWizard_Sword::STATES::MOVE);
 		}
@@ -168,7 +168,7 @@ void CWizard_SwordState_Attack::Execute(_float fTimeDelta)
 	{
 		m_pOwner->Set_Active(false);
 
-		if (5.f <= m_pOwner->Get_DistanceToPlayer())
+		if (5.f <= m_pOwner->Get_DistanceToPlayer() && m_pOwner->Get_ChaseStopDistance() >= m_pOwner->Get_DistanceToPlayer())
 			m_pOwner->Change_States(CWizard_Sword::STATES::MOVE);
 		else
 			m_pOwner->Change_States(CWizard_Sword::STATES::IDLE);
@@ -213,13 +213,15 @@ void CWizard_SwordState_Move::Execute(_float fTimeDelta)
 
 	// 만약 포지션에 도착을 했을 때, 플레이어 거리가 멀다면?
 
-	if (XMVector3NearEqual(m_pOwner->Get_State(STATE::POSITION), XMLoadFloat3(&m_vTargetPos), XMVectorReplicate(7.f)))
+	if (7.0f > XMVectorGetX(XMVector3Length(XMLoadFloat3(&m_vTargetPos))))
 	{
 		if (5.f >= m_pOwner->Get_DistanceToPlayer())
 			m_pOwner->Change_States(CWizard_Sword::STATES::ATTACK);
 		else
 			XMStoreFloat3(&m_vTargetPos, m_pOwner->Get_TargetPosition());
 	}
+	else
+		m_pOwner->Change_States(CWizard_Sword::STATES::IDLE);
 
 }
 

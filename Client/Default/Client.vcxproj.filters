@@ -109,9 +109,6 @@
     <Filter Include="02.GameObjects\04.Map\03.Shop">
       <UniqueIdentifier>{de916087-4383-40af-97a1-a29776f147fd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Levels\01.Main">
-      <UniqueIdentifier>{0b6efbed-7531-4b59-950d-fdf544f349ba}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Levels\00.Courtyard">
       <UniqueIdentifier>{f3dfb631-d45a-48ca-8e5f-c4776009a0f8}</UniqueIdentifier>
     </Filter>
@@ -495,9 +492,6 @@
     <ClInclude Include="..\Public\Level_Courtyard.h">
       <Filter>01.Levels\00.Courtyard</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Level_Main.h">
-      <Filter>01.Levels\01.Main</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Level_Arena.h">
       <Filter>01.Levels\02.Arena</Filter>
     </ClInclude>
@@ -759,9 +753,6 @@
     <ClCompile Include="..\Private\Level_Courtyard.cpp">
       <Filter>01.Levels\00.Courtyard</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Level_Main.cpp">
-      <Filter>01.Levels\01.Main</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Level_Arena.cpp">
       <Filter>01.Levels\02.Arena</Filter>
     </ClCompile>
@@ -957,20 +948,20 @@
     <ClCompile Include="..\private\Part_Player.cpp">
       <Filter>02.GameObjects\06.Pawn\Player\Part</Filter>
     </ClCompile>
-    <ClCompile Include="..\public\Weapon_Player.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\Part\Weapon</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Wizard.cpp">
       <Filter>02.GameObjects\03.Monsters\02.Wizard</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Wizard_Support_AOE.cpp">
       <Filter>02.GameObjects\08. Bullet\Monster_Bullet\AOE\Wizard_Support_AOE</Filter>
     </ClCompile>
-    <ClCompile Include="..\public\Monster_Bullet_AOE.cpp">
-      <Filter>02.GameObjects\08. Bullet\Monster_Bullet\AOE</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\SpiderTank_Lager.cpp">
       <Filter>02.GameObjects\08. Bullet\Monster_Bullet\SpiderTank_Bullet\SpiderTank_Lager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Monster_Bullet_AOE.cpp">
+      <Filter>02.GameObjects\08. Bullet\Monster_Bullet\AOE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Weapon_Player.cpp">
+      <Filter>02.GameObjects\06.Pawn\Player\Part\Weapon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

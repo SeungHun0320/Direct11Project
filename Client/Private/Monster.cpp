@@ -59,7 +59,6 @@ LIFE CMonster::Update(_float fTimeDelta)
 		m_fDistanceToPlayer = XMVectorGetX(XMVector3Length(m_pTargetTransform->Get_State(STATE::POSITION) - m_pTransformCom->Get_State(STATE::POSITION)));
 	}
 
-
 	return __super::Update(fTimeDelta);
 }
 

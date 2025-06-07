@@ -111,10 +111,6 @@ HRESULT CLoader::Loading()
 		hr = Loading_For_Courtyard(LEVEL::COURTYARD);
 		break;
 
-	case LEVEL::MAIN:
-		hr = Loading_For_Main(LEVEL::MAIN);
-		break;
-
 	case LEVEL::ARENA:
 		hr = Loading_For_Arena(LEVEL::ARENA);
 		break;
@@ -370,6 +366,12 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Part_WizardSword"),
 		CPart_WizardSword::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	/* For.Prototype_GameObject_Wizard_Support_AOE*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Wizard_Support_AOE"),
+		CWizard_Support_AOE::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
 	/* For.Prototype_GameObject_Body_Candleabra */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Body_Candleabra"),
 		CBody_WizardCandleabra::Create(m_pDevice, m_pContext))))
@@ -410,133 +412,6 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Effect"),
 	//	CEffect::Create(m_pGraphic_Device))))
 	//	return E_FAIL;
-
-	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
-
-	m_isFinished = true;
-
-	return S_OK;
-}
-
-HRESULT CLoader::Loading_For_Main(LEVEL eLevelID)
-{
-	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
-	/*For.Prototype_Component_Texture_Sky*/
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_Sky"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/SkyBox/Sky_%d.dds"), 5))))
-		return E_FAIL;
-
-	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
-	_matrix		PreTransformMatrix = XMMatrixIdentity();
-	/*For.Prototype_Component_Model_Main*/
-	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Main"),
-		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Map/Fortress/Main/Main.Model"), PreTransformMatrix))))
-		return E_FAIL;
-
-	/*For.Prototype_Component_Model_Wizard_Support*/
-	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Wizard_Support"),
-		CModel::Create(m_pDevice, m_pContext, MODEL::ANIM, TEXT("../Bin/Resources/Models/Anim/Monster/Wizard/Support/Wizard_Support.Model"), PreTransformMatrix))))
-		return E_FAIL;
-
-
-	/*For.Prototype_Component_Model_Wizard_Candleabra*/
-	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Wizard_Candleabra"),
-		CModel::Create(m_pDevice, m_pContext, MODEL::ANIM, TEXT("../Bin/Resources/Models/Anim/Monster/Wizard/Candleabra/Wizard_Candleabra.Model"), PreTransformMatrix))))
-		return E_FAIL;
-
-
-	/*For.Prototype_Component_Model_Wizard_Sword*/
-	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Wizard_Sword"),
-		CModel::Create(m_pDevice, m_pContext, MODEL::ANIM, TEXT("../Bin/Resources/Models/Anim/Monster/Wizard/Sword/Wizard_Sword.Model"), PreTransformMatrix))))
-		return E_FAIL;
-
-	/*For.Prototype_Component_Model_Weapon_WizardCandleabra*/
-	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Weapon_WizardCandleabra"),
-		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/Anim/Monster/Wizard/Weapons/Candleabra.Model"), PreTransformMatrix))))
-		return E_FAIL;
-
-	/*For.Prototype_Component_Model_Weapon_WizardSword*/
-	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Weapon_WizardSword"),
-		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/Anim/Monster/Wizard/Weapons/Sword.Model"), PreTransformMatrix))))
-		return E_FAIL;
-
-	/*For.Prototype_Component_Model_Weapon_WizardStaff*/
-	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Weapon_WizardStaff"),
-		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/Anim/Monster/Wizard/Weapons/Staff.Model"), PreTransformMatrix))))
-		return E_FAIL;
-
-
-	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
-
-
-	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
-
-	/* For.Prototype_GameObject_Main */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Main"),
-		CMain::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-
-	/* For.Prototype_GameObject_Camera_TPS */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Camera_TPS"),
-		CCamera_TPS::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-	/* For.Prototype_GameObject_Part_WizardCandleabra */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Part_WizardCandleabra"),
-		CPart_WizardCandleabra::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-	/* For.Prototype_GameObject_Part_WizardSword */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Part_WizardSword"),
-		CPart_WizardSword::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-	/* For.Prototype_GameObject_Body_Candleabra */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Body_Candleabra"),
-		CBody_WizardCandleabra::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-	/* For.Prototype_GameObject_Wizard_Candleabra */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Wizard_Candleabra"),
-		CWizard_Candleabra::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-	/* For.Prototype_GameObject_Part_WizardStaff */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Part_WizardStaff"),
-		CPart_WizardStaff::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-	/* For.Prototype_GameObject_Body_Support */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Body_Support"),
-		CBody_WizardSupport::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-	/* For.Prototype_GameObject_Wizard_Support */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Wizard_Support"),
-		CWizard_Support::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-	/* For.Prototype_GameObject_Wizard_Support_AOE */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Wizard_Support_AOE"),
-		CWizard_Support_AOE::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-	/* For.Prototype_GameObject_Body_Sword */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Body_Sword"),
-		CBody_WizardSword::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-	/* For.Prototype_GameObject_Wizard_Sword */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Wizard_Sword"),
-		CWizard_Sword::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-
-	/* For.Prototype_GameObject_Sky */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Sky"),
-		CSky::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
@@ -683,13 +558,6 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Map/Fortress/Arena/Arena.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
-	/*For.Prototype_Component_Model_Main*/
-	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Main"),
-		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Map/Fortress/Main/Main.Model"), PreTransformMatrix))))
-		return E_FAIL;
-
-
 	/*For.Prototype_Component_Model_Shop*/
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Shop"),
@@ -789,10 +657,10 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 		CArena::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_Main */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Main"),
-		CMain::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
+	///* For.Prototype_GameObject_Main */
+	//if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Main"),
+	//	CMain::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
 
 	/* For.Prototype_GameObject_Shop */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Shop"),

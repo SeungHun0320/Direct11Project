@@ -38,6 +38,8 @@ public:
 		PINCH, KNOCKBACK, DEAD, STATES_END
 	};
 
+	enum COL_TYPE { HEAD, WEAK, LEFT_ARM, RIGHT_ARM, COL_END };
+
 private:
 	CSpiderTank(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CSpiderTank(const CSpiderTank& Prototype);
@@ -67,7 +69,7 @@ public: /* 상태로 넘겨줄 함수들 */
 	void  Set_TickPerSecond(PART ePart, _float fTickPerSecond);
 
 	/* 충돌 관련 */
-
+	void Set_Active(COL_TYPE eColTypeIndex, _bool isActive = true);
 
 	/* 이동 관련 */
 	_bool Go_Target(_fvector vTarget, _float fTimeDelta, _float fSpeed = 0.f, _float fMinDistance = 2.f);
@@ -124,6 +126,9 @@ private: /* 서순 */
 	_uint  m_iSequence = {};
 	const _float4x4* m_pHeadBoneMatrix = { nullptr };
 	_float4x4		 m_LagerMatrix = {};
+
+private: /* 매번 캐스팅 해주기 싫어서 변수로 선언함 */
+	class CBody_SpiderTank* m_pBodyPart = { nullptr };
 
 private:
 	void Update_HeadBoneMatrix();
