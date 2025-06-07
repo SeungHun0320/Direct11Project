@@ -98,6 +98,7 @@ public: // CWizard_SwordState을(를) 통해 상속됨
 private:
 	_byte m_byRandom{};
 	_float3 m_vTargetPos{};
+	_float m_fAttackStartTime{};
 
 public:
 	virtual void Free() override;

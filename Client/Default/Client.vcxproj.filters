@@ -358,6 +358,15 @@
     <Filter Include="02.GameObjects\06.Pawn\Player\Part\Weapon">
       <UniqueIdentifier>{18702f0a-a4ac-44c0-97b7-a8b65d047a6b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\08. Bullet\Monster_Bullet\AOE">
+      <UniqueIdentifier>{c4583f94-c4b6-4e0c-82ce-10e48078896c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08. Bullet\Monster_Bullet\AOE\Wizard_Support_AOE">
+      <UniqueIdentifier>{271a6fa9-c1e0-41a8-a6f8-063d041af411}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08. Bullet\Monster_Bullet\SpiderTank_Bullet\SpiderTank_Lager">
+      <UniqueIdentifier>{b514cfb1-0800-433d-82b6-29278d9e79ef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -623,6 +632,15 @@
     </ClInclude>
     <ClInclude Include="..\public\Wizard.h">
       <Filter>02.GameObjects\03.Monsters\02.Wizard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Wizard_Support_AOE.h">
+      <Filter>02.GameObjects\08. Bullet\Monster_Bullet\AOE\Wizard_Support_AOE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Monster_Bullet_AOE.h">
+      <Filter>02.GameObjects\08. Bullet\Monster_Bullet\AOE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SpiderTank_Lager.h">
+      <Filter>02.GameObjects\08. Bullet\Monster_Bullet\SpiderTank_Bullet\SpiderTank_Lager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -944,6 +962,15 @@
     </ClCompile>
     <ClCompile Include="..\private\Wizard.cpp">
       <Filter>02.GameObjects\03.Monsters\02.Wizard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Wizard_Support_AOE.cpp">
+      <Filter>02.GameObjects\08. Bullet\Monster_Bullet\AOE\Wizard_Support_AOE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\public\Monster_Bullet_AOE.cpp">
+      <Filter>02.GameObjects\08. Bullet\Monster_Bullet\AOE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SpiderTank_Lager.cpp">
+      <Filter>02.GameObjects\08. Bullet\Monster_Bullet\SpiderTank_Bullet\SpiderTank_Lager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

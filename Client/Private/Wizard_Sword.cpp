@@ -40,6 +40,8 @@ HRESULT CWizard_Sword::Initialize(void* pArg)
 			Change_States(STATES::IDLE);
 	}
 
+	m_PartObjects[PART_SWORD]->Set_Active(false);
+
 	return S_OK;
 }
 

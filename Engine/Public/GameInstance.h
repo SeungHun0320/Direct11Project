@@ -126,7 +126,7 @@ public:
 #ifdef _DEBUG
 	void Reset_Colliders();
 #endif // _DEBUG
-	void Begin_Colliders();
+	void Delete_Collider(const class CGameObject* pOwner);
 	void Clear_Colliders();
 	HRESULT Add_Collider(class CCollider* pCollider, _uint iColliderGroupID);
 	void    Intersect(_uint iColliderGroupID1, _uint iColliderGroupID2);

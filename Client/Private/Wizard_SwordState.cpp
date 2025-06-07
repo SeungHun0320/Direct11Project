@@ -143,33 +143,46 @@ void CWizard_SwordState_Attack::Enter(_float fTimeDelta)
 	XMStoreFloat3(&m_vTargetPos, m_pOwner->Get_TargetPosition());
 
 	if (1 == m_byRandom)
+	{
 		m_pOwner->Change_Animation(CWizard_Sword::PART_BODY, CWizard_Sword::ATTACK1, false, 0.3f);
+		m_fDuration = 2.f;
+	}
+
 	else
+	{
 		m_pOwner->Change_Animation(CWizard_Sword::PART_BODY, CWizard_Sword::ATTACK2, false, 0.2f);
+		m_fDuration = 3.f;
+	}
+
+	m_fAttackStartTime = 1.f;
 }
 
 void CWizard_SwordState_Attack::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 
-	if (m_pOwner->Play_Animation(CWizard_Sword::PART_BODY, fTimeDelta))
+	if(m_fAttackStartTime <= m_fTimeAcc)
+		m_pOwner->Set_Active();
+
+	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CWizard_Sword::PART_BODY, fTimeDelta))
 	{
+		m_pOwner->Set_Active(false);
+
 		if (5.f <= m_pOwner->Get_DistanceToPlayer())
 			m_pOwner->Change_States(CWizard_Sword::STATES::MOVE);
 		else
 			m_pOwner->Change_States(CWizard_Sword::STATES::IDLE);
 	}
 	else
-	{
-		if (1 == m_byRandom)
-			m_pOwner->Go_Target(XMVectorSetW(XMLoadFloat3(&m_vTargetPos), 1.f), fTimeDelta, 3.f);
-		else															  
-			m_pOwner->Go_Target(XMVectorSetW(XMLoadFloat3(&m_vTargetPos), 1.f), fTimeDelta, 3.f);
-	}
+		m_pOwner->Go_Target(XMVectorSetW(XMLoadFloat3(&m_vTargetPos), 1.f), fTimeDelta, 3.f);
 }
 
 void CWizard_SwordState_Attack::Exit()
 {
+	XMStoreFloat3(&m_vTargetPos, XMVectorZero());
+	m_fAttackStartTime = 0.f;
+	m_fDuration = 0.f;
+	m_fTimeAcc = 0.f;
 }
 
 void CWizard_SwordState_Attack::Free()

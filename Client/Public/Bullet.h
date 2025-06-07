@@ -4,6 +4,7 @@
 #include "GameObject.h"
 
 BEGIN(Engine)
+class CCollider;
 class CModel;
 class CShader;
 END
@@ -32,6 +33,7 @@ public:
 	virtual HRESULT Render() override;
 
 protected:
+	CCollider* m_pColliderCom = { nullptr };
 	CShader* m_pShaderCom = { nullptr };
 	CModel* m_pModelCom = { nullptr };
 

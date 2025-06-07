@@ -32,6 +32,10 @@ protected:
 	_float3 m_vDir{};
 
 protected:
+	_float m_fTimeAcc = {};
+	_float m_fDeadTime = {};
+
+protected:
 	virtual HRESULT Ready_Components(void* pArg);
 
 public:

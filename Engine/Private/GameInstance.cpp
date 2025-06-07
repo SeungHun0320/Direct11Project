@@ -450,6 +450,11 @@ void CGameInstance::Reset_Colliders()
 }
 #endif
 
+void CGameInstance::Delete_Collider(const CGameObject* pOwner)
+{
+	m_pCollider_Manager->Delete_Collider(pOwner);
+}
+
 void CGameInstance::Clear_Colliders()
 {
 	m_pCollider_Manager->Clear();

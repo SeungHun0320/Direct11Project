@@ -17,7 +17,7 @@ public:
 		LEVEL eLevelID;
 	}DESC;
 
-	enum COL_TYPE { HEAD, WEAK, COL_END };
+	enum COL_TYPE { HEAD, WEAK, LEFT_ARM, RIGHT_ARM, COL_END };
 private:
 	CBody_SpiderTank(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CBody_SpiderTank(const CBody_SpiderTank& Prototype);
@@ -37,6 +37,9 @@ public:
 	virtual void  Change_Animation(_uint iNextIndex, _bool isLoop = true, _float fBlendDuration = 0.f, _bool isBlend = true) override;
 	virtual void  Set_TrackPosition(_float fTrackPosition) override;
 	virtual void  Set_TickPerSecond(_float fTickPerSecond) override;
+
+public:
+	virtual const _float4x4* Get_BoneMatrix(const _string& strBoneName) const override;
 
 private:
 	CCollider* m_pColliderCom[COL_END] = {nullptr};

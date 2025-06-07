@@ -7,6 +7,7 @@
 
 #include "SpiderTank_Bullet.h"
 #include "SpiderTank_Orb.h"
+#include "SpiderTank_Lager.h"
 
 CSpiderTank::CSpiderTank(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CBoss{pDevice, pContext}
@@ -37,6 +38,8 @@ HRESULT CSpiderTank::Initialize(void* pArg)
 
 	m_pTransformCom->Rotation(XMConvertToRadians(0.f), XMConvertToRadians(180.f), XMConvertToRadians(0.f));
 
+	m_pHeadBoneMatrix = m_PartObjects[PART_BODY]->Get_BoneMatrix("head");
+
 	Change_States(STATES::SLEEP);
 
 	return S_OK;
@@ -53,6 +56,8 @@ LIFE CSpiderTank::Update(_float fTimeDelta)
 		return LIFE::DEAD;
 
 	__super::Update(fTimeDelta);
+
+	Update_HeadBoneMatrix();
 
 	if (KEY_DOWN(DIK_2))
 		Change_States(STATES::KNOCKBACK);
@@ -71,6 +76,8 @@ LIFE CSpiderTank::Update(_float fTimeDelta)
 
 		m_pCurState->Execute(fTimeDelta);
 	}
+
+
 
 	return LIFE::NONE;
 }
@@ -270,7 +277,23 @@ HRESULT CSpiderTank::Shot_Bomb()
 	return S_OK;
 }
 
-void CSpiderTank::LookAtYaw(_vector vDir, _float fLerpRatio)
+HRESULT CSpiderTank::Shot_Lager()
+{
+	_float3 vPos{};
+	CSpiderTank_Lager::DESC tDesc{};
+
+	tDesc.eLevelID = m_eLevelID;
+	tDesc.strName = TEXT("SpiderTank_Lager");
+	tDesc.pParentMatrix = &m_LagerMatrix;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_") + tDesc.strName,
+		ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_MonsterBullet"), &tDesc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+void CSpiderTank::LookAtYaw(_fvector vDir, _float fLerpRatio)
 {
 	m_pTransformCom->LookAtYaw(vDir, fLerpRatio);
 }
@@ -278,6 +301,23 @@ void CSpiderTank::LookAtYaw(_vector vDir, _float fLerpRatio)
 void CSpiderTank::Change_Camera(CAM_MODE eMode)
 {
 	m_pGameInstance->Set_CameraMode(ENUM_CLASS(m_eLevelID), TEXT("Camera_TPS"), ENUM_CLASS(eMode));
+}
+
+void CSpiderTank::Update_HeadBoneMatrix()
+{
+	if (nullptr == m_pHeadBoneMatrix || STATES::LAGER != m_eCurState)
+		return;
+
+	_matrix matWorld = XMLoadFloat4x4(m_pHeadBoneMatrix) * m_pTransformCom->Get_WorldMatrix();
+
+	for (_uint i = 0; i < 3; ++i)
+		matWorld.r[i] = XMVector3Normalize(matWorld.r[i]);
+
+	_matrix RotationMatrix = XMMatrixRotationY(XMConvertToRadians(180.f));
+
+	matWorld = RotationMatrix * matWorld;
+
+	XMStoreFloat4x4(&m_LagerMatrix, matWorld);
 }
 
 HRESULT CSpiderTank::Ready_Components(void* pArg)
@@ -370,4 +410,5 @@ void CSpiderTank::Free()
 
 	for (_uint i = 0; i < ENUM_CLASS(STATES::STATES_END); i++)
 		Safe_Release(m_pStates[i]);
+
 }

@@ -13,12 +13,21 @@ void CSpiderTankState_Lager::Enter(_float fTimeDelta)
 {
 	m_fDuration = 4.1f;
 	m_fTimeAcc  = 0.f;
+	m_fLagerTime = 1.8f;
+	m_isShot = false;
 	m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::LAGER, false, 0.3f);
+
 }
 
 void CSpiderTankState_Lager::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
+
+	if (m_fLagerTime <= m_fTimeAcc && !m_isShot)
+	{
+		m_pOwner->Shot_Lager();
+		m_isShot = true;
+	}
 
 	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CSpiderTank::PART_BODY, fTimeDelta))
 	{
@@ -30,6 +39,8 @@ void CSpiderTankState_Lager::Exit()
 {
 	m_fDuration = 0.f;
 	m_fTimeAcc = 0.f;
+	m_fLagerTime = 0.f;
+	m_isShot = false;
 }
 
 void CSpiderTankState_Lager::Free()

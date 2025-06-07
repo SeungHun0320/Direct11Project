@@ -1,5 +1,7 @@
 #include "SpiderTank_Bullet.h"
 
+#include "GameInstance.h"
+
 CSpiderTank_Bullet::CSpiderTank_Bullet(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CMonster_Bullet{ pDevice, pContext }
 {
@@ -67,6 +69,18 @@ HRESULT CSpiderTank_Bullet::Ready_Components(void* pArg)
 	/* For.Com_Model */
 	if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Model_SpiderTankOrb"),
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
+		return E_FAIL;
+
+	/* For.Com_Collider */
+	CBounding_Sphere::DESC	ColDesc{};
+	_float3 vScale = m_pTransformCom->Get_Scaled();
+
+	ColDesc.vCenter = _float3(0.f, 0.f, 0.f);
+	ColDesc.fRadius = vScale.x;
+	ColDesc.pOwner = this;
+
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_Sphere"),
+		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &ColDesc)))
 		return E_FAIL;
 
 	return S_OK;

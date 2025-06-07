@@ -66,6 +66,9 @@ public: /* 상태로 넘겨줄 함수들 */
 	void  Set_TrackPosition(PART ePart, _float fTrackPosition);
 	void  Set_TickPerSecond(PART ePart, _float fTickPerSecond);
 
+	/* 충돌 관련 */
+
+
 	/* 이동 관련 */
 	_bool Go_Target(_fvector vTarget, _float fTimeDelta, _float fSpeed = 0.f, _float fMinDistance = 2.f);
 	void Go_Dir(_fvector vDir, _float fTimeDelta, _float fSpeed);
@@ -73,7 +76,7 @@ public: /* 상태로 넘겨줄 함수들 */
 	void Hit(_fvector vDir, _float fTimeDelta, _float fSpeed = 0.f);
 	void Turn(_fvector vAxis, _float fTimeDelta);
 	void LookAt(_fvector vDir, _float fTimeDelta, _float fSpeed);
-	void LookAtYaw(_vector vDir, _float fLerpRatio);
+	void LookAtYaw(_fvector vDir, _float fLerpRatio);
 
 	void Change_Camera(CAM_MODE eMode);
 
@@ -84,6 +87,7 @@ public: /* 상태로 넘겨줄 함수들 */
 	/* 공격 관련 */
 	HRESULT Shot_Bullet();
 	HRESULT Shot_Bomb();
+	HRESULT Shot_Lager();
 
 	void AttackCoolDownAcc(_float fTimeDelta) {
 		m_fAttackCoolDown += fTimeDelta;
@@ -113,11 +117,16 @@ private: /* 상태 패턴들 */
 	class CSpiderTankState* m_pCurState = { nullptr };
 	class CSpiderTankState* m_pStates[ENUM_CLASS(STATES::STATES_END)] = { nullptr };
 
-private:
+private: /* 쿨타임 */
 	_float m_fAttackCoolDown = {};
 
-private:
+private: /* 서순 */
 	_uint  m_iSequence = {};
+	const _float4x4* m_pHeadBoneMatrix = { nullptr };
+	_float4x4		 m_LagerMatrix = {};
+
+private:
+	void Update_HeadBoneMatrix();
 
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;

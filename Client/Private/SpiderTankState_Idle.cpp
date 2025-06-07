@@ -97,7 +97,7 @@ CSpiderTankState_Idle::CSpiderTankState_Idle(CSpiderTank* pOwner)
 void CSpiderTankState_Idle::Enter(_float fTimeDelta)
 {
 	m_fTimeAcc = 0.f;
-	m_fAttackDelay = 0.7f;
+	m_fAttackDelay = 1.f;
 
 	m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::IDLE, true, 0.2f);
 }
@@ -114,7 +114,6 @@ void CSpiderTankState_Idle::Execute(_float fTimeDelta)
 
 	m_pOwner->AttackCoolDownAcc(fTimeDelta);
 
-	/* 총알 테스트용 0.61 ~ 0.79*/
 	_float fRandom = CGameInstance::Get_Instance()->Compute_Random(0.f, 1.f);
 
 	if (fAngle >= XMConvertToRadians(55.f))
@@ -123,20 +122,41 @@ void CSpiderTankState_Idle::Execute(_float fTimeDelta)
 		return;
 	}
 
-	if (fDistance < 5.f && fRandom < 0.2f)
+	if (fDistance < 5.f && fRandom < 0.3f)
 	{
 		m_pOwner->Change_States(CSpiderTank::STATES::REVERSE);
 		return;
 	}
 
+	// 3. 후진 조건 (너무 가까운 거리에서 1초 이상 유지되면 후퇴)
 	if (fDistance < fPreferredDist - fBackOffset)
 	{
-		m_pOwner->Change_States(CSpiderTank::STATES::BACKWARD);
-		return;
+		m_fTooCloseAcc += fTimeDelta;
+
+		if (m_fTooCloseAcc >= 1.0f && fAngle < XMConvertToRadians(30.f))
+		{
+			m_pOwner->Change_States(CSpiderTank::STATES::BACKWARD);
+			m_fTooCloseAcc = 0.f;
+			return;
+		}
 	}
-	else if (fDistance > fPreferredDist + fForOffset)
+	else
+	{
+		// 거리 멀어졌으면 타이머 초기화
+		m_fTooCloseAcc = 0.f;
+	}
+
+	if (fDistance > fPreferredDist + fForOffset)
 	{
 		m_pOwner->Change_States(CSpiderTank::STATES::FORWARD);
+		return;
+	}
+
+	if (fDistance > fPreferredDist + 1.5f) {
+		if (fAngle < XMConvertToRadians(15.f))
+			m_pOwner->Change_States(CSpiderTank::STATES::FORWARD);
+		else
+			m_pOwner->Change_States(m_pOwner->Is_TargetOnRight() ? CSpiderTank::STATES::RTURN : CSpiderTank::STATES::LTURN);
 		return;
 	}
 
@@ -173,37 +193,6 @@ void CSpiderTankState_Idle::Execute(_float fTimeDelta)
 
 		m_pOwner->Add_Sequence();
 		return;
-
-		//if (fRandom < 0.2f)
-		//{
-		//	m_pOwner->Change_States(CSpiderTank::STATES::FULLSWING);
-		//	return;
-		//}
-		//else if (fRandom < 0.4f)
-		//{
-		//	m_pOwner->Change_States(CSpiderTank::STATES::FAST_ATTACK);
-		//	return;
-		//}
-		//else if (fRandom < 0.6f)
-		//{
-		//	m_pOwner->Change_States(CSpiderTank::STATES::SWING);
-		//	return;
-		//}
-		//else if (fRandom < 0.7f)
-		//{
-		//	m_pOwner->Change_States(CSpiderTank::STATES::READY_BOMB);
-		//	return;
-		//}
-		//else if (fRandom < 0.8f)
-		//{
-		//	m_pOwner->Change_States(CSpiderTank::STATES::READY_SHOT);
-		//	return;
-		//}
-		//else
-		//{
-		//	m_pOwner->Change_States(CSpiderTank::STATES::LAGER);
-		//	return;
-		//}
 	}
 }
 

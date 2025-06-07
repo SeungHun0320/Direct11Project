@@ -158,19 +158,27 @@ CWizard_CandleabraState_Attack::CWizard_CandleabraState_Attack(CWizard_Candleabr
 void CWizard_CandleabraState_Attack::Enter(_float fTimeDelta)
 {
 	m_fTimeAcc = 0.f;
+	m_fDuration = 1.1f;
 	m_fChaseDistance = 10.f;
 	XMStoreFloat3(&m_vTargetPos, m_pOwner->Get_TargetPosition());
 	m_pOwner->Change_Animation(CWizard_Candleabra::PART_BODY, CWizard_Candleabra::ATTACK, false, 0.2f);
+
+	m_fAttackStartTime = 0.5f;
 }
 
 void CWizard_CandleabraState_Attack::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 
+	if(m_fAttackStartTime <= m_fTimeAcc)
+		m_pOwner->Set_Active(CWizard_Candleabra::PART_CANDLEABRA);
+
 	m_pOwner->LookAt(XMVectorSetW(XMLoadFloat3(&m_vTargetPos), 1.f), fTimeDelta, 1.f);
 
-	if (m_pOwner->Play_Animation(CWizard_Candleabra::PART_BODY, fTimeDelta))
+	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CWizard_Candleabra::PART_BODY, fTimeDelta))
 	{
+		m_pOwner->Set_Active(CWizard_Candleabra::PART_CANDLEABRA, false);
+
 		if (m_fChaseDistance <= m_pOwner->Get_DistanceToPlayer())
 		{
 			m_pOwner->Change_States(CWizard_Candleabra::STATES::MOVE);
@@ -185,6 +193,8 @@ void CWizard_CandleabraState_Attack::Exit()
 {
 	m_fTimeAcc = 0.f;
 	m_fChaseDistance = 0.f;
+	m_fDuration = 0.f;
+	m_fAttackStartTime = 0.f;
 	XMStoreFloat3(&m_vTargetPos, XMVectorZero());
 }
 

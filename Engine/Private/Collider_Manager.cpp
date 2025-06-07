@@ -17,6 +17,24 @@ void CCollider_Manager::Clear()
     }
 }
 
+void CCollider_Manager::Delete_Collider(const CGameObject* pOwner)
+{
+    for (_uint i = 0; i < m_iNumGroups; ++i)
+    {
+        for (auto Iter = m_pColliders[i].begin();
+            Iter != m_pColliders[i].end();)
+        {
+            if ((*Iter)->Get_Owner() == pOwner)
+            {
+                Safe_Release(*Iter);
+                Iter = m_pColliders[i].erase(Iter);
+                continue;
+            }
+            Iter++;
+        }
+    }
+}
+
 #ifdef _DEBUG
 void CCollider_Manager::Reset_Colliders()
 {

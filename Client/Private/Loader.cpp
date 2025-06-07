@@ -15,6 +15,7 @@
 // ÃÑ¾Ë Ãß°¡
 #include "SpiderTank_Orb.h"
 #include "SpiderTank_Bullet.h"
+#include "SpiderTank_Lager.h"
 
 #include "Blob.h"
 #include "Body_Blob.h"
@@ -26,6 +27,8 @@
 #include "Wizard_Support.h"
 #include "Body_WizardSupport.h"
 #include "Part_WizardStaff.h"
+//ÃÑ¾Ë Ãß°¡
+#include "Wizard_Support_AOE.h"
 
 #include "Wizard_Sword.h"
 #include "Body_WizardSword.h"
@@ -515,6 +518,10 @@ HRESULT CLoader::Loading_For_Main(LEVEL eLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Wizard_Support"),
 		CWizard_Support::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	/* For.Prototype_GameObject_Wizard_Support_AOE */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Wizard_Support_AOE"),
+		CWizard_Support_AOE::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	/* For.Prototype_GameObject_Body_Sword */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Body_Sword"),
@@ -598,6 +605,11 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 	/* For.Prototype_GameObject_SpiderTank_Orb */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_SpiderTank_Orb"),
 		CSpiderTank_Orb::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_SpiderTank_Lager */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_SpiderTank_Lager"),
+		CSpiderTank_Lager::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Sky */

@@ -188,6 +188,7 @@ void CWizard_SupportState_Casting::Execute(_float fTimeDelta)
 	if (m_fDuration <= m_fTimeAcc && !m_IsCasting)
 	{
 		m_pOwner->Change_Animation(CWizard_Support::PART_BODY, CWizard_Support::CASTING, true, 0.1f);
+		m_pOwner->Casting();
 		m_IsCasting = true;
 	}
 

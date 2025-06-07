@@ -6,6 +6,8 @@
 
 #include "Wizard_SupportState.h"
 
+#include "Wizard_Support_AOE.h"
+
 CWizard_Support::CWizard_Support(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CWizard{ pDevice, pContext }
 {
@@ -102,6 +104,22 @@ void CWizard_Support::Change_States(STATES eStates)
 void CWizard_Support::Set_State(STATE eState, _fvector vState)
 {
 	m_pTransformCom->Set_State(eState, vState);
+}
+
+HRESULT CWizard_Support::Casting()
+{
+	CWizard_Support_AOE::DESC tDesc{};
+
+	tDesc.eLevelID = m_eLevelID;
+	tDesc.fRotationPerSec = XMConvertToRadians(0.f);
+	tDesc.fSpeedPerSec = 0.f;
+	tDesc.strName = TEXT("Wizard_Support_AOE");
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_") + tDesc.strName,
+		ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_MonsterBullet"), &tDesc)))
+		return E_FAIL;
+
+	return S_OK;
 }
 
 _bool CWizard_Support::Play_Animation(PART ePart, _float fTimeDelta)

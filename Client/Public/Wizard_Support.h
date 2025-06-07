@@ -37,6 +37,9 @@ public: /* 상태패턴 관련 함수들 */
 	void Change_States(STATES eStates);
 	void    Set_State(STATE eState, _fvector vState);
 
+	/* 공격 관련 */
+	HRESULT Casting();
+
 public: /* 상태로 넘겨줄 함수들 */
 	/* 애니메이션 관련 */
 	_bool Play_Animation(PART ePart, _float fTimeDelta);

@@ -1,8 +1,12 @@
 #include "Layer.h"
 #include "ContainerObject.h"
 
+#include "GameInstance.h"
+
 CLayer::CLayer()
+	: m_pGameInstance{CGameInstance::Get_Instance()}
 {
+	Safe_AddRef(m_pGameInstance);
 }
 
 CComponent* CLayer::Get_Component(const _wstring& strComponentTag, _uint iIndex)
@@ -91,6 +95,7 @@ void CLayer::Update(_float fTimeDelta)
 			eLife = (*Iter)->Update(fTimeDelta);
 			if (LIFE::DEAD == eLife)
 			{
+				m_pGameInstance->Delete_Collider(*Iter);
 				Safe_Release(*Iter);
 				Iter = m_GameObjects.erase(Iter);
 			}
@@ -128,4 +133,5 @@ void CLayer::Free()
 	__super::Free();
 
 	Clear();
+	Safe_Release(m_pGameInstance);
 }

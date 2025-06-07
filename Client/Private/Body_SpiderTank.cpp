@@ -31,6 +31,8 @@ HRESULT CBody_SpiderTank::Initialize(void* pArg)
 	
 	m_pColMatrix[HEAD] = m_pModelCom->Get_BoneMatrix("head");
 	m_pColMatrix[WEAK] = m_pModelCom->Get_BoneMatrix("powercell");
+	m_pColMatrix[LEFT_ARM] = m_pModelCom->Get_BoneMatrix("arm_4_L_end");
+	m_pColMatrix[RIGHT_ARM] = m_pModelCom->Get_BoneMatrix("arm_4_R_end");
 
 	return S_OK;
 }
@@ -43,8 +45,9 @@ LIFE CBody_SpiderTank::Update(_float fTimeDelta)
 {
 	XMStoreFloat4x4(&m_CombinedWorldMatrix, m_pTransformCom->Get_WorldMatrix() * XMLoadFloat4x4(m_pParentMatrix));
 
-	m_pColliderCom[HEAD]->Update(XMLoadFloat4x4(m_pColMatrix[HEAD]) * XMLoadFloat4x4(&m_CombinedWorldMatrix));
-	m_pColliderCom[WEAK]->Update(XMLoadFloat4x4(m_pColMatrix[WEAK]) * XMLoadFloat4x4(&m_CombinedWorldMatrix));
+
+	for(_uint i = 0; i < COL_END; i++)
+		m_pColliderCom[i]->Update(XMLoadFloat4x4(m_pColMatrix[i]) * XMLoadFloat4x4(&m_CombinedWorldMatrix));
 
 	return LIFE::NONE;
 }
@@ -79,8 +82,8 @@ HRESULT CBody_SpiderTank::Render()
 
 #ifdef _DEBUG
 
-	m_pColliderCom[HEAD]->Render();
-	m_pColliderCom[WEAK]->Render();
+	for (auto& pCollider : m_pColliderCom)
+		pCollider->Render();
 
 #endif
 
@@ -112,6 +115,11 @@ void CBody_SpiderTank::Set_TickPerSecond(_float fTickPerSecond)
 	m_pModelCom->Set_NextTickPerSecond(fTickPerSecond);
 }
 
+const _float4x4* CBody_SpiderTank::Get_BoneMatrix(const _string& strBoneName) const
+{
+	return m_pModelCom->Get_BoneMatrix(strBoneName);
+}
+
 HRESULT CBody_SpiderTank::Ready_Components(void* pArg)
 {
 	DESC* pDesc = static_cast<DESC*>(pArg);
@@ -131,6 +139,8 @@ HRESULT CBody_SpiderTank::Ready_Components(void* pArg)
 
 	ColDesc.vCenter = _float3(0.f, 0.f, -100.f);
 	ColDesc.fRadius = 300.f;
+	ColDesc.iColliderGroupID = ENUM_CLASS(COLLIDER_GROUP::BOSS);
+	ColDesc.iColliderID = ENUM_CLASS(COLLIDER_ID::BOSS_HEAD);
 	ColDesc.pOwner = pDesc->pOwner;
 
 	/* For.Com_Collider_Head */
@@ -140,10 +150,30 @@ HRESULT CBody_SpiderTank::Ready_Components(void* pArg)
 
 	ColDesc.vCenter = _float3(0.f, 0.f, 0.f);
 	ColDesc.fRadius = 250.f;
+	ColDesc.iColliderID = ENUM_CLASS(COLLIDER_ID::BOSS_WEAK);
 
 	/* For.Com_Collider_Weak */
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_Sphere"),
 		TEXT("Com_Collider_Weak"), reinterpret_cast<CComponent**>(&m_pColliderCom[WEAK]), &ColDesc)))
+		return E_FAIL;
+
+	CBounding_OBB::DESC OBBDesc{};
+
+	OBBDesc.vExtents = _float3(300.f, 600.f, 300.f);
+	OBBDesc.vCenter = _float3(0.f, -OBBDesc.vExtents.y, 0.f);
+	OBBDesc.vRotation = _float3(XMConvertToRadians(0.f), XMConvertToRadians(0.f), XMConvertToRadians(0.f));
+	OBBDesc.iColliderGroupID = ENUM_CLASS(COLLIDER_GROUP::BOSS_ATTACK);
+	OBBDesc.iColliderID = ENUM_CLASS(COLLIDER_ID::BOSS_ATTACK);
+	OBBDesc.pOwner = pDesc->pOwner;
+
+	/* For.Com_Collider_LeftArm */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_OBB"),
+		TEXT("Com_Collider_LeftArm"), reinterpret_cast<CComponent**>(&m_pColliderCom[LEFT_ARM]), &OBBDesc)))
+		return E_FAIL;
+
+	/* For.Com_Collider_RightArm */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_OBB"),
+		TEXT("Com_Collider_RightArm"), reinterpret_cast<CComponent**>(&m_pColliderCom[RIGHT_ARM]), &OBBDesc)))
 		return E_FAIL;
 
 	return S_OK;

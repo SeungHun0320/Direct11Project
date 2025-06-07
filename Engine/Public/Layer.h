@@ -28,7 +28,8 @@ public:
 	void Clear();
 
 private:
-	list<class CGameObject*>			m_GameObjects;
+	list<class CGameObject*>	m_GameObjects;
+	class CGameInstance*		m_pGameInstance = { nullptr };
 
 public:
 	static CLayer* Create();

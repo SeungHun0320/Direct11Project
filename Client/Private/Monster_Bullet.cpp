@@ -35,6 +35,8 @@ void CMonster_Bullet::Priority_Update(_float fTimeDelta)
 
 LIFE CMonster_Bullet::Update(_float fTimeDelta)
 {
+	m_pColliderCom->Update(m_pTransformCom->Get_WorldMatrix());
+
 	return __super::Update(fTimeDelta);
 }
 
@@ -45,6 +47,9 @@ void CMonster_Bullet::Late_Update(_float fTimeDelta)
 
 HRESULT CMonster_Bullet::Render()
 {
+#ifdef _DEBUG
+	m_pColliderCom->Render();
+#endif
 	return  __super::Render();
 }
 

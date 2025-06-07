@@ -20,6 +20,8 @@ public:
 	void    Intersect(_uint iColliderGroupID1, _uint iColliderGroupID2);
 	/* 등록된 콜라이더 삭제 레벨 넘어갈 때 호출하면 됨 */
 	void Clear();
+	/* 오우너가 죽었을때 매니저에 등록된 콜라이더 삭제 */
+	void Delete_Collider(const class CGameObject* pOwner);
 
 #ifdef _DEBUG
 public:	/* 고작 충돌이 됐는지 안됐는지 그리는거 때문에 이런거 하는게 좀 에바인거 같음 */

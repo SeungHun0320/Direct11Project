@@ -343,7 +343,14 @@ void CLevel_Arena::Check_Collision()
 {
 #ifdef _DEBUG
 	m_pGameInstance->Reset_Colliders();
-#endif // _DEBUG
+#endif 
+
+	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::PAWN), ENUM_CLASS(COLLIDER_GROUP::BOSS));
+	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::WEAPON), ENUM_CLASS(COLLIDER_GROUP::BOSS));
+
+	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::BOSS_ATTACK), ENUM_CLASS(COLLIDER_GROUP::PAWN));
+
+	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::MONSTER), ENUM_CLASS(COLLIDER_GROUP::MONSTER));
 }
 
 

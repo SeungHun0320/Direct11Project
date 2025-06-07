@@ -22,7 +22,7 @@ public:
 		return m_isActive;
 	}
 
-	void Set_Active(_bool IsActive) {
+	void Set_Active(_bool IsActive = true) {
 		m_isActive = IsActive;
 	}
 

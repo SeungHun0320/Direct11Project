@@ -78,6 +78,7 @@ public:
 
 private:
 	_float m_fAttackDelay{};
+	_float m_fTooCloseAcc{};
 
 public:
 	virtual void Free() override;
@@ -190,12 +191,16 @@ public: // CSpiderTankStateÀ»(¸¦) ÅëÇØ »ó¼ÓµÊ
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
 
+private:
+	_float m_fLagerTime{};
+	_bool  m_isShot{};
+
 public:
 	virtual void Free() override;
 
 };
 
-/* ÂÌ¸÷ ¼ÒÈ¯(ÂÌ¸é ¸Ô°í½Í´Ù) */
+/* ÂÌ¸÷ ¼ÒÈ¯ */
 class CSpiderTankState_SpawnMob final : public CSpiderTankState
 {
 public:

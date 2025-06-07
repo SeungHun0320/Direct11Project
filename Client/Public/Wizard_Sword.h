@@ -43,7 +43,7 @@ public: /* 상태로 넘겨줄 함수들 */
 	void  Set_TrackPosition(PART ePart, _float fTrackPosition);
 
 	/* 충돌 관련 */
-	void Set_Active(_bool isActive);
+	void Set_Active(_bool isActive = true);
 
 private: /* 상태 패턴 변수들 */
 	STATES m_eCurState{ STATES::STATES_END };

@@ -1,5 +1,7 @@
 #include "SpiderTank_Orb.h"
 
+#include "GameInstance.h"
+
 CSpiderTank_Orb::CSpiderTank_Orb(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CMonster_Bullet { pDevice, pContext }
 {
@@ -24,6 +26,8 @@ HRESULT CSpiderTank_Orb::Initialize(void* pArg)
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
+
+	m_pColliderCom->Set_Active(false);
 
 	return S_OK;
 }
@@ -50,16 +54,16 @@ LIFE CSpiderTank_Orb::Update(_float fTimeDelta)
 		m_pTransformCom->Go_Dir(XMVector3Normalize(XMLoadFloat3(&m_vDir)), fTimeDelta);
 
 		if (XMVectorGetY(m_pTransformCom->Get_State(STATE::POSITION)) <= XMVectorGetY(m_pTargetTransform->Get_State(STATE::POSITION)) + 1.f)
+		{
+			m_pColliderCom->Set_Active();
 			m_bGrounded = true;
+		}
+
 	}
 	else
 	{
 		m_pTransformCom->LookAtLerpEx(m_pTargetTransform->Get_State(STATE::POSITION), fTimeDelta, 3.f);
 		m_pTransformCom->Go_Straight(fTimeDelta);
-
-		if (2.5f >= XMVectorGetX(XMVector3Length(m_pTransformCom->Get_State(STATE::POSITION) -
-			m_pTargetTransform->Get_State(STATE::POSITION))))
-			m_bDead = true;
 	}
 
 	return __super::Update(fTimeDelta);
@@ -83,6 +87,18 @@ HRESULT CSpiderTank_Orb::Ready_Components(void* pArg)
 	/* For.Com_Model */
 	if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Model_SpiderTankOrb"),
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
+		return E_FAIL;
+
+	/* For.Com_Collider */
+	CBounding_Sphere::DESC	ColDesc{};
+	_float3 vScale = m_pTransformCom->Get_Scaled();
+
+	ColDesc.vCenter = _float3(0.f, 0.f, 0.f);
+	ColDesc.fRadius = vScale.x;
+	ColDesc.pOwner = this;
+
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_Sphere"),
+		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &ColDesc)))
 		return E_FAIL;
 
 	return S_OK;
