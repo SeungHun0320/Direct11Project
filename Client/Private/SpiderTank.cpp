@@ -9,6 +9,9 @@
 #include "SpiderTank_Orb.h"
 #include "SpiderTank_Lager.h"
 
+
+#include "Player.h"
+
 CSpiderTank::CSpiderTank(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CBoss{pDevice, pContext}
 {
@@ -35,6 +38,19 @@ HRESULT CSpiderTank::Initialize(void* pArg)
 	m_fDetectDistance = 10.f;
 	m_fChaseStopDistance = 20.f;
 	m_fPreferredDistance = 13.5f;
+
+	/* 체력 */
+	m_fHp = 500.f;
+	m_fMaxHp = m_fHp;
+
+	/* 공격력 */
+	m_fAttack = 10.f;
+	m_fStaggerValue = 50.f;
+
+	/* 그로기 */
+	m_fStaggerGage = 100.f;
+	m_fMaxStaggerGage = m_fStaggerGage;
+
 
 	m_pTransformCom->Rotation(XMConvertToRadians(0.f), XMConvertToRadians(180.f), XMConvertToRadians(0.f));
 
@@ -93,10 +109,6 @@ void CSpiderTank::Late_Update(_float fTimeDelta)
 HRESULT CSpiderTank::Render()
 {
 	return S_OK;
-}
-
-void CSpiderTank::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
-{
 }
 
 void CSpiderTank::Change_States(STATES eStates)
@@ -326,6 +338,53 @@ void CSpiderTank::Update_HeadBoneMatrix()
 	matWorld = RotationMatrix * matWorld;
 
 	XMStoreFloat4x4(&m_LagerMatrix, matWorld);
+}
+
+void CSpiderTank::On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDuration)
+{
+	if (m_isInvincible || m_bDead)
+		return;
+
+	m_fHp -= fDamage;
+	m_fStaggerGage -= fStaggerValue;
+	m_isHit = true;
+
+	if (0 >= m_fHp)
+	{
+		m_fHp = 0.f;
+		m_bDead = true;
+		Change_States(STATES::DEAD);
+	}
+	else
+	{
+		if (0 >= m_fStaggerGage)
+		{
+			m_isStagger = true;
+			m_fInvicibleTime = 4.f;
+			m_fStaggerGage = m_fMaxStaggerGage;
+			Change_States(STATES::KNOCKBACK);
+		}
+		else
+		{
+			m_fInvicibleTime = fInvicibleDuration;
+		}
+
+		m_isInvincible = true;
+		Change_States(STATES::PINCH);
+	}
+}
+
+void CSpiderTank::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
+{
+	if (CI_WEAPON(static_cast<COLLIDER_ID>(OtherColliderID)))
+	{
+		if (CPlayer* pPlayer = dynamic_cast<CPlayer*>(pOwner))
+		{
+			On_Hit(pPlayer->Get_AttackValue(), pPlayer->Compute_StaggerValue());
+		}
+	}
+
+	cout << "구충돌 " << endl;
 }
 
 HRESULT CSpiderTank::Ready_Components(void* pArg)

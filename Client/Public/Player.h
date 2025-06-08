@@ -110,9 +110,7 @@ public:/* 락온 관련 */
 public: /* 키입력에 따른 방향을 결정해주는 함수 */
 	_vector Get_InputDirection();
 	_vector Get_InputDirectionEx();
-	
-public: /* 충 돌 */
-	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner) override;
+
 
 public: /* 스테이트 갖고오기 */
 	STATES Get_CurState() {
@@ -189,6 +187,7 @@ private: /* 매번 캐스팅 해주기 싫어서 따로 변수로 받아왔음 */
 private: /* 실제 플레이어 상태 관련 */
 	void Stamina_Recovery(_float fTimeDelta);
 	virtual void On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDuration) override;
+	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner) override;
 	virtual _float Compute_InvincibleTime_ByCollider(COLLIDER_ID eColliderID) override;
 
 private: /* 애니 관련 */

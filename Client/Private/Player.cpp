@@ -386,42 +386,6 @@ _vector CPlayer::Get_InputDirectionEx()
 	return XMVector3Normalize(vInputDir);
 }
 
-void CPlayer::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
-{
-	COLLIDER_ID eColliderID = static_cast<COLLIDER_ID>(OtherColliderID);
-	_float fInvicibleDuration = Compute_InvincibleTime_ByCollider(static_cast<COLLIDER_ID>(OtherColliderID));
-
-	if (CI_MONSTER(eColliderID))
-	{
-		// 밀어낸다.
-	}
-
-	if (CI_MONSTER_ATTACK(eColliderID))
-	{
-		if (CMonster* pMonster = dynamic_cast<CMonster*>(pOwner))
-		{
-			On_Hit(pMonster->Get_AttackValue(), pMonster->Get_StaggerValue(), fInvicibleDuration);
-		}
-	}
-
-	if (CI_MONSTER_BULLET(eColliderID))
-	{
-		if (CMonster_Bullet* pMonsterBullet = dynamic_cast<CMonster_Bullet*>(pOwner))
-		{
-			On_Hit(pMonsterBullet->Get_AttackValue(), pMonsterBullet->Get_StaggerValue(), fInvicibleDuration);
-		}
-	}
-
-	switch (eColliderID)
-	{
-	case COLLIDER_ID::BUSH:
-		// 밀어낸다.
-		break;
-	default:
-		break;
-	}
-}
-
 _vector CPlayer::Get_State(STATE eState)
 
 {
@@ -543,6 +507,42 @@ void CPlayer::On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDura
 
 		m_isInvincible = true;
 		Change_States(STATES::HIT);
+	}
+}
+
+void CPlayer::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
+{
+	COLLIDER_ID eColliderID = static_cast<COLLIDER_ID>(OtherColliderID);
+	_float fInvicibleDuration = Compute_InvincibleTime_ByCollider(static_cast<COLLIDER_ID>(OtherColliderID));
+
+	if (CI_MONSTER(eColliderID))
+	{
+		// 밀어낸다.
+	}
+
+	if (CI_MONSTER_ATTACK(eColliderID))
+	{
+		if (CMonster* pMonster = dynamic_cast<CMonster*>(pOwner))
+		{
+			On_Hit(pMonster->Get_AttackValue(), pMonster->Get_StaggerValue(), fInvicibleDuration);
+		}
+	}
+
+	if (CI_MONSTER_BULLET(eColliderID))
+	{
+		if (CMonster_Bullet* pMonsterBullet = dynamic_cast<CMonster_Bullet*>(pOwner))
+		{
+			On_Hit(pMonsterBullet->Get_AttackValue(), pMonsterBullet->Get_StaggerValue(), fInvicibleDuration);
+		}
+	}
+
+	switch (eColliderID)
+	{
+	case COLLIDER_ID::BUSH:
+		// 밀어낸다.
+		break;
+	default:
+		break;
 	}
 }
 

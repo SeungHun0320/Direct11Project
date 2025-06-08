@@ -79,6 +79,11 @@ HRESULT CSpiderTank_Orb::Render()
 	return  __super::Render();
 }
 
+void CSpiderTank_Orb::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
+{
+	m_bDead = true;
+}
+
 HRESULT CSpiderTank_Orb::Ready_Components(void* pArg)
 {
 	if (FAILED(__super::Ready_Components(pArg)))

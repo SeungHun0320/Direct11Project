@@ -127,8 +127,6 @@ const _float4x4* CBody_SpiderTank::Get_BoneMatrix(const _string& strBoneName) co
 
 HRESULT CBody_SpiderTank::Ready_Components(void* pArg)
 {
-	DESC* pDesc = static_cast<DESC*>(pArg);
-
 	/* For.Com_Shader */
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxAnimMesh"),
 		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
@@ -139,9 +137,9 @@ HRESULT CBody_SpiderTank::Ready_Components(void* pArg)
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
 		return E_FAIL;
 
+	DESC* pDesc = static_cast<DESC*>(pArg);
 
 	CBounding_Sphere::DESC	ColDesc{};
-
 	ColDesc.vCenter = _float3(0.f, 0.f, -100.f);
 	ColDesc.fRadius = 300.f;
 	ColDesc.iColliderGroupID = ENUM_CLASS(COLLIDER_GROUP::MONSTER);
@@ -163,7 +161,6 @@ HRESULT CBody_SpiderTank::Ready_Components(void* pArg)
 		return E_FAIL;
 
 	CBounding_OBB::DESC OBBDesc{};
-
 	OBBDesc.vExtents = _float3(300.f, 600.f, 300.f);
 	OBBDesc.vCenter = _float3(0.f, -OBBDesc.vExtents.y, 0.f);
 	OBBDesc.vRotation = _float3(XMConvertToRadians(0.f), XMConvertToRadians(0.f), XMConvertToRadians(0.f));

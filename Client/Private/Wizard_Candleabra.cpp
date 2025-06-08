@@ -96,19 +96,6 @@ HRESULT CWizard_Candleabra::Render()
 	return S_OK;
 }
 
-void CWizard_Candleabra::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
-{
-	__super::On_Collision(MyColliderID, OtherColliderID, pOwner);
-
-	if (CI_WEAPON(static_cast<COLLIDER_ID>(OtherColliderID)))
-	{
-		if (CPlayer* pPlayer = dynamic_cast<CPlayer*>(pOwner))
-		{
-			On_Hit(pPlayer->Get_AttackValue(), pPlayer->Compute_StaggerValue());
-		}
-	}
-}
-
 void CWizard_Candleabra::Change_States(STATES eStates)
 {
 	if (m_pCurState)
@@ -162,6 +149,19 @@ void CWizard_Candleabra::On_Hit(_float fDamage, _float fStaggerValue, _float fIn
 		m_fInvicibleTime = fInvicibleDuration;
 		m_isInvincible = true;
 		Change_States(STATES::HIT);
+	}
+}
+
+void CWizard_Candleabra::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
+{
+	__super::On_Collision(MyColliderID, OtherColliderID, pOwner);
+
+	if (CI_WEAPON(static_cast<COLLIDER_ID>(OtherColliderID)))
+	{
+		if (CPlayer* pPlayer = dynamic_cast<CPlayer*>(pOwner))
+		{
+			On_Hit(pPlayer->Get_AttackValue(), pPlayer->Compute_StaggerValue());
+		}
 	}
 }
 

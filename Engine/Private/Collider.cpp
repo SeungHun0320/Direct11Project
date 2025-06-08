@@ -59,6 +59,8 @@ HRESULT CCollider::Initialize(void* pArg)
 	m_pOwner = pDesc->pOwner;
 	m_iColliderID = pDesc->iColliderID;
 
+	pDesc->eType = m_eType;
+
 	switch (m_eType)
 	{
 	case COLLIDER::AABB:

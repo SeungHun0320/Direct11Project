@@ -69,7 +69,7 @@ HRESULT CWizard_Support_AOE::Ready_Components(void* pArg)
     AABBDesc.vExtents = _float3(3.5f, 0.2f, 3.5f);
     AABBDesc.vCenter = _float3(0.f, AABBDesc.vExtents.y, 0.f);
     AABBDesc.iColliderGroupID = ENUM_CLASS(COLLIDER_GROUP::MONSTER_BULLET);
-    AABBDesc.iColliderID = ENUM_CLASS(COLLIDER_ID::WIZARD_ATTACK);
+    AABBDesc.iColliderID = ENUM_CLASS(COLLIDER_ID::WIZARD_AOE);
     AABBDesc.pOwner = this;
 
     /* For.Com_Collider */

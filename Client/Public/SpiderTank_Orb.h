@@ -32,6 +32,9 @@ private:
 	_bool  m_bGrounded = { false };
 
 private:
+	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner) override;
+
+private:
 	virtual HRESULT Ready_Components(void* pArg) override;
 
 public:

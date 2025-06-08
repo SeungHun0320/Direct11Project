@@ -30,9 +30,6 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
-public: /* 충 돌 */
-	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner) override;
-
 public: /* 상태패턴 관련 함수들 */
 	void Change_States(STATES eStates);
 
@@ -53,6 +50,7 @@ private: /* 상태 패턴 변수들 */
 
 protected: /* 충 돌 */
 	virtual void On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDuration = 0.6f) override;
+	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner) override;
 
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;
