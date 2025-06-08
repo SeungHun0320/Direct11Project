@@ -42,7 +42,7 @@ public:
 	virtual HRESULT Render();
 	
 public:
-	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID) {};
+	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner) {};
 
 protected:
 	ID3D11Device*				m_pDevice = { nullptr };

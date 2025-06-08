@@ -209,7 +209,7 @@
     <ClInclude Include="..\Public\Part_WizardCandleabra.h" />
     <ClInclude Include="..\Public\Part_WizardStaff.h" />
     <ClInclude Include="..\public\Part_WizardSword.h" />
-    <ClInclude Include="..\public\Pawn.h" />
+    <ClInclude Include="..\public\BaseActor.h" />
     <ClInclude Include="..\public\Player.h" />
     <ClInclude Include="..\Public\PlayerState.h" />
     <ClInclude Include="..\Public\Player_IAttackStrategy.h" />
@@ -298,7 +298,7 @@
     <ClCompile Include="..\Private\Part_WizardCandleabra.cpp" />
     <ClCompile Include="..\Private\Part_WizardStaff.cpp" />
     <ClCompile Include="..\private\Part_WizardSword.cpp" />
-    <ClCompile Include="..\private\Pawn.cpp" />
+    <ClCompile Include="..\private\BaseActor.cpp" />
     <ClCompile Include="..\private\Player.cpp" />
     <ClCompile Include="..\Private\PlayerState_Ladder.cpp" />
     <ClCompile Include="..\Private\PlayerState_Interaction.cpp" />
@@ -317,10 +317,7 @@
     <ClCompile Include="..\Private\PlayerState_Idle.cpp" />
     <ClCompile Include="..\Private\PlayerState_Move.cpp" />
     <ClCompile Include="..\Private\PlayerState_Sprint.cpp" />
-    <ClCompile Include="..\Private\Player_DaggerAttack.cpp" />
     <ClCompile Include="..\Private\Player_IAttackStrategy.cpp" />
-    <ClCompile Include="..\Private\Player_StickAttack.cpp" />
-    <ClCompile Include="..\Private\Player_SwordAttack.cpp" />
     <ClCompile Include="..\private\Potion.cpp" />
     <ClCompile Include="..\private\Shop.cpp" />
     <ClCompile Include="..\private\Sky.cpp" />

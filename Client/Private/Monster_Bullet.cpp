@@ -25,6 +25,9 @@ HRESULT CMonster_Bullet::Initialize(void* pArg)
 	if (nullptr != m_pTargetTransform)
 		Safe_AddRef(m_pTargetTransform);
 
+	m_fAttack = 5.f;
+	m_fStaggerValue = 10.f;
+
 	return S_OK;
 }
 

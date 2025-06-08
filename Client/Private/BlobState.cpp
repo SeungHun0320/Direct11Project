@@ -93,6 +93,7 @@ void CBlobState_Attack::Exit()
     m_fDuration = 0.f;
     m_fTimeAcc = 0.f;
     m_iAttackCount = 0;
+    m_pOwner->Set_Active(false);
 }
 
 void CBlobState_Attack::Free()
@@ -162,7 +163,7 @@ CBlobState_Hit::CBlobState_Hit(CBlob* pOwner)
 void CBlobState_Hit::Enter(_float fTimeDelta)
 {
     m_fTimeAcc = 0.f;
-    m_fDuration = 0.6f;
+    m_fDuration = 0.5f;
 
     m_pOwner->Set_TrackPosition(CBlob::PART_BODY, 0.f);
     m_pOwner->Change_Animation(CBlob::PART_BODY, CBlob::IDLE, false, 1.f);
@@ -172,6 +173,13 @@ void CBlobState_Hit::Enter(_float fTimeDelta)
 void CBlobState_Hit::Execute(_float fTimeDelta)
 {
     m_fTimeAcc += fTimeDelta;
+
+    if (m_pOwner->Get_IsHit())
+    {
+        m_fTimeAcc = 0.f;
+        m_pOwner->Change_Animation(CBlob::PART_BODY, CBlob::IDLE, false, 1.f);
+        m_pOwner->Reset_IsHit();
+    }
 
     if (m_fDuration <= m_fTimeAcc|| m_pOwner->Play_Animation(CBlob::PART_BODY, fTimeDelta))
     {
@@ -187,7 +195,7 @@ void CBlobState_Hit::Execute(_float fTimeDelta)
         vScale.z += fScaleOffset;
 
         m_pOwner->Scaling(vScale);
-        m_pOwner->Hit(XMLoadFloat3(&m_vHitDir), fTimeDelta, 4.f);
+        m_pOwner->Hit(XMLoadFloat3(&m_vHitDir), fTimeDelta, 3.f);
     }
        
 

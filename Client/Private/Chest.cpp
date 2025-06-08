@@ -50,7 +50,7 @@ HRESULT CChest::Render()
 	return S_OK;
 }
 
-void CChest::On_Collision(_uint MyColliderID, _uint OtherColliderID)
+void CChest::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
 {
 	cout << "상자 개같이 성공\n";
 }

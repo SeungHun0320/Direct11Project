@@ -17,12 +17,6 @@ void CPlayerState_Sprint::Execute(_float fTimeDelta)
 {
 	m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta);
 
-	if (m_pOwner->Get_Dead())
-		m_pOwner->Change_States(CPlayer::STATES::DIE);
-
-	if (m_pOwner->Get_IsHit())
-		m_pOwner->Change_States(CPlayer::STATES::HIT);
-
 	m_pOwner->Move(m_pOwner->Get_InputDirectionEx(), fTimeDelta, SPEED);
 
 	if (m_pOwner->KeyDown(DIK_SPACE))

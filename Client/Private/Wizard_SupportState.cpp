@@ -103,6 +103,13 @@ void CWizard_SupportState_Hit::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 
+	if (m_pOwner->Get_IsHit())
+	{
+		m_fTimeAcc = 0.f;
+		m_pOwner->Change_Animation(CWizard_Support::PART_BODY, CWizard_Support::PINCH, false, 0.2f);
+		m_pOwner->Reset_IsHit();
+	}
+
 	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CWizard_Support::PART_BODY, fTimeDelta))
 		m_pOwner->Change_States(CWizard_Support::STATES::IDLE);
 }
@@ -138,8 +145,8 @@ void CWizard_SupportState_Dead::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 
-	m_pOwner->Play_Animation(CWizard_Support::PART_BODY, fTimeDelta);
-	// m_bDead = true;
+	if (m_pOwner->Play_Animation(CWizard_Support::PART_BODY, fTimeDelta))
+		m_pOwner->Set_Dead(true);
 
 	if (m_fDuration <= m_fTimeAcc)
 		m_pOwner->Change_States(CWizard_Support::STATES::IDLE);

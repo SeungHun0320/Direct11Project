@@ -89,8 +89,14 @@ void CCollider_Manager::Intersect(_uint iColliderGroupID1, _uint iColliderGroupI
 
             if (pCollider1->Intersect(pCollider2))
             {
-                pCollider1->Get_Owner()->On_Collision(pCollider1->Get_ID(), pCollider2->Get_ID());
-                pCollider2->Get_Owner()->On_Collision(pCollider2->Get_ID(), pCollider1->Get_ID());
+                CGameObject* pOwner1 = pCollider1->Get_Owner();
+                CGameObject* pOwner2 = pCollider2->Get_Owner();
+
+                if (nullptr == pOwner1 && nullptr == pOwner2)
+                    return;
+
+                pOwner1->On_Collision(pCollider1->Get_ID(), pCollider2->Get_ID(), pOwner2);
+                pOwner2->On_Collision(pCollider2->Get_ID(), pCollider1->Get_ID(), pOwner1);
             }
         }
     }

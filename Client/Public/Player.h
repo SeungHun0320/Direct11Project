@@ -1,14 +1,13 @@
 #pragma once
-#include "Pawn.h"
+#include "BaseActor.h"
 
 BEGIN(Client)
 
-class CPlayer final : public CPawn
+class CPlayer final : public CBaseActor
 {
 public:
-	typedef struct tagPlayerDesc : public CPawn::DESC {
+	typedef struct tagPlayerDesc : public CBaseActor::DESC {
 
-		_int iStamina;
 
 	}DESC;
 
@@ -56,6 +55,7 @@ private:
 
 public:
 	virtual void Set_Level(LEVEL eLevelID);
+	void Change_Level();
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -69,7 +69,7 @@ public:
 	CGameObject* Find_Target(_float fFindDistance);
 
 public: /* 상태패턴 관련 함수들 */
-	void Change_States(STATES eStates);
+	virtual void Change_States(STATES eStates);
 	_vector Get_State(STATE eState);
 
 public: /* 키 입력 관련 함수들*/
@@ -112,7 +112,7 @@ public: /* 키입력에 따른 방향을 결정해주는 함수 */
 	_vector Get_InputDirectionEx();
 	
 public: /* 충 돌 */
-	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID);
+	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner) override;
 
 public: /* 스테이트 갖고오기 */
 	STATES Get_CurState() {
@@ -122,7 +122,9 @@ public: /* 스테이트 갖고오기 */
 		return m_ePreState;
 	}
 
-public: /* 스태미나 */
+	_float Compute_StaggerValue() const;
+
+	/* 스태미나 */
 	_float Get_Stamina() const {
 		return m_fStamina;
 	}
@@ -130,43 +132,18 @@ public: /* 스태미나 */
 		m_fStamina -= fStamina;
 	}
 
-public: /* 피격 관련 */
-	HIT_TYPE Get_HitType() const {
-		return m_eHitType;
-	}
-	void Set_HitType(HIT_TYPE eHitType) {
-		m_eHitType = eHitType;
-	}
-	_bool Get_IsHit() const {
-		return m_IsHit;
-	}
-	void Set_Hit(_bool IsHit) {
-		m_IsHit = IsHit;
+	/* 방패 관련 */
+	_bool Get_IsShield() const {
+		return m_isShield;
 	}
 
-public: /* 방패 관련 */
-	_bool Get_IsShield() {
-		return m_IsShield;
-	}
-	void Set_IsShield(_bool IsShield) {
-		m_IsShield = IsShield;
+    /* 타깃 관련 */
+	_bool Get_IsTarget() const {
+		return m_isTarget;
 	}
 
-public: /* 타깃 관련 */
-	_bool Get_IsTarget() {
-		return m_IsTarget;
-	}
-
-	void Set_IsTarget(_bool IsTarget) {
-		m_IsTarget = IsTarget;
-	}
-
-	_float Get_FindDistance() {
+	_float Get_FindDistance() const {
 		return m_fFindDistance;
-	}
-
-	void Set_FindDistance(_float fFindDistance) {
-		m_fFindDistance = fFindDistance;
 	}
 
 public: /* 전략패턴 트라이 */
@@ -178,14 +155,19 @@ public: /* 전략패턴 트라이 */
 private:
 	void Key_Input(_float fTimeDelta);
 
+/* 실제 플레이어 상태관련  */
+private: /* 체력 */
+	_float m_fHPRecorveryStat = {};
+	_float m_fStaggerRecoveryPerSec = {};
+
 private: /* 스태미나 */
 	_float m_fStamina = {};
 	_float m_fMaxStamina = {};
 	_float m_fStaminaRecoveryPerSec = {};
 	_float m_fStaminaTimeAcc = {};
 
-private: /* 방패를 소유하고 있는지 아닌지 */
-	_bool m_IsShield = { false };
+private: /* 방패 소유중? */
+	_bool  m_isShield = { false };
 
 private: /* 상태 패턴들 */
 	STATES m_eCurState{ STATES::STATES_END };
@@ -193,21 +175,21 @@ private: /* 상태 패턴들 */
 	class CPlayerState* m_pCurState = { nullptr };
 	class CPlayerState* m_pStates[ENUM_CLASS(STATES::STATES_END)] = { nullptr };
 
-private: /* 전략 패턴 트라이*/
+private: /* 전략 패턴 트라이 */
 	class CPlayer_IAttackStrategy* m_pAttackStrategy = { nullptr };
-	HIT_TYPE    m_eHitType = {};
-	_bool       m_IsHit = {};
 
 private: /* 락온 상태관련 변수들 */
 	CTransform* m_pTargetTransform = { nullptr };
-	_bool       m_IsTarget = { false };
+	_bool       m_isTarget = { false };
 	_float		m_fFindDistance = {};
 
 private: /* 매번 캐스팅 해주기 싫어서 따로 변수로 받아왔음 */
 	class CWeapon_Player* m_pWeaponPart = { nullptr };
 
-private:
+private: /* 실제 플레이어 상태 관련 */
 	void Stamina_Recovery(_float fTimeDelta);
+	virtual void On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDuration) override;
+	virtual _float Compute_InvincibleTime_ByCollider(COLLIDER_ID eColliderID) override;
 
 private: /* 애니 관련 */
 	_bool Is_CurrentAnim(PART ePart, _uint iNextIndex);

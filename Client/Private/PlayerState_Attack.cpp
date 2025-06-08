@@ -40,9 +40,8 @@ void CPlayerState_Attack1::Enter(_float fTimeDelta)
         break;
     }
 
-    m_pOwner->Set_Active(m_eWeaponType);
-
     m_fTimeAcc = 0.f;
+    m_fAttackStartTime = 0.3f;
 
     XMStoreFloat3(&m_vInputDir, m_pOwner->Get_State(STATE::LOOK));
 	m_pOwner->Change_Animation(CPlayer::PART_BODY, eCombo, false, 0.1f);
@@ -54,6 +53,9 @@ void CPlayerState_Attack1::Execute(_float fTimeDelta)
 
     if (m_pOwner->KeyDown(DIK_J))
         m_isAttackCombo = true;
+
+    if(m_fAttackStartTime <= m_fTimeAcc)
+        m_pOwner->Set_Active(m_eWeaponType);
 
     if (WEAPON_TYPE::STICK == m_eWeaponType)
     {
@@ -132,6 +134,7 @@ void CPlayerState_Attack1::Exit()
     m_fTimeAcc = 0.f;
     m_iMaxCombo = 0;
     XMStoreFloat3(&m_vInputDir, XMVectorZero());
+    m_pOwner->Set_Active(m_eWeaponType, false);
 }
 
 void CPlayerState_Attack1::Free()
@@ -251,6 +254,7 @@ void CPlayerState_Attack2::Exit()
     m_fTimeAcc = 0.f;
     m_iMaxCombo = 0;
     XMStoreFloat3(&m_vInputDir, XMVectorZero());
+    m_pOwner->Set_Active(m_eWeaponType, false);
 }
 
 void CPlayerState_Attack2::Free()
@@ -326,6 +330,7 @@ void CPlayerState_Attack3::Exit()
     m_fDuration = 0.f;
     m_fTimeAcc = 0.f;
     XMStoreFloat3(&m_vInputDir, XMVectorZero());
+    m_pOwner->Set_Active(m_eWeaponType, false);
 }
 
 void CPlayerState_Attack3::Free()

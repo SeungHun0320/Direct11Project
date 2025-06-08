@@ -18,6 +18,14 @@ protected:
 	virtual ~CMonster_Bullet() = default;
 
 public:
+	_float Get_AttackValue() const {
+		return m_fAttack;
+	}
+	_float Get_StaggerValue() const {
+		return m_fStaggerValue;
+	}
+
+public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
 	virtual void Priority_Update(_float fTimeDelta) override;
@@ -34,6 +42,10 @@ protected:
 protected:
 	_float m_fTimeAcc = {};
 	_float m_fDeadTime = {};
+
+protected: /* °ø°Ý·Â */
+	_float m_fAttack = {};
+	_float m_fStaggerValue = {};
 
 protected:
 	virtual HRESULT Ready_Components(void* pArg);

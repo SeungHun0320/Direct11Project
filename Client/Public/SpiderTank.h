@@ -54,7 +54,7 @@ public:
 	virtual HRESULT Render();
 
 public: /* 충 돌 */
-	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID);
+	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner) override;
 
 public: /* 상태패턴 관련 함수들 */
 	void Change_States(STATES eStates);

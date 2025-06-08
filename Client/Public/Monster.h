@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "ContainerObject.h"
+#include "BaseActor.h"
 
 
 BEGIN(Engine)
@@ -12,12 +12,12 @@ END
 
 BEGIN(Client)
 
-class CMonster abstract : public CContainerObject
+class CMonster abstract : public CBaseActor
 {
 public:
-	typedef struct tagMonsterDesc : CContainerObject::DESC
+	typedef struct tagMonsterDesc : CBaseActor::DESC
 	{
-		LEVEL eLevelID{};
+
 	}DESC;
 protected:
 	CMonster(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -32,10 +32,9 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
-public:
+public: /* 타깃 관련 */
 	virtual _bool Find_Player();
 
-public:
 	const _bool Get_IsFind() const {
 		return m_IsFind;
 	}
@@ -65,12 +64,8 @@ public:
 
 	const _vector Get_TargetPosition() const;
 
-
 protected: /* 맵툴에선 굳이 넣어줄 필요가 없어서 그냥 이니셜라이즈에서 때려박는게 나은거 같기도 */
 	CTransform*  m_pTargetTransform = { nullptr };
-
-protected:
-	LEVEL m_eLevelID = {LEVEL::LEVEL_END};
 
 protected: /* 상태 관련 변수들 */
 	_float m_fDistanceToPlayer = {};
@@ -78,6 +73,9 @@ protected: /* 상태 관련 변수들 */
 	_float m_fChaseStopDistance = {};
 	_float m_fPreferredDistance = {};
 	_bool  m_IsFind = {};
+
+protected:
+	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner) override;
 
 protected:
 	virtual HRESULT Ready_Components(void* pArg);

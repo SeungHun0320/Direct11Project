@@ -25,11 +25,6 @@ void CPlayerState_Idle::Execute(_float fTimeDelta)
 {
 	m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta);
 
-	if (m_pOwner->Get_IsHit())
-		m_pOwner->Change_States(CPlayer::STATES::HIT);
-
-	if (m_pOwner->Get_Dead())
-		m_pOwner->Change_States(CPlayer::STATES::DIE);
 
 	if (m_pOwner->IsMoveKeyPressed())
 	{

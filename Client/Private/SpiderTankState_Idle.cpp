@@ -128,12 +128,11 @@ void CSpiderTankState_Idle::Execute(_float fTimeDelta)
 		return;
 	}
 
-	// 3. 후진 조건 (너무 가까운 거리에서 1초 이상 유지되면 후퇴)
 	if (fDistance < fPreferredDist - fBackOffset)
 	{
 		m_fTooCloseAcc += fTimeDelta;
 
-		if (m_fTooCloseAcc >= 1.0f && fAngle < XMConvertToRadians(30.f))
+		if (m_fTooCloseAcc >= 2.f && fAngle < XMConvertToRadians(30.f))
 		{
 			m_pOwner->Change_States(CSpiderTank::STATES::BACKWARD);
 			m_fTooCloseAcc = 0.f;

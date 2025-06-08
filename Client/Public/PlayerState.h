@@ -117,6 +117,8 @@ private:
 	_bool  m_isAttackCombo = {};
 	_float3 m_vInputDir{};
 
+	_float m_fAttackStartTime = {};
+
 public:
 	virtual void Free() override;
 };
@@ -138,6 +140,8 @@ private:
 
 	_bool  m_isAttackCombo = {};
 	_float3 m_vInputDir{};
+
+	_float m_fAttackStartTime = {};
 
 public:
 	virtual void Free() override;
@@ -161,6 +165,8 @@ private:
 	_bool  m_isAttackCombo = {};
 	_float3 m_vInputDir{};
 
+	_float m_fAttackStartTime = {};
+
 public:
 	virtual void Free() override;
 };
@@ -177,7 +183,7 @@ public: // CPlayerState을(를) 통해 상속됨
 	void Exit() override;
 
 private:
-	HIT_TYPE m_eHitType = {HIT_TYPE::NORMAL};
+	_bool    m_isStagger = {};
 	_float   m_fDownTime = {};
 	_float3  m_vStaggerDir = {};
 	
@@ -195,9 +201,6 @@ public: // CPlayerState을(를) 통해 상속됨
 	void Enter(_float fTimeDelta) override;
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
-
-private:
-	HIT_TYPE m_eHitType = { HIT_TYPE::NORMAL };
 
 public:
 	virtual void Free() override;

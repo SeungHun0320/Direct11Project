@@ -95,6 +95,8 @@ HRESULT CSpiderTank_Orb::Ready_Components(void* pArg)
 
 	ColDesc.vCenter = _float3(0.f, 0.f, 0.f);
 	ColDesc.fRadius = vScale.x;
+	ColDesc.iColliderGroupID = ENUM_CLASS(COLLIDER_GROUP::MONSTER_BULLET);
+	ColDesc.iColliderID = ENUM_CLASS(COLLIDER_ID::SPIDERTANK_BULLET);
 	ColDesc.pOwner = this;
 
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_Sphere"),

@@ -10,19 +10,17 @@ CPlayerState_Hit::CPlayerState_Hit(CPlayer* pOwner)
 
 void CPlayerState_Hit::Enter(_float fTimeDelta)
 {
-	m_eHitType = m_pOwner->Get_HitType();
+	m_isStagger = m_pOwner->Get_IsStagger();
 
-	switch (m_eHitType)
+	if (m_isStagger)
 	{
-	case HIT_TYPE::NORMAL:
-		m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::HIT, false, 0.1f);
-		m_fDuration = 0.5f;
-		break;
-
-	case HIT_TYPE::STAGGER:
-		m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::STAGGER, false, 0.1f);
+		m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::STAGGER, false, 0.1f);
 		m_fDuration = 0.7f;
-		break;
+	}
+	else
+	{
+		m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::HIT, false, 0.1f);
+		m_fDuration = 0.5f;
 	}
 
 	m_fTimeAcc  = 0.f;
@@ -35,9 +33,23 @@ void CPlayerState_Hit::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 
+	if (m_pOwner->Get_IsHit() && !m_isStagger)
+	{
+		m_fTimeAcc = 0.f;
+		m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::HIT, false, 0.1f);
+		m_pOwner->Reset_IsHit();
+		m_fDuration = 0.5f;
+	}
+
+	if (!m_isStagger)
+	{
+		if (m_pOwner->IsAnyMoveKeyPressed())
+			m_pOwner->Change_States(CPlayer::STATES::MOVE);
+	}
+
 	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta))
 	{
-		if (HIT_TYPE::NORMAL == m_eHitType)
+		if (!m_isStagger)
 		{
 			if (m_pOwner->IsAnyMoveKeyPressed())
 			{
@@ -46,7 +58,7 @@ void CPlayerState_Hit::Execute(_float fTimeDelta)
 			else
 				m_pOwner->Change_States(CPlayer::STATES::IDLE);
 		}
-		else if (HIT_TYPE::STAGGER == m_eHitType)
+		if (m_isStagger)
 		{
 			m_fDownTime += fTimeDelta;
 
@@ -57,7 +69,7 @@ void CPlayerState_Hit::Execute(_float fTimeDelta)
 	}
 	else
 	{
-		if (HIT_TYPE::STAGGER == m_eHitType)
+		if (m_isStagger)
 		{
 			m_pOwner->Go_Dir(XMLoadFloat3(&m_vStaggerDir), fTimeDelta, SPEED);
 		}
@@ -70,8 +82,6 @@ void CPlayerState_Hit::Exit()
 	m_fDownTime = 0.f;
 	m_fDuration = 0.f;
 	XMStoreFloat3(&m_vStaggerDir, XMVectorZero());
-
-	m_pOwner->Set_Hit(false);
 }
 
 void CPlayerState_Hit::Free()

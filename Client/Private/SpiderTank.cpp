@@ -95,7 +95,7 @@ HRESULT CSpiderTank::Render()
 	return S_OK;
 }
 
-void CSpiderTank::On_Collision(_uint MyColliderID, _uint OtherColliderID)
+void CSpiderTank::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
 {
 }
 

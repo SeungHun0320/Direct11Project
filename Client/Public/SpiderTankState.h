@@ -275,6 +275,7 @@ public: // CSpiderTankState을(를) 통해 상속됨
 private:
 	_bool m_bBlendStarted = {false};
 	_float3 m_vMoveDir{};
+	_float m_fAttackStartTime{};
 
 public:
 	virtual void Free() override;

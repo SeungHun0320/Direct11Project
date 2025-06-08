@@ -4,6 +4,8 @@
 #include "Body_Blob.h"
 #include "BlobState.h"
 
+#include "Player.h"
+
 CBlob::CBlob(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CMonster{ pDevice, pContext }
 {
@@ -30,6 +32,18 @@ HRESULT CBlob::Initialize(void* pArg)
 	m_fDetectDistance = 5.f;
 	m_fChaseStopDistance = 10.f;
 
+	/* 공격력 */
+	m_fAttack = 10.f;
+	m_fStaggerValue = 5.f;
+
+	/* 체력 */
+	m_fHp = 100.f;
+	m_fMaxHp = m_fHp;
+
+	/* 그로기 */
+	m_fStaggerGage = 20.f;
+	m_fMaxStaggerGage = m_fStaggerGage;
+
 	Change_States(STATES::IDLE);
 
 	return S_OK;
@@ -44,12 +58,6 @@ LIFE CBlob::Update(_float fTimeDelta)
 {
 	if (m_bDead)
 		return LIFE::DEAD;
-
-	if (KEY_DOWN(DIK_2))
-	{
-		Change_States(STATES::HIT);
-	}
-		
 
 	if (m_pCurState)
 	{
@@ -75,9 +83,18 @@ HRESULT CBlob::Render()
 	return S_OK;
 }
 
-void CBlob::On_Collision(_uint MyColliderID, _uint OtherColliderID)
+void CBlob::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
 {
-	cout << "블롭 개같이 성공\n";
+	__super::On_Collision(MyColliderID, OtherColliderID, pOwner);
+
+	if (CI_WEAPON(static_cast<COLLIDER_ID>(OtherColliderID)))
+	{
+		if (CPlayer* pPlayer = dynamic_cast<CPlayer*>(pOwner))
+		{
+			On_Hit(pPlayer->Get_AttackValue(), pPlayer->Compute_StaggerValue());
+		}
+	}
+
 }
 
 void CBlob::Change_States(STATES eStates)
@@ -157,6 +174,29 @@ void CBlob::Scaling(_float3 vScale)
 void CBlob::Scaling(_float fX, _float fY, _float fZ)
 {
 	m_pTransformCom->Scaling(fX, fY, fZ);
+}
+
+void CBlob::On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDuration)
+{
+	if (m_isInvincible || m_bDead)
+		return;
+
+	m_fHp -= fDamage;
+	m_fStaggerGage -= fStaggerValue;
+	m_isHit = true;
+
+	if (0 >= m_fHp)
+	{
+		m_fHp = 0.f;
+		m_bDead = true;
+		Change_States(STATES::HIT);
+	}
+	else
+	{
+		m_fInvicibleTime = fInvicibleDuration;
+		m_isInvincible = true;
+		Change_States(STATES::HIT);
+	};
 }
 
 HRESULT CBlob::Ready_Components(void* pArg)

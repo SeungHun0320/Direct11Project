@@ -69,7 +69,7 @@ void CWizard_CandleabraState_Detected::Execute(_float fTimeDelta)
 
 	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CWizard_Candleabra::PART_BODY, fTimeDelta))
 	{
-		if (m_fChaseDistance <= m_pOwner->Get_DistanceToPlayer())
+		if (m_fChaseDistance <= m_pOwner->Get_DistanceToPlayer() && m_pOwner->Get_ChaseStopDistance() >= m_pOwner->Get_DistanceToPlayer())
 		{
 			m_pOwner->Change_States(CWizard_Candleabra::STATES::MOVE);
 		}
@@ -119,7 +119,7 @@ void CWizard_CandleabraState_Guard::Execute(_float fTimeDelta)
 
 	if (m_fDuration <= m_fTimeAcc)
 	{
-		if (m_fChaseDistance <= m_pOwner->Get_DistanceToPlayer())
+		if (m_fChaseDistance <= m_pOwner->Get_DistanceToPlayer() && m_pOwner->Get_ChaseStopDistance() >= m_pOwner->Get_DistanceToPlayer())
 		{
 			m_pOwner->Change_States(CWizard_Candleabra::STATES::MOVE);
 		}
@@ -196,6 +196,7 @@ void CWizard_CandleabraState_Attack::Exit()
 	m_fDuration = 0.f;
 	m_fAttackStartTime = 0.f;
 	XMStoreFloat3(&m_vTargetPos, XMVectorZero());
+	m_pOwner->Set_Active(CWizard_Candleabra::PART_CANDLEABRA, false);
 }
 
 void CWizard_CandleabraState_Attack::Free()
@@ -261,6 +262,13 @@ void CWizard_CandleabraState_Hit::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 
+	if (m_pOwner->Get_IsHit())
+	{
+		m_fTimeAcc = 0.f;
+		m_pOwner->Change_Animation(CWizard_Candleabra::PART_BODY, CWizard_Candleabra::PINCH, false, 0.2f);
+		m_pOwner->Reset_IsHit();
+	}
+
 	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CWizard_Candleabra::PART_BODY, fTimeDelta))
 		m_pOwner->Change_States(CWizard_Candleabra::STATES::GUARD);
 }
@@ -297,8 +305,8 @@ void CWizard_CandleabraState_Dead::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 
-	m_pOwner->Play_Animation(CWizard_Candleabra::PART_BODY, fTimeDelta);
-		// m_bDead = true;
+	if(m_pOwner->Play_Animation(CWizard_Candleabra::PART_BODY, fTimeDelta))
+		m_pOwner->Set_Dead(true);
 
 	if(m_fDuration <= m_fTimeAcc)
 		m_pOwner->Change_States(CWizard_Candleabra::STATES::GUARD);

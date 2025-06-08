@@ -32,7 +32,7 @@ public:
 	virtual HRESULT Render();
 
 public: /* 충 돌 */
-	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID);
+	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner) override;
 
 public: /* 상태패턴 관련 함수들 */
 	void Change_States(STATES eStates);
@@ -45,6 +45,9 @@ public: /* 상태로 넘겨줄 함수들 */
 
 	/* 충돌 관련 */
 	void Set_Active(PART ePart, _bool isActive = true);
+
+protected: /* 충 돌 */
+	virtual void On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDuration = 0.6f) override;
 
 private: /* 상태 패턴 변수들 */
 	STATES m_eCurState{ STATES::STATES_END };

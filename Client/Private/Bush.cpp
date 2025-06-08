@@ -49,7 +49,7 @@ HRESULT CBush::Render()
 	return __super::Render();
 }
 
-void CBush::On_Collision(_uint MyColliderID, _uint OtherColliderID)
+void CBush::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
 {
 	cout << "부쉬 개같이 성공\n";
 }

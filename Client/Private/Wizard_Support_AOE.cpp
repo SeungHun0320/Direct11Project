@@ -68,7 +68,7 @@ HRESULT CWizard_Support_AOE::Ready_Components(void* pArg)
     CBounding_AABB::DESC	AABBDesc{};
     AABBDesc.vExtents = _float3(3.5f, 0.2f, 3.5f);
     AABBDesc.vCenter = _float3(0.f, AABBDesc.vExtents.y, 0.f);
-    AABBDesc.iColliderGroupID = ENUM_CLASS(COLLIDER_GROUP::MONSTER_ATTACK);
+    AABBDesc.iColliderGroupID = ENUM_CLASS(COLLIDER_GROUP::MONSTER_BULLET);
     AABBDesc.iColliderID = ENUM_CLASS(COLLIDER_ID::WIZARD_ATTACK);
     AABBDesc.pOwner = this;
 

@@ -144,8 +144,8 @@ HRESULT CBody_SpiderTank::Ready_Components(void* pArg)
 
 	ColDesc.vCenter = _float3(0.f, 0.f, -100.f);
 	ColDesc.fRadius = 300.f;
-	ColDesc.iColliderGroupID = ENUM_CLASS(COLLIDER_GROUP::BOSS);
-	ColDesc.iColliderID = ENUM_CLASS(COLLIDER_ID::BOSS_HEAD);
+	ColDesc.iColliderGroupID = ENUM_CLASS(COLLIDER_GROUP::MONSTER);
+	ColDesc.iColliderID = ENUM_CLASS(COLLIDER_ID::SPIDERTANK_HEAD);
 	ColDesc.pOwner = pDesc->pOwner;
 
 	/* For.Com_Collider_Head */
@@ -155,7 +155,7 @@ HRESULT CBody_SpiderTank::Ready_Components(void* pArg)
 
 	ColDesc.vCenter = _float3(0.f, 0.f, 0.f);
 	ColDesc.fRadius = 250.f;
-	ColDesc.iColliderID = ENUM_CLASS(COLLIDER_ID::BOSS_WEAK);
+	ColDesc.iColliderID = ENUM_CLASS(COLLIDER_ID::SPIDERTANK_WEAK);
 
 	/* For.Com_Collider_Weak */
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_Sphere"),
@@ -167,8 +167,8 @@ HRESULT CBody_SpiderTank::Ready_Components(void* pArg)
 	OBBDesc.vExtents = _float3(300.f, 600.f, 300.f);
 	OBBDesc.vCenter = _float3(0.f, -OBBDesc.vExtents.y, 0.f);
 	OBBDesc.vRotation = _float3(XMConvertToRadians(0.f), XMConvertToRadians(0.f), XMConvertToRadians(0.f));
-	OBBDesc.iColliderGroupID = ENUM_CLASS(COLLIDER_GROUP::BOSS_ATTACK);
-	OBBDesc.iColliderID = ENUM_CLASS(COLLIDER_ID::BOSS_ATTACK);
+	OBBDesc.iColliderGroupID = ENUM_CLASS(COLLIDER_GROUP::MONSTER_ATTACK);
+	OBBDesc.iColliderID = ENUM_CLASS(COLLIDER_ID::SPIDERTANK_ATTACK);
 	OBBDesc.pOwner = pDesc->pOwner;
 
 	/* For.Com_Collider_LeftArm */

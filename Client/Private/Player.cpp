@@ -8,24 +8,48 @@
 #include "PlayerState.h"
 #include "Player_IAttackStrategy.h"
 
+/* 쩦, */
+#include "Monster.h"
+#include "Monster_Bullet.h"
+
 CPlayer::CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CPawn{pDevice, pContext}
+	: CBaseActor{pDevice, pContext}
 {
 }
 
 CPlayer::CPlayer(const CPlayer& Prototype)
-	: CPawn(Prototype)
+	: CBaseActor(Prototype)
 {
 }
 
 void CPlayer::Set_Level(LEVEL eLevelID)
 {
-	__super::Set_Level(eLevelID);
+	m_eLevelID = eLevelID;
 
 	m_pGameInstance->Add_Collider(dynamic_cast<CCollider*>(m_PartObjects[PART_BODY]->Get_Component(TEXT("Com_Collider"))), ENUM_CLASS(COLLIDER_GROUP::PAWN));
 	m_pGameInstance->Add_Collider(dynamic_cast<CCollider*>(m_PartObjects[PART_WEAPON]->Get_Component(TEXT("Com_Collider_Stick"))), ENUM_CLASS(COLLIDER_GROUP::WEAPON));
 	m_pGameInstance->Add_Collider(dynamic_cast<CCollider*>(m_PartObjects[PART_WEAPON]->Get_Component(TEXT("Com_Collider_Sword"))), ENUM_CLASS(COLLIDER_GROUP::WEAPON));
 	m_pGameInstance->Add_Collider(dynamic_cast<CCollider*>(m_PartObjects[PART_WEAPON]->Get_Component(TEXT("Com_Collider_Dagger"))), ENUM_CLASS(COLLIDER_GROUP::WEAPON));
+}
+
+void CPlayer::Change_Level()
+{
+	LEVEL eNextLevelID{};
+
+	switch (m_eLevelID)
+	{
+	case LEVEL::COURTYARD:
+		eNextLevelID = LEVEL::ARENA;
+		break;
+	case LEVEL::ARENA:
+		eNextLevelID = LEVEL::SHOP;
+		break;
+	case LEVEL::SHOP:
+		eNextLevelID = LEVEL::COURTYARD;
+		break;
+	}
+
+	m_pGameInstance->Change_Level(ENUM_CLASS(eNextLevelID));
 }
 
 HRESULT CPlayer::Initialize_Prototype()
@@ -41,23 +65,37 @@ HRESULT CPlayer::Initialize(void* pArg)
 	if (FAILED(Ready_States()))
 		return E_FAIL;
 
+	/* 체력 */
+	m_fHp = 100.f;
+	m_fHPRecorveryStat = 20.f;
+	m_fMaxHp = m_fHp;
+	/* 스태미나 */
 	m_fStaminaRecoveryPerSec = 20.f;
 	m_fMaxStamina = 100.f;
 	m_fStamina = m_fMaxStamina;
+	/* 공격력 */
+	m_pAttackStrategy = new CPlayer_SwordAttack(3, WEAPON_TYPE::SWORD);
+	m_fAttack = m_pAttackStrategy->Get_Attack();
 
+	/* 그로기 */
+	m_fStaggerGage = 100.f;
+	m_fMaxStaggerGage = m_fStaggerGage;
+	m_fStaggerRecoveryPerSec = 10.f;
+	/* 타깃 */
 	m_fFindDistance = 20.f;
 
-	m_IsShield = true;
+	m_isShield = true;
 
 	for (_uint i = 0; i < CPlayer::MESHES_END; i++)
 	{
-		if (i == CPlayer::MESH_SHILED && m_IsShield)
+		if (i == CPlayer::MESH_SHILED && m_isShield)
 			continue;
 
 		m_PartObjects[PART_BODY]->Set_MeshVisible(i, true);
 	}
 
-	m_pAttackStrategy = new CPlayer_SwordAttack(3, WEAPON_TYPE::SWORD);
+	Set_AttackStrategy(new CPlayer_SwordAttack(3, WEAPON_TYPE::SWORD));
+	m_fAttack = m_pAttackStrategy->Get_Attack();
 
 	Change_States(STATES::WAKE_UP);
 	return S_OK;
@@ -195,40 +233,40 @@ void CPlayer::Move(_fvector vDir, _float fTimeDelta, _float fSpeed)
 
 void CPlayer::LockOn()
 {
-	if (!m_IsTarget)
+	if (!m_isTarget)
 	{
 		CGameObject* pTarget = Find_Target(m_fFindDistance);
 		if (nullptr == pTarget || pTarget->Get_Dead())
 		{
-			m_IsTarget = false;
+			m_isTarget = false;
 			return;
 		}
 
 		m_pTargetTransform = dynamic_cast<CTransform*>(pTarget->Get_Component((TEXT("Com_Transform"))));
 		if (nullptr == m_pTargetTransform)
 		{
-			m_IsTarget = false;
+			m_isTarget = false;
 			return;
 		}
 
 		Safe_AddRef(m_pTargetTransform);
-		m_IsTarget = true;
+		m_isTarget = true;
 	}
 }
 
 void CPlayer::LockOff()
 {
-	if (m_IsTarget)
+	if (m_isTarget)
 	{
 		if (nullptr != m_pTargetTransform)
 			Safe_Release(m_pTargetTransform);
-		m_IsTarget = false;
+		m_isTarget = false;
 	}
 }
 
 void CPlayer::LockOnMove(_fvector vDir, _float fTimeDelta, _float fSpeed)
 {
-	if (m_IsTarget && nullptr != m_pTargetTransform)
+	if (m_isTarget && nullptr != m_pTargetTransform)
 	{
 		m_pTransformCom->LookAtLerpEx(m_pTargetTransform->Get_State(STATE::POSITION), fTimeDelta, 10.f);
 	}
@@ -256,7 +294,7 @@ void CPlayer::LockOnMove(_fvector vDir, _float fTimeDelta, _float fSpeed)
 
 _vector CPlayer::Get_TargetState(STATE eState)
 {
-	if (!m_IsTarget && nullptr == m_pTargetTransform)
+	if (!m_isTarget && nullptr == m_pTargetTransform)
 		return XMVectorZero();
 
 	return m_pTargetTransform->Get_State(eState);
@@ -287,7 +325,7 @@ void CPlayer::Go_Down(_float fTimeDelta, _float fSpeed)
 
 void CPlayer::LookTarget(_float fTimeDelta)
 {
-	if (m_IsTarget && nullptr != m_pTargetTransform)
+	if (m_isTarget && nullptr != m_pTargetTransform)
 	{
 		m_pTransformCom->LookAt(m_pTargetTransform->Get_State(STATE::POSITION));
 	}
@@ -348,12 +386,44 @@ _vector CPlayer::Get_InputDirectionEx()
 	return XMVector3Normalize(vInputDir);
 }
 
-void CPlayer::On_Collision(_uint MyColliderID, _uint OtherColliderID)
+void CPlayer::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
 {
-	cout << "플레이어 개같이 성공\n";
+	COLLIDER_ID eColliderID = static_cast<COLLIDER_ID>(OtherColliderID);
+	_float fInvicibleDuration = Compute_InvincibleTime_ByCollider(static_cast<COLLIDER_ID>(OtherColliderID));
+
+	if (CI_MONSTER(eColliderID))
+	{
+		// 밀어낸다.
+	}
+
+	if (CI_MONSTER_ATTACK(eColliderID))
+	{
+		if (CMonster* pMonster = dynamic_cast<CMonster*>(pOwner))
+		{
+			On_Hit(pMonster->Get_AttackValue(), pMonster->Get_StaggerValue(), fInvicibleDuration);
+		}
+	}
+
+	if (CI_MONSTER_BULLET(eColliderID))
+	{
+		if (CMonster_Bullet* pMonsterBullet = dynamic_cast<CMonster_Bullet*>(pOwner))
+		{
+			On_Hit(pMonsterBullet->Get_AttackValue(), pMonsterBullet->Get_StaggerValue(), fInvicibleDuration);
+		}
+	}
+
+	switch (eColliderID)
+	{
+	case COLLIDER_ID::BUSH:
+		// 밀어낸다.
+		break;
+	default:
+		break;
+	}
 }
 
 _vector CPlayer::Get_State(STATE eState)
+
 {
 	return m_pTransformCom->Get_State(eState);
 }
@@ -397,21 +467,40 @@ void CPlayer::Set_AttackStrategy(CPlayer_IAttackStrategy* pStrategy)
 	m_pAttackStrategy = pStrategy;
 }
 
+_float CPlayer::Compute_StaggerValue() const
+{
+	return m_pAttackStrategy->Get_StaggerValue();
+}
+
 void CPlayer::Key_Input(_float fTimeDelta)
 {
 	/* 테스트용으로 냅둔겨 나중에 싹 쳐내소 */
 	if (KEY_DOWN(DIK_1))
+	{
 		Set_AttackStrategy(new CPlayer_StickAttack(2, WEAPON_TYPE::STICK));
+		m_fAttack = m_pAttackStrategy->Get_Attack();
+	}
 	if (KEY_DOWN(DIK_2))
+	{
 		Set_AttackStrategy(new CPlayer_SwordAttack(3, WEAPON_TYPE::SWORD));
+		m_fAttack = m_pAttackStrategy->Get_Attack();
+	}
 	if (KEY_DOWN(DIK_3))
+	{
 		Set_AttackStrategy(new CPlayer_DaggerAttack(1, WEAPON_TYPE::DAGGER));
+		m_fAttack = m_pAttackStrategy->Get_Attack();
+	}	
+
 	if (KEY_DOWN(DIK_4))
-		m_eHitType = HIT_TYPE::NORMAL;
+	{
+		m_isStagger = true;
+		Change_States(STATES::HIT);
+	}
 	if (KEY_DOWN(DIK_5))
-		m_eHitType = HIT_TYPE::STAGGER;
-	if (KEY_DOWN(DIK_6))
-		m_IsHit = true;
+	{
+		m_isStagger = false;
+		Change_States(STATES::HIT);
+	}
 	if (KEY_DOWN(DIK_7))
 		m_bDead = true;
 	if (KEY_DOWN(DIK_LCONTROL))
@@ -422,6 +511,62 @@ void CPlayer::Stamina_Recovery(_float fTimeDelta)
 {
 	m_fStamina += m_fStaminaRecoveryPerSec * fTimeDelta;
 	m_fStamina = min(m_fStamina, m_fMaxStamina);
+}
+
+void CPlayer::On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDuration)
+{
+	if (m_isInvincible || m_bDead)
+		return;
+
+	m_fHp -= fDamage;
+	m_fStaggerGage -= fStaggerValue;
+	m_isHit = true;
+
+	if (0 >= m_fHp)
+	{
+		m_fHp = 0.f;
+		m_bDead = true;
+		Change_States(STATES::DIE);
+	}
+	else
+	{
+		if (0 >= m_fStaggerGage)
+		{
+			m_isStagger = true;
+			m_fInvicibleTime = 4.f;
+			m_fStaggerGage = m_fMaxStaggerGage;
+		}
+		else
+		{
+			m_fInvicibleTime = fInvicibleDuration;
+		}
+
+		m_isInvincible = true;
+		Change_States(STATES::HIT);
+	}
+}
+
+_float CPlayer::Compute_InvincibleTime_ByCollider(COLLIDER_ID eColliderID)
+{
+	switch (eColliderID)
+	{
+	case COLLIDER_ID::BLOB_ATTACK:
+		return 1.f;
+	case COLLIDER_ID::WIZARD_ATTACK:
+		return 1.f;
+	case COLLIDER_ID::WIZARD_AOE:
+		return 2.f;
+	case COLLIDER_ID::SPIDERTANK_ATTACK:
+		return 1.5f;
+	case COLLIDER_ID::SPIDERTANK_BULLET:
+		return 0.4f;
+	case COLLIDER_ID::SPIDERTANK_BOMB:
+		return 1.f;
+	case COLLIDER_ID::SPIDERTANK_LAGER:
+		return 1.f;
+	default:
+		return 0.6f;
+	}
 }
 
 HRESULT CPlayer::Ready_Components(void* pArg)

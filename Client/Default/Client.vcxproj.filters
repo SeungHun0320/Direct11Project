@@ -40,9 +40,6 @@
     <Filter Include="02.GameObjects\02.Camera">
       <UniqueIdentifier>{f62598e1-b116-413f-9218-fbb7221cbdd0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Monsters">
-      <UniqueIdentifier>{37157f77-26db-43b1-91fa-7f5d56fed923}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\00.UI\01.Button">
       <UniqueIdentifier>{e8dd86c2-6ab2-4d41-ad8a-a62041ad8fbb}</UniqueIdentifier>
     </Filter>
@@ -118,12 +115,6 @@
     <Filter Include="01.Levels\03.Shop">
       <UniqueIdentifier>{761424b8-9ac0-46f5-b977-1d3a3173d8c7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\06.Pawn">
-      <UniqueIdentifier>{0e7e22ae-55e2-4055-bb15-87dc015faf1c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player">
-      <UniqueIdentifier>{1c5abdf3-a3a6-4378-b0e1-ad6e2baf21c9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\07.Item">
       <UniqueIdentifier>{29546516-6976-45a7-a29a-c550732e34b0}</UniqueIdentifier>
     </Filter>
@@ -139,131 +130,11 @@
     <Filter Include="02.GameObjects\02.Camera\Camera_TPS">
       <UniqueIdentifier>{97e7a38c-428b-43ee-a37a-d122f2b03502}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player\State">
-      <UniqueIdentifier>{fd392b1e-16e0-4bb9-8427-f6f1c3b47ff7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player\State\Ladder">
-      <UniqueIdentifier>{c464a575-1cb1-4550-87cd-05474bc7ecc0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player\State\CoinFlip">
-      <UniqueIdentifier>{440e516f-6408-4c38-a2d9-6a73aa6c4f48}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player\State\Eat">
-      <UniqueIdentifier>{4e1f73b9-fdae-41af-86e4-04c3520dc27f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player\State\Interaction">
-      <UniqueIdentifier>{54146e02-55ce-4e1f-a76a-781a9e63901d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player\State\Attack">
-      <UniqueIdentifier>{8cbbb533-4d5e-4e18-b376-9df44255655e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player\State\Attack\AttackStrategy">
-      <UniqueIdentifier>{0c1d460e-ea77-4d2c-bfcd-694773e37063}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player\State\Attack\AttackStrategy\SwordAttack">
-      <UniqueIdentifier>{d9ca5cec-6849-4c44-b569-f6494ae0405b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player\State\Attack\AttackStrategy\StickAttack">
-      <UniqueIdentifier>{e8ae0cfc-5463-4b0e-90a7-aaff6d240c03}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player\State\Attack\AttackStrategy\DaggerAttack">
-      <UniqueIdentifier>{f3917711-1bd3-4c3e-9dec-a09df5622081}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player\State\CutScene">
-      <UniqueIdentifier>{25a72428-f3f9-40bb-815d-58e7a5f145ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player\State\CutScene\Player_Dance">
-      <UniqueIdentifier>{eb6ca965-2f56-43ba-923c-be93f02f5a59}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player\State\CutScene\Player_WakeUp">
-      <UniqueIdentifier>{75f450ee-7b2c-470e-87df-06767dc0d661}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player\State\Die">
-      <UniqueIdentifier>{ce1a33ce-3caf-46e6-9981-67d239273594}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player\State\Dodge">
-      <UniqueIdentifier>{c6ca0069-05ad-4b21-bcb2-48dc9f71546b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player\State\GetUp">
-      <UniqueIdentifier>{2a073e20-3c09-45f0-8b87-d335786c2c1d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player\State\Hit">
-      <UniqueIdentifier>{3c1e4225-e571-405d-8b89-99b883633c26}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player\State\Idle">
-      <UniqueIdentifier>{a55b01da-4705-44b3-b57b-18d47a028e64}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player\State\Move">
-      <UniqueIdentifier>{ef6a9a5a-e06f-40e1-ad2d-1d97a5ec2c59}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player\State\Parry">
-      <UniqueIdentifier>{439123ab-20d3-4162-8af0-e87665a56877}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player\State\Sprint">
-      <UniqueIdentifier>{fa6d62b7-1254-4074-8d08-e29aa75a126a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player\State\Toss">
-      <UniqueIdentifier>{e30f3f4d-b972-440b-bbd2-b5b5f93e051f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player\State\UsePotion">
-      <UniqueIdentifier>{8a1a186d-c05d-4f80-9088-92ac41b7da57}</UniqueIdentifier>
-    </Filter>
     <Filter Include="96.Tools">
       <UniqueIdentifier>{7812b788-45ee-4a11-b8cc-777b8842ec37}</UniqueIdentifier>
     </Filter>
     <Filter Include="96.Tools\00. MapTool">
       <UniqueIdentifier>{ae8c8b7d-fa3f-4ba0-b00a-d9b3ca93886a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\00. Boss">
-      <UniqueIdentifier>{dbc32e9b-e215-4745-8fe0-80dda19bc6fb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\00. Boss\SpiderTank">
-      <UniqueIdentifier>{a5c78964-11df-4c62-8091-4d1601d4807d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\00. Boss\SpiderTank\Body_SpiderTank">
-      <UniqueIdentifier>{1747f651-4736-4bc2-a05d-8a5ed4e15210}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\02.Wizard">
-      <UniqueIdentifier>{2ed5755e-46f7-46e2-becd-ae46f84523f4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\00. Candleabra">
-      <UniqueIdentifier>{4cd31df0-c2d4-4b0e-b34e-b0b3f7a1d42e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\01. Support">
-      <UniqueIdentifier>{be378bc8-0e22-4f86-a8f8-e30d87453b9f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\02. Sword">
-      <UniqueIdentifier>{45c0bdea-2f0c-46b6-805b-c19501147a6b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\State">
-      <UniqueIdentifier>{5103ca6d-9e53-4a52-9796-5fdc685554c6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\PartObjects">
-      <UniqueIdentifier>{6eeb7246-5c76-4ea2-8743-c7742d6c7786}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\PartObjects\Body">
-      <UniqueIdentifier>{7d1924e6-5f39-4a16-8c26-debc668973b3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\PartObjects\Body\Candleabra">
-      <UniqueIdentifier>{46a99504-774b-4a85-a6bc-15a6bc4cedd5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\PartObjects\Body\Support">
-      <UniqueIdentifier>{f1ea60cf-e6b0-4bc8-8700-f57848e86276}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\PartObjects\Body\Sword">
-      <UniqueIdentifier>{7b4c80a8-990c-4d77-9c94-bd0a1bfd40d7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\PartObjects\Weapons">
-      <UniqueIdentifier>{f1c9c5f6-2dbf-45ce-aa0f-fd0126780e11}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\PartObjects\Weapons\Candleabra">
-      <UniqueIdentifier>{bf22463e-b3d3-4776-924a-9d8e13132c98}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\PartObjects\Weapons\Sword">
-      <UniqueIdentifier>{7f0d5e27-10ca-4b93-b27e-73aa6ed13497}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\PartObjects\Weapons\Staff">
-      <UniqueIdentifier>{e689c07c-70bc-4a92-b94b-fbc9cb91f421}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\05.Environment_Objects\00.Grass\Body">
       <UniqueIdentifier>{91a919f0-fb8c-48af-80d9-29e0eb10dba7}</UniqueIdentifier>
@@ -283,15 +154,6 @@
     <Filter Include="02.GameObjects\05.Environment_Objects\04.Chest\Body">
       <UniqueIdentifier>{6a275086-9851-4651-a708-f79968b94766}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\State\Candleabra">
-      <UniqueIdentifier>{6788a5d5-cce3-4642-8f09-d209c9d22467}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\State\Sword">
-      <UniqueIdentifier>{3fa5e618-79aa-4fac-9671-8cf061b8965b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\02.Wizard\State\Support">
-      <UniqueIdentifier>{27f7f9e3-bdef-47d0-823e-fa15693a094c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\01.BackGround">
       <UniqueIdentifier>{884837aa-a848-424d-9774-06961550e5ba}</UniqueIdentifier>
     </Filter>
@@ -300,30 +162,6 @@
     </Filter>
     <Filter Include="02.GameObjects\01.BackGround\01.Sky">
       <UniqueIdentifier>{61ad6a7e-8b1f-40aa-b6d1-791ed8e8b648}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\00. Boss\SpiderTank\State">
-      <UniqueIdentifier>{0f1134f9-62db-4b2d-846d-b582124aa8f8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\00. Boss\SpiderTank\State\Idle">
-      <UniqueIdentifier>{d803351f-b3cb-4555-a002-23e274c86675}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\00. Boss\SpiderTank\State\Attack">
-      <UniqueIdentifier>{19a4e2ac-08d9-43a9-8134-42bb9d4c45e0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\00. Boss\SpiderTank\State\Move">
-      <UniqueIdentifier>{9d2efbb7-49f5-4559-b573-5eb2041205fb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\00. Boss\SpiderTank\State\Hit">
-      <UniqueIdentifier>{fbfa5d7e-89fb-4953-b8a6-b9fd443e1cf0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\01.Blob">
-      <UniqueIdentifier>{6dd7fe3a-3db7-407b-b5dd-a1760c529641}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\01.Blob\State">
-      <UniqueIdentifier>{547b62b2-8b9e-4477-8599-2a4a3a3b9fe1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Monsters\01.Blob\Body">
-      <UniqueIdentifier>{b28d4db8-20a2-4af4-804c-c248659e00e3}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\08. Bullet">
       <UniqueIdentifier>{11dec82b-3c18-4060-8509-a17eb0649034}</UniqueIdentifier>
@@ -346,15 +184,6 @@
     <Filter Include="02.GameObjects\05.Environment_Objects\Body">
       <UniqueIdentifier>{706e1dd6-fdeb-450f-9ed5-4a5b324d066e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player\Part">
-      <UniqueIdentifier>{a0a60c31-5070-4c41-8e65-4285acbad62e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player\Part\Body">
-      <UniqueIdentifier>{406309c7-f51e-41b2-837e-f1003f11d560}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06.Pawn\Player\Part\Weapon">
-      <UniqueIdentifier>{18702f0a-a4ac-44c0-97b7-a8b65d047a6b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\08. Bullet\Monster_Bullet\AOE">
       <UniqueIdentifier>{c4583f94-c4b6-4e0c-82ce-10e48078896c}</UniqueIdentifier>
     </Filter>
@@ -363,6 +192,168 @@
     </Filter>
     <Filter Include="02.GameObjects\08. Bullet\Monster_Bullet\SpiderTank_Bullet\SpiderTank_Lager">
       <UniqueIdentifier>{b514cfb1-0800-433d-82b6-29278d9e79ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor">
+      <UniqueIdentifier>{39011a95-0efb-4f13-b750-fb89c5b9672f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Monsters">
+      <UniqueIdentifier>{37157f77-26db-43b1-91fa-7f5d56fed923}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Monsters\00. Boss">
+      <UniqueIdentifier>{dbc32e9b-e215-4745-8fe0-80dda19bc6fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Monsters\00. Boss\SpiderTank">
+      <UniqueIdentifier>{a5c78964-11df-4c62-8091-4d1601d4807d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Monsters\00. Boss\SpiderTank\Body_SpiderTank">
+      <UniqueIdentifier>{1747f651-4736-4bc2-a05d-8a5ed4e15210}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Monsters\00. Boss\SpiderTank\State">
+      <UniqueIdentifier>{0f1134f9-62db-4b2d-846d-b582124aa8f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Monsters\00. Boss\SpiderTank\State\Idle">
+      <UniqueIdentifier>{d803351f-b3cb-4555-a002-23e274c86675}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Monsters\00. Boss\SpiderTank\State\Attack">
+      <UniqueIdentifier>{19a4e2ac-08d9-43a9-8134-42bb9d4c45e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Monsters\00. Boss\SpiderTank\State\Move">
+      <UniqueIdentifier>{9d2efbb7-49f5-4559-b573-5eb2041205fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Monsters\00. Boss\SpiderTank\State\Hit">
+      <UniqueIdentifier>{fbfa5d7e-89fb-4953-b8a6-b9fd443e1cf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Monsters\02.Wizard">
+      <UniqueIdentifier>{2ed5755e-46f7-46e2-becd-ae46f84523f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Monsters\02.Wizard\00. Candleabra">
+      <UniqueIdentifier>{4cd31df0-c2d4-4b0e-b34e-b0b3f7a1d42e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Monsters\02.Wizard\01. Support">
+      <UniqueIdentifier>{be378bc8-0e22-4f86-a8f8-e30d87453b9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Monsters\02.Wizard\02. Sword">
+      <UniqueIdentifier>{45c0bdea-2f0c-46b6-805b-c19501147a6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Monsters\02.Wizard\State">
+      <UniqueIdentifier>{5103ca6d-9e53-4a52-9796-5fdc685554c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Monsters\02.Wizard\State\Candleabra">
+      <UniqueIdentifier>{6788a5d5-cce3-4642-8f09-d209c9d22467}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Monsters\02.Wizard\State\Sword">
+      <UniqueIdentifier>{3fa5e618-79aa-4fac-9671-8cf061b8965b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Monsters\02.Wizard\State\Support">
+      <UniqueIdentifier>{27f7f9e3-bdef-47d0-823e-fa15693a094c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Monsters\02.Wizard\PartObjects">
+      <UniqueIdentifier>{6eeb7246-5c76-4ea2-8743-c7742d6c7786}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Monsters\02.Wizard\PartObjects\Body">
+      <UniqueIdentifier>{7d1924e6-5f39-4a16-8c26-debc668973b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Monsters\02.Wizard\PartObjects\Body\Candleabra">
+      <UniqueIdentifier>{46a99504-774b-4a85-a6bc-15a6bc4cedd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Monsters\02.Wizard\PartObjects\Body\Support">
+      <UniqueIdentifier>{f1ea60cf-e6b0-4bc8-8700-f57848e86276}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Monsters\02.Wizard\PartObjects\Body\Sword">
+      <UniqueIdentifier>{7b4c80a8-990c-4d77-9c94-bd0a1bfd40d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Monsters\02.Wizard\PartObjects\Weapons">
+      <UniqueIdentifier>{f1c9c5f6-2dbf-45ce-aa0f-fd0126780e11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Monsters\02.Wizard\PartObjects\Weapons\Candleabra">
+      <UniqueIdentifier>{bf22463e-b3d3-4776-924a-9d8e13132c98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Monsters\02.Wizard\PartObjects\Weapons\Sword">
+      <UniqueIdentifier>{7f0d5e27-10ca-4b93-b27e-73aa6ed13497}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Monsters\02.Wizard\PartObjects\Weapons\Staff">
+      <UniqueIdentifier>{e689c07c-70bc-4a92-b94b-fbc9cb91f421}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Monsters\01.Blob">
+      <UniqueIdentifier>{6dd7fe3a-3db7-407b-b5dd-a1760c529641}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Monsters\01.Blob\State">
+      <UniqueIdentifier>{547b62b2-8b9e-4477-8599-2a4a3a3b9fe1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Monsters\01.Blob\Body">
+      <UniqueIdentifier>{b28d4db8-20a2-4af4-804c-c248659e00e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Player">
+      <UniqueIdentifier>{1c5abdf3-a3a6-4378-b0e1-ad6e2baf21c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Player\State">
+      <UniqueIdentifier>{fd392b1e-16e0-4bb9-8427-f6f1c3b47ff7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Player\State\Ladder">
+      <UniqueIdentifier>{c464a575-1cb1-4550-87cd-05474bc7ecc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Player\State\CoinFlip">
+      <UniqueIdentifier>{440e516f-6408-4c38-a2d9-6a73aa6c4f48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Player\State\Eat">
+      <UniqueIdentifier>{4e1f73b9-fdae-41af-86e4-04c3520dc27f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Player\State\Interaction">
+      <UniqueIdentifier>{54146e02-55ce-4e1f-a76a-781a9e63901d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Player\State\Attack">
+      <UniqueIdentifier>{8cbbb533-4d5e-4e18-b376-9df44255655e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Player\State\Attack\AttackStrategy">
+      <UniqueIdentifier>{0c1d460e-ea77-4d2c-bfcd-694773e37063}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Player\State\CutScene">
+      <UniqueIdentifier>{25a72428-f3f9-40bb-815d-58e7a5f145ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Player\State\CutScene\Player_Dance">
+      <UniqueIdentifier>{eb6ca965-2f56-43ba-923c-be93f02f5a59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Player\State\CutScene\Player_WakeUp">
+      <UniqueIdentifier>{75f450ee-7b2c-470e-87df-06767dc0d661}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Player\State\Die">
+      <UniqueIdentifier>{ce1a33ce-3caf-46e6-9981-67d239273594}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Player\State\Dodge">
+      <UniqueIdentifier>{c6ca0069-05ad-4b21-bcb2-48dc9f71546b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Player\State\GetUp">
+      <UniqueIdentifier>{2a073e20-3c09-45f0-8b87-d335786c2c1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Player\State\Hit">
+      <UniqueIdentifier>{3c1e4225-e571-405d-8b89-99b883633c26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Player\State\Idle">
+      <UniqueIdentifier>{a55b01da-4705-44b3-b57b-18d47a028e64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Player\State\Move">
+      <UniqueIdentifier>{ef6a9a5a-e06f-40e1-ad2d-1d97a5ec2c59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Player\State\Parry">
+      <UniqueIdentifier>{439123ab-20d3-4162-8af0-e87665a56877}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Player\State\Sprint">
+      <UniqueIdentifier>{fa6d62b7-1254-4074-8d08-e29aa75a126a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Player\State\Toss">
+      <UniqueIdentifier>{e30f3f4d-b972-440b-bbd2-b5b5f93e051f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Player\State\UsePotion">
+      <UniqueIdentifier>{8a1a186d-c05d-4f80-9088-92ac41b7da57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Player\Part">
+      <UniqueIdentifier>{a0a60c31-5070-4c41-8e65-4285acbad62e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Player\Part\Body">
+      <UniqueIdentifier>{406309c7-f51e-41b2-837e-f1003f11d560}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Player\Part\Weapon">
+      <UniqueIdentifier>{18702f0a-a4ac-44c0-97b7-a8b65d047a6b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -448,13 +439,13 @@
       <Filter>98.Default\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Monster.h">
-      <Filter>02.GameObjects\03.Monsters</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Boss.h">
-      <Filter>02.GameObjects\03.Monsters\00. Boss</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\00. Boss</Filter>
     </ClInclude>
     <ClInclude Include="..\public\SpiderTank.h">
-      <Filter>02.GameObjects\03.Monsters\00. Boss\SpiderTank</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\00. Boss\SpiderTank</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Map.h">
       <Filter>02.GameObjects\04.Map</Filter>
@@ -498,14 +489,11 @@
     <ClInclude Include="..\public\Level_Shop.h">
       <Filter>01.Levels\03.Shop</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Pawn.h">
-      <Filter>02.GameObjects\06.Pawn</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Player.h">
-      <Filter>02.GameObjects\06.Pawn\Player</Filter>
+      <Filter>02.GameObjects\03.Actor\Player</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Blob.h">
-      <Filter>02.GameObjects\03.Monsters\01.Blob</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\01.Blob</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Chest.h">
       <Filter>02.GameObjects\05.Environment_Objects\04.Chest</Filter>
@@ -517,52 +505,52 @@
       <Filter>02.GameObjects\07.Item\Item_Potion</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState.h">
-      <Filter>02.GameObjects\06.Pawn\Player\State</Filter>
+      <Filter>02.GameObjects\03.Actor\Player\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Camera_Free.h">
       <Filter>02.GameObjects\02.Camera\Camera_Free</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Player_IAttackStrategy.h">
-      <Filter>02.GameObjects\06.Pawn\Player\State\Attack\AttackStrategy</Filter>
+      <Filter>02.GameObjects\03.Actor\Player\State\Attack\AttackStrategy</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Camera_TPS.h">
       <Filter>02.GameObjects\02.Camera\Camera_TPS</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Body_Player.h">
-      <Filter>02.GameObjects\06.Pawn\Player\Part\Body</Filter>
+      <Filter>02.GameObjects\03.Actor\Player\Part\Body</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Body_Blob.h">
-      <Filter>02.GameObjects\03.Monsters\01.Blob\Body</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\01.Blob\Body</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Body_SpiderTank.h">
-      <Filter>02.GameObjects\03.Monsters\00. Boss\SpiderTank\Body_SpiderTank</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\00. Boss\SpiderTank\Body_SpiderTank</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\BlobState.h">
-      <Filter>02.GameObjects\03.Monsters\01.Blob\State</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\01.Blob\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Wizard_Candleabra.h">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\00. Candleabra</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard\00. Candleabra</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Wizard_Support.h">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\01. Support</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard\01. Support</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Wizard_Sword.h">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\02. Sword</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard\02. Sword</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Body_WizardCandleabra.h">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Body\Candleabra</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard\PartObjects\Body\Candleabra</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Body_WizardSupport.h">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Body\Support</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard\PartObjects\Body\Support</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Part_WizardCandleabra.h">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Weapons\Candleabra</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard\PartObjects\Weapons\Candleabra</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Part_WizardStaff.h">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Weapons\Staff</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard\PartObjects\Weapons\Staff</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Part_WizardSword.h">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Weapons\Sword</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard\PartObjects\Weapons\Sword</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Body_Grass.h">
       <Filter>02.GameObjects\05.Environment_Objects\00.Grass\Body</Filter>
@@ -577,19 +565,19 @@
       <Filter>02.GameObjects\05.Environment_Objects\04.Chest\Body</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Wizard_CandleabraState.h">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\State\Candleabra</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard\State\Candleabra</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Wizard_SupportState.h">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\State\Support</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard\State\Support</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Wizard_SwordState.h">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\State\Sword</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard\State\Sword</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Sky.h">
       <Filter>02.GameObjects\01.BackGround\01.Sky</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\SpiderTankState.h">
-      <Filter>02.GameObjects\03.Monsters\00. Boss\SpiderTank\State</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\00. Boss\SpiderTank\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Bullet.h">
       <Filter>02.GameObjects\08. Bullet</Filter>
@@ -607,25 +595,25 @@
       <Filter>02.GameObjects\02.Camera\Camera_CutScene</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Wizard_Weapon.h">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Weapons</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard\PartObjects\Weapons</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Body_Wizard.h">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Body</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard\PartObjects\Body</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Body_WizardSword.h">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Body\Sword</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard\PartObjects\Body\Sword</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Body_Environment_Object.h">
       <Filter>02.GameObjects\05.Environment_Objects\Body</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Part_Player.h">
-      <Filter>02.GameObjects\06.Pawn\Player\Part</Filter>
+      <Filter>02.GameObjects\03.Actor\Player\Part</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Weapon_Player.h">
-      <Filter>02.GameObjects\06.Pawn\Player\Part\Weapon</Filter>
+      <Filter>02.GameObjects\03.Actor\Player\Part\Weapon</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Wizard.h">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Wizard_Support_AOE.h">
       <Filter>02.GameObjects\08. Bullet\Monster_Bullet\AOE\Wizard_Support_AOE</Filter>
@@ -635,6 +623,9 @@
     </ClInclude>
     <ClInclude Include="..\public\SpiderTank_Lager.h">
       <Filter>02.GameObjects\08. Bullet\Monster_Bullet\SpiderTank_Bullet\SpiderTank_Lager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BaseActor.h">
+      <Filter>02.GameObjects\03.Actor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -709,13 +700,13 @@
       <Filter>98.Default\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Monster.cpp">
-      <Filter>02.GameObjects\03.Monsters</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Boss.cpp">
-      <Filter>02.GameObjects\03.Monsters\00. Boss</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\00. Boss</Filter>
     </ClCompile>
     <ClCompile Include="..\private\SpiderTank.cpp">
-      <Filter>02.GameObjects\03.Monsters\00. Boss\SpiderTank</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\00. Boss\SpiderTank</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Map.cpp">
       <Filter>02.GameObjects\04.Map</Filter>
@@ -759,14 +750,11 @@
     <ClCompile Include="..\private\Level_Shop.cpp">
       <Filter>01.Levels\03.Shop</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Pawn.cpp">
-      <Filter>02.GameObjects\06.Pawn</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Player.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player</Filter>
+      <Filter>02.GameObjects\03.Actor\Player</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Blob.cpp">
-      <Filter>02.GameObjects\03.Monsters\01.Blob</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\01.Blob</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Chest.cpp">
       <Filter>02.GameObjects\05.Environment_Objects\04.Chest</Filter>
@@ -778,112 +766,103 @@
       <Filter>02.GameObjects\07.Item\Item_Potion</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Die.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\State\Die</Filter>
+      <Filter>02.GameObjects\03.Actor\Player\State\Die</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Hit.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\State\Hit</Filter>
+      <Filter>02.GameObjects\03.Actor\Player\State\Hit</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Dodge.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\State\Dodge</Filter>
+      <Filter>02.GameObjects\03.Actor\Player\State\Dodge</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Move.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\State\Move</Filter>
+      <Filter>02.GameObjects\03.Actor\Player\State\Move</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Idle.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\State\Idle</Filter>
+      <Filter>02.GameObjects\03.Actor\Player\State\Idle</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Camera_Free.cpp">
       <Filter>02.GameObjects\02.Camera\Camera_Free</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Sprint.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\State\Sprint</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Player_SwordAttack.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\State\Attack\AttackStrategy\SwordAttack</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Player_StickAttack.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\State\Attack\AttackStrategy\StickAttack</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Player_DaggerAttack.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\State\Attack\AttackStrategy\DaggerAttack</Filter>
+      <Filter>02.GameObjects\03.Actor\Player\State\Sprint</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Attack.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\State\Attack</Filter>
+      <Filter>02.GameObjects\03.Actor\Player\State\Attack</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_GetUp.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\State\GetUp</Filter>
+      <Filter>02.GameObjects\03.Actor\Player\State\GetUp</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Parry.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\State\Parry</Filter>
+      <Filter>02.GameObjects\03.Actor\Player\State\Parry</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_WakeUp.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\State\CutScene\Player_WakeUp</Filter>
+      <Filter>02.GameObjects\03.Actor\Player\State\CutScene\Player_WakeUp</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Dance.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\State\CutScene\Player_Dance</Filter>
+      <Filter>02.GameObjects\03.Actor\Player\State\CutScene\Player_Dance</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_UsePotion.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\State\UsePotion</Filter>
+      <Filter>02.GameObjects\03.Actor\Player\State\UsePotion</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Toss.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\State\Toss</Filter>
+      <Filter>02.GameObjects\03.Actor\Player\State\Toss</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Player_IAttackStrategy.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\State\Attack\AttackStrategy</Filter>
+      <Filter>02.GameObjects\03.Actor\Player\State\Attack\AttackStrategy</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Eat.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\State\Eat</Filter>
+      <Filter>02.GameObjects\03.Actor\Player\State\Eat</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_CoinFlip.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\State\CoinFlip</Filter>
+      <Filter>02.GameObjects\03.Actor\Player\State\CoinFlip</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Interaction.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\State\Interaction</Filter>
+      <Filter>02.GameObjects\03.Actor\Player\State\Interaction</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Ladder.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\State\Ladder</Filter>
+      <Filter>02.GameObjects\03.Actor\Player\State\Ladder</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Camera_TPS.cpp">
       <Filter>02.GameObjects\02.Camera\Camera_TPS</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Body_Player.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\Part\Body</Filter>
+      <Filter>02.GameObjects\03.Actor\Player\Part\Body</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Body_Blob.cpp">
-      <Filter>02.GameObjects\03.Monsters\01.Blob\Body</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\01.Blob\Body</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Body_SpiderTank.cpp">
-      <Filter>02.GameObjects\03.Monsters\00. Boss\SpiderTank\Body_SpiderTank</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\00. Boss\SpiderTank\Body_SpiderTank</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Wizard_Candleabra.cpp">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\00. Candleabra</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard\00. Candleabra</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Wizard_Support.cpp">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\01. Support</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard\01. Support</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Wizard_Sword.cpp">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\02. Sword</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard\02. Sword</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BlobState.cpp">
-      <Filter>02.GameObjects\03.Monsters\01.Blob\State</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\01.Blob\State</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Body_WizardCandleabra.cpp">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Body\Candleabra</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard\PartObjects\Body\Candleabra</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Body_WizardSupport.cpp">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Body\Support</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard\PartObjects\Body\Support</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Body_WizardSword.cpp">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Body\Sword</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard\PartObjects\Body\Sword</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Part_WizardCandleabra.cpp">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Weapons\Candleabra</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard\PartObjects\Weapons\Candleabra</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Part_WizardStaff.cpp">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Weapons\Staff</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard\PartObjects\Weapons\Staff</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Part_WizardSword.cpp">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Weapons\Sword</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard\PartObjects\Weapons\Sword</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Body_Grass.cpp">
       <Filter>02.GameObjects\05.Environment_Objects\00.Grass\Body</Filter>
@@ -898,28 +877,28 @@
       <Filter>02.GameObjects\05.Environment_Objects\04.Chest\Body</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Wizard_CandleabraState.cpp">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\State\Candleabra</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard\State\Candleabra</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Wizard_SupportState.cpp">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\State\Support</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard\State\Support</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Wizard_SwordState.cpp">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\State\Sword</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard\State\Sword</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Sky.cpp">
       <Filter>02.GameObjects\01.BackGround\01.Sky</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\SpiderTankState_Idle.cpp">
-      <Filter>02.GameObjects\03.Monsters\00. Boss\SpiderTank\State\Idle</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\00. Boss\SpiderTank\State\Idle</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\SpiderTankState_Move.cpp">
-      <Filter>02.GameObjects\03.Monsters\00. Boss\SpiderTank\State\Move</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\00. Boss\SpiderTank\State\Move</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\SpiderTankState_Attack.cpp">
-      <Filter>02.GameObjects\03.Monsters\00. Boss\SpiderTank\State\Attack</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\00. Boss\SpiderTank\State\Attack</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\SpiderTankState_Hit.cpp">
-      <Filter>02.GameObjects\03.Monsters\00. Boss\SpiderTank\State\Hit</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\00. Boss\SpiderTank\State\Hit</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Bullet.cpp">
       <Filter>02.GameObjects\08. Bullet</Filter>
@@ -937,19 +916,19 @@
       <Filter>02.GameObjects\02.Camera\Camera_CutScene</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Wizard_Weapon.cpp">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Weapons</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard\PartObjects\Weapons</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Body_Wizard.cpp">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard\PartObjects\Body</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard\PartObjects\Body</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Body_Environment_Object.cpp">
       <Filter>02.GameObjects\05.Environment_Objects\Body</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Part_Player.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\Part</Filter>
+      <Filter>02.GameObjects\03.Actor\Player\Part</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Wizard.cpp">
-      <Filter>02.GameObjects\03.Monsters\02.Wizard</Filter>
+      <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Wizard_Support_AOE.cpp">
       <Filter>02.GameObjects\08. Bullet\Monster_Bullet\AOE\Wizard_Support_AOE</Filter>
@@ -961,7 +940,10 @@
       <Filter>02.GameObjects\08. Bullet\Monster_Bullet\AOE</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Weapon_Player.cpp">
-      <Filter>02.GameObjects\06.Pawn\Player\Part\Weapon</Filter>
+      <Filter>02.GameObjects\03.Actor\Player\Part\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BaseActor.cpp">
+      <Filter>02.GameObjects\03.Actor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

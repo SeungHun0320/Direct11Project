@@ -79,8 +79,8 @@ HRESULT CSpiderTank_Lager::Ready_Components(void* pArg)
 	OBBDesc.vExtents = _float3(2.f, 1.f, 20.f);
 	OBBDesc.vCenter = _float3(0.f, OBBDesc.vExtents.y, OBBDesc.vExtents.z);
 	OBBDesc.vRotation = _float3(XMConvertToRadians(0.f), XMConvertToRadians(0.f), XMConvertToRadians(0.f));
-	OBBDesc.iColliderGroupID = ENUM_CLASS(COLLIDER_GROUP::BOSS_ATTACK);
-	OBBDesc.iColliderID = ENUM_CLASS(COLLIDER_ID::BOSS_LAGER);
+	OBBDesc.iColliderGroupID = ENUM_CLASS(COLLIDER_GROUP::MONSTER_BULLET);
+	OBBDesc.iColliderID = ENUM_CLASS(COLLIDER_ID::SPIDERTANK_BOMB);
 	OBBDesc.pOwner = this;
 
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_OBB"),

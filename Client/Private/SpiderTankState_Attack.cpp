@@ -95,6 +95,7 @@ void CSpiderTankState_FastAttack::Enter(_float fTimeDelta)
 {
 	m_fDuration = 2.2f;
 	m_fTimeAcc = 0.f;
+	m_fAttackStartTime = 1.f;
 
 	_vector vLook  = m_pOwner->Get_State(STATE::LOOK);
 	_vector vRight = m_pOwner->Get_State(STATE::RIGHT);
@@ -111,7 +112,6 @@ void CSpiderTankState_FastAttack::Enter(_float fTimeDelta)
 		m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::MID_ATTACK, false, 0.2f);
 
 
-	m_fAttackStartTime = 1.f;
 }
 
 void CSpiderTankState_FastAttack::Execute(_float fTimeDelta)
@@ -135,6 +135,8 @@ void CSpiderTankState_FastAttack::Exit()
 {
 	m_fDuration = 0.f;
 	m_fTimeAcc = 0.f;
+	m_fAttackStartTime = 1.f;
+	m_pOwner->Set_Active(CSpiderTank::LEFT_ARM, false);
 }
 
 void CSpiderTankState_FastAttack::Free()
@@ -204,6 +206,11 @@ void CSpiderTankState_Swing::Exit()
 {
 	m_fDuration = 0.f;
 	m_fTimeAcc = 0.f;
+	m_fAttackStartTime = 0.75f;
+	if (LEFT == m_eArm)
+		m_pOwner->Set_Active(CSpiderTank::LEFT_ARM, false);
+	else if (RIGHT == m_eArm)
+		m_pOwner->Set_Active(CSpiderTank::RIGHT_ARM, false);
 }
 
 void CSpiderTankState_Swing::Free()
@@ -225,6 +232,7 @@ void CSpiderTankState_FullSwing::Enter(_float fTimeDelta)
 	m_fDuration = 4.f;
 	m_fTimeAcc = 0.f;
 	m_bBlendStarted = false;
+	m_fAttackStartTime = 2.35f;
 
 	_vector vPos = m_pOwner->Get_State(STATE::POSITION);
 	_vector vTarget = m_pOwner->Get_TargetPosition();
@@ -240,6 +248,9 @@ void CSpiderTankState_FullSwing::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 
+	if (m_fAttackStartTime <= m_fTimeAcc)
+		m_pOwner->Set_Active(CSpiderTank::RIGHT_ARM);
+
 	if (3.f <= m_fTimeAcc && !m_bBlendStarted)
 	{
 		m_bBlendStarted = true;
@@ -248,12 +259,13 @@ void CSpiderTankState_FullSwing::Execute(_float fTimeDelta)
 
 	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CSpiderTank::PART_BODY, fTimeDelta))
 	{
-		// 끝나면 보간 해주고 넘겨야 할 거 같음,,
+
+		m_pOwner->Set_Active(CSpiderTank::RIGHT_ARM, false);
 		m_pOwner->Change_States(CSpiderTank::STATES::IDLE);
 
 	}
 	else if (2.15f <= m_fTimeAcc && 3.1f >= m_fTimeAcc)
-		m_pOwner->Go_Dir(XMVectorSetW(XMLoadFloat3(&m_vMoveDir), 0.f), fTimeDelta, 10.f);
+		m_pOwner->Go_Dir(XMVectorSetW(XMLoadFloat3(&m_vMoveDir), 0.f), fTimeDelta, 15.f);
 	
 }
 
@@ -261,7 +273,10 @@ void CSpiderTankState_FullSwing::Exit()
 {
 	m_fDuration = 4.f;
 	m_fTimeAcc = 0.f;
+	m_bBlendStarted = false;
+	m_fAttackStartTime = 2.35f;
 	XMStoreFloat3(&m_vMoveDir, XMVectorZero());
+	m_pOwner->Set_Active(CSpiderTank::RIGHT_ARM, false);
 }
 
 void CSpiderTankState_FullSwing::Free()

@@ -15,12 +15,14 @@ public:
 public:
 	virtual _int Get_AnimationState(_int iComboIndex) const PURE;
 	virtual _float Get_Duration(_int iComboIndex) const PURE;
+	virtual _float Get_Attack() const PURE;
+	virtual _float Get_StaggerValue() const PURE;
 	virtual _int Get_MaxComboCount() const;
 	virtual WEAPON_TYPE Get_WeaponType() const;
 
 protected:
-	_int m_iMaxCombo{};
 	WEAPON_TYPE m_eWeaponType{};
+	_int m_iMaxCombo{};
 
 public:
 	virtual void Free() override;
@@ -36,6 +38,8 @@ public:
 public: // CPlayer_IAttackStrategy을(를) 통해 상속됨
 	virtual _int Get_AnimationState(_int iComboIndex) const override;
 	virtual _float Get_Duration(_int iComboIndex) const override;
+	virtual _float Get_Attack() const override;
+	virtual _float Get_StaggerValue() const override;
 
 public:
 	virtual void Free();
@@ -52,6 +56,8 @@ public:
 public: // CPlayer_IAttackStrategy을(를) 통해 상속됨
 	virtual _int Get_AnimationState(_int iComboIndex) const override;
 	virtual _float Get_Duration(_int iComboIndex) const override;
+	virtual _float Get_Attack() const override;
+	virtual _float Get_StaggerValue() const override;
 
 public:
 	virtual void Free();
@@ -68,6 +74,8 @@ public:
 public: // CPlayer_IAttackStrategy을(를) 통해 상속됨
 	virtual _int Get_AnimationState(_int iComboIndex) const override;
 	virtual _float Get_Duration(_int iComboIndex) const override;
+	virtual _float Get_Attack() const override;
+	virtual _float Get_StaggerValue() const override;
 
 public:
 	virtual void Free();

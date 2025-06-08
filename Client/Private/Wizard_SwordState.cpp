@@ -183,6 +183,7 @@ void CWizard_SwordState_Attack::Exit()
 	m_fAttackStartTime = 0.f;
 	m_fDuration = 0.f;
 	m_fTimeAcc = 0.f;
+	m_pOwner->Set_Active(false);
 }
 
 void CWizard_SwordState_Attack::Free()
@@ -213,7 +214,7 @@ void CWizard_SwordState_Move::Execute(_float fTimeDelta)
 
 	// 만약 포지션에 도착을 했을 때, 플레이어 거리가 멀다면?
 
-	if (7.0f > XMVectorGetX(XMVector3Length(XMLoadFloat3(&m_vTargetPos))))
+	if (10.f > m_pOwner->Get_DistanceToPlayer())
 	{
 		if (5.f >= m_pOwner->Get_DistanceToPlayer())
 			m_pOwner->Change_States(CWizard_Sword::STATES::ATTACK);
@@ -256,6 +257,13 @@ void CWizard_SwordState_Hit::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 
+	if (m_pOwner->Get_IsHit())
+	{
+		m_fTimeAcc = 0.f;
+		m_pOwner->Change_Animation(CWizard_Sword::PART_BODY, CWizard_Sword::PINCH, false, 0.2f);
+		m_pOwner->Reset_IsHit();
+	}
+
 	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CWizard_Sword::PART_BODY, fTimeDelta))
 		m_pOwner->Change_States(CWizard_Sword::STATES::ATTACK);
 }
@@ -292,8 +300,8 @@ void CWizard_SwordState_Dead::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 
-	m_pOwner->Play_Animation(CWizard_Sword::PART_BODY, fTimeDelta);
-	// m_bDead = true;
+	if (m_pOwner->Play_Animation(CWizard_Sword::PART_BODY, fTimeDelta))
+		m_pOwner->Set_Dead(true);
 
 	if (m_fDuration <= m_fTimeAcc)
 		m_pOwner->Change_States(CWizard_Sword::STATES::ATTACK);

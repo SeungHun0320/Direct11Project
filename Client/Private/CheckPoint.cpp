@@ -49,7 +49,7 @@ HRESULT CCheckPoint::Render()
 	return __super::Render();
 }
 
-void CCheckPoint::On_Collision(_uint MyColliderID, _uint OtherColliderID)
+void CCheckPoint::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
 {
 	cout << "첵포 개같이 성공\n";
 }

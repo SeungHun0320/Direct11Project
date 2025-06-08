@@ -6,6 +6,9 @@
 
 #include "Wizard_SwordState.h"
 
+
+#include "Player.h"
+
 CWizard_Sword::CWizard_Sword(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CWizard{ pDevice, pContext }
 {
@@ -31,6 +34,19 @@ HRESULT CWizard_Sword::Initialize(void* pArg)
 
 	m_fDetectDistance = 12.5f;
 	m_fChaseStopDistance = 30.f;
+
+
+	/* 공격력 */
+	m_fAttack = 10.f;
+	m_fStaggerValue = 5.f;
+
+	/* 체력 */
+	m_fHp = 100.f;
+	m_fMaxHp = m_fHp;
+
+	/* 그로기 */
+	m_fStaggerGage = 20.f;
+	m_fMaxStaggerGage = m_fStaggerGage;
 
 	if (LEVEL::TOOLS != m_eLevelID)
 	{
@@ -87,9 +103,18 @@ HRESULT CWizard_Sword::Render()
 	return S_OK;
 }
 
-void CWizard_Sword::On_Collision(_uint MyColliderID, _uint OtherColliderID)
+void CWizard_Sword::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
 {
-	cout << "위자드소드 개같이 성공\n";
+	__super::On_Collision(MyColliderID, OtherColliderID, pOwner);
+
+	if (CI_WEAPON(static_cast<COLLIDER_ID>(OtherColliderID)))
+	{
+		if (CPlayer* pPlayer = dynamic_cast<CPlayer*>(pOwner))
+		{
+			On_Hit(pPlayer->Get_AttackValue(), pPlayer->Compute_StaggerValue());
+		}
+	}
+
 }
 
 void CWizard_Sword::Change_States(STATES eStates)
@@ -124,6 +149,28 @@ void CWizard_Sword::Set_TrackPosition(PART ePart, _float fTrackPosition)
 void CWizard_Sword::Set_Active(_bool isActive)
 {
 	m_PartObjects[PART_SWORD]->Set_Active(isActive);
+}
+
+void CWizard_Sword::On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDuration)
+{
+	if (m_isInvincible || m_bDead)
+		return;
+
+	m_fHp -= fDamage;
+	m_fStaggerGage -= fStaggerValue;
+	m_isHit = true;
+
+	if (0 >= m_fHp)
+	{
+		m_fHp = 0.f;
+		Change_States(STATES::DEAD);
+	}
+	else
+	{
+		m_fInvicibleTime = fInvicibleDuration;
+		m_isInvincible = true;
+		Change_States(STATES::HIT);
+	}
 }
 
 HRESULT CWizard_Sword::Ready_Components(void* pArg)

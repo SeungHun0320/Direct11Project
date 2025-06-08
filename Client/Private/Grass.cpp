@@ -50,7 +50,7 @@ HRESULT CGrass::Render()
 	return __super::Render();
 }
 
-void CGrass::On_Collision(_uint MyColliderID, _uint OtherColliderID)
+void CGrass::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
 {
 	cout << "그래스 개같이 성공\n";
 }
