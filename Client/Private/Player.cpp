@@ -490,6 +490,7 @@ void CPlayer::On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDura
 	m_fHp -= fDamage;
 	m_fStaggerGage -= fStaggerValue;
 	m_isHit = true;
+	m_pGameInstance->Shake_Camera(ENUM_CLASS(m_eLevelID), TEXT("Camera_TPS"), 0.2f, 0.2f);
 
 	if (0 >= m_fHp)
 	{

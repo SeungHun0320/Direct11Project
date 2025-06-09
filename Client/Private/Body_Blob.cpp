@@ -116,6 +116,11 @@ void CBody_Blob::Set_Active(_bool isActive)
     m_pColliderCom[ATTACK]->Set_Active(isActive);
 }
 
+CCollider* CBody_Blob::Get_Collider(_uint iColliderIndex) const
+{
+    return m_pColliderCom[iColliderIndex];
+}
+
 HRESULT CBody_Blob::Ready_Components(void* pArg)
 {
     DESC* pDesc = static_cast<DESC*>(pArg);

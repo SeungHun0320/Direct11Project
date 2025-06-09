@@ -344,6 +344,7 @@ void CLevel_Arena::Check_Collision()
 #ifdef _DEBUG
 	m_pGameInstance->Reset_Colliders();
 #endif 
+	m_pGameInstance->Reset_SlidingVectors();
 
 	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::PAWN), ENUM_CLASS(COLLIDER_GROUP::MONSTER));
 	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::WEAPON), ENUM_CLASS(COLLIDER_GROUP::MONSTER));

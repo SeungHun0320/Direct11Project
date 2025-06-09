@@ -170,7 +170,6 @@ void CWizard_Sword::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGam
 			On_Hit(pPlayer->Get_AttackValue(), pPlayer->Compute_StaggerValue());
 		}
 	}
-
 }
 
 HRESULT CWizard_Sword::Ready_Components(void* pArg)

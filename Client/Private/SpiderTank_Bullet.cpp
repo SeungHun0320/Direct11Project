@@ -44,10 +44,6 @@ LIFE CSpiderTank_Bullet::Update(_float fTimeDelta)
 
 	m_pTransformCom->Go_Straight(fTimeDelta);
 
-	if (2.5f >= XMVectorGetX(XMVector3Length(m_pTransformCom->Get_State(STATE::POSITION) -
-		m_pTargetTransform->Get_State(STATE::POSITION))))
-		m_bDead = true;
-
 	return __super::Update(fTimeDelta);
 }
 
@@ -59,6 +55,19 @@ void CSpiderTank_Bullet::Late_Update(_float fTimeDelta)
 HRESULT CSpiderTank_Bullet::Render()
 {
 	return  __super::Render();
+}
+
+void CSpiderTank_Bullet::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
+{
+	COLLIDER_ID eColliderID = static_cast<COLLIDER_ID>(OtherColliderID);
+
+	switch (eColliderID)
+	{
+	case COLLIDER_ID::PLAYER:
+		m_bDead = true;
+		break;
+	}
+
 }
 
 HRESULT CSpiderTank_Bullet::Ready_Components(void* pArg)

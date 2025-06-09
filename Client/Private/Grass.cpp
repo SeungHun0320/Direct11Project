@@ -52,7 +52,14 @@ HRESULT CGrass::Render()
 
 void CGrass::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
 {
-	cout << "그래스 개같이 성공\n";
+	COLLIDER_ID eColliderID = static_cast<COLLIDER_ID>(OtherColliderID);
+
+	switch (eColliderID)
+	{
+	case COLLIDER_ID::SWORD:
+		m_bDead = true;
+		break;
+	}
 }
 
 HRESULT CGrass::Ready_Components(void* pArg)

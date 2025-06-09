@@ -11,7 +11,7 @@ CSpiderTankState_Pinch::CSpiderTankState_Pinch(CSpiderTank* pOwner)
 
 void CSpiderTankState_Pinch::Enter(_float fTimeDelta)
 {
-	m_fDuration = 1.f;
+	m_fDuration = 0.6f;
 	m_fTimeAcc = 0.f;
 
 	m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::PINCH, false, 0.2f);
@@ -27,7 +27,7 @@ void CSpiderTankState_Pinch::Execute(_float fTimeDelta)
 
 void CSpiderTankState_Pinch::Exit()
 {
-	m_fDuration = 1.f;
+	m_fDuration = 0.5f;
 	m_fTimeAcc = 0.f;
 }
 

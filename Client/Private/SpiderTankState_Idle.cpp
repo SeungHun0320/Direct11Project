@@ -140,10 +140,8 @@ void CSpiderTankState_Idle::Execute(_float fTimeDelta)
 		}
 	}
 	else
-	{
-		// 거리 멀어졌으면 타이머 초기화
 		m_fTooCloseAcc = 0.f;
-	}
+	
 
 	if (fDistance > fPreferredDist + fForOffset)
 	{
@@ -187,7 +185,7 @@ void CSpiderTankState_Idle::Execute(_float fTimeDelta)
 			break;
 		default:
 			m_pOwner->Reset_Sequence();
-			break;
+			return;
 		}
 
 		m_pOwner->Add_Sequence();

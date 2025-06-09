@@ -64,6 +64,9 @@ public: /* 타깃 관련 */
 
 	const _vector Get_TargetPosition() const;
 
+public: /* 충돌관련 */
+	virtual CCollider* Get_Collider(_uint iColliderIndex = 0);
+
 protected: /* 맵툴에선 굳이 넣어줄 필요가 없어서 그냥 이니셜라이즈에서 때려박는게 나은거 같기도 */
 	CTransform*  m_pTargetTransform = { nullptr };
 

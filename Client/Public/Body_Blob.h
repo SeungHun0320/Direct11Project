@@ -45,6 +45,9 @@ public:
 	virtual void  Set_TrackPosition(_float fTrackPosition) override;
 	virtual void  Set_Active(_bool isActive) override;
 
+public: /* 충돌 관련 */
+	virtual CCollider* Get_Collider(_uint iColliderIndex = 0) const override;
+
 private:
 	CCollider* m_pColliderCom[CT_END] = {nullptr};
 	CShader*   m_pShaderCom = { nullptr };

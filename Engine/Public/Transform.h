@@ -93,9 +93,11 @@ public:
 
 public:
 	void Apply_Sliding(const _float3& vSlide);
+	void Move(const _float3& vPos);
 
 public:
 	void Turn(_fvector vAxis, _float fTimeDelta);
+	void Turn(_float fX, _float fY, _float fZ);
 	void Rotation(_fvector vAxis, _float fRadian);
 	void Rotation(_float fX, _float fY, _float fZ);
 

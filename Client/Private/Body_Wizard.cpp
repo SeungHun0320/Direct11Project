@@ -111,6 +111,11 @@ void CBody_Wizard::Set_TrackPosition(_float fTrackPosition)
     m_pModelCom->Set_CurrnetTrackPosition(fTrackPosition);
 }
 
+CCollider* CBody_Wizard::Get_Collider(_uint iColliderIndex) const
+{
+    return m_pColliderCom;
+}
+
 HRESULT CBody_Wizard::Ready_Components(void* pArg)
 {
     DESC* pDesc = static_cast<DESC*>(pArg);

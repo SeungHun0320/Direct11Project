@@ -40,6 +40,9 @@ public:
 	virtual void Change_Animation(_uint iNextIndex, _bool isLoop = true, _float fBlendDuration = 0.f, _bool isBlend = true) override;
 	virtual void  Set_TrackPosition(_float fTrackPosition) override;
 
+public: /* 충돌 관련 */
+	virtual CCollider* Get_Collider(_uint iColliderIndex = 0) const override;
+
 protected:
 	CCollider* m_pColliderCom = { nullptr };
 	CShader* m_pShaderCom = { nullptr };

@@ -34,6 +34,10 @@ public:
 		m_isColl = false;
 	}
 
+	void Clear_SlidingVector() {
+		m_vSlidingVector = _float3(0.f, 0.f, 0.f);
+	}
+
 public:
 	virtual HRESULT Initialize_Prototype(COLLIDER eType);
 	virtual HRESULT Initialize(void* pArg) override;

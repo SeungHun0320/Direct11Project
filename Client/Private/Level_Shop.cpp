@@ -301,6 +301,9 @@ void CLevel_Shop::Check_Collision()
 #ifdef _DEBUG
 	m_pGameInstance->Reset_Colliders();
 #endif // _DEBUG
+	m_pGameInstance->Reset_SlidingVectors();
+
+
 }
 
 

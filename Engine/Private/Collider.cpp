@@ -96,7 +96,9 @@ _bool CCollider::Intersect(CCollider* pTargetCollider)
 	if (bNowColl &&
 		COLLIDER::AABB == m_eType &&
 		COLLIDER::AABB == pTargetCollider->m_eType)
+	{
 		m_vSlidingVector = m_pBounding->Compute_SlidingVector(pTargetCollider->m_pBounding);
+	}
 
 	m_isColl = m_isColl || bNowColl;
 

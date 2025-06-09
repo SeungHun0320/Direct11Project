@@ -51,7 +51,15 @@ HRESULT CBush::Render()
 
 void CBush::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
 {
+	COLLIDER_ID eColliderID = static_cast<COLLIDER_ID>(OtherColliderID);
 
+	switch (eColliderID)
+	{
+	case COLLIDER_ID::SWORD:
+		/* 나중에 바로 죽이지 말고 좀 머 어? 감사합니다. */
+		m_bDead = true;
+		break;
+	}
 }
 
 HRESULT CBush::Ready_Components(void* pArg)

@@ -50,6 +50,7 @@ LIFE CBaseActor::Update(_float fTimeDelta)
 
 void CBaseActor::Late_Update(_float fTimeDelta)
 {
+	m_isBlocked = false;
 	__super::Late_Update(fTimeDelta);
 }
 

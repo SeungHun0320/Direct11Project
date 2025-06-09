@@ -439,6 +439,10 @@ _vector CGameInstance::Get_CameraState(_uint iLevelIndex, const _wstring& strCam
 {
 	return m_pCamera_Manager->Get_CameraState(iLevelIndex, strCameraTag, eState);
 }
+void CGameInstance::Shake_Camera(_uint iLevelIndex, const _wstring& strCameraTag, _float fIntensity, _float fDuration, _float fShakeFreqPos, _float fShakeFreqRot)
+{
+	m_pCamera_Manager->Shake_Camera(iLevelIndex, strCameraTag, fIntensity, fDuration, fShakeFreqPos, fShakeFreqRot);
+}
 #pragma endregion
 
 
@@ -449,6 +453,11 @@ void CGameInstance::Reset_Colliders()
 	m_pCollider_Manager->Reset_Colliders();
 }
 #endif
+
+void CGameInstance::Reset_SlidingVectors()
+{
+	m_pCollider_Manager->Reset_SlidingVectors();
+}
 
 void CGameInstance::Delete_Collider(const CGameObject* pOwner)
 {

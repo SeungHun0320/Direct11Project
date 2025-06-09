@@ -143,6 +143,19 @@ void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
 	Set_State(STATE::LOOK, XMVector4Transform(Get_State(STATE::LOOK), RotationMatrix));
 }
 
+void CTransform::Turn(_float fX, _float fY, _float fZ)
+{
+	XMVECTOR vRight = Get_State(STATE::RIGHT);
+	XMVECTOR vUp = Get_State(STATE::UP);
+	XMVECTOR vLook = Get_State(STATE::LOOK);
+
+	XMVECTOR RotationMatrix = XMQuaternionRotationRollPitchYaw(fX, fY, fZ);
+
+	Set_State(STATE::RIGHT, XMVector3Rotate(vRight, RotationMatrix));
+	Set_State(STATE::UP, XMVector3Rotate(vUp, RotationMatrix));
+	Set_State(STATE::LOOK, XMVector3Rotate(vLook, RotationMatrix));
+}
+
 void CTransform::Rotation(_fvector vAxis, _float fRadian)
 {
 	_float3		vScaled = Get_Scaled();
@@ -189,7 +202,13 @@ void CTransform::Go_Dir(_fvector vDir, _float fTimeDelta)
 
 void CTransform::Apply_Sliding(const _float3& vSlide)
 {
-	Set_State(STATE::POSITION, Get_State(STATE::POSITION) + XMLoadFloat3(&vSlide));
+	if (XMVectorGetX(XMVector3Length(XMLoadFloat3(&vSlide))) > 0.001f)
+		Set_State(STATE::POSITION, Get_State(STATE::POSITION) + XMLoadFloat3(&vSlide));
+}
+
+void CTransform::Move(const _float3& vPos)
+{
+	Set_State(STATE::POSITION, Get_State(STATE::POSITION) + XMLoadFloat3(&vPos));
 }
 
 void CTransform::LookAt(_fvector vAt)

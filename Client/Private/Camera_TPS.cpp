@@ -96,7 +96,22 @@ void CCamera_TPS::Priority_Update(_float fTimeDelta)
 		break;
 	}
 
+	if (m_isShake)
+	{
+		Update_Camera_Shake(fTimeDelta);
+	}
+
+	m_pTransformCom->Move(m_vCurrentShakePos);
+	m_pTransformCom->Turn(XMConvertToRadians(m_vCurrentShakeRot.x), XMConvertToRadians(m_vCurrentShakeRot.y), XMConvertToRadians(m_vCurrentShakeRot.z));
+
 	__super::Bind_Matrices();
+
+	m_pTransformCom->Turn(XMConvertToRadians(-m_vCurrentShakeRot.x), XMConvertToRadians(-m_vCurrentShakeRot.y), XMConvertToRadians(-m_vCurrentShakeRot.z));
+
+	_vector vOffset = XMLoadFloat3(&m_vCurrentShakePos) * -1.f;
+	_float3 vInversOffset{};
+	XMStoreFloat3(&vInversOffset, vOffset);
+	m_pTransformCom->Move(vInversOffset);
 }
 
 LIFE CCamera_TPS::Update(_float fTimeDelta)

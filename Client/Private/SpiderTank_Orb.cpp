@@ -81,7 +81,23 @@ HRESULT CSpiderTank_Orb::Render()
 
 void CSpiderTank_Orb::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
 {
-	m_bDead = true;
+	COLLIDER_ID eColliderID = static_cast<COLLIDER_ID>(OtherColliderID);
+
+	switch (eColliderID)
+	{
+	case COLLIDER_ID::PLAYER:
+		m_bDead = true;
+		break;
+
+	case COLLIDER_ID::SPIDERTANK_HEAD:
+		m_bDead = true;
+		break;
+		
+	case COLLIDER_ID::SPIDERTANK_WEAK:
+		m_bDead = true;
+		break;
+	}
+
 }
 
 HRESULT CSpiderTank_Orb::Ready_Components(void* pArg)

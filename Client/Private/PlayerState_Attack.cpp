@@ -51,6 +51,8 @@ void CPlayerState_Attack1::Execute(_float fTimeDelta)
 {
     m_fTimeAcc += fTimeDelta;
 
+    _bool isBlocked = m_pOwner->Get_IsBlocked();
+
     if (m_pOwner->KeyDown(DIK_J))
         m_isAttackCombo = true;
 
@@ -77,8 +79,11 @@ void CPlayerState_Attack1::Execute(_float fTimeDelta)
                 m_pOwner->Change_States(CPlayer::STATES::IDLE);
             }
         }
-        else if(0.3f <= m_fTimeAcc)
-            m_pOwner->Go_Dir(XMLoadFloat3(&m_vInputDir), fTimeDelta, 1.5f);
+        else if (0.3f <= m_fTimeAcc)
+        {
+            if(!isBlocked)
+                m_pOwner->Go_Dir(XMLoadFloat3(&m_vInputDir), fTimeDelta, 1.5f);
+        }
     }
     else if (WEAPON_TYPE::SWORD == m_eWeaponType)
     {
@@ -101,7 +106,10 @@ void CPlayerState_Attack1::Execute(_float fTimeDelta)
             }
         }
         else if (0.3f <= m_fTimeAcc)
-            m_pOwner->Go_Dir(XMLoadFloat3(&m_vInputDir), fTimeDelta, 3.f);
+        {
+            if (!isBlocked)
+                m_pOwner->Go_Dir(XMLoadFloat3(&m_vInputDir), fTimeDelta, 3.f);
+        }
     }
     else if (WEAPON_TYPE::DAGGER == m_eWeaponType)
     {
@@ -119,7 +127,11 @@ void CPlayerState_Attack1::Execute(_float fTimeDelta)
             }
         }
         else if (0.3f <= m_fTimeAcc)
-            m_pOwner->Go_Dir(XMLoadFloat3(&m_vInputDir), fTimeDelta, 3.f);
+        {
+            if (!isBlocked)
+                m_pOwner->Go_Dir(XMLoadFloat3(&m_vInputDir), fTimeDelta, 3.f);
+        }
+
     }
 
 
@@ -192,10 +204,8 @@ void CPlayerState_Attack2::Enter(_float fTimeDelta)
 void CPlayerState_Attack2::Execute(_float fTimeDelta)
 {
     m_fTimeAcc += fTimeDelta;
-
-    if (m_pOwner->Get_Dead())
-        m_pOwner->Change_States(CPlayer::STATES::DIE);
-
+    
+    _bool isBlocked = m_pOwner->Get_IsBlocked();
 
     if (m_pOwner->KeyDown(DIK_J)) // m_fTimeAcc >= m_fDuration && 
         m_isAttackCombo = true;
@@ -221,7 +231,11 @@ void CPlayerState_Attack2::Execute(_float fTimeDelta)
             }
         }
         else if (0.3f <= m_fTimeAcc)
-            m_pOwner->Go_Dir(XMLoadFloat3(&m_vInputDir), fTimeDelta, 3.f);
+        {
+            if (!isBlocked)
+                m_pOwner->Go_Dir(XMLoadFloat3(&m_vInputDir), fTimeDelta, 3.f);
+        }
+
     }
     else if (WEAPON_TYPE::SWORD == m_eWeaponType)
     {
@@ -243,7 +257,10 @@ void CPlayerState_Attack2::Execute(_float fTimeDelta)
                 m_pOwner->Change_States(CPlayer::STATES::IDLE);
         }
         else if (0.3f <= m_fTimeAcc)
-            m_pOwner->Go_Dir(XMLoadFloat3(&m_vInputDir), fTimeDelta, 2.f);
+        {
+            if (!isBlocked)
+                m_pOwner->Go_Dir(XMLoadFloat3(&m_vInputDir), fTimeDelta, 2.f);
+        }
     }
 }
 
@@ -320,7 +337,11 @@ void CPlayerState_Attack3::Execute(_float fTimeDelta)
             }
         }
         else if (0.3f <= m_fTimeAcc)
-            m_pOwner->Go_Dir(XMLoadFloat3(&m_vInputDir), fTimeDelta, 7.5f);
+        {
+            if(!m_pOwner->Get_IsBlocked())
+                m_pOwner->Go_Dir(XMLoadFloat3(&m_vInputDir), fTimeDelta, 7.5f);
+        }
+
     }
 }
 

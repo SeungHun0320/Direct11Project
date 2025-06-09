@@ -58,6 +58,56 @@ HRESULT CCamera::Render()
     return S_OK;
 }
 
+void CCamera::Shake_Camera(_float fIntensity, _float fDuration, _float fShakeFreqPos, _float fShakeFreqRot)
+{
+	m_fShakeIntensity = fIntensity;
+	m_fShakeDuration = fDuration;
+	m_fShakeFreqPos = fShakeFreqPos;
+	m_fShakeFreqRot = fShakeFreqRot;
+
+	m_fShakeTime = 0.f;
+	m_isShake = true;
+
+	Update_Camera_Shake(0.f);
+}
+
+void CCamera::Update_Camera_Shake(_float fTimedelta)
+{
+	m_fShakeTime += fTimedelta;
+
+	if (m_fShakeTime >= m_fShakeDuration)
+	{
+		m_isShake = false;
+		m_vCurrentShakePos = { 0.f, 0.f, 0.f };
+		m_vCurrentShakeRot = { 0.f, 0.f, 0.f };
+		return;
+	}
+
+	// 2. 감쇠 적용
+	_float decay = 1.f - (m_fShakeTime / m_fShakeDuration);
+	_float shakeStrength = m_fShakeIntensity * decay;
+
+	_float t = m_fShakeTime;
+
+	// 3. 부드러운 위치 흔들림 (sin/cos 기반)
+	_float3 offsetPos = {
+		sin(t * m_fShakeFreqPos) * shakeStrength * 0.5f,
+		cos(t * m_fShakeFreqPos * 0.8f) * shakeStrength * 0.4f,
+		sin(t * m_fShakeFreqPos * 1.2f) * shakeStrength * 0.3f
+	};
+
+	// 4. 부드러운 회전 흔들림 (YawPitchRoll 순서 기준)
+	_float3 offsetRot = {
+		cos(t * m_fShakeFreqRot * 1.5f) * shakeStrength * 1.5f, // Pitch (X)
+		sin(t * m_fShakeFreqRot) * shakeStrength * 2.0f, // Yaw   (Y)
+		cos(t * m_fShakeFreqRot * 0.7f) * shakeStrength * 0.8f  // Roll  (Z)
+	};
+
+	// 5. 적용
+	m_vCurrentShakePos = offsetPos;
+	m_vCurrentShakeRot = offsetRot;
+}
+
 void CCamera::Bind_Matrices()
 {
     m_pGameInstance->Set_Transform(D3DTS::VIEW, m_pTransformCom->Get_WorldMatrix_Inverse());

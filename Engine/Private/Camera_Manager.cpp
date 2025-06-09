@@ -62,6 +62,15 @@ _vector CCamera_Manager::Get_CameraState(_uint iLevelIndex, const _wstring& strC
 	return pCameraTransform->Get_State(eState);
 }
 
+void CCamera_Manager::Shake_Camera(_uint iLevelIndex, const _wstring& strCameraTag, _float fIntensity, _float fDuration, _float fShakeFreqPos, _float fShakeFreqRot)
+{
+	CCamera* pCamera = Find_Camera(iLevelIndex, strCameraTag);
+	if (nullptr == pCamera)
+		return;
+
+	pCamera->Shake_Camera(fIntensity, fDuration, fShakeFreqPos, fShakeFreqRot);
+}
+
 void CCamera_Manager::Clear(_uint iLevelIndex)
 {
 	if (iLevelIndex >= m_iNumLevels)

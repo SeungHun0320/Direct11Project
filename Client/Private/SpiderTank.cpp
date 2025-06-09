@@ -359,10 +359,16 @@ void CSpiderTank::On_Hit(_float fDamage, _float fStaggerValue, _float fInvicible
 	{
 		if (0 >= m_fStaggerGage)
 		{
-			m_isStagger = true;
 			m_fInvicibleTime = 4.f;
 			m_fStaggerGage = m_fMaxStaggerGage;
+			m_isStagger = false;
 			Change_States(STATES::KNOCKBACK);
+		}
+		else if (m_fStaggerGage <= m_fMaxStaggerGage * 0.7f && !m_isStagger)
+		{
+			Change_States(STATES::PINCH);
+			m_isStagger = true;
+			m_fInvicibleTime = fInvicibleDuration;
 		}
 		else
 		{
@@ -370,7 +376,6 @@ void CSpiderTank::On_Hit(_float fDamage, _float fStaggerValue, _float fInvicible
 		}
 
 		m_isInvincible = true;
-		Change_States(STATES::PINCH);
 	}
 }
 
@@ -383,8 +388,6 @@ void CSpiderTank::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameO
 			On_Hit(pPlayer->Get_AttackValue(), pPlayer->Compute_StaggerValue());
 		}
 	}
-
-	cout << "±¸Ãæµ¹ " << endl;
 }
 
 HRESULT CSpiderTank::Ready_Components(void* pArg)

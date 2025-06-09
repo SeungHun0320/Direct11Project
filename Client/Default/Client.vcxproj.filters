@@ -163,35 +163,11 @@
     <Filter Include="02.GameObjects\01.BackGround\01.Sky">
       <UniqueIdentifier>{61ad6a7e-8b1f-40aa-b6d1-791ed8e8b648}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\08. Bullet">
-      <UniqueIdentifier>{11dec82b-3c18-4060-8509-a17eb0649034}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\08. Bullet\Monster_Bullet">
-      <UniqueIdentifier>{8118d390-521a-4127-b71f-a2a5e2a715ad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\08. Bullet\Monster_Bullet\SpiderTank_Bullet">
-      <UniqueIdentifier>{3f9f217f-02ba-4c43-8adb-14e5ff7e8739}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\08. Bullet\Monster_Bullet\SpiderTank_Bullet\SpiderTank_Orb">
-      <UniqueIdentifier>{6fbd672e-4e82-4602-bd80-1008054f24cf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\08. Bullet\Monster_Bullet\SpiderTank_Bullet\SpiderTank_Bullet">
-      <UniqueIdentifier>{96ef8008-4030-4f1d-8d2e-860dc8c5c8bc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\02.Camera\Camera_CutScene">
       <UniqueIdentifier>{5676f453-d74f-4938-9b07-9f9821224c97}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\05.Environment_Objects\Body">
       <UniqueIdentifier>{706e1dd6-fdeb-450f-9ed5-4a5b324d066e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\08. Bullet\Monster_Bullet\AOE">
-      <UniqueIdentifier>{c4583f94-c4b6-4e0c-82ce-10e48078896c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\08. Bullet\Monster_Bullet\AOE\Wizard_Support_AOE">
-      <UniqueIdentifier>{271a6fa9-c1e0-41a8-a6f8-063d041af411}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\08. Bullet\Monster_Bullet\SpiderTank_Bullet\SpiderTank_Lager">
-      <UniqueIdentifier>{b514cfb1-0800-433d-82b6-29278d9e79ef}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\03.Actor">
       <UniqueIdentifier>{39011a95-0efb-4f13-b750-fb89c5b9672f}</UniqueIdentifier>
@@ -354,6 +330,33 @@
     </Filter>
     <Filter Include="02.GameObjects\03.Actor\Player\Part\Weapon">
       <UniqueIdentifier>{18702f0a-a4ac-44c0-97b7-a8b65d047a6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Bullet">
+      <UniqueIdentifier>{11dec82b-3c18-4060-8509-a17eb0649034}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Bullet\Monster_Bullet">
+      <UniqueIdentifier>{8118d390-521a-4127-b71f-a2a5e2a715ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Bullet\Monster_Bullet\SpiderTank_Bullet">
+      <UniqueIdentifier>{3f9f217f-02ba-4c43-8adb-14e5ff7e8739}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Bullet\Monster_Bullet\SpiderTank_Bullet\SpiderTank_Orb">
+      <UniqueIdentifier>{6fbd672e-4e82-4602-bd80-1008054f24cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Bullet\Monster_Bullet\SpiderTank_Bullet\SpiderTank_Bullet">
+      <UniqueIdentifier>{96ef8008-4030-4f1d-8d2e-860dc8c5c8bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Bullet\Monster_Bullet\SpiderTank_Bullet\SpiderTank_Lager">
+      <UniqueIdentifier>{b514cfb1-0800-433d-82b6-29278d9e79ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Bullet\Monster_Bullet\AOE">
+      <UniqueIdentifier>{c4583f94-c4b6-4e0c-82ce-10e48078896c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Bullet\Monster_Bullet\AOE\Wizard_Support_AOE">
+      <UniqueIdentifier>{271a6fa9-c1e0-41a8-a6f8-063d041af411}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96.Tools\01.NavigationTool">
+      <UniqueIdentifier>{d72c8380-6195-4931-b418-dde7fdc6e95a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -580,16 +583,16 @@
       <Filter>02.GameObjects\03.Actor\Monsters\00. Boss\SpiderTank\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Bullet.h">
-      <Filter>02.GameObjects\08. Bullet</Filter>
+      <Filter>02.GameObjects\08.Bullet</Filter>
     </ClInclude>
     <ClInclude Include="..\public\SpiderTank_Orb.h">
-      <Filter>02.GameObjects\08. Bullet\Monster_Bullet\SpiderTank_Bullet\SpiderTank_Orb</Filter>
+      <Filter>02.GameObjects\08.Bullet\Monster_Bullet\SpiderTank_Bullet\SpiderTank_Orb</Filter>
     </ClInclude>
     <ClInclude Include="..\public\SpiderTank_Bullet.h">
-      <Filter>02.GameObjects\08. Bullet\Monster_Bullet\SpiderTank_Bullet\SpiderTank_Bullet</Filter>
+      <Filter>02.GameObjects\08.Bullet\Monster_Bullet\SpiderTank_Bullet\SpiderTank_Bullet</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Monster_Bullet.h">
-      <Filter>02.GameObjects\08. Bullet\Monster_Bullet</Filter>
+      <Filter>02.GameObjects\08.Bullet\Monster_Bullet</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Camera_CutScene.h">
       <Filter>02.GameObjects\02.Camera\Camera_CutScene</Filter>
@@ -616,13 +619,13 @@
       <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Wizard_Support_AOE.h">
-      <Filter>02.GameObjects\08. Bullet\Monster_Bullet\AOE\Wizard_Support_AOE</Filter>
+      <Filter>02.GameObjects\08.Bullet\Monster_Bullet\AOE\Wizard_Support_AOE</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Monster_Bullet_AOE.h">
-      <Filter>02.GameObjects\08. Bullet\Monster_Bullet\AOE</Filter>
+      <Filter>02.GameObjects\08.Bullet\Monster_Bullet\AOE</Filter>
     </ClInclude>
     <ClInclude Include="..\public\SpiderTank_Lager.h">
-      <Filter>02.GameObjects\08. Bullet\Monster_Bullet\SpiderTank_Bullet\SpiderTank_Lager</Filter>
+      <Filter>02.GameObjects\08.Bullet\Monster_Bullet\SpiderTank_Bullet\SpiderTank_Lager</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BaseActor.h">
       <Filter>02.GameObjects\03.Actor</Filter>
@@ -901,16 +904,16 @@
       <Filter>02.GameObjects\03.Actor\Monsters\00. Boss\SpiderTank\State\Hit</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Bullet.cpp">
-      <Filter>02.GameObjects\08. Bullet</Filter>
+      <Filter>02.GameObjects\08.Bullet</Filter>
     </ClCompile>
     <ClCompile Include="..\private\SpiderTank_Orb.cpp">
-      <Filter>02.GameObjects\08. Bullet\Monster_Bullet\SpiderTank_Bullet\SpiderTank_Orb</Filter>
+      <Filter>02.GameObjects\08.Bullet\Monster_Bullet\SpiderTank_Bullet\SpiderTank_Orb</Filter>
     </ClCompile>
     <ClCompile Include="..\private\SpiderTank_Bullet.cpp">
-      <Filter>02.GameObjects\08. Bullet\Monster_Bullet\SpiderTank_Bullet\SpiderTank_Bullet</Filter>
+      <Filter>02.GameObjects\08.Bullet\Monster_Bullet\SpiderTank_Bullet\SpiderTank_Bullet</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Monster_Bullet.cpp">
-      <Filter>02.GameObjects\08. Bullet\Monster_Bullet</Filter>
+      <Filter>02.GameObjects\08.Bullet\Monster_Bullet</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Camera_CutScene.cpp">
       <Filter>02.GameObjects\02.Camera\Camera_CutScene</Filter>
@@ -931,13 +934,13 @@
       <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Wizard_Support_AOE.cpp">
-      <Filter>02.GameObjects\08. Bullet\Monster_Bullet\AOE\Wizard_Support_AOE</Filter>
+      <Filter>02.GameObjects\08.Bullet\Monster_Bullet\AOE\Wizard_Support_AOE</Filter>
     </ClCompile>
     <ClCompile Include="..\private\SpiderTank_Lager.cpp">
-      <Filter>02.GameObjects\08. Bullet\Monster_Bullet\SpiderTank_Bullet\SpiderTank_Lager</Filter>
+      <Filter>02.GameObjects\08.Bullet\Monster_Bullet\SpiderTank_Bullet\SpiderTank_Lager</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Monster_Bullet_AOE.cpp">
-      <Filter>02.GameObjects\08. Bullet\Monster_Bullet\AOE</Filter>
+      <Filter>02.GameObjects\08.Bullet\Monster_Bullet\AOE</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Weapon_Player.cpp">
       <Filter>02.GameObjects\03.Actor\Player\Part\Weapon</Filter>

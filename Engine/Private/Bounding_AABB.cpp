@@ -61,24 +61,28 @@ _float3 CBounding_AABB::Compute_SlidingVector(CBounding* pTarget)
 
 	const BoundingBox* pTargetAABB = static_cast<CBounding_AABB*>(pTarget)->Get_Desc();
 
-	_float3 delta = {
-	m_pDesc->Center.x - pTargetAABB->Center.x,
-	m_pDesc->Center.y - pTargetAABB->Center.y,
-	m_pDesc->Center.z - pTargetAABB->Center.z
+	_float3 vDelta = {
+		m_pDesc->Center.x - pTargetAABB->Center.x,
+		m_pDesc->Center.y - pTargetAABB->Center.y,
+		m_pDesc->Center.z - pTargetAABB->Center.z
 	};
 
-	_float3 overlap = {
-		(m_pDesc->Extents.x + pTargetAABB->Extents.x) - fabsf(delta.x),
-		(m_pDesc->Extents.y + pTargetAABB->Extents.y) - fabsf(delta.y),
-		(m_pDesc->Extents.z + pTargetAABB->Extents.z) - fabsf(delta.z)
+	_float3 vOverlap = {
+		(m_pDesc->Extents.x + pTargetAABB->Extents.x) - fabsf(vDelta.x),
+		(m_pDesc->Extents.y + pTargetAABB->Extents.y) - fabsf(vDelta.y),
+		(m_pDesc->Extents.z + pTargetAABB->Extents.z) - fabsf(vDelta.z)
 	};
 
-	if (overlap.x < overlap.y && overlap.x < overlap.z)
-		vSlidingVector.x = (delta.x < 0.f ? -overlap.x : overlap.x);
-	else if (overlap.y < overlap.z)
-		vSlidingVector.y = (delta.y < 0.f ? -overlap.y : overlap.y);
+	// 가장 겹친 축이 작은 방향으로만 이동
+	if (vOverlap.x < vOverlap.y && vOverlap.x < vOverlap.z)
+		vSlidingVector.x = (vDelta.x < 0.f ? -vOverlap.x : vOverlap.x);
+	else if (vOverlap.y < vOverlap.z)
+		vSlidingVector.y = (vDelta.y < 0.f ? -vOverlap.y : vOverlap.y);
 	else
-		vSlidingVector.z = (delta.z < 0.f ? -overlap.z : overlap.z);
+		vSlidingVector.z = (vDelta.z < 0.f ? -vOverlap.z : vOverlap.z);
+
+	if (abs(vOverlap.x) < 0.001f && abs(vOverlap.y) < 0.001f && abs(vOverlap.z) < 0.001f)
+		return _float3(0.f, 0.f, 0.f);
 
 	return vSlidingVector;
 }

@@ -120,12 +120,14 @@ public:
 	HRESULT Add_Camera(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strCameraTag);
 	void    Set_CameraMode(_uint iLevelIndex, const _wstring& strCameraTag, _uint iModeIndex);
 	_vector Get_CameraState(_uint iLevelIndex, const _wstring& strCameraTag, STATE eState);
+	void Shake_Camera(_uint iLevelIndex, const _wstring& strCameraTag, _float fIntensity = 1.f, _float fDuration = 1.f, _float fShakeFreqPos = 100.f, _float fShakeFreqRot = 40.f);
 #pragma endregion
 
 #pragma region COLLIDER_MANAGER
 #ifdef _DEBUG
 	void Reset_Colliders();
 #endif // _DEBUG
+	void Reset_SlidingVectors();
 	void Delete_Collider(const class CGameObject* pOwner);
 	void Clear_Colliders();
 	HRESULT Add_Collider(class CCollider* pCollider, _uint iColliderGroupID);

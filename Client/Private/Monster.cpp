@@ -1,7 +1,7 @@
 #include "Monster.h"
 
 #include "GameInstance.h"
-
+#include "PartObject.h"
 
 #include "Player.h"
 
@@ -85,14 +85,30 @@ const _vector CMonster::Get_TargetPosition() const
 	return XMVectorSet(FLT_MAX, FLT_MAX, FLT_MAX, 1.f);
 }
 
+CCollider* CMonster::Get_Collider(_uint iColliderIndex)
+{
+	/* 무조건 첫번째에는 바디가 들어간다는 전제하에 쓰는 코드,, 아 진짜 에바네 이거 진짜 에바네 진짜 에바네*/
+	return m_PartObjects[0]->Get_Collider(iColliderIndex);
+}
+
 void CMonster::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
 {
-	if (CI_MONSTER(static_cast<COLLIDER_ID>(OtherColliderID)))
+	COLLIDER_ID eColliderID = static_cast<COLLIDER_ID>(OtherColliderID);
+
+	if (CI_WEAPON(eColliderID))
+		m_pGameInstance->Shake_Camera(ENUM_CLASS(m_eLevelID), TEXT("Camera_TPS"), 0.15f, 0.15f);
+
+	if (CI_MONSTER(eColliderID))
 	{
-		// 밀어낸다.
+		CCollider* pCollider = Get_Collider();
+		if (nullptr == pCollider)
+			return;
+
+		m_pTransformCom->Apply_Sliding(pCollider->Get_SlidingVector());
+		m_isBlocked = true;
 	}
 
-	switch (static_cast<COLLIDER_ID>(OtherColliderID))
+	switch (eColliderID)
 	{	
 	case COLLIDER_ID::BUSH:
 		// 밀어낸다

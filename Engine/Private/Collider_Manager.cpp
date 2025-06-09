@@ -35,6 +35,18 @@ void CCollider_Manager::Delete_Collider(const CGameObject* pOwner)
     }
 }
 
+void CCollider_Manager::Reset_SlidingVectors()
+{
+    for (_uint i = 0; i < m_iNumGroups; ++i)
+    {
+        for (auto& pCollider : m_pColliders[i])
+        {
+            if (nullptr != pCollider && pCollider->Get_IsActive())
+                pCollider->Clear_SlidingVector();
+        }
+    }
+}
+
 #ifdef _DEBUG
 void CCollider_Manager::Reset_Colliders()
 {
