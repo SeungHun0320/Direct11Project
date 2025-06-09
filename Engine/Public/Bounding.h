@@ -38,6 +38,7 @@ public:
 	virtual HRESULT Initialize(const CBounding::DESC* pDesc);
 	virtual void Update(_fmatrix WorldMatrix) PURE;
 	virtual _bool Intersect(CBounding* pTarget) PURE;
+	virtual _float3 Compute_SlidingVector(CBounding* pTarget) PURE;
 
 #ifdef _DEBUG
 public:

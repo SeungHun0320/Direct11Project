@@ -1,6 +1,11 @@
 #pragma once
 #include "BaseActor.h"
 
+BEGIN(Engine)
+class CCollider;
+END
+
+
 BEGIN(Client)
 
 class CPlayer final : public CBaseActor
@@ -91,6 +96,7 @@ public: /* 상태로 넘겨줄 함수들 */
 	/* 충돌 관련 */
 	void Set_Active(PART ePart, _bool isActive = true);
 	void Set_Active(WEAPON_TYPE eType, _bool isActive = true);
+	CCollider* Get_Collider(PART ePart, _uint iColliderIndex = 0);
 
 	/* 이동 관련 */
 	void  Dodge(_fvector vDir,_float fTimeDelta, _float fSpeed);

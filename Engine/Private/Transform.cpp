@@ -187,6 +187,11 @@ void CTransform::Go_Dir(_fvector vDir, _float fTimeDelta)
 	Set_State(STATE::POSITION, vPosition);
 }
 
+void CTransform::Apply_Sliding(const _float3& vSlide)
+{
+	Set_State(STATE::POSITION, Get_State(STATE::POSITION) + XMLoadFloat3(&vSlide));
+}
+
 void CTransform::LookAt(_fvector vAt)
 {
 	_float3		vScaled = Get_Scaled();

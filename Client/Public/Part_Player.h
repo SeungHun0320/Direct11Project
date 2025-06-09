@@ -47,6 +47,7 @@ public:
 
 public:
 	virtual void Set_Active(_bool isActive);
+	virtual CCollider* Get_Collider(_uint iColliderIndex = 0) const override;
 
 
 protected:

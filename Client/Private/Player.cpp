@@ -217,6 +217,11 @@ void CPlayer::Set_Active(WEAPON_TYPE eType, _bool isActive)
 	m_pWeaponPart->Set_Active(eType, isActive);
 }
 
+CCollider* CPlayer::Get_Collider(PART ePart, _uint iColliderIndex)
+{
+	return m_PartObjects[ePart]->Get_Collider(iColliderIndex);
+}
+
 void CPlayer::Dodge(_fvector vDir, _float fTimeDelta, _float fSpeed)
 {
 	m_pTransformCom->Set_SpeedPerSec(fSpeed);
@@ -517,7 +522,12 @@ void CPlayer::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObjec
 
 	if (CI_MONSTER(eColliderID))
 	{
-		// 밀어낸다.
+		CCollider* pCollider = Get_Collider(PART_BODY);
+		if (nullptr == pCollider)
+			return;
+
+		m_pTransformCom->Apply_Sliding(pCollider->Get_SlidingVector());
+		m_isBlocked = true;
 	}
 
 	if (CI_MONSTER_ATTACK(eColliderID))
@@ -539,7 +549,14 @@ void CPlayer::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObjec
 	switch (eColliderID)
 	{
 	case COLLIDER_ID::BUSH:
-		// 밀어낸다.
+	{
+		CCollider* pCollider = Get_Collider(PART_BODY);
+		if (nullptr == pCollider)
+			break;
+
+		m_pTransformCom->Apply_Sliding(pCollider->Get_SlidingVector());
+		m_isBlocked = true;
+	}
 		break;
 	default:
 		break;

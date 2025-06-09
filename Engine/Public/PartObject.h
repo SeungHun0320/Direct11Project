@@ -32,12 +32,14 @@ public: /* 애니메이션 */
 	virtual void Change_Animation(_uint iNextIndex, _bool isLoop, _float fBlendDuration, _bool isBlend) {};
 	virtual void Set_MeshVisible(_uint iIndex, _bool IsVisible) {};
 	virtual void Set_TrackPosition(_float fTrackPosition) {};
+
 	/* 뼈매트릭스 갖고오기 */
 	virtual const _float4x4* Get_BoneMatrix(const _string& strBoneName) const { return nullptr; };
 
 public: /* 콜라이더 */
 	virtual void Set_Active(_bool isActive = true) {};
-	
+	virtual class CCollider* Get_Collider(_uint iColliderIndex = 0) const { return nullptr; };
+
 protected:
 	const _float4x4* m_pParentMatrix = { nullptr };
 	_float4x4		 m_CombinedWorldMatrix{};

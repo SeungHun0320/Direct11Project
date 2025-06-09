@@ -120,6 +120,11 @@ void CPart_Player::Set_Active(_bool isActive)
     m_pColliderCom->Set_Active(isActive);
 }
 
+CCollider* CPart_Player::Get_Collider(_uint iColliderIndex) const
+{
+    return m_pColliderCom;
+}
+
 HRESULT CPart_Player::Ready_Components(void* pArg)
 {
     /* For.Com_Shader */

@@ -3,8 +3,6 @@
 #include "Client_Defines.h"
 #include "ContainerObject.h"
 
-
-
 BEGIN(Client)
 
 class CEnvironment_Object abstract : public CContainerObject
@@ -30,6 +28,9 @@ public:
 	virtual LIFE Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
+
+public:
+	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner);
 
 protected:
 	LEVEL m_eLevelID = { LEVEL::LEVEL_END };

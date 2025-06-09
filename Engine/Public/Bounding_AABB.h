@@ -25,7 +25,7 @@ public:
 	virtual HRESULT Initialize(const CBounding::DESC* pDesc) override;
 	virtual void Update(_fmatrix WorldMatrix) override;
 	virtual _bool Intersect(CBounding* pTarget) override;
-
+	virtual _float3 Compute_SlidingVector(CBounding* pTarget) override;
 
 
 #ifdef _DEBUG

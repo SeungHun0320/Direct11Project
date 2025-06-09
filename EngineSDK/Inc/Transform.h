@@ -89,10 +89,15 @@ public:
 	void Go_Target(_fvector vTarget, _float fTimeDelta, _float fMinDistance);
 	void Go_Up(_float fTimeDelta);
 	void Go_Down(_float fTimeDelta);
+	void Go_Dir(_fvector vDir, _float fTimeDelta);
+
+public:
+	void Apply_Sliding(const _float3& vSlide);
+
+public:
 	void Turn(_fvector vAxis, _float fTimeDelta);
 	void Rotation(_fvector vAxis, _float fRadian);
 	void Rotation(_float fX, _float fY, _float fZ);
-	void Go_Dir(_fvector vDir, _float fTimeDelta);
 
 public:
 	void LookAt(_fvector vAt);

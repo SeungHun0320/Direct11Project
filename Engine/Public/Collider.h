@@ -26,6 +26,10 @@ public:
 		m_isActive = IsActive;
 	}
 
+	_float3 Get_SlidingVector() {
+		return m_vSlidingVector;
+	}
+
 	void Reset_Collsion() {
 		m_isColl = false;
 	}
@@ -50,7 +54,7 @@ private:
 private:
 	class CGameObject* m_pOwner = { nullptr };
 	_uint m_iColliderID = {};
-
+	_float3 m_vSlidingVector = {};
 
 #ifdef _DEBUG
 private:	/* 그리기용으로 만든 친구들 */

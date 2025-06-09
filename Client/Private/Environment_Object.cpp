@@ -1,6 +1,7 @@
 #include "Environment_Object.h"
 
 #include "GameInstance.h"
+#include "PartObject.h"
 
 CEnvironment_Object::CEnvironment_Object(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CContainerObject{ pDevice, pContext }
@@ -53,6 +54,10 @@ void CEnvironment_Object::Late_Update(_float fTimeDelta)
 HRESULT CEnvironment_Object::Render()
 {
 	return S_OK;
+}
+
+void CEnvironment_Object::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
+{
 }
 
 HRESULT CEnvironment_Object::Ready_Components(void* pArg)

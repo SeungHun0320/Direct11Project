@@ -51,7 +51,7 @@ HRESULT CBush::Render()
 
 void CBush::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
 {
-	cout << "부쉬 개같이 성공\n";
+
 }
 
 HRESULT CBush::Ready_Components(void* pArg)

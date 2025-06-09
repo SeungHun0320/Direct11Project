@@ -46,6 +46,11 @@ public: /* 피격 관련 */
 		return m_isStagger;
 	}
 
+public: /* 충돌 관련 */
+	_bool Get_IsBlocked() const {
+		return m_isBlocked;
+	}
+
 protected:
 	LEVEL m_eLevelID = { LEVEL::LEVEL_END };
 
@@ -66,6 +71,9 @@ protected: /* 그로기 */
 	_float m_fStaggerGage = {};
 	_float m_fMaxStaggerGage = {};
 	_bool  m_isStagger = { false };
+
+protected: /* 충돌 관련 */
+	_bool  m_isBlocked = { false };
 
 protected:
 	void Update_InvicibleTime(_float fTimeDelta);

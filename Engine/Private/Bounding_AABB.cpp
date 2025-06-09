@@ -42,7 +42,6 @@ _bool CBounding_AABB::Intersect(CBounding* pTarget)
 	{
 	case COLLIDER::AABB:
 		isColl = m_pDesc->Intersects(*static_cast<CBounding_AABB*>(pTarget)->Get_Desc());
-		//isColl = Intersect_ToAABB(pTarget);
 		break;
 	case COLLIDER::OBB:
 		isColl = m_pDesc->Intersects(*static_cast<CBounding_OBB*>(pTarget)->Get_Desc());
@@ -54,6 +53,34 @@ _bool CBounding_AABB::Intersect(CBounding* pTarget)
 	}
 
 	return isColl;
+}
+
+_float3 CBounding_AABB::Compute_SlidingVector(CBounding* pTarget)
+{
+	_float3 vSlidingVector = {};
+
+	const BoundingBox* pTargetAABB = static_cast<CBounding_AABB*>(pTarget)->Get_Desc();
+
+	_float3 delta = {
+	m_pDesc->Center.x - pTargetAABB->Center.x,
+	m_pDesc->Center.y - pTargetAABB->Center.y,
+	m_pDesc->Center.z - pTargetAABB->Center.z
+	};
+
+	_float3 overlap = {
+		(m_pDesc->Extents.x + pTargetAABB->Extents.x) - fabsf(delta.x),
+		(m_pDesc->Extents.y + pTargetAABB->Extents.y) - fabsf(delta.y),
+		(m_pDesc->Extents.z + pTargetAABB->Extents.z) - fabsf(delta.z)
+	};
+
+	if (overlap.x < overlap.y && overlap.x < overlap.z)
+		vSlidingVector.x = (delta.x < 0.f ? -overlap.x : overlap.x);
+	else if (overlap.y < overlap.z)
+		vSlidingVector.y = (delta.y < 0.f ? -overlap.y : overlap.y);
+	else
+		vSlidingVector.z = (delta.z < 0.f ? -overlap.z : overlap.z);
+
+	return vSlidingVector;
 }
 
 #ifdef _DEBUG

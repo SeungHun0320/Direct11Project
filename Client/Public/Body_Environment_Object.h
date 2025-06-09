@@ -9,6 +9,8 @@ class CShader;
 class CModel;
 END
 
+BEGIN(Client)
+
 class CBody_Environment_Object abstract : public CPartObject
 {
 public:
@@ -47,3 +49,4 @@ public:
 	virtual void Free();
 };
 
+END

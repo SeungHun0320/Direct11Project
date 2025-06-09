@@ -53,6 +53,11 @@ _bool CBounding_OBB::Intersect(CBounding* pTarget)
 	return isColl;
 }
 
+_float3 CBounding_OBB::Compute_SlidingVector(CBounding* pTarget)
+{
+	return _float3();
+}
+
 #ifdef _DEBUG
 
 HRESULT CBounding_OBB::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvector vColor)
