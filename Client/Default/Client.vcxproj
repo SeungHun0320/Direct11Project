@@ -212,6 +212,7 @@
     <ClInclude Include="..\public\BaseActor.h" />
     <ClInclude Include="..\public\Player.h" />
     <ClInclude Include="..\Public\PlayerState.h" />
+    <ClInclude Include="..\public\Player_HPBar.h" />
     <ClInclude Include="..\Public\Player_IAttackStrategy.h" />
     <ClInclude Include="..\public\SpiderTank_Lager.h" />
     <ClInclude Include="..\public\Weapon_Player.h" />
@@ -317,6 +318,7 @@
     <ClCompile Include="..\Private\PlayerState_Idle.cpp" />
     <ClCompile Include="..\Private\PlayerState_Move.cpp" />
     <ClCompile Include="..\Private\PlayerState_Sprint.cpp" />
+    <ClCompile Include="..\private\Player_HPBar.cpp" />
     <ClCompile Include="..\Private\Player_IAttackStrategy.cpp" />
     <ClCompile Include="..\private\Potion.cpp" />
     <ClCompile Include="..\private\Shop.cpp" />

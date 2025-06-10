@@ -36,7 +36,6 @@ namespace Engine
 		XMFLOAT4			vPosition;
 		/* 점광원의 거리 */
 		float				fRange;
-
 		/* 빛의 색상 */
 		XMFLOAT4			vDiffuse;
 		/* 확산광? */
@@ -46,6 +45,13 @@ namespace Engine
 	}LIGHT_DESC;
 
 	/* 화면에 그려야하는 최종적인 색 = Light.Diffuse * 재질.Diffuse */
+	typedef struct ENGINE_DLL tagVertexPosition
+	{
+		XMFLOAT3		vPosition;
+
+		static const unsigned int					iNumElements = { 1 };
+		static const D3D11_INPUT_ELEMENT_DESC		Elements[iNumElements];
+	}VTXPOS;
 
 	typedef struct ENGINE_DLL tagVertexPositionTexcoord
 	{

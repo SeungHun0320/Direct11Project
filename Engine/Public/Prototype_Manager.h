@@ -3,6 +3,8 @@
 #include "VIBuffer_Terrain.h"
 #include "VIBuffer_Cube.h"
 #include "VIBuffer_Rect.h"
+#include "VIBuffer_Cell.h"
+#include "Navigation.h"
 #include "Transform.h"
 #include "Collider.h"
 #include "Texture.h"

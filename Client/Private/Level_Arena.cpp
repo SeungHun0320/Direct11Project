@@ -184,7 +184,7 @@ HRESULT CLevel_Arena::Ready_Layer_BackGround(const _wstring& strLayerTag)
 
 HRESULT CLevel_Arena::Load_Map(const _wstring& strMapFileTag)
 {
-	ifstream LoadFile(TEXT("../bin/Resources/MapData/") + strMapFileTag, ios::binary);
+	ifstream LoadFile(TEXT("../bin/DataFiles/MapData/") + strMapFileTag, ios::binary);
 
 	if (!LoadFile.is_open())
 	{

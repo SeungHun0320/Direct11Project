@@ -133,9 +133,6 @@
     <Filter Include="96.Tools">
       <UniqueIdentifier>{7812b788-45ee-4a11-b8cc-777b8842ec37}</UniqueIdentifier>
     </Filter>
-    <Filter Include="96.Tools\00. MapTool">
-      <UniqueIdentifier>{ae8c8b7d-fa3f-4ba0-b00a-d9b3ca93886a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\05.Environment_Objects\00.Grass\Body">
       <UniqueIdentifier>{91a919f0-fb8c-48af-80d9-29e0eb10dba7}</UniqueIdentifier>
     </Filter>
@@ -358,6 +355,9 @@
     <Filter Include="96.Tools\01.NavigationTool">
       <UniqueIdentifier>{d72c8380-6195-4931-b418-dde7fdc6e95a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="96.Tools\00.MapTool">
+      <UniqueIdentifier>{ae8c8b7d-fa3f-4ba0-b00a-d9b3ca93886a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -460,7 +460,7 @@
       <Filter>96.Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\public\MapTool.h">
-      <Filter>96.Tools\00. MapTool</Filter>
+      <Filter>96.Tools\00.MapTool</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Arena.h">
       <Filter>02.GameObjects\04.Map\02.Arena</Filter>
@@ -630,6 +630,7 @@
     <ClInclude Include="..\public\BaseActor.h">
       <Filter>02.GameObjects\03.Actor</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Player_HPBar.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -721,7 +722,7 @@
       <Filter>96.Tools</Filter>
     </ClCompile>
     <ClCompile Include="..\private\MapTool.cpp">
-      <Filter>96.Tools\00. MapTool</Filter>
+      <Filter>96.Tools\00.MapTool</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Arena.cpp">
       <Filter>02.GameObjects\04.Map\02.Arena</Filter>
@@ -948,6 +949,7 @@
     <ClCompile Include="..\private\BaseActor.cpp">
       <Filter>02.GameObjects\03.Actor</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\Player_HPBar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">

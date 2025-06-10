@@ -52,9 +52,6 @@
     <ClInclude Include="..\Public\Layer.h">
       <Filter>01.Utility\03.GameObject\Manager\Layer</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\UIObject.h">
-      <Filter>01.Utility\03.GameObject\Objects\UIObject</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Renderer.h">
       <Filter>01.Utility\05.Renderer</Filter>
     </ClInclude>
@@ -163,6 +160,21 @@
     <ClInclude Include="..\public\Collider_Manager.h">
       <Filter>01.Utility\04.Components\Collider\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Navigation.h">
+      <Filter>01.Utility\04.Components\Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Cell.h">
+      <Filter>01.Utility\04.Components\Navigation\Cell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Cell.h">
+      <Filter>01.Utility\04.Components\VIBuffer\Cell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UIObject.h">
+      <Filter>01.Utility\03.GameObject\Objects\UIObject\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UIObject_3D.h">
+      <Filter>01.Utility\03.GameObject\Objects\UIObject\3D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Timer.cpp">
@@ -200,9 +212,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\Layer.cpp">
       <Filter>01.Utility\03.GameObject\Manager\Layer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\UIObject.cpp">
-      <Filter>01.Utility\03.GameObject\Objects\UIObject</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Renderer.cpp">
       <Filter>01.Utility\05.Renderer</Filter>
@@ -311,6 +320,21 @@
     </ClCompile>
     <ClCompile Include="..\private\Collider_Manager.cpp">
       <Filter>01.Utility\04.Components\Collider\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Navigation.cpp">
+      <Filter>01.Utility\04.Components\Navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Cell.cpp">
+      <Filter>01.Utility\04.Components\Navigation\Cell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Cell.cpp">
+      <Filter>01.Utility\04.Components\VIBuffer\Cell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UIObject.cpp">
+      <Filter>01.Utility\03.GameObject\Objects\UIObject\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UIObject_3D.cpp">
+      <Filter>01.Utility\03.GameObject\Objects\UIObject\3D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -485,10 +509,30 @@
     <Filter Include="01.Utility\04.Components\Collider\Manager">
       <UniqueIdentifier>{8cc335e6-bdf4-4fc6-9adc-b3faf74ea161}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\04.Components\Navigation">
+      <UniqueIdentifier>{5c485b81-5195-4194-9e41-b367e3096a5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\Navigation\Cell">
+      <UniqueIdentifier>{8f3864c0-bf9b-4c2b-837a-69c2d059f08b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\VIBuffer\Cell">
+      <UniqueIdentifier>{cc08865c-daab-4bbc-ba06-8dc6b4b19282}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.GameObject\Objects\UIObject\2D">
+      <UniqueIdentifier>{1eef6ece-f18c-4528-8b98-54d51624b66a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.GameObject\Objects\UIObject\3D">
+      <UniqueIdentifier>{11eecd20-3ab5-44c5-af3d-d54111722db5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Bin\ShaderFiles\Engine_Shader_Defines.hlsli">
       <Filter>01.Utility\98.ShaderFiles</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Cell.hlsl">
+      <Filter>01.Utility\98.ShaderFiles</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

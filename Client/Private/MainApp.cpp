@@ -64,6 +64,20 @@ HRESULT CMainApp::Initialize()
 void CMainApp::Update(_float fTimeDelta)
 {
 	m_pGameInstance->Update_Engine(fTimeDelta);
+
+	m_fTimeAcc += fTimeDelta;
+
+
+	++m_iFPS;
+
+	if (m_fTimeAcc > 1.0f)
+	{
+		wsprintf(m_szFPS, TEXT("FPS: %d"), m_iFPS);
+
+		m_fTimeAcc = 0.f;
+		m_iFPS = 0;
+	}
+
 }
 
 HRESULT CMainApp::Render()
@@ -72,11 +86,9 @@ HRESULT CMainApp::Render()
 
 	m_pGameInstance->Draw();
 
-	//m_pGameInstance->Draw_Font(TEXT("Font_Money"), TEXT("배가 고파요"), _float2(0.f, 0.f), XMVectorSet(1.f, 0.f, 0.f, 1.f));
+	m_pGameInstance->Draw_Font(TEXT("Font_Money"), m_szFPS, _float2(0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
 
 	m_pGameInstance->End_Draw();
-
-
     return S_OK;
 }
 

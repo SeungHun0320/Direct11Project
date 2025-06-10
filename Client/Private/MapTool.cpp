@@ -324,13 +324,13 @@ void CMapTool::File_Menu()
 				if (m_strMapFileTag.empty())
 					MSG_BOX("맵을 선택하고 저장해야지,,,");
 				else
-					Save_Map("../bin/Resources/MapData/" + m_strMapFileTag);
+					Save_Map("../bin/DataFiles/MapData/" + m_strMapFileTag);
 			}
 			if (ImGui::MenuItem(u8"불러오기"))
 			{
 				IGFD::FileDialogConfig config{};
 
-				config.path = "../bin/Resources/MapData/";
+				config.path = "../bin/DataFiles/MapData/";
 				config.fileName = "ChooseFile";
 
 				ImGuiFileDialog::Instance()->OpenDialog(
