@@ -34,9 +34,6 @@
     <Filter Include="02.GameObjects\00.UI">
       <UniqueIdentifier>{cee8699e-142b-4541-9af4-e12332fd0eb4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.UI\00.BackGround">
-      <UniqueIdentifier>{517eb494-a7a3-40c2-95e0-858f13d8d0a9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\02.Camera">
       <UniqueIdentifier>{f62598e1-b116-413f-9218-fbb7221cbdd0}</UniqueIdentifier>
     </Filter>
@@ -45,15 +42,6 @@
     </Filter>
     <Filter Include="02.GameObjects\00.UI\02.PlayerState">
       <UniqueIdentifier>{acdd028d-888d-43d1-96ea-514ea2c6ee04}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.UI\02.PlayerState\00. Hp_Bar">
-      <UniqueIdentifier>{60c9200d-6118-4587-9ee0-1bcb3f52c367}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.UI\02.PlayerState\01. Stamina_Bar">
-      <UniqueIdentifier>{fa8a6485-6e60-4186-aec4-b9d0b8a4e8ce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.UI\02.PlayerState\02. Mana_Bar">
-      <UniqueIdentifier>{76ade142-3387-45f1-8a26-dffaefe60af0}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\00.UI\02.PlayerState\03. Using_Item">
       <UniqueIdentifier>{236863ca-b3a3-4988-bc0e-547467f75ba8}</UniqueIdentifier>
@@ -153,12 +141,6 @@
     </Filter>
     <Filter Include="02.GameObjects\01.BackGround">
       <UniqueIdentifier>{884837aa-a848-424d-9774-06961550e5ba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\01.BackGround\00.Terrain">
-      <UniqueIdentifier>{78620c5c-7bbf-48ed-83e1-2b4beaeb7d27}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\01.BackGround\01.Sky">
-      <UniqueIdentifier>{61ad6a7e-8b1f-40aa-b6d1-791ed8e8b648}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\02.Camera\Camera_CutScene">
       <UniqueIdentifier>{5676f453-d74f-4938-9b07-9f9821224c97}</UniqueIdentifier>
@@ -358,6 +340,33 @@
     <Filter Include="96.Tools\00.MapTool">
       <UniqueIdentifier>{ae8c8b7d-fa3f-4ba0-b00a-d9b3ca93886a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\00.UI\02.PlayerState\00. HpBar">
+      <UniqueIdentifier>{60c9200d-6118-4587-9ee0-1bcb3f52c367}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\02.PlayerState\01. StaminaBar">
+      <UniqueIdentifier>{fa8a6485-6e60-4186-aec4-b9d0b8a4e8ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\02.PlayerState\02. ManaBar">
+      <UniqueIdentifier>{76ade142-3387-45f1-8a26-dffaefe60af0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.BackGround\00.BackGround">
+      <UniqueIdentifier>{517eb494-a7a3-40c2-95e0-858f13d8d0a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.BackGround\01.Terrain">
+      <UniqueIdentifier>{78620c5c-7bbf-48ed-83e1-2b4beaeb7d27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.BackGround\02.Sky">
+      <UniqueIdentifier>{61ad6a7e-8b1f-40aa-b6d1-791ed8e8b648}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\2D">
+      <UniqueIdentifier>{0869c2d5-3bce-496d-a14c-44df8f9a9b87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\3D">
+      <UniqueIdentifier>{c4b003b1-27af-42f8-a476-7fd2a9d51dd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\2D\UI2D_PlayerPart">
+      <UniqueIdentifier>{4afd14de-646f-4c46-8f3e-a24222e88bde}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -394,7 +403,7 @@
       <Filter>01.Levels\Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\BackGround.h">
-      <Filter>02.GameObjects\00.UI\00.BackGround</Filter>
+      <Filter>02.GameObjects\01.BackGround\00.BackGround</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imconfig.h">
       <Filter>98.Default\ImGui</Filter>
@@ -426,14 +435,11 @@
     <ClInclude Include="..\Public\Client_Macro.h">
       <Filter>99.Defines</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\UI.h">
-      <Filter>02.GameObjects\00.UI</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Button.h">
       <Filter>02.GameObjects\00.UI\01.Button</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Terrain.h">
-      <Filter>02.GameObjects\01.BackGround\00.Terrain</Filter>
+      <Filter>02.GameObjects\01.BackGround\01.Terrain</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\ImGuiFileDialog.h">
       <Filter>98.Default\ImGui</Filter>
@@ -577,7 +583,7 @@
       <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard\State\Sword</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Sky.h">
-      <Filter>02.GameObjects\01.BackGround\01.Sky</Filter>
+      <Filter>02.GameObjects\01.BackGround\02.Sky</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\SpiderTankState.h">
       <Filter>02.GameObjects\03.Actor\Monsters\00. Boss\SpiderTank\State</Filter>
@@ -630,7 +636,12 @@
     <ClInclude Include="..\public\BaseActor.h">
       <Filter>02.GameObjects\03.Actor</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Player_HPBar.h" />
+    <ClInclude Include="..\Public\UI2DContainerPart.h">
+      <Filter>02.GameObjects\00.UI\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UI3DContainerPart.h">
+      <Filter>02.GameObjects\00.UI\3D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -665,7 +676,7 @@
       <Filter>01.Levels\Tools</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BackGround.cpp">
-      <Filter>02.GameObjects\00.UI\00.BackGround</Filter>
+      <Filter>02.GameObjects\01.BackGround\00.BackGround</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui.cpp">
       <Filter>98.Default\ImGui</Filter>
@@ -691,14 +702,11 @@
     <ClCompile Include="ImGui\ImGuizmo.cpp">
       <Filter>98.Default\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\UI.cpp">
-      <Filter>02.GameObjects\00.UI</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Button.cpp">
       <Filter>02.GameObjects\00.UI\01.Button</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Terrain.cpp">
-      <Filter>02.GameObjects\01.BackGround\00.Terrain</Filter>
+      <Filter>02.GameObjects\01.BackGround\01.Terrain</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\ImGuiFileDialog.cpp">
       <Filter>98.Default\ImGui</Filter>
@@ -890,7 +898,7 @@
       <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard\State\Sword</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Sky.cpp">
-      <Filter>02.GameObjects\01.BackGround\01.Sky</Filter>
+      <Filter>02.GameObjects\01.BackGround\02.Sky</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\SpiderTankState_Idle.cpp">
       <Filter>02.GameObjects\03.Actor\Monsters\00. Boss\SpiderTank\State\Idle</Filter>
@@ -949,7 +957,12 @@
     <ClCompile Include="..\private\BaseActor.cpp">
       <Filter>02.GameObjects\03.Actor</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Player_HPBar.cpp" />
+    <ClCompile Include="..\private\UI2DContainerPart.cpp">
+      <Filter>02.GameObjects\00.UI\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI3DContainerPart.cpp">
+      <Filter>02.GameObjects\00.UI\3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">

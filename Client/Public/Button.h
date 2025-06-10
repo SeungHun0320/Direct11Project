@@ -1,10 +1,13 @@
 #pragma once
-#include "UI.h"
+#include "Client_Defines.h"
+#include "UIObject.h"
 
-class CButton : public CUI
+BEGIN(Client)
+
+class CButton final : public CUIObject
 {
 public:
-	typedef struct tagButtonDesc : public CUI::DESC
+	typedef struct tagButtonDesc : public CUIObject::DESC
 	{
 		_float3 vScale{};
 
@@ -24,7 +27,7 @@ public:
 	virtual HRESULT Render();
 
 private:
-	virtual HRESULT Ready_Components(void* pArg) override;
+	virtual HRESULT Ready_Components(void* pArg);
 
 public:
 	static CButton* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -32,3 +35,4 @@ public:
 	virtual void Free() override;
 };
 
+END

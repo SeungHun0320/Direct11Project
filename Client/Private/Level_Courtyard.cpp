@@ -1,14 +1,15 @@
 #include "Level_Courtyard.h"
 #include "Level_Loading.h"
 
+#include "Camera_Free.h"
+#include "Camera_TPS.h"
+
 #include "Terrain.h"
 #include "Sky.h"
 #include "Courtyard.h"
 
 #include "Player.h"
 
-#include "Camera_Free.h"
-#include "Camera_TPS.h"
 
 #include "SpiderTank.h"
 
@@ -33,6 +34,9 @@ HRESULT CLevel_Courtyard::Initialize()
 	//	return E_FAIL;
 
 	if (FAILED(Ready_Layer_Pawn(TEXT("Layer_Pawn"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_UI(TEXT("Layer_UI"))))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
@@ -172,6 +176,12 @@ HRESULT CLevel_Courtyard::Ready_Layer_BackGround(const _wstring& strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + tSkyDesc.strName,
 		ENUM_CLASS(tSkyDesc.eLevelID), strLayerTag, &tSkyDesc)))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Courtyard::Ready_Layer_UI(const _wstring& strLayerTag)
+{
 
 	return S_OK;
 }

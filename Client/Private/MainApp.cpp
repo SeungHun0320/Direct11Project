@@ -46,6 +46,9 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(Ready_For_Fonts()))
 		return E_FAIL;
 
+	if (FAILED(Ready_Prototype_Texture()))
+		return E_FAIL;
+
 	if (FAILED(Ready_Prototype_Component()))
 		return E_FAIL;
 
@@ -70,7 +73,7 @@ void CMainApp::Update(_float fTimeDelta)
 
 	++m_iFPS;
 
-	if (m_fTimeAcc > 1.0f)
+	if (1.f < m_fTimeAcc)
 	{
 		wsprintf(m_szFPS, TEXT("FPS: %d"), m_iFPS);
 
@@ -90,6 +93,16 @@ HRESULT CMainApp::Render()
 
 	m_pGameInstance->End_Draw();
     return S_OK;
+}
+
+HRESULT CMainApp::Ready_Prototype_Texture()
+{
+	/* For.Prototype_Component_Texture_HPBar */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_HPBar"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/HP/HPBar_%d.png"), 3))))
+		return E_FAIL;
+
+	return S_OK;
 }
 
 HRESULT CMainApp::Ready_Prototype_Component()
@@ -151,21 +164,30 @@ HRESULT CMainApp::Ready_Prototype_Object()
 {
 	_matrix		PreTransformMatrix = XMMatrixIdentity();
 
+	/*-----------------------------------------플레이어-----------------------------------------------------*/
+
 	/*For.Prototype_Component_Model_Fox*/    /* 야우 확인용 */
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Fox"),
 	CModel::Create(m_pDevice, m_pContext, MODEL::ANIM, TEXT("../Bin/Resources/Models/Anim/Fox/_Fox.Model"), PreTransformMatrix))))
 	return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Body_Player"), CBody_Player::Create(m_pDevice, m_pContext))))
+	/*For.Prototype_GameObject_Body_Player*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Body_Player"),
+		CBody_Player::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Weapon_Player"), CWeapon_Player::Create(m_pDevice, m_pContext))))
+	/*For.Prototype_GameObject_Weapon_Player*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Weapon_Player"),
+		CWeapon_Player::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/*For.Prototype_GameObject_Player*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Player"),
 		CPlayer::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+	/*--------------------------------------------플레이어UI--------------------------------------------------*/
 
 	return S_OK;
 }

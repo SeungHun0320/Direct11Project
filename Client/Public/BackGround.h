@@ -1,6 +1,7 @@
 #pragma once
 
-#include "UI.h"
+#include "Client_Defines.h"
+#include "UIObject.h"
 
 BEGIN(Engine)
 class CShader;
@@ -10,12 +11,12 @@ END
 
 BEGIN(Client)
 
-class CBackGround final : public CUI
+class CBackGround final : public CUIObject
 {
 public:
-	typedef struct tagBackGroundDesc : public CUI::DESC
+	typedef struct tagBackGroundDesc : public CUIObject::DESC
 	{
-		
+		LEVEL eLevelID{};
 	}DESC;
 
 private:
@@ -32,7 +33,16 @@ public:
 	virtual HRESULT Render();
 
 private:
-	virtual HRESULT Ready_Components(void* pArg) override;
+	LEVEL m_eLevelID = { LEVEL::LEVEL_END };
+
+private:
+	CShader* m_pShaderCom = { nullptr };
+	CTexture* m_pTextureCom = { nullptr };
+	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
+
+private:
+	HRESULT Ready_Components(void* pArg);
+	HRESULT Bind_ShaderResources();
 
 public:
 	static CBackGround* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

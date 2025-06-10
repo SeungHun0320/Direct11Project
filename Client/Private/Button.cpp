@@ -4,12 +4,12 @@
 /*로고화면의 버튼이고, 폰트를 띄워서 띄우는거랑 피킹용이랑은 따로 가야할 거 같음*/
 /* 처음에 무조건 선택되게 하고, 방향키로 다른 버튼이 클릭되도록 해보고싶음 */
 CButton::CButton(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    : CUI{pDevice, pContext}
+    : CUIObject{pDevice, pContext}
 {
 }
 
 CButton::CButton(const CButton& Prototype)
-    :CUI(Prototype)
+    :CUIObject(Prototype)
 {
 }
 
@@ -48,8 +48,6 @@ HRESULT CButton::Render()
 
 HRESULT CButton::Ready_Components(void* pArg)
 {
-    __super::Ready_Components(pArg);
-
     return S_OK;
 }
 

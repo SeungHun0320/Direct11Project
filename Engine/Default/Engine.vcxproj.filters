@@ -170,10 +170,7 @@
       <Filter>01.Utility\04.Components\VIBuffer\Cell</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\UIObject.h">
-      <Filter>01.Utility\03.GameObject\Objects\UIObject\2D</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\UIObject_3D.h">
-      <Filter>01.Utility\03.GameObject\Objects\UIObject\3D</Filter>
+      <Filter>01.Utility\03.GameObject\Objects\UIObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -331,10 +328,7 @@
       <Filter>01.Utility\04.Components\VIBuffer\Cell</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UIObject.cpp">
-      <Filter>01.Utility\03.GameObject\Objects\UIObject\2D</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\UIObject_3D.cpp">
-      <Filter>01.Utility\03.GameObject\Objects\UIObject\3D</Filter>
+      <Filter>01.Utility\03.GameObject\Objects\UIObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -517,12 +511,6 @@
     </Filter>
     <Filter Include="01.Utility\04.Components\VIBuffer\Cell">
       <UniqueIdentifier>{cc08865c-daab-4bbc-ba06-8dc6b4b19282}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utility\03.GameObject\Objects\UIObject\2D">
-      <UniqueIdentifier>{1eef6ece-f18c-4528-8b98-54d51624b66a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utility\03.GameObject\Objects\UIObject\3D">
-      <UniqueIdentifier>{11eecd20-3ab5-44c5-af3d-d54111722db5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

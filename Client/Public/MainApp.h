@@ -33,6 +33,7 @@ private:
 #endif
 
 private:
+	HRESULT Ready_Prototype_Texture();
 	HRESULT Ready_Prototype_Component();
 	HRESULT Ready_Prototype_Object();
 	HRESULT Ready_For_BGM();
