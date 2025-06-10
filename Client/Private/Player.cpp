@@ -4,6 +4,7 @@
 
 #include "Body_Player.h"
 #include "Weapon_Player.h"
+#include "UI2D_PlayerHUDPart.h"
 
 #include "PlayerState.h"
 #include "Player_IAttackStrategy.h"
@@ -624,6 +625,14 @@ HRESULT CPlayer::Ready_PartObjects()
 		return E_FAIL;
 
 	Safe_AddRef(m_pWeaponPart);
+
+	CUI2D_PlayerHUDPart::DESC UI2DDesc{};
+
+	UI2DDesc.eLevelID = m_eLevelID;
+	UI2DDesc.iNumPartObjects = CUI2D_PlayerHUDPart::PART_END;
+
+	if (FAILED(__super::Add_PartObject(PART_UI2D, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerHUDPart"), &UI2DDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }

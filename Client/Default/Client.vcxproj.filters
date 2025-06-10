@@ -364,7 +364,7 @@
     <Filter Include="02.GameObjects\00.UI\3D">
       <UniqueIdentifier>{c4b003b1-27af-42f8-a476-7fd2a9d51dd1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.UI\2D\UI2D_PlayerPart">
+    <Filter Include="02.GameObjects\00.UI\2D\UI2D_PlayerHUDPart">
       <UniqueIdentifier>{4afd14de-646f-4c46-8f3e-a24222e88bde}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -641,6 +641,9 @@
     </ClInclude>
     <ClInclude Include="..\public\UI3DContainerPart.h">
       <Filter>02.GameObjects\00.UI\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UI2D_PlayerHUDPart.h">
+      <Filter>02.GameObjects\00.UI\2D\UI2D_PlayerHUDPart</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -962,6 +965,9 @@
     </ClCompile>
     <ClCompile Include="..\private\UI3DContainerPart.cpp">
       <Filter>02.GameObjects\00.UI\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI2D_PlayerHUDPart.cpp">
+      <Filter>02.GameObjects\00.UI\2D\UI2D_PlayerHUDPart</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

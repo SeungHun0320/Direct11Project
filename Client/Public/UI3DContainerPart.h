@@ -8,7 +8,7 @@ BEGIN(Client)
 class CUI3DContainerPart abstract : public CPartObject
 {
 public:
-	typedef struct tagUIDesc : public CPartObject::DESC
+	typedef struct tagUI3DContainerPartDesc : public CPartObject::DESC
 	{
 		LEVEL eLevelID{};
 	}DESC;

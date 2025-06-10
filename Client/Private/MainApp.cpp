@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "Body_Player.h"
 #include "Weapon_Player.h"
+#include "UI2D_PlayerHUDPart.h"
 
 CMainApp::CMainApp()
 	: m_pGameInstance { CGameInstance::Get_Instance() }
@@ -172,20 +173,27 @@ HRESULT CMainApp::Ready_Prototype_Object()
 	CModel::Create(m_pDevice, m_pContext, MODEL::ANIM, TEXT("../Bin/Resources/Models/Anim/Fox/_Fox.Model"), PreTransformMatrix))))
 	return E_FAIL;
 
-	/*For.Prototype_GameObject_Body_Player*/
+	/*For.Prototype_GameObject_Player */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Player"),
+		CPlayer::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/*For.Prototype_GameObject_Body_Player */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Body_Player"),
 		CBody_Player::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/*For.Prototype_GameObject_Weapon_Player*/
+	/*For.Prototype_GameObject_Weapon_Player */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Weapon_Player"),
 		CWeapon_Player::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/*For.Prototype_GameObject_Player*/
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Player"),
-		CPlayer::Create(m_pDevice, m_pContext))))
+	/*For.Prototype_GameObject_UI2D_PlayerHUDPart */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerHUDPart"),
+		CUI2D_PlayerHUDPart::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+
 
 	/*--------------------------------------------플레이어UI--------------------------------------------------*/
 

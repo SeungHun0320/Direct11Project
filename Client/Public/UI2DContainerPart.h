@@ -8,7 +8,7 @@ BEGIN(Client)
 class CUI2DContainerPart abstract : public CPartObject
 {
 public:
-	typedef struct tagUIDesc : public CPartObject::DESC
+	typedef struct tagUI2DContainerPartDesc : public CPartObject::DESC
 	{
 		LEVEL	eLevelID{};
 		_uint	iNumPartObjects{};
@@ -39,6 +39,7 @@ protected:
 
 protected:
 	virtual HRESULT Ready_Components(void* pArg);
+	virtual HRESULT Ready_PartObjects() { return S_OK; };
 
 public:
 	virtual CGameObject* Clone(void* pArg) PURE;

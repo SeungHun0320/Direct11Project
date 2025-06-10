@@ -97,4 +97,9 @@ HRESULT CUI2DContainerPart::Ready_Components(void* pArg)
 void CUI2DContainerPart::Free()
 {
 	__super::Free();
+
+	for (auto& pPartObject : m_PartObjects)
+		Safe_Release(pPartObject);
+
+	m_PartObjects.clear();
 }
