@@ -25,7 +25,7 @@ public:
 
 	void	Update(_fmatrix WorldMatrix);
 	_bool	isMove(_fvector vWorldPos);
-	_vector SetUp_Hegiht(_fvector vWorldPos);
+	_vector SetUp_Height(_fvector vWorldPos);
 
 #ifdef _DEBUG
 public:

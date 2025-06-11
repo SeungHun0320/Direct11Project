@@ -13,9 +13,17 @@ public:
 	const _float3& Get_MousePos() {
 		return m_vMousePos;
 	}
+
+	const _float3& Get_MouseRay() {
+		return m_vMouseRay;
+	}
 	
 	const _float3& Get_LocalMousePos() {
 		return m_vLocalMousePos;
+	}
+
+	const _float3& Get_LocalMouseRay() {
+		return m_vLocalMouseRay;
 	}
 
 public:

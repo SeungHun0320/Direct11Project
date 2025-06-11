@@ -86,4 +86,6 @@ HRESULT CBaseActor::Ready_Components(void* pArg)
 void CBaseActor::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_pNavigationCom);
 }

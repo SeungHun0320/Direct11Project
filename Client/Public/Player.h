@@ -1,11 +1,6 @@
 #pragma once
 #include "BaseActor.h"
 
-BEGIN(Engine)
-class CCollider;
-END
-
-
 BEGIN(Client)
 
 class CPlayer final : public CBaseActor

@@ -1,5 +1,7 @@
 #include "Transform.h"
+
 #include "Shader.h"
+#include "Navigation.h"
 
 CTransform::CTransform(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CComponent { pDevice, pContext }
@@ -55,60 +57,62 @@ void CTransform::Scaling(const _float3& vScale)
 	Set_State(STATE::LOOK, XMVector3Normalize(Get_State(STATE::LOOK)) * vScale.z);
 }
 
-void CTransform::Go_Straight(_float fTimeDelta)
+void CTransform::Go_Straight(_float fTimeDelta, CNavigation* pNavigation)
 {
 	_vector vPosition = Get_State(STATE::POSITION);
 	_vector vLook = Get_State(STATE::LOOK);
 
 	vPosition += XMVector3Normalize(vLook) * m_fSpeedPerSec * fTimeDelta;
 
-	/* 만약 충돌한다면 여기서 셋 전에 처리를 해주면 좋을거 같음 */
-
-	Set_State(STATE::POSITION, vPosition);
+	if (nullptr == pNavigation || pNavigation->isMove(vPosition))
+		Set_State(STATE::POSITION, vPosition);
 }
 
-void CTransform::Go_Backward(_float fTimeDelta)
+void CTransform::Go_Backward(_float fTimeDelta, CNavigation* pNavigation)
 {
 	_vector vPosition = Get_State(STATE::POSITION);
 	_vector vLook = Get_State(STATE::LOOK);
 
 	vPosition -= XMVector3Normalize(vLook) * m_fSpeedPerSec * fTimeDelta;
 
-	/* 만약 충돌한다면 여기서 셋 전에 처리를 해주면 좋을거 같음 */
-
-	Set_State(STATE::POSITION, vPosition);
+	if (nullptr == pNavigation || pNavigation->isMove(vPosition))
+		Set_State(STATE::POSITION, vPosition);
 }
 
-void CTransform::Go_Right(_float fTimeDelta)
+void CTransform::Go_Right(_float fTimeDelta, CNavigation* pNavigation)
 {
 	_vector vPosition = Get_State(STATE::POSITION);
 	_vector vRight = Get_State(STATE::RIGHT);
 
 	vPosition += XMVector3Normalize(vRight) * m_fSpeedPerSec * fTimeDelta;
 
-	/* 만약 충돌한다면 여기서 셋 전에 처리를 해주면 좋을거 같음 */
-
-	Set_State(STATE::POSITION, vPosition);
+	if (nullptr == pNavigation || pNavigation->isMove(vPosition))
+		Set_State(STATE::POSITION, vPosition);
 }
 
-void CTransform::Go_Left(_float fTimeDelta)
+void CTransform::Go_Left(_float fTimeDelta, CNavigation* pNavigation)
 {
 	_vector vPosition = Get_State(STATE::POSITION);
 	_vector vRight = Get_State(STATE::RIGHT);
 
 	vPosition -= XMVector3Normalize(vRight) * m_fSpeedPerSec * fTimeDelta;
 
-	/* 만약 충돌한다면 여기서 셋 전에 처리를 해주면 좋을거 같음 */
-
-	Set_State(STATE::POSITION, vPosition);
+	if (nullptr == pNavigation || pNavigation->isMove(vPosition))
+		Set_State(STATE::POSITION, vPosition);
 }
 
-void CTransform::Go_Target(_fvector vTarget, _float fTimeDelta, _float fMinDistance)
+void CTransform::Go_Target(_fvector vTarget, _float fTimeDelta, _float fMinDistance, CNavigation* pNavigation)
 {
 	_vector vMoveDir = vTarget - Get_State(STATE::POSITION);
 
 	if (fMinDistance <= XMVectorGetX(XMVector3Length(vMoveDir)))
-		Set_State(STATE::POSITION, Get_State(STATE::POSITION) + XMVector3Normalize(vMoveDir) * m_fSpeedPerSec * fTimeDelta);
+	{
+		_vector vPosition = Get_State(STATE::POSITION) + XMVector3Normalize(vMoveDir) * m_fSpeedPerSec * fTimeDelta;
+
+		if (nullptr == pNavigation || pNavigation->isMove(vPosition))
+			Set_State(STATE::POSITION, vPosition);
+	}
+
 }
 
 void CTransform::Go_Up(_float fTimeDelta)
@@ -188,7 +192,7 @@ void CTransform::Rotation(_float fX, _float fY, _float fZ)
 	Set_State(STATE::LOOK, XMVector4Transform(vLook, RotationMatrix));
 }
 
-void CTransform::Go_Dir(_fvector vDir, _float fTimeDelta)
+void CTransform::Go_Dir(_fvector vDir, _float fTimeDelta, CNavigation* pNavigation)
 {
 	_vector vPosition = Get_State(STATE::POSITION);
 	_vector vDirection = vDir;
@@ -197,18 +201,27 @@ void CTransform::Go_Dir(_fvector vDir, _float fTimeDelta)
 
 	vPosition += vDirection * fTimeDelta * m_fSpeedPerSec;
 
-	Set_State(STATE::POSITION, vPosition);
+	if (nullptr == pNavigation || pNavigation->isMove(vPosition))
+		Set_State(STATE::POSITION, vPosition);
 }
 
-void CTransform::Apply_Sliding(const _float3& vSlide)
+void CTransform::Apply_Sliding(const _float3& vSlide, CNavigation* pNavigation)
 {
-	if (XMVectorGetX(XMVector3Length(XMLoadFloat3(&vSlide))) > 0.001f)
-		Set_State(STATE::POSITION, Get_State(STATE::POSITION) + XMLoadFloat3(&vSlide));
+	if (XMVectorGetX(XMVector3Length(XMLoadFloat3(&vSlide))) <= 0.001f)
+		return;
+
+	_vector vPosition = Get_State(STATE::POSITION) + XMLoadFloat3(&vSlide);
+
+	if (!pNavigation || pNavigation->isMove(vPosition))
+		Set_State(STATE::POSITION, vPosition);
 }
 
-void CTransform::Move(const _float3& vPos)
+void CTransform::Move(const _float3& vPos, CNavigation* pNavigation)
 {
-	Set_State(STATE::POSITION, Get_State(STATE::POSITION) + XMLoadFloat3(&vPos));
+	_vector vPosition = Get_State(STATE::POSITION) + XMLoadFloat3(&vPos);
+
+	if (!pNavigation || pNavigation->isMove(vPosition))
+		Set_State(STATE::POSITION, vPosition);
 }
 
 void CTransform::LookAt(_fvector vAt)

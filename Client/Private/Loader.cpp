@@ -151,7 +151,6 @@ HRESULT CLoader::Loading_For_Logo(LEVEL eLevelID)
 
 	lstrcpy(m_szLoadingText, TEXT("셰이더을(를) 로딩중입니다."));
 
-
 	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
@@ -199,10 +198,6 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 		return E_FAIL;
 
 	_matrix		PreTransformMatrix = XMMatrixIdentity();
-	//PreTransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f));
-	//if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_SpiderTank"),
-	//	CModel::Create(m_pDevice, m_pContext, MODEL::ANIM, TEXT("../Bin/Resources/Models/Study/Fiona/Fiona.Model"), PreTransformMatrix))))
-	//	return E_FAIL;
 
 	/*For.Prototype_Component_Model_Courtyard*/
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
@@ -283,6 +278,13 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Weapon_WizardStaff"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/Anim/Monster/Wizard/Weapons/Staff.Model"), PreTransformMatrix))))
 		return E_FAIL;
+
+	lstrcpy(m_szLoadingText, TEXT("네비게이션을(를) 로딩중입니다."));
+	/* Prototype_Component_Navigation */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Navigation"),
+		CNavigation::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/NavigationData/Courtyard.Nav")))))
+		return E_FAIL;
+
 
 	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
 
@@ -449,6 +451,8 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/Anim/Monster/Spidertank/Orb/Spidertank_Orb.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
+	lstrcpy(m_szLoadingText, TEXT("네비게이션을(를) 로딩중입니다."));
+
 	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
 
 
@@ -512,6 +516,9 @@ HRESULT CLoader::Loading_For_Shop(LEVEL eLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Shop"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Map/Shop/Shop.Model"), PreTransformMatrix))))
 		return E_FAIL;
+
+	lstrcpy(m_szLoadingText, TEXT("네비게이션을(를) 로딩중입니다."));
+
 
 	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
 

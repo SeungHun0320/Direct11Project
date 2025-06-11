@@ -123,6 +123,8 @@ LIFE CPlayer::Update(_float fTimeDelta)
 
 	m_pCurState->Execute(fTimeDelta);
 
+	m_pTransformCom->Set_State(Engine::STATE::POSITION, m_pNavigationCom->SetUp_Height(m_pTransformCom->Get_State(Engine::STATE::POSITION)));
+
 	return __super::Update(fTimeDelta);
 }
 
@@ -227,14 +229,14 @@ void CPlayer::Dodge(_fvector vDir, _float fTimeDelta, _float fSpeed)
 {
 	m_pTransformCom->Set_SpeedPerSec(fSpeed);
 	m_pTransformCom->LookDir(vDir);
-	m_pTransformCom->Go_Dir(vDir, fTimeDelta);
+	m_pTransformCom->Go_Dir(vDir, fTimeDelta, m_pNavigationCom);
 }
 
 void CPlayer::Move(_fvector vDir, _float fTimeDelta, _float fSpeed)
 {
 	m_pTransformCom->Set_SpeedPerSec(fSpeed);
 	m_pTransformCom->LookDirLerp(vDir, fTimeDelta, fSpeed * 1.5f);
-	m_pTransformCom->Go_Dir(vDir, fTimeDelta);
+	m_pTransformCom->Go_Dir(vDir, fTimeDelta, m_pNavigationCom);
 }
 
 void CPlayer::LockOn()
@@ -314,7 +316,7 @@ void CPlayer::Set_Target(CTransform* pTargerTransform)
 void CPlayer::Go_Dir(_fvector vDir, _float fTimeDelta, _float fSpeed)
 {
 	m_pTransformCom->Set_SpeedPerSec(fSpeed);
-	m_pTransformCom->Go_Dir(vDir, fTimeDelta);
+	m_pTransformCom->Go_Dir(vDir, fTimeDelta, m_pNavigationCom);
 }
 
 void CPlayer::Go_Up(_float fTimeDelta, _float fSpeed)
@@ -528,7 +530,7 @@ void CPlayer::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObjec
 		if (nullptr == pCollider)
 			return;
 
-		m_pTransformCom->Apply_Sliding(pCollider->Get_SlidingVector());
+		m_pTransformCom->Apply_Sliding(pCollider->Get_SlidingVector(), m_pNavigationCom);
 		m_isBlocked = true;
 	}
 
@@ -556,7 +558,7 @@ void CPlayer::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObjec
 		if (nullptr == pCollider)
 			break;
 
-		m_pTransformCom->Apply_Sliding(pCollider->Get_SlidingVector());
+		m_pTransformCom->Apply_Sliding(pCollider->Get_SlidingVector(), m_pNavigationCom);
 		m_isBlocked = true;
 	}
 		break;
@@ -591,6 +593,13 @@ _float CPlayer::Compute_InvincibleTime_ByCollider(COLLIDER_ID eColliderID)
 HRESULT CPlayer::Ready_Components(void* pArg)
 {
 	if (FAILED(__super::Ready_Components(pArg)))
+		return E_FAIL;
+
+	CNavigation::DESC tDesc{};
+	tDesc.iIndex = 0;
+
+	if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Navigation"),
+		TEXT("Com_Navigation"), reinterpret_cast<CComponent**>(&m_pNavigationCom), &tDesc)))
 		return E_FAIL;
 
 	return S_OK;

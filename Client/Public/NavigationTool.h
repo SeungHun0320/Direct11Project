@@ -4,6 +4,7 @@
 BEGIN(Engine)
 class CGameObject;
 class CCell;
+class CShader;
 END
 
 BEGIN(Client)
@@ -37,8 +38,11 @@ private:
 	class CMap* m_pMap = { nullptr };
 
 private:  /* 편의성 */
-	_bool		m_bMode[MODE_END] = { false };
-	_float3		m_vClickedPos = {};
+	CShader*  m_pShader = { nullptr };
+	_bool	  m_bMode[MODE_END] = { false };
+	_float3	  m_vClickedPos = {};
+	_float3	  m_vCurrentPos = {};
+	_string   m_strNaviFileTag;
 
 private:
 	vector<_float3>      m_ClickedPoints;
@@ -47,15 +51,23 @@ private:
 
 	_int				 m_iSelectedCellIndex = {};
 	/* 정렬용 */
-	_float				 m_fSnapRange = 1.f;
+	_float				 m_fSnapRange = 1.5f;
 
 private: /* 편의성 */
-	void Key_Input();
-	void Change_Mode();
+	void	Key_Input();
+	void	Change_Mode();
+	HRESULT Render_Cells();
 
-private:
+private: /* 셀 생성 관련 */
 	void Add_ClickedPoint(_float3 vWorldPos);
 	HRESULT Create_Cell();
+	_float3 Snap_NearCellPoint(const _float3& vPickedPos);
+	void    Sort_PointsCW(vector<_float3>& Points);
+
+private: /* 셀 저장 불러오기 */
+	void    Save_Load_Menu();
+	HRESULT Save_Navigation(const _string& strNaviFileTag);
+	HRESULT Load_Navigation(const _string& strNaviFileTag);
 
 
 public:

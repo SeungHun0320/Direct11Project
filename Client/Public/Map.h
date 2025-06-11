@@ -5,6 +5,7 @@
 BEGIN(Engine)
 class CShader;
 class CModel;
+class CNavigation;
 END
 
 BEGIN(Client)
@@ -34,8 +35,9 @@ public:
 	virtual HRESULT Render();
 
 protected:
-	CShader* m_pShaderCom = { nullptr };
-	CModel* m_pModelCom = { nullptr };
+	CShader*	 m_pShaderCom = { nullptr };
+	CModel*		 m_pModelCom = { nullptr };
+	CNavigation* m_pNavigationCom = { nullptr };
 
 protected:
 	LEVEL m_eLevelID = { LEVEL::LEVEL_END };

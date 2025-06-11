@@ -36,14 +36,26 @@ HRESULT CNavigation::Initialize_Prototype(const _wstring& strNavigationFilePath)
 		return E_FAIL;
 #endif
 
-	// 파일 입출력해서 읽어오기
+	std::ifstream InFile(strNavigationFilePath, std::ios::binary);
+	if (!InFile.is_open())
+		return E_FAIL;
 
-	//CCell* pCell = CCell::Create(m_pDevice, m_pContext, vPoints, m_Cells.size());
-	//if (nullptr == pCell)
-	//	return E_FAIL;
+	_uint iNumCells{};
+	InFile.read(reinterpret_cast<_char*>(&iNumCells), sizeof(_uint));
 
-	//m_Cells.push_back(pCell);
+	for (_uint i = 0; i < iNumCells; ++i)
+	{
+		_float3 vPoints[3] = {};
+		InFile.read(reinterpret_cast<_char*>(vPoints), sizeof(_float3) * 3);
 
+		CCell* pCell = CCell::Create(m_pDevice, m_pContext, vPoints, static_cast<_int>(m_Cells.size()));
+		if (nullptr == pCell)
+			return E_FAIL;
+
+		m_Cells.push_back(pCell);
+	}
+
+	InFile.close();
 
 	if (FAILED(SetUp_Neighbors()))
 		return E_FAIL;
@@ -53,6 +65,8 @@ HRESULT CNavigation::Initialize_Prototype(const _wstring& strNavigationFilePath)
 
 HRESULT CNavigation::Initialize(void* pArg)
 {
+
+
 	DESC* pDesc = static_cast<DESC*>(pArg);
 
 	/* 어디 셀에서 시작할지 정함 */
@@ -103,7 +117,7 @@ _bool CNavigation::isMove(_fvector vWorldPos)
 	}
 }
 
-_vector CNavigation::SetUp_Hegiht(_fvector vWorldPos)
+_vector CNavigation::SetUp_Height(_fvector vWorldPos)
 {
 	/* 로컬로 변환 후에 */
 	_vector		vLocalPos = XMVector3TransformCoord(vWorldPos, XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_WorldMatrix)));

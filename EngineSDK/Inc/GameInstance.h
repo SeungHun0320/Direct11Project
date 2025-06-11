@@ -73,7 +73,9 @@ public:
 	_bool Picking_InWorldEx(_float3& vPickedPos, _float& fDist, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC);
 	_bool Picking_InLocalEx(_float3& vPickedPos, _float& fDist, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC);
 	const _float3& Get_MousePos();
+	const _float3& Get_MouseRay();
 	const _float3& Get_LocalMousePos();
+	const _float3& Get_LocalMouseRay();
 #pragma endregion
 
 #pragma region INPUT_DEVICE

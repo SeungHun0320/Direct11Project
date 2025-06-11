@@ -299,9 +299,19 @@ const _float3& CGameInstance::Get_MousePos()
 	return m_pPicking->Get_MousePos();
 }
 
+const _float3& CGameInstance::Get_MouseRay()
+{
+	return m_pPicking->Get_MouseRay();
+}
+
 const _float3& CGameInstance::Get_LocalMousePos()
 {
 	return m_pPicking->Get_LocalMousePos();
+}
+
+const _float3& CGameInstance::Get_LocalMouseRay()
+{
+	return m_pPicking->Get_LocalMouseRay();
 }
 
 #pragma endregion

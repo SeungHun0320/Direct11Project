@@ -52,22 +52,8 @@ void CMap::Priority_Update(_float fTimeDelta)
 
 LIFE CMap::Update(_float fTimeDelta)
 {
-
-//	if (MOUSE_DOWN(DIMK::LBUTTON))
-//	{
-//		_float fDist{};
-//		_float3		vTmp = m_pModelCom->Compute_PickedPosition_World(m_pTransformCom->Get_WorldMatrix_Float4x4(), fDist);
-//		_float3     vDst = m_pModelCom->Compute_PickedPosition_World_Snap(m_pTransformCom->Get_WorldMatrix_Float4x4());
-//		_float3		vSrc = m_pModelCom->Compute_PickedPosition_Local(m_pTransformCom->Get_WorldMatrix_Inverse());
-//		_int a = 10;
-//
-//#ifdef _CONSOL
-//			printf("ÂïÀº ¸Ê ÁÂÇ¥ : { %.2f, %.2f, %.2f }\n", vTmp.x, vTmp.y, vTmp.z);
-//			printf("ÂïÀº ½º³ÀÀº ÀßµÉ±î ¸Ê ÁÂÇ¥ : { %.2f, %.2f, %.2f }\n", vDst.x, vDst.y, vDst.z);
-//		
-//#endif
-//	}
-
+	if (LEVEL::TOOLS != m_eLevelID)
+		m_pNavigationCom->Update(m_pTransformCom->Get_WorldMatrix());
 
 	return LIFE::NONE;
 }
@@ -98,6 +84,11 @@ HRESULT CMap::Render()
 			return E_FAIL;
 	}
 
+#ifdef _DEBUG
+	if (LEVEL::TOOLS != m_eLevelID)
+		m_pNavigationCom->Render();
+#endif
+
 	return S_OK;
 }
 
@@ -106,6 +97,17 @@ HRESULT CMap::Ready_Components(void* pArg)
 	/* For.Com_Shader */
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxMesh"),
 		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
+		return E_FAIL;
+
+	if (LEVEL::TOOLS == m_eLevelID)
+		return S_OK;
+		
+	/* For.Com_Navigation */
+	CNavigation::DESC tDesc{};
+	tDesc.iIndex = -1;
+
+	if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Navigation"),
+		TEXT("Com_Navigation"), reinterpret_cast<CComponent**>(&m_pNavigationCom), &tDesc)))
 		return E_FAIL;
 
 	return S_OK;
@@ -147,4 +149,5 @@ void CMap::Free()
 
 	Safe_Release(m_pModelCom);
 	Safe_Release(m_pShaderCom);
+	Safe_Release(m_pNavigationCom);
 }

@@ -3,6 +3,11 @@
 #include "Client_Defines.h"
 #include "ContainerObject.h"
 
+BEGIN(Engine)
+class CCollider;
+class CNavigation;
+END
+
 BEGIN(Client)
 
 class CBaseActor abstract : public CContainerObject
@@ -50,6 +55,9 @@ public: /* 충돌 관련 */
 	_bool Get_IsBlocked() const {
 		return m_isBlocked;
 	}
+	
+protected:
+	CNavigation* m_pNavigationCom = { nullptr };
 
 protected:
 	LEVEL m_eLevelID = { LEVEL::LEVEL_END };
