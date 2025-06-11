@@ -2,8 +2,11 @@
 #include "Level_Loading.h"
 
 #include "MapTool.h"
+#include "NavigationTool.h"
+
 #include "Camera_Free.h"
 #include "Sky.h"
+#include "Map.h"
 
 CLevel_Tools::CLevel_Tools(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel{ pDevice, pContext }
@@ -34,7 +37,36 @@ HRESULT CLevel_Tools::Initialize()
 
 void CLevel_Tools::Update(_float fTimeDelta)
 {
-	m_pMapTool->Update(fTimeDelta);
+	if (m_pMapTool->IsFocused())
+		m_eActiveType = TOOL_MAP;
+
+	if (m_pNavigationTool->IsFocused())
+		m_eActiveType = TOOL_NAVIGATION;
+
+	switch (m_eActiveType)
+	{
+	case TOOL_MAP:
+		m_pMapTool->Update(fTimeDelta);
+		break;
+	case TOOL_NAVIGATION:
+		m_pNavigationTool->Update(fTimeDelta);
+		break;
+	default:
+		break;
+	}
+
+
+	CMap* pCurrentMap = m_pMapTool->Get_Map();
+
+	if (nullptr != pCurrentMap && pCurrentMap != m_pMap)
+	{
+		if(nullptr != m_pMap)
+			Safe_Release(m_pMap);
+
+		m_pNavigationTool->Set_Map(pCurrentMap);
+		m_pMap = pCurrentMap;
+		Safe_AddRef(m_pMap);
+	}
 }
 
 HRESULT CLevel_Tools::Render()
@@ -43,7 +75,28 @@ HRESULT CLevel_Tools::Render()
 	ImGui_RenderBegin();
 	Ready_DockSpace();
 
+	// UI는 항상 보여줌
 	m_pMapTool->Render();
+	m_pNavigationTool->Render();
+
+	if (m_pMapTool->IsFocused())
+		m_eActiveType = TOOL_MAP;
+
+	if (m_pNavigationTool->IsFocused())
+		m_eActiveType = TOOL_NAVIGATION;
+
+	switch (m_eActiveType)
+	{
+	case TOOL_MAP:
+		m_pMapTool->Render_ExtraUI();
+		break;
+	case TOOL_NAVIGATION:
+		m_pNavigationTool->Render_ExtraUI();
+		break;
+	default:
+		break;
+	}
+
 
 	ImGui_RenderEnd();
 	return S_OK;
@@ -158,6 +211,10 @@ HRESULT CLevel_Tools::Ready_Tools()
 	if (nullptr == m_pMapTool)
 		return E_FAIL;
 
+	m_pNavigationTool = CNavigationTool::Create(m_pDevice, m_pContext);
+	if (nullptr == m_pNavigationTool)
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -199,7 +256,9 @@ void CLevel_Tools::Free()
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
 
+	Safe_Release(m_pMap);
 	Safe_Release(m_pMapTool);
+	Safe_Release(m_pNavigationTool);
 }
 
 #endif // _IMGUI

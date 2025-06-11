@@ -19,11 +19,21 @@ public:
 	virtual void Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public:
+	virtual HRESULT Render_UI() { return S_OK; };
+	virtual HRESULT Render_ExtraUI() { return S_OK; };
+
 protected:
 	ID3D11Device* m_pDevice = { nullptr };
 	ID3D11DeviceContext* m_pContext = { nullptr };
 
 	class CGameInstance* m_pGameInstance = { nullptr };
+
+protected:
+	_bool		m_IsFocused = {};
+
+protected:
+	void Check_SelectedTool();
 
 public:
 	virtual void Free() override;

@@ -17,7 +17,7 @@ HRESULT CUI2D_PlayerHUDPart::Initialize_Prototype()
 
 HRESULT CUI2D_PlayerHUDPart::Initialize(void* pArg)
 {
-	if (__super::Initialize(pArg))
+	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
 	if (FAILED(Ready_Components(pArg)))

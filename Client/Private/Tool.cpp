@@ -26,6 +26,14 @@ HRESULT CTool::Render()
     return S_OK;
 }
 
+void CTool::Check_SelectedTool()
+{
+    if (ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows))
+        m_IsFocused = true;
+    else
+        m_IsFocused = false;
+}
+
 void CTool::Free()
 {
     __super::Free();

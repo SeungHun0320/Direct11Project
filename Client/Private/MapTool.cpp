@@ -32,6 +32,14 @@ CMapTool::CMapTool(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 }
 
+CMap* CMapTool::Get_Map()
+{
+	if(nullptr != m_pMap)
+		return m_pMap;
+
+	return nullptr;
+}
+
 HRESULT CMapTool::Initialize()
 {
 	if (FAILED(__super::Initialize()))
@@ -203,9 +211,13 @@ void CMapTool::Update(_float fTimeDelta)
 
 HRESULT CMapTool::Render()
 {
-	MapTool();
-	Created_Menu();
+	Render_UI();
+	return S_OK;
+}
 
+HRESULT CMapTool::Render_ExtraUI()
+{
+	Created_Menu();
 	return S_OK;
 }
 
@@ -228,9 +240,10 @@ void CMapTool::Key_Input()
 	}
 }
 
-HRESULT CMapTool::MapTool()
+HRESULT CMapTool::Render_UI()
 {
 	ImGui::Begin(u8"¸Ê Åø");
+	Check_SelectedTool();
 
 	Map_Menu();
 	Load_Map_Menu();

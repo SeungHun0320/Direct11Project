@@ -24,9 +24,17 @@ private:
 	~CMapTool() = default;
 
 public:
+	class CMap* Get_Map();
+
+	_bool IsFocused() const {
+		return m_IsFocused;
+	}
+
+public:
 	virtual HRESULT Initialize() override;
 	virtual void Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
+	virtual HRESULT Render_ExtraUI() override;
 
 public:
 	void File_Menu();
@@ -72,8 +80,8 @@ private:
 	class CMap* m_pMap = { nullptr };
 
 private: /* 다들 아시죠? */
+	virtual HRESULT Render_UI()override;
 	void Key_Input();
-	HRESULT MapTool();
 
 private: /* 통맵 쪽 코드 */
 	void    Map_Menu();

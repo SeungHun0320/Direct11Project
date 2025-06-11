@@ -116,9 +116,7 @@ public:
 private:
 	_float4x4				m_WorldMatrix = {};
 	_float					m_fSpeedPerSec = {};
-	_float					m_fRotationPerSec = {};
-	_vector					m_vVelocity = {};      // 현재 속도
-	_vector					m_vAcceleration = {};  // 가속도				
+	_float					m_fRotationPerSec = {};		
 
 public:
 	static CTransform* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

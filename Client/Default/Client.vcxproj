@@ -205,6 +205,7 @@
     <ClInclude Include="..\public\Monster.h" />
     <ClInclude Include="..\public\Monster_Bullet.h" />
     <ClInclude Include="..\public\Monster_Bullet_AOE.h" />
+    <ClInclude Include="..\public\NavigationTool.h" />
     <ClInclude Include="..\public\Part_Player.h" />
     <ClInclude Include="..\Public\Part_WizardCandleabra.h" />
     <ClInclude Include="..\Public\Part_WizardStaff.h" />
@@ -296,6 +297,7 @@
     <ClCompile Include="..\private\Monster.cpp" />
     <ClCompile Include="..\private\Monster_Bullet.cpp" />
     <ClCompile Include="..\Private\Monster_Bullet_AOE.cpp" />
+    <ClCompile Include="..\private\NavigationTool.cpp" />
     <ClCompile Include="..\private\Part_Player.cpp" />
     <ClCompile Include="..\Private\Part_WizardCandleabra.cpp" />
     <ClCompile Include="..\Private\Part_WizardStaff.cpp" />

@@ -9,7 +9,8 @@ BEGIN(Client)
 class CLevel_Tools final : public CLevel
 {
 public:
-	enum TOOLTYPE { TT_MAP, TT_CAMERA, TT_END };
+	enum TOOL_ACTIVE_TYPE { TOOL_MAP, TOOL_NAVIGATION, TOOL_END };
+
 private:
 	CLevel_Tools(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual ~CLevel_Tools() = default;
@@ -22,7 +23,14 @@ public:
 	virtual HRESULT Render() override;
 
 private:
-	class CMapTool* m_pMapTool = { nullptr };
+	class CMapTool*		   m_pMapTool = { nullptr };
+	class CNavigationTool* m_pNavigationTool = { nullptr };
+
+private:
+	class CMap*			   m_pMap = { nullptr };
+
+private:
+	TOOL_ACTIVE_TYPE	   m_eActiveType = { TOOL_END };
 
 private:
 	HRESULT Ready_ImGui();

@@ -645,6 +645,9 @@
     <ClInclude Include="..\public\UI2D_PlayerHUDPart.h">
       <Filter>02.GameObjects\00.UI\2D\UI2D_PlayerHUDPart</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\NavigationTool.h">
+      <Filter>96.Tools\01.NavigationTool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -968,6 +971,9 @@
     </ClCompile>
     <ClCompile Include="..\private\UI2D_PlayerHUDPart.cpp">
       <Filter>02.GameObjects\00.UI\2D\UI2D_PlayerHUDPart</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\NavigationTool.cpp">
+      <Filter>96.Tools\01.NavigationTool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
