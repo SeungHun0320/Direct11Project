@@ -47,7 +47,7 @@ HRESULT CNavigationTool::Initialize()
 
 	m_ClickedPoints.reserve(3);
 
-	m_bMode[NORMAL] = true;
+	m_bMode[MODIFY] = true;
 
 	return S_OK;
 }
@@ -63,9 +63,13 @@ void CNavigationTool::Update(_float fTimeDelta)
 	if (m_bMode[CREATE])
 	{
 		if (MOUSE_DOWN(DIMK::LBUTTON))
-		{
 			Add_ClickedPoint(m_vCurrentPos);
-		}
+	}
+
+	if (m_bMode[MODIFY])
+	{
+		if (MOUSE_DOWN(DIMK::RBUTTON))
+			Delete_Cell(XMLoadFloat3(&m_vCurrentPos));
 	}
 
 }
@@ -91,26 +95,32 @@ void CNavigationTool::Key_Input()
 	if (KEY_DOWN(DIK_V))
 	{
 		m_bMode[CREATE] = !m_bMode[CREATE];
-		m_bMode[NORMAL] = !m_bMode[NORMAL];
+		m_bMode[MODIFY] = !m_bMode[MODIFY];
 	}
+	if (KEY_DOWN(DIK_B))
+		m_bMode[NORMAL] = !m_bMode[NORMAL];
 }
 
 void CNavigationTool::Change_Mode()
 {
-	if (ImGui::RadioButton(u8"생성", m_bMode[CREATE]))
+	if (ImGui::RadioButton(u8"생성모드", m_bMode[CREATE]))
 	{
 		m_bMode[CREATE] = !m_bMode[CREATE];
-		m_bMode[NORMAL] = false;
+		m_bMode[MODIFY] = false;
+	}
+	ImGui::SameLine();
+	if (ImGui::RadioButton(u8"수정모드", m_bMode[MODIFY]))
+	{
+		m_bMode[MODIFY] = !m_bMode[MODIFY];
+		m_bMode[CREATE] = false;
 	}
 	ImGui::SameLine();
 	if (ImGui::RadioButton(u8"잠금", m_bMode[NORMAL]))
 	{
 		m_bMode[NORMAL] = !m_bMode[NORMAL];
-		m_bMode[CREATE] = false;
 	}
-
 	ImGui::Text(u8"키를 눌러 모드 전환");
-	ImGui::Text(u8"V : 생성/잠금 ");
+	ImGui::Text(u8"V : 생성/수정 || B : 잠금 ");
 }
 
 HRESULT CNavigationTool::Render_Cells()
@@ -118,7 +128,11 @@ HRESULT CNavigationTool::Render_Cells()
 	if (nullptr == m_pMap)
 		return E_FAIL;
 
-	m_pShader->Bind_Matrix("g_WorldMatrix", dynamic_cast<CTransform*>(m_pMap->Get_Component(TEXT("Com_Transform")))->Get_WorldMatrix_Float4x4());
+
+	_float4x4		WorldMatrix = *dynamic_cast<CTransform*>(m_pMap->Get_Component(TEXT("Com_Transform")))->Get_WorldMatrix_Float4x4();
+	WorldMatrix.m[3][1] += 0.2f;
+
+	m_pShader->Bind_Matrix("g_WorldMatrix", &WorldMatrix);
 	m_pShader->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::VIEW));
 	m_pShader->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::PROJ));
 
@@ -142,8 +156,11 @@ void CNavigationTool::Add_ClickedPoint(_float3 vWorldPos)
 
 	if (3 == m_ClickedPoints.size())
 	{
-		//Sort_PointsCW(m_ClickedPoints);
-		Create_Cell();
+		Sort_PointsCW(m_ClickedPoints);
+
+		if(!Check_Cells(m_ClickedPoints))
+			Create_Cell();
+
 		m_ClickedPoints.clear();
 	}
 }
@@ -166,6 +183,34 @@ HRESULT CNavigationTool::Create_Cell()
 	m_Cells.push_back(pCell);
 
 	return S_OK;
+}
+
+CCell* CNavigationTool::Find_Cell(_fvector vPickedPos)
+{
+	for (auto& pCell : m_Cells)
+	{
+		_int iNeighborIdex{ -1 };
+		if (pCell->isIn(vPickedPos, &iNeighborIdex))
+			return pCell;
+	}
+
+	return nullptr;
+}
+
+void CNavigationTool::Delete_Cell(_fvector vPickedPos)
+{
+	for (auto iter = m_Cells.begin(); iter != m_Cells.end();)
+	{
+		_int iNeighborIdex{ -1 };
+		if ((*iter)->isIn(vPickedPos, &iNeighborIdex))
+		{
+			Safe_Release(*iter);
+			m_Cells.erase(iter);
+			break;
+		}
+		else
+			++iter;
+	}
 }
 
 _float3 CNavigationTool::Snap_NearCellPoint(const _float3& vPickedPos)
@@ -196,7 +241,54 @@ _float3 CNavigationTool::Snap_NearCellPoint(const _float3& vPickedPos)
 
 void CNavigationTool::Sort_PointsCW(vector<_float3>& Points)
 {
-	
+	if (Points.size() != 3)
+		return;
+
+	_vector v0 = XMLoadFloat3(&Points[0]);
+	_vector v1 = XMLoadFloat3(&Points[1]);
+	_vector v2 = XMLoadFloat3(&Points[2]);
+
+	// 벡터 계산
+	_vector vA = v1 - v0;
+	_vector vB = v2 - v0;
+
+	// 외적 계산
+	_vector vNormal = XMVector3Cross(vA, vB);
+
+	if (0.f > XMVectorGetY(vNormal))
+	{
+		swap(Points[0], Points[2]);
+	}
+}
+
+_bool CNavigationTool::Check_Cells(vector<_float3>& Points)
+{
+	if (m_Cells.empty())
+		return false;
+
+	for (auto& pCell : m_Cells)
+	{
+		_float3 vCellPoints[3] = {};
+
+		XMStoreFloat3(&vCellPoints[0], pCell->Get_Point(CCell::POINT_A));
+		XMStoreFloat3(&vCellPoints[1], pCell->Get_Point(CCell::POINT_B));
+		XMStoreFloat3(&vCellPoints[2], pCell->Get_Point(CCell::POINT_C));
+
+		_uint iMatchCount = 0;
+		for (_uint i = 0; i < CCell::POINT_END; i++)
+		{
+			for (_uint j = 0; j < CCell::POINT_END; j++)
+			{
+				if (XMVector3Equal(XMLoadFloat3(&Points[i]), XMLoadFloat3(&vCellPoints[j])))
+					++iMatchCount;
+			}
+		}
+
+		if (3 == iMatchCount)
+			return true;
+	}
+
+	return false;
 }
 
 void CNavigationTool::Save_Load_Menu()

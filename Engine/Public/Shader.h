@@ -26,6 +26,8 @@ public:
 	HRESULT Bind_Matrices(const _char* pConstantName, const _float4x4* pMatrix, _uint iNumMatrices);
 	/* 쉐이더에게 리소스뷰를 전달해주기 위해서 */
 	HRESULT Bind_SRV(const _char* pConstantName, ID3D11ShaderResourceView* pSRV);
+	/* 쉐이더에게 리소스뷰'들'을 전달해주기 위해서 */
+	HRESULT Bind_SRVs(const _char* pConstantName, ID3D11ShaderResourceView** ppSRV, _uint iNumTextures);
 
 private:
 	ID3DX11Effect* m_pEffect = { nullptr };

@@ -31,6 +31,19 @@ void CPlayer::Set_Level(LEVEL eLevelID)
 	m_pGameInstance->Add_Collider(dynamic_cast<CCollider*>(m_PartObjects[PART_WEAPON]->Get_Component(TEXT("Com_Collider_Stick"))), ENUM_CLASS(COLLIDER_GROUP::WEAPON));
 	m_pGameInstance->Add_Collider(dynamic_cast<CCollider*>(m_PartObjects[PART_WEAPON]->Get_Component(TEXT("Com_Collider_Sword"))), ENUM_CLASS(COLLIDER_GROUP::WEAPON));
 	m_pGameInstance->Add_Collider(dynamic_cast<CCollider*>(m_PartObjects[PART_WEAPON]->Get_Component(TEXT("Com_Collider_Dagger"))), ENUM_CLASS(COLLIDER_GROUP::WEAPON));
+
+
+	while (m_pNavigationCom)
+	{
+		Safe_Release(m_pNavigationCom);
+	}
+
+	CNavigation::DESC tDesc{};
+	XMStoreFloat3(&tDesc.vInitWorldPos, m_pTransformCom->Get_State(STATE::POSITION));
+
+	if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Navigation"),
+		TEXT("Com_Navigation"), reinterpret_cast<CComponent**>(&m_pNavigationCom), &tDesc)))
+		return;
 }
 
 void CPlayer::Change_Level()
@@ -131,10 +144,15 @@ LIFE CPlayer::Update(_float fTimeDelta)
 void CPlayer::Late_Update(_float fTimeDelta)
 {
 	__super::Late_Update(fTimeDelta);
+
+	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 }
 
 HRESULT CPlayer::Render()
 {
+#ifdef _DEBUG
+		m_pNavigationCom->Render();
+#endif
 	return S_OK;
 }
 
@@ -596,7 +614,7 @@ HRESULT CPlayer::Ready_Components(void* pArg)
 		return E_FAIL;
 
 	CNavigation::DESC tDesc{};
-	tDesc.iIndex = 0;
+	XMStoreFloat3(&tDesc.vInitWorldPos, m_pTransformCom->Get_State(STATE::POSITION));
 
 	if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Navigation"),
 		TEXT("Com_Navigation"), reinterpret_cast<CComponent**>(&m_pNavigationCom), &tDesc)))

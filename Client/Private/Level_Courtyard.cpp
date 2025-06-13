@@ -89,7 +89,7 @@ HRESULT CLevel_Courtyard::Render()
 HRESULT CLevel_Courtyard::Ready_Layer_Pawn(const _wstring& strLayerTag)
 {
 	//이 레벨의 플레이어 생성위치
-	_float3 vInitPosition = { -1.f, 0.f, -100.f };
+	_float3 vInitPosition = { -0.f, 0.f, -100.f };
 
 	// 플레이어가 있는지 체크하고 있으면 위치만 변경해줌.
 	auto pPlayer = GET_PLAYER;
@@ -121,6 +121,29 @@ HRESULT CLevel_Courtyard::Ready_Layer_Pawn(const _wstring& strLayerTag)
 
 HRESULT CLevel_Courtyard::Ready_Layer_Camera(const _wstring& strLayerTag)
 {
+#pragma region 프리카메라
+	//CCamera_Free::DESC FreeCameraDesc = {};
+
+	//FreeCameraDesc.eLevelID = CurLevel;
+	//FreeCameraDesc.fSensor = 0.1f;
+
+	//FreeCameraDesc.vEye = _float3(0.f, 20.f, -15.f);
+	//FreeCameraDesc.vAt = _float3(0.f, 0.f, 0.f);
+	//FreeCameraDesc.fFov = XMConvertToRadians(60.f);
+	//FreeCameraDesc.fNear = 0.1f;
+	//FreeCameraDesc.fFar = 3000.f;
+	//FreeCameraDesc.fSpeedPerSec = 30.f;
+	//FreeCameraDesc.fRotationPerSec = XMConvertToRadians(180.f);
+	//FreeCameraDesc.strName = TEXT("Camera_Free");
+
+	//if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + FreeCameraDesc.strName,
+	//	ENUM_CLASS(FreeCameraDesc.eLevelID), strLayerTag, &FreeCameraDesc)))
+	//	return E_FAIL;
+
+	//if (FAILED(m_pGameInstance->Add_Camera(ENUM_CLASS(CurLevel), strLayerTag, FreeCameraDesc.strName)))
+	//	return E_FAIL;
+#pragma endregion 
+
 	CGameObject* pPlayer = GET_PLAYER;
 
 	_float3 vPos = {};
@@ -157,15 +180,17 @@ HRESULT CLevel_Courtyard::Ready_Layer_Camera(const _wstring& strLayerTag)
 
 HRESULT CLevel_Courtyard::Ready_Layer_BackGround(const _wstring& strLayerTag)
 {
-	CTerrain::DESC tDesc = {};
-	tDesc.eLevelID = CurLevel;
-	tDesc.fSpeedPerSec = 0.f;
-	tDesc.fRotationPerSec = 0.f;
-	tDesc.strName = TEXT("Terrain");
+#pragma region 지형
+	//CTerrain::DESC tDesc = {};
+	//tDesc.eLevelID = CurLevel;
+	//tDesc.fSpeedPerSec = 0.f;
+	//tDesc.fRotationPerSec = 0.f;
+	//tDesc.strName = TEXT("Terrain");
 
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + tDesc.strName,
-		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + tDesc.strName,
+	//	ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
+	//	return E_FAIL;
+#pragma endregion
 
 	CSky::DESC tSkyDesc = {};
 	tSkyDesc.eLevelID = CurLevel;

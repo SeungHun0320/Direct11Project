@@ -36,6 +36,7 @@ protected:
 protected:
 	/* 나중에 정점의 위치를 알기 위한 정보 */
 	_float3* m_pVertexPositions = {};
+	void* m_pIndices = { nullptr };
 
 protected:
 	/* 정점 갯수 */
@@ -52,7 +53,6 @@ protected:
 	DXGI_FORMAT					m_eIndexFormat = {};
 	/* 프리미티브 토폴로지 (트라이앵글 리스트 등 ) */
 	D3D11_PRIMITIVE_TOPOLOGY	m_ePrimitiveTopology = {};
-	void*						m_pIndices = { nullptr };
 
 public:
 	virtual CComponent* Clone(void* pArg)PURE;

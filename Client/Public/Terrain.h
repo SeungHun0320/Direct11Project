@@ -7,12 +7,16 @@ BEGIN(Engine)
 class CShader;
 class CTexture;
 class CVIBuffer_Terrain;
+class CNavigation;
 END
 
 BEGIN(Client)
 
 class CTerrain final : public CGameObject
 {
+public:
+	enum TEXTURE { TEXTURE_DIFFUSE, TEXTURE_MASK, TEXTURE_END };
+
 public:
 	typedef struct tagTerrainDesc : CGameObject::DESC
 	{
@@ -34,7 +38,7 @@ public:
 
 private:
 	CShader* m_pShaderCom = { nullptr };
-	CTexture* m_pTextureCom = { nullptr };
+	CTexture* m_pTextureCom[TEXTURE_END] = {nullptr};
 	CVIBuffer_Terrain* m_pVIBufferCom = { nullptr };
 
 private:

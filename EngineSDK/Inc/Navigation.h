@@ -11,7 +11,8 @@ class ENGINE_DLL CNavigation final : public CComponent
 public:
 	typedef struct tagNavigationDesc
 	{
-		_int iIndex = {};
+		_int iIndex = { };
+		_float3 vInitWorldPos{};
 	}DESC;
 
 private:
@@ -35,7 +36,7 @@ public:
 
 private:
 	vector<class CCell*>				m_Cells;
-	_int								m_iIndex = {};
+	_int								m_iIndex = { -1 };
 
 	static _float4x4					m_WorldMatrix;
 
@@ -45,6 +46,7 @@ private:
 
 private:
 	HRESULT SetUp_Neighbors();
+	_int	Find_CellIndex(_fvector vInitWorldPos);
 
 public:
 	static CNavigation* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _wstring& strNavigationFilePath);

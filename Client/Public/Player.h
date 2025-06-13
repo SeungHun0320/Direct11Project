@@ -53,7 +53,7 @@ private:
 	CPlayer(const CPlayer& Prototype);
 	virtual ~CPlayer() = default;
 
-public:
+public: /* 레벨 관련 */
 	virtual void Set_Level(LEVEL eLevelID);
 	void Change_Level();
 

@@ -12,7 +12,7 @@ BEGIN(Client)
 class CNavigationTool : public CTool
 {
 public:
-	enum MODE { CREATE, NORMAL, MODE_END };
+	enum MODE { CREATE, MODIFY, NORMAL, MODE_END };
 
 protected:
 	CNavigationTool(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -31,8 +31,12 @@ public:
 	virtual void Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 	virtual HRESULT Render_ExtraUI() override;
-public:
+
+public: 
 	virtual HRESULT Render_UI() override;
+
+
+public: /* 맵툴 연동 */
 
 private:
 	class CMap* m_pMap = { nullptr };
@@ -47,11 +51,8 @@ private:  /* 편의성 */
 private:
 	vector<_float3>      m_ClickedPoints;
 	vector<CCell*>		 m_Cells;
-
-
-	_int				 m_iSelectedCellIndex = {};
 	/* 정렬용 */
-	_float				 m_fSnapRange = 1.5f;
+	_float				 m_fSnapRange = 0.5f;
 
 private: /* 편의성 */
 	void	Key_Input();
@@ -59,10 +60,15 @@ private: /* 편의성 */
 	HRESULT Render_Cells();
 
 private: /* 셀 생성 관련 */
-	void Add_ClickedPoint(_float3 vWorldPos);
-	HRESULT Create_Cell();
+	void	Add_ClickedPoint(_float3 vWorldPos);
 	_float3 Snap_NearCellPoint(const _float3& vPickedPos);
 	void    Sort_PointsCW(vector<_float3>& Points);
+	_bool   Check_Cells(vector<_float3>& Points);
+	HRESULT Create_Cell();
+
+private: /* 셀 삭제 관련 */
+	CCell* Find_Cell(_fvector vPickedPos);
+	void   Delete_Cell(_fvector vPickedPos);
 
 private: /* 셀 저장 불러오기 */
 	void    Save_Load_Menu();

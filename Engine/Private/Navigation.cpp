@@ -65,12 +65,14 @@ HRESULT CNavigation::Initialize_Prototype(const _wstring& strNavigationFilePath)
 
 HRESULT CNavigation::Initialize(void* pArg)
 {
-
-
 	DESC* pDesc = static_cast<DESC*>(pArg);
 
+	/* -1이면 맵임 */
+	if (-1 == pDesc->iIndex)
+		return S_OK;
+
 	/* 어디 셀에서 시작할지 정함 */
-	m_iIndex = pDesc->iIndex;
+	m_iIndex = Find_CellIndex(XMLoadFloat3(&pDesc->vInitWorldPos));
 
 	return S_OK;
 }
@@ -134,14 +136,40 @@ HRESULT CNavigation::Render()
 {
 	/* 그리기를 그냥 월드에서 하고 처리는 로컬로 옮겨서 하자. 셀이 많아질수록 매 프레임 연산이 엄청나게 많아지기 때문에 */
 	/* 아싸리 네비게이션 위에 있는 객체를 로컬로 땡겨와서 연산을 해주는게 이득임 */
-	m_pShader->Bind_Matrix("g_WorldMatrix", &m_WorldMatrix);
 	m_pShader->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::VIEW));
 	m_pShader->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::PROJ));
 
-	m_pShader->Begin(0);
+	_float4		vColor = {};
 
-	for (auto& pCell : m_Cells)
-		pCell->Render();
+	if (-1 == m_iIndex) /* 지형 렌더용 */
+	{
+		m_pShader->Bind_Matrix("g_WorldMatrix", &m_WorldMatrix);
+
+		vColor = _float4(0.f, 1.f, 0.f, 1.f);
+
+		m_pShader->Bind_RawValue("g_vColor", &vColor, sizeof(_float4));
+
+		m_pShader->Begin(0);
+
+		for (auto& pCell : m_Cells)
+			pCell->Render();
+	}
+	else /* 객체 렌더용 */
+	{
+		_float4x4		WorldMatrix = m_WorldMatrix;
+		WorldMatrix.m[3][1] += 0.1f;
+
+		m_pShader->Bind_Matrix("g_WorldMatrix", &WorldMatrix);
+
+		vColor = _float4(1.f, 0.f, 0.f, 1.f);
+
+		m_pShader->Bind_RawValue("g_vColor", &vColor, sizeof(_float4));
+
+		m_pShader->Begin(0);
+
+		m_Cells[m_iIndex]->Render();
+	}
+
 
 	return S_OK;
 }
@@ -174,6 +202,19 @@ HRESULT CNavigation::SetUp_Neighbors()
 	}
 
 	return S_OK;
+}
+
+_int CNavigation::Find_CellIndex(_fvector vInitWorldPos)
+{
+	_vector		vLocalPos = XMVector3TransformCoord(vInitWorldPos, XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_WorldMatrix)));
+
+	for (_int i = 0; i < m_Cells.size(); i++)
+	{
+		_int iNeighborIndex{ -1 };
+		if (m_Cells[i]->isIn(vLocalPos, &iNeighborIndex))
+			return i;
+	}
+	return -1;
 }
 
 CNavigation* CNavigation::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _wstring& strNavigationFilePath)
