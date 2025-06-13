@@ -33,7 +33,7 @@ void CPlayer::Set_Level(LEVEL eLevelID)
 	m_pGameInstance->Add_Collider(dynamic_cast<CCollider*>(m_PartObjects[PART_WEAPON]->Get_Component(TEXT("Com_Collider_Dagger"))), ENUM_CLASS(COLLIDER_GROUP::WEAPON));
 
 
-	while (m_pNavigationCom)
+	if (nullptr != m_pNavigationCom)
 	{
 		Safe_Release(m_pNavigationCom);
 	}
