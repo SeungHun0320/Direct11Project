@@ -2,21 +2,21 @@
 
 #include "UI2DContainerPart.h"
 
-class CUI2D_PlayerHUDPart final : public CUI2DContainerPart
+class CUI2D_PlayerPotion final : public CUI2DContainerPart
 {
 public:
-	enum PART { PART_HP, PART_END };
+	enum PART { PART_END = 8 };
 
 public:
-	typedef struct tagUI2DPlayerHUDPartDesc : public CUI2DContainerPart::DESC
+	typedef struct tagUI2DPlayerPotionDesc : public CUI2DContainerPart::DESC
 	{
 
 	}DESC;
 
 private:
-	CUI2D_PlayerHUDPart(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CUI2D_PlayerHUDPart(const CUI2D_PlayerHUDPart& Prototype);
-	virtual ~CUI2D_PlayerHUDPart() = default;
+	CUI2D_PlayerPotion(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CUI2D_PlayerPotion(const CUI2D_PlayerPotion& Prototype);
+	virtual ~CUI2D_PlayerPotion() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -30,9 +30,8 @@ private:
 	virtual HRESULT Ready_Components(void* pArg) override;
 	virtual HRESULT Ready_PartObjects() override;
 
-
 public:
-	static CUI2D_PlayerHUDPart* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CUI2D_PlayerPotion* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 };

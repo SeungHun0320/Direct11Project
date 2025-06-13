@@ -340,15 +340,6 @@
     <Filter Include="96.Tools\00.MapTool">
       <UniqueIdentifier>{ae8c8b7d-fa3f-4ba0-b00a-d9b3ca93886a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.UI\02.PlayerState\00. HpBar">
-      <UniqueIdentifier>{60c9200d-6118-4587-9ee0-1bcb3f52c367}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.UI\02.PlayerState\01. StaminaBar">
-      <UniqueIdentifier>{fa8a6485-6e60-4186-aec4-b9d0b8a4e8ce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.UI\02.PlayerState\02. ManaBar">
-      <UniqueIdentifier>{76ade142-3387-45f1-8a26-dffaefe60af0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\01.BackGround\00.BackGround">
       <UniqueIdentifier>{517eb494-a7a3-40c2-95e0-858f13d8d0a9}</UniqueIdentifier>
     </Filter>
@@ -358,14 +349,44 @@
     <Filter Include="02.GameObjects\01.BackGround\02.Sky">
       <UniqueIdentifier>{61ad6a7e-8b1f-40aa-b6d1-791ed8e8b648}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.UI\2D">
-      <UniqueIdentifier>{0869c2d5-3bce-496d-a14c-44df8f9a9b87}</UniqueIdentifier>
+    <Filter Include="02.GameObjects\00.UI\Container">
+      <UniqueIdentifier>{b5bde109-c3a5-44df-a7f6-dba38547b163}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.UI\3D">
+    <Filter Include="02.GameObjects\00.UI\Container\3D">
       <UniqueIdentifier>{c4b003b1-27af-42f8-a476-7fd2a9d51dd1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.UI\2D\UI2D_PlayerHUDPart">
-      <UniqueIdentifier>{4afd14de-646f-4c46-8f3e-a24222e88bde}</UniqueIdentifier>
+    <Filter Include="02.GameObjects\00.UI\Container\2D">
+      <UniqueIdentifier>{0869c2d5-3bce-496d-a14c-44df8f9a9b87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\Part">
+      <UniqueIdentifier>{5dab7d6f-0d4c-4992-ab27-f4240929a215}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\Part\UI">
+      <UniqueIdentifier>{b30e92f1-66cb-41ef-a7b4-cbaeb4b3269c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\02.PlayerState\Bar">
+      <UniqueIdentifier>{89b42d89-4cd9-43c6-9ccf-11078c6a3cc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\02.PlayerState\Bar\Notch">
+      <UniqueIdentifier>{996935b4-8b81-4e87-b162-003075ed6a69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\02.PlayerState\Bar\Back">
+      <UniqueIdentifier>{735bdcb3-3c2b-40c9-8d7f-79b2f92e339a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\02.PlayerState\Bar\00. HpBar">
+      <UniqueIdentifier>{60c9200d-6118-4587-9ee0-1bcb3f52c367}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\02.PlayerState\Bar\00. HpBar\HPBar">
+      <UniqueIdentifier>{96629638-8b78-47aa-a15b-12ffd9eb70ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\02.PlayerState\Bar\01. StaminaBar">
+      <UniqueIdentifier>{fa8a6485-6e60-4186-aec4-b9d0b8a4e8ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\02.PlayerState\Bar\02. ManaBar">
+      <UniqueIdentifier>{76ade142-3387-45f1-8a26-dffaefe60af0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\02.PlayerState\04. Potion\Part">
+      <UniqueIdentifier>{5e250928-cae3-41a8-b6bf-e17fe1057360}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -637,16 +658,25 @@
       <Filter>02.GameObjects\03.Actor</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\UI2DContainerPart.h">
-      <Filter>02.GameObjects\00.UI\2D</Filter>
+      <Filter>02.GameObjects\00.UI\Container\2D</Filter>
     </ClInclude>
     <ClInclude Include="..\public\UI3DContainerPart.h">
-      <Filter>02.GameObjects\00.UI\3D</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\UI2D_PlayerHUDPart.h">
-      <Filter>02.GameObjects\00.UI\2D\UI2D_PlayerHUDPart</Filter>
+      <Filter>02.GameObjects\00.UI\Container\3D</Filter>
     </ClInclude>
     <ClInclude Include="..\public\NavigationTool.h">
       <Filter>96.Tools\01.NavigationTool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UI2D_PlayerHPBar.h">
+      <Filter>02.GameObjects\00.UI\02.PlayerState\Bar\00. HpBar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UI.h">
+      <Filter>02.GameObjects\00.UI\Part\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UI2D_PlayerPotion.h">
+      <Filter>02.GameObjects\00.UI\02.PlayerState\04. Potion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UI_Potion.h">
+      <Filter>02.GameObjects\00.UI\02.PlayerState\04. Potion\Part</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -964,16 +994,25 @@
       <Filter>02.GameObjects\03.Actor</Filter>
     </ClCompile>
     <ClCompile Include="..\private\UI2DContainerPart.cpp">
-      <Filter>02.GameObjects\00.UI\2D</Filter>
+      <Filter>02.GameObjects\00.UI\Container\2D</Filter>
     </ClCompile>
     <ClCompile Include="..\private\UI3DContainerPart.cpp">
-      <Filter>02.GameObjects\00.UI\3D</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\UI2D_PlayerHUDPart.cpp">
-      <Filter>02.GameObjects\00.UI\2D\UI2D_PlayerHUDPart</Filter>
+      <Filter>02.GameObjects\00.UI\Container\3D</Filter>
     </ClCompile>
     <ClCompile Include="..\private\NavigationTool.cpp">
       <Filter>96.Tools\01.NavigationTool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI2D_PlayerHPBar.cpp">
+      <Filter>02.GameObjects\00.UI\02.PlayerState\Bar\00. HpBar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI.cpp">
+      <Filter>02.GameObjects\00.UI\Part\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI2D_PlayerPotion.cpp">
+      <Filter>02.GameObjects\00.UI\02.PlayerState\04. Potion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI_Potion.cpp">
+      <Filter>02.GameObjects\00.UI\02.PlayerState\04. Potion\Part</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -4,7 +4,8 @@
 
 #include "Body_Player.h"
 #include "Weapon_Player.h"
-#include "UI2D_PlayerHUDPart.h"
+#include "UI2D_PlayerHPBar.h"
+#include "UI2D_PlayerPotion.h"
 
 #include "PlayerState.h"
 #include "Player_IAttackStrategy.h"
@@ -653,12 +654,20 @@ HRESULT CPlayer::Ready_PartObjects()
 
 	Safe_AddRef(m_pWeaponPart);
 
-	CUI2D_PlayerHUDPart::DESC UI2DDesc{};
+	CUI2D_PlayerHPBar::DESC HPBarDesc{};
 
-	UI2DDesc.eLevelID = m_eLevelID;
-	UI2DDesc.iNumPartObjects = CUI2D_PlayerHUDPart::PART_END;
+	HPBarDesc.eLevelID = m_eLevelID;
+	HPBarDesc.iNumPartObjects = CUI2D_PlayerHPBar::PART_END;
 
-	if (FAILED(__super::Add_PartObject(PART_UI2D, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerHUDPart"), &UI2DDesc)))
+	if (FAILED(__super::Add_PartObject(PART_HP, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerHPBar"), &HPBarDesc)))
+		return E_FAIL;
+
+	CUI2D_PlayerPotion::DESC PotionDesc{};
+
+	PotionDesc.eLevelID = m_eLevelID;
+	PotionDesc.iNumPartObjects = CUI2D_PlayerPotion::PART_END;
+
+	if (FAILED(__super::Add_PartObject(PART_POTION, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerPotion"), &PotionDesc)))
 		return E_FAIL;
 
 	return S_OK;

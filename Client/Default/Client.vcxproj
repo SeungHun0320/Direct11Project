@@ -214,9 +214,12 @@
     <ClInclude Include="..\public\Player.h" />
     <ClInclude Include="..\Public\PlayerState.h" />
     <ClInclude Include="..\Public\Player_IAttackStrategy.h" />
+    <ClInclude Include="..\public\UI2D_PlayerPotion.h" />
     <ClInclude Include="..\public\SpiderTank_Lager.h" />
-    <ClInclude Include="..\public\UI2D_PlayerHUDPart.h" />
+    <ClInclude Include="..\public\UI.h" />
+    <ClInclude Include="..\public\UI2D_PlayerHPBar.h" />
     <ClInclude Include="..\public\UI3DContainerPart.h" />
+    <ClInclude Include="..\public\UI_Potion.h" />
     <ClInclude Include="..\public\Weapon_Player.h" />
     <ClInclude Include="..\public\Potion.h" />
     <ClInclude Include="..\public\Shop.h" />
@@ -322,6 +325,7 @@
     <ClCompile Include="..\Private\PlayerState_Move.cpp" />
     <ClCompile Include="..\Private\PlayerState_Sprint.cpp" />
     <ClCompile Include="..\Private\Player_IAttackStrategy.cpp" />
+    <ClCompile Include="..\private\UI2D_PlayerPotion.cpp" />
     <ClCompile Include="..\private\Potion.cpp" />
     <ClCompile Include="..\private\Shop.cpp" />
     <ClCompile Include="..\private\Sky.cpp" />
@@ -335,9 +339,11 @@
     <ClCompile Include="..\private\SpiderTank_Orb.cpp" />
     <ClCompile Include="..\private\Terrain.cpp" />
     <ClCompile Include="..\private\Tool.cpp" />
+    <ClCompile Include="..\private\UI.cpp" />
     <ClCompile Include="..\private\UI2DContainerPart.cpp" />
-    <ClCompile Include="..\private\UI2D_PlayerHUDPart.cpp" />
+    <ClCompile Include="..\private\UI2D_PlayerHPBar.cpp" />
     <ClCompile Include="..\private\UI3DContainerPart.cpp" />
+    <ClCompile Include="..\private\UI_Potion.cpp" />
     <ClCompile Include="..\Private\Weapon_Player.cpp" />
     <ClCompile Include="..\private\Wizard.cpp" />
     <ClCompile Include="..\private\Wizard_Candleabra.cpp" />

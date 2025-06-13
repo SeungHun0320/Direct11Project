@@ -10,7 +10,8 @@ class CUI3DContainerPart abstract : public CPartObject
 public:
 	typedef struct tagUI3DContainerPartDesc : public CPartObject::DESC
 	{
-		LEVEL eLevelID{};
+		LEVEL	eLevelID{};
+		_uint	iNumPartObjects{};
 	}DESC;
 
 protected:

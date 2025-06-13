@@ -6,7 +6,9 @@
 #include "Player.h"
 #include "Body_Player.h"
 #include "Weapon_Player.h"
-#include "UI2D_PlayerHUDPart.h"
+#include "UI2D_PlayerHPBar.h"
+#include "UI2D_PlayerPotion.h"
+#include "UI_Potion.h"
 
 CMainApp::CMainApp()
 	: m_pGameInstance { CGameInstance::Get_Instance() }
@@ -98,9 +100,19 @@ HRESULT CMainApp::Render()
 
 HRESULT CMainApp::Ready_Prototype_Texture()
 {
-	/* For.Prototype_Component_Texture_HPBar */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_HPBar"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/HP/HPBar_%d.png"), 3))))
+	/* For.Prototype_Component_Texture_PlayerState */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_PlayerState"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/State_%d.png"), 2))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_PlayerHP */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_PlayerHP"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/HP/HPBar.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Potion*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Potion"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/Potion/Potion_%d.png"), 2))))
 		return E_FAIL;
 
 	return S_OK;
@@ -188,14 +200,24 @@ HRESULT CMainApp::Ready_Prototype_Object()
 		CWeapon_Player::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/*For.Prototype_GameObject_UI2D_PlayerHUDPart */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerHUDPart"),
-		CUI2D_PlayerHUDPart::Create(m_pDevice, m_pContext))))
+	/*--------------------------------------------플레이어UI(컨테이너파트)--------------------------------------------------*/
+
+	/*For.Prototype_GameObject_UI2D_PlayerHPBar */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerHPBar"),
+		CUI2D_PlayerHPBar::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/*For.Prototype_GameObject_UI2D_PlayerHPBar */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerPotion"),
+		CUI2D_PlayerPotion::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
+	/*--------------------------------------------플레이어UI(파트)--------------------------------------------------*/
 
-	/*--------------------------------------------플레이어UI--------------------------------------------------*/
+	/*For.Prototype_GameObject_UI_Potion */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI_Potion"),
+		CUI_Potion::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	return S_OK;
 }
