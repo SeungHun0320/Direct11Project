@@ -60,8 +60,7 @@ void CPlayerState_Idle::Execute(_float fTimeDelta)
 	if (m_pOwner->KeyDown(DIK_L))
 		m_pOwner->Change_States(CPlayer::STATES::COIN_FLIP);
 
-	if (m_pOwner->KeyDown(DIK_P))
-		m_pOwner->Change_States(CPlayer::STATES::USE_POTION);
+	m_pOwner->Use_Potion();
 
 	if (m_pOwner->KeyDown(DIK_SEMICOLON))
 		m_pOwner->Change_States(CPlayer::STATES::PARRY);

@@ -8,7 +8,7 @@
 #include "Weapon_Player.h"
 #include "UI2D_PlayerHPBar.h"
 #include "UI2D_PlayerPotion.h"
-#include "UI_Potion.h"
+#include "UI.h"
 
 CMainApp::CMainApp()
 	: m_pGameInstance { CGameInstance::Get_Instance() }
@@ -100,11 +100,6 @@ HRESULT CMainApp::Render()
 
 HRESULT CMainApp::Ready_Prototype_Texture()
 {
-	/* For.Prototype_Component_Texture_PlayerState */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_PlayerState"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/State_%d.png"), 2))))
-		return E_FAIL;
-
 	/* For.Prototype_Component_Texture_PlayerHP */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_PlayerHP"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/HP/HPBar.png")))))
@@ -113,6 +108,26 @@ HRESULT CMainApp::Ready_Prototype_Texture()
 	/* For.Prototype_Component_Texture_Potion*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Potion"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/Potion/Potion_%d.png"), 2))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_PKey*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_PKeyBoard"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GameUI/PKeyBoard.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_HexBar_Back*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_HexBar_Back"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/HexBar_Back.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_HexBar_Notch*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_HexBar_Notch"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/HexBar_Notch.png")))))
+		return E_FAIL;
+	
+	/* For.Prototype_Component_Texture_PlayerHPCap*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_PlayerHPCap"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/HP/HPBarCap.png")))))
 		return E_FAIL;
 
 	return S_OK;
@@ -214,9 +229,9 @@ HRESULT CMainApp::Ready_Prototype_Object()
 
 	/*--------------------------------------------플레이어UI(파트)--------------------------------------------------*/
 
-	/*For.Prototype_GameObject_UI_Potion */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI_Potion"),
-		CUI_Potion::Create(m_pDevice, m_pContext))))
+	/*For.Prototype_GameObject_UI */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI"),
+		CUI::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	return S_OK;

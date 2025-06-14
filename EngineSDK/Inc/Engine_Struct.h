@@ -106,4 +106,33 @@ namespace Engine
 		static const D3D11_INPUT_ELEMENT_DESC		Elements[iNumElements];
 	}VTXANIMMESH;
 
+	template<typename... Args>
+	class Delegate
+	{
+	public:
+		// 1) 내부에서 호출될 함수 시그니처
+		using FuncPtr = void(*)(void*, Args...);
+		void* m_target = nullptr;  // 호출할 객체(this)
+		FuncPtr m_invoke = nullptr;  // 실제 호출할 함수
+	public:
+		Delegate() = default;
+
+		// 2) 바인딩: T 객체의 멤버 함수와 this를 캡처
+		template<typename T, void(T::* method)(Args...)>
+		void Bind(T* instance) {
+			m_target = instance;
+			m_invoke = [](void* obj, Args... args) {
+				(static_cast<T*>(obj)->*method)(args...);
+				};
+		}
+
+		// 3) 실행: 저장된 객체와 멤버 함수를 호출
+		void Execute(Args... args) const {
+			if (m_invoke)
+				m_invoke(m_target, args...);
+		}
+
+		// 유효성 확인
+		explicit operator bool() const { return m_invoke != nullptr; }
+	};
 }

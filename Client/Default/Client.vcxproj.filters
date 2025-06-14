@@ -376,17 +376,14 @@
     <Filter Include="02.GameObjects\00.UI\02.PlayerState\Bar\00. HpBar">
       <UniqueIdentifier>{60c9200d-6118-4587-9ee0-1bcb3f52c367}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.UI\02.PlayerState\Bar\00. HpBar\HPBar">
-      <UniqueIdentifier>{96629638-8b78-47aa-a15b-12ffd9eb70ad}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\00.UI\02.PlayerState\Bar\01. StaminaBar">
       <UniqueIdentifier>{fa8a6485-6e60-4186-aec4-b9d0b8a4e8ce}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\00.UI\02.PlayerState\Bar\02. ManaBar">
       <UniqueIdentifier>{76ade142-3387-45f1-8a26-dffaefe60af0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.UI\02.PlayerState\04. Potion\Part">
-      <UniqueIdentifier>{5e250928-cae3-41a8-b6bf-e17fe1057360}</UniqueIdentifier>
+    <Filter Include="02.GameObjects\00.UI\Part\UI_Animation">
+      <UniqueIdentifier>{0bdab430-8299-40cb-933c-9e326aa6dd1d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -674,9 +671,6 @@
     </ClInclude>
     <ClInclude Include="..\public\UI2D_PlayerPotion.h">
       <Filter>02.GameObjects\00.UI\02.PlayerState\04. Potion</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\UI_Potion.h">
-      <Filter>02.GameObjects\00.UI\02.PlayerState\04. Potion\Part</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1010,9 +1004,6 @@
     </ClCompile>
     <ClCompile Include="..\private\UI2D_PlayerPotion.cpp">
       <Filter>02.GameObjects\00.UI\02.PlayerState\04. Potion</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\UI_Potion.cpp">
-      <Filter>02.GameObjects\00.UI\02.PlayerState\04. Potion\Part</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

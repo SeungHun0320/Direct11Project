@@ -62,10 +62,16 @@ void CTransform::Go_Straight(_float fTimeDelta, CNavigation* pNavigation)
 	_vector vPosition = Get_State(STATE::POSITION);
 	_vector vLook = Get_State(STATE::LOOK);
 
-	vPosition += XMVector3Normalize(vLook) * m_fSpeedPerSec * fTimeDelta;
+	_vector vMovePoint = vPosition + XMVector3Normalize(vLook) * m_fSpeedPerSec * fTimeDelta;
 
-	if (nullptr == pNavigation || pNavigation->isMove(vPosition))
-		Set_State(STATE::POSITION, vPosition);
+	if (nullptr == pNavigation || pNavigation->isMove(vMovePoint))
+		Set_State(STATE::POSITION, vMovePoint);
+	else
+	{
+		_vector vSlide = pNavigation->Compute_SlidingVector(vPosition, vMovePoint);
+		if (pNavigation->isMove(vSlide))
+			Set_State(STATE::POSITION, vSlide);
+	}
 }
 
 void CTransform::Go_Backward(_float fTimeDelta, CNavigation* pNavigation)
@@ -73,10 +79,16 @@ void CTransform::Go_Backward(_float fTimeDelta, CNavigation* pNavigation)
 	_vector vPosition = Get_State(STATE::POSITION);
 	_vector vLook = Get_State(STATE::LOOK);
 
-	vPosition -= XMVector3Normalize(vLook) * m_fSpeedPerSec * fTimeDelta;
+	_vector vMovePoint = vPosition - XMVector3Normalize(vLook) * m_fSpeedPerSec * fTimeDelta;
 
-	if (nullptr == pNavigation || pNavigation->isMove(vPosition))
-		Set_State(STATE::POSITION, vPosition);
+	if (nullptr == pNavigation || pNavigation->isMove(vMovePoint))
+		Set_State(STATE::POSITION, vMovePoint);
+	else
+	{
+		_vector vSlide = pNavigation->Compute_SlidingVector(vPosition, vMovePoint);
+		if (pNavigation->isMove(vSlide))
+			Set_State(STATE::POSITION, vSlide);
+	}
 }
 
 void CTransform::Go_Right(_float fTimeDelta, CNavigation* pNavigation)
@@ -84,10 +96,16 @@ void CTransform::Go_Right(_float fTimeDelta, CNavigation* pNavigation)
 	_vector vPosition = Get_State(STATE::POSITION);
 	_vector vRight = Get_State(STATE::RIGHT);
 
-	vPosition += XMVector3Normalize(vRight) * m_fSpeedPerSec * fTimeDelta;
+	_vector vMovePoint = vPosition + XMVector3Normalize(vRight) * m_fSpeedPerSec * fTimeDelta;
 
-	if (nullptr == pNavigation || pNavigation->isMove(vPosition))
-		Set_State(STATE::POSITION, vPosition);
+	if (nullptr == pNavigation || pNavigation->isMove(vMovePoint))
+		Set_State(STATE::POSITION, vMovePoint);
+	else
+	{
+		_vector vSlide = pNavigation->Compute_SlidingVector(vPosition, vMovePoint);
+		if (pNavigation->isMove(vSlide))
+			Set_State(STATE::POSITION, vSlide);
+	}
 }
 
 void CTransform::Go_Left(_float fTimeDelta, CNavigation* pNavigation)
@@ -95,24 +113,37 @@ void CTransform::Go_Left(_float fTimeDelta, CNavigation* pNavigation)
 	_vector vPosition = Get_State(STATE::POSITION);
 	_vector vRight = Get_State(STATE::RIGHT);
 
-	vPosition -= XMVector3Normalize(vRight) * m_fSpeedPerSec * fTimeDelta;
+	_vector vMovePoint = vPosition - XMVector3Normalize(vRight) * m_fSpeedPerSec * fTimeDelta;
 
-	if (nullptr == pNavigation || pNavigation->isMove(vPosition))
-		Set_State(STATE::POSITION, vPosition);
+	if (nullptr == pNavigation || pNavigation->isMove(vMovePoint))
+		Set_State(STATE::POSITION, vMovePoint);
+	else
+	{
+		_vector vSlide = pNavigation->Compute_SlidingVector(vPosition, vMovePoint);
+		if (pNavigation->isMove(vSlide))
+			Set_State(STATE::POSITION, vSlide);
+	}
 }
 
 void CTransform::Go_Target(_fvector vTarget, _float fTimeDelta, _float fMinDistance, CNavigation* pNavigation)
 {
-	_vector vMoveDir = vTarget - Get_State(STATE::POSITION);
+	_vector vPosition = Get_State(STATE::POSITION);
+	_vector vMoveDir = vTarget - vPosition;
 
 	if (fMinDistance <= XMVectorGetX(XMVector3Length(vMoveDir)))
 	{
-		_vector vPosition = Get_State(STATE::POSITION) + XMVector3Normalize(vMoveDir) * m_fSpeedPerSec * fTimeDelta;
+		_vector vMovePoint = vPosition + XMVector3Normalize(vMoveDir) * m_fSpeedPerSec * fTimeDelta;
 
-		if (nullptr == pNavigation || pNavigation->isMove(vPosition))
-			Set_State(STATE::POSITION, vPosition);
+		if (nullptr == pNavigation || pNavigation->isMove(vMovePoint))
+			Set_State(STATE::POSITION, vMovePoint);
+		else
+		{
+			_vector vSlide = pNavigation->Compute_SlidingVector(vPosition, vMovePoint);
+			if (pNavigation->isMove(vSlide))
+				Set_State(STATE::POSITION, vSlide);
+		}
 	}
-
+\
 }
 
 void CTransform::Go_Up(_float fTimeDelta)
@@ -199,10 +230,16 @@ void CTransform::Go_Dir(_fvector vDir, _float fTimeDelta, CNavigation* pNavigati
 
 	vDirection = XMVector3Normalize(vDir);
 
-	vPosition += vDirection * fTimeDelta * m_fSpeedPerSec;
+	_vector vMovePoint = vPosition + vDirection * fTimeDelta * m_fSpeedPerSec;
 
-	if (nullptr == pNavigation || pNavigation->isMove(vPosition))
-		Set_State(STATE::POSITION, vPosition);
+	if (nullptr == pNavigation || pNavigation->isMove(vMovePoint))
+		Set_State(STATE::POSITION, vMovePoint);
+	else
+	{
+		_vector vSlide = pNavigation->Compute_SlidingVector(vPosition, vMovePoint);
+		if(pNavigation->isMove(vSlide))
+			Set_State(STATE::POSITION, vSlide);
+	}
 }
 
 void CTransform::Apply_Sliding(const _float3& vSlide, CNavigation* pNavigation)

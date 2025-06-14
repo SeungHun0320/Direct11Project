@@ -2,15 +2,21 @@
 
 #include "UI2DContainerPart.h"
 
+BEGIN(Client)
+
 class CUI2D_PlayerHPBar final : public CUI2DContainerPart
 {
 public:
-	enum PART { PART_HP, PART_END };
+	enum PART { PART_BACK, PART_HPBAR, PART_HPBARCAP,
+		PART_NOTCH_START, PART_NOTCH = 5,
+		PART_END = PART_NOTCH};
 
 public:
 	typedef struct tagUI2DPlayerHPBarDesc : public CUI2DContainerPart::DESC
 	{
-
+		_float* pParentHP{ nullptr };
+		_float* pParentMaxHP{ nullptr };
+		_float* pParentHPRecorveryStat{ nullptr };
 	}DESC;
 
 private:
@@ -26,10 +32,17 @@ public:
 	virtual void Late_Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
+public:
+	virtual void Set_UIVisible(_uint iPart, _bool isVisible) override;
+
+private:
+	_float* m_pParentHP = { nullptr };
+	_float* m_pParentMaxHP = { nullptr };
+	_float* m_pParentHPRecorveryStat = { nullptr };
+
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;
 	virtual HRESULT Ready_PartObjects() override;
-
 
 public:
 	static CUI2D_PlayerHPBar* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -37,3 +50,4 @@ public:
 	virtual void Free() override;
 };
 
+END

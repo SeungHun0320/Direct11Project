@@ -219,7 +219,6 @@
     <ClInclude Include="..\public\UI.h" />
     <ClInclude Include="..\public\UI2D_PlayerHPBar.h" />
     <ClInclude Include="..\public\UI3DContainerPart.h" />
-    <ClInclude Include="..\public\UI_Potion.h" />
     <ClInclude Include="..\public\Weapon_Player.h" />
     <ClInclude Include="..\public\Potion.h" />
     <ClInclude Include="..\public\Shop.h" />
@@ -343,7 +342,6 @@
     <ClCompile Include="..\private\UI2DContainerPart.cpp" />
     <ClCompile Include="..\private\UI2D_PlayerHPBar.cpp" />
     <ClCompile Include="..\private\UI3DContainerPart.cpp" />
-    <ClCompile Include="..\private\UI_Potion.cpp" />
     <ClCompile Include="..\Private\Weapon_Player.cpp" />
     <ClCompile Include="..\private\Wizard.cpp" />
     <ClCompile Include="..\private\Wizard_Candleabra.cpp" />

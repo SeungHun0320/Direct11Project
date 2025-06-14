@@ -131,6 +131,15 @@ _vector CNavigation::SetUp_Height(_fvector vWorldPos)
 	return XMVector3TransformCoord(vLocalPos, XMLoadFloat4x4(&m_WorldMatrix));
 }
 
+_vector CNavigation::Compute_SlidingVector(_fvector vWorldPos, _fvector vMovePoint)
+{
+	/* 로컬로 변환 후에 */
+	_matrix     WorldMatrix = XMLoadFloat4x4(&m_WorldMatrix);
+	_vector		vLocalPos = XMVector3TransformCoord(vWorldPos, XMMatrixInverse(nullptr, WorldMatrix));
+
+	return XMVector3TransformCoord(m_Cells[m_iIndex]->Compute_SlidingVector(vLocalPos, vMovePoint), WorldMatrix);
+}
+
 #ifdef _DEBUG
 HRESULT CNavigation::Render()
 {

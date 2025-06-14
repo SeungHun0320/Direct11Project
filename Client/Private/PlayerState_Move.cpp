@@ -42,8 +42,7 @@ void CPlayerState_Move::Execute(_float fTimeDelta)
 	if (m_pOwner->KeyDown(DIK_L))
 		m_pOwner->Change_States(CPlayer::STATES::EAT);
 		
-	if (m_pOwner->KeyDown(DIK_P))
-		m_pOwner->Change_States(CPlayer::STATES::USE_POTION);
+	m_pOwner->Use_Potion();
 
 	if (m_pOwner->KeyDown(DIK_SEMICOLON))
 		m_pOwner->Change_States(CPlayer::STATES::PARRY);

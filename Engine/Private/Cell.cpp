@@ -51,7 +51,9 @@ _bool CCell::isIn(_fvector vLocalPos, _int* pNeighborIndex)
 		/* 구한 법선벡터와 내적을해 양수면 바깥, 음수면 안쪽 */
 		if (0 < XMVectorGetX(XMVector3Dot(XMVector3Normalize(vDir), XMVector3Normalize(XMLoadFloat3(&m_vNormals[i])))))
 		{
-			*pNeighborIndex = m_iNeighborIndices[i];
+			if(nullptr != pNeighborIndex)
+				*pNeighborIndex = m_iNeighborIndices[i];
+
 			return false;
 		}
 	}
@@ -97,6 +99,29 @@ _float CCell::Compute_Height(_fvector vLocalPos)
 
 	/* 평면의 방정식 : y = (-ax - cz - d) / b */
 	return (-vPlane.m128_f32[0] * vLocalPos.m128_f32[0] - vPlane.m128_f32[2] * vLocalPos.m128_f32[2] - vPlane.m128_f32[3]) / vPlane.m128_f32[1];
+}
+
+_vector CCell::Compute_SlidingVector(_fvector vLocalPos, _fvector vMovePoint)
+{
+	_vector vMoveDir = vMovePoint - vLocalPos;
+	_vector vSlideLocal = vMovePoint;
+
+	for (size_t i = 0; i < LINE_END; ++i)
+	{
+		_vector vToEdge = XMVectorSetY(vMovePoint - XMLoadFloat3(&m_vPoints[i]), 0.f);
+		_vector vNormal = XMVector3Normalize(XMLoadFloat3(&m_vNormals[i]));
+
+		if (0 < XMVectorGetX(XMVector3Dot(XMVector3Normalize(vToEdge), vNormal)))
+		{
+			// 슬라이딩 방향 계산
+			_vector vSlideDir = vMoveDir - XMVector3Dot(vMoveDir, vNormal) * vNormal;
+
+			// 슬라이딩 위치 계산 (로컬 공간에서)
+			vSlideLocal = vLocalPos + vSlideDir;
+		}
+	}
+
+	return vSlideLocal;
 }
 
 #ifdef _DEBUG

@@ -74,16 +74,15 @@ HRESULT CPlayer::Initialize_Prototype()
 
 HRESULT CPlayer::Initialize(void* pArg)
 {
-	if (FAILED(__super::Initialize(pArg)))
-		return E_FAIL;
-
-	if (FAILED(Ready_States()))
-		return E_FAIL;
+	/* 포션 */
+	m_iNumPotion = 2;
+	m_iCurNumPotion = 2;
 
 	/* 체력 */
 	m_fHp = 100.f;
 	m_fHPRecorveryStat = 20.f;
 	m_fMaxHp = m_fHp;
+
 	/* 스태미나 */
 	m_fStaminaRecoveryPerSec = 20.f;
 	m_fMaxStamina = 100.f;
@@ -91,7 +90,6 @@ HRESULT CPlayer::Initialize(void* pArg)
 	/* 공격력 */
 	m_pAttackStrategy = new CPlayer_SwordAttack(3, WEAPON_TYPE::SWORD);
 	m_fAttack = m_pAttackStrategy->Get_Attack();
-
 	/* 그로기 */
 	m_fStaggerGage = 100.f;
 	m_fMaxStaggerGage = m_fStaggerGage;
@@ -100,6 +98,12 @@ HRESULT CPlayer::Initialize(void* pArg)
 	m_fFindDistance = 20.f;
 
 	m_isShield = true;
+
+	if (FAILED(__super::Initialize(pArg)))
+		return E_FAIL;
+
+	if (FAILED(Ready_States()))
+		return E_FAIL;
 
 	for (_uint i = 0; i < CPlayer::MESHES_END; i++)
 	{
@@ -358,6 +362,24 @@ void CPlayer::LookTarget(_float fTimeDelta)
 	}
 }
 
+void CPlayer::Use_Potion()
+{
+	if (KeyDown(DIK_P))
+	{
+		if (m_iNumPotion >= m_iCurNumPotion && 0 < m_iCurNumPotion)
+		{
+			Change_States(CPlayer::STATES::USE_POTION);
+
+			--m_iCurNumPotion;
+
+			if (0 >= m_iCurNumPotion)
+				m_iCurNumPotion = 0;
+
+			m_pUI2DPotion->Set_TextureIndex(m_iCurNumPotion, 1);
+		}
+	}
+}
+
 _vector CPlayer::Get_InputDirection()
 {
 	_vector vInputDir{};
@@ -480,20 +502,24 @@ void CPlayer::Key_Input(_float fTimeDelta)
 	{
 		Set_AttackStrategy(new CPlayer_DaggerAttack(1, WEAPON_TYPE::DAGGER));
 		m_fAttack = m_pAttackStrategy->Get_Attack();
-	}	
-
+	}
 	if (KEY_DOWN(DIK_4))
 	{
-		m_isStagger = true;
-		Change_States(STATES::HIT);
+		m_pUI2DPotion->Set_UIVisible(m_iNumPotion, true);
+		++m_iNumPotion;
+
+		if (m_iMaxNumPotion <= m_iNumPotion)
+			m_iNumPotion = m_iMaxNumPotion;
+
+		m_iCurNumPotion = m_iNumPotion;
+
+		for (_int i = 0; i < m_iNumPotion; i++)
+			m_pUI2DPotion->Set_TextureIndex(i, 0);
 	}
-	if (KEY_DOWN(DIK_5))
-	{
-		m_isStagger = false;
-		Change_States(STATES::HIT);
-	}
+
 	if (KEY_DOWN(DIK_7))
 		m_bDead = true;
+
 	if (KEY_DOWN(DIK_LCONTROL))
 		Change_States(STATES::LADDER);
 }
@@ -541,7 +567,7 @@ void CPlayer::On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDura
 void CPlayer::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
 {
 	COLLIDER_ID eColliderID = static_cast<COLLIDER_ID>(OtherColliderID);
-	_float fInvicibleDuration = Compute_InvincibleTime_ByCollider(static_cast<COLLIDER_ID>(OtherColliderID));
+	_float fInvicibleDuration = Compute_InvincibleTime(static_cast<COLLIDER_ID>(OtherColliderID));
 
 	if (CI_MONSTER(eColliderID))
 	{
@@ -586,7 +612,7 @@ void CPlayer::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObjec
 	}
 }
 
-_float CPlayer::Compute_InvincibleTime_ByCollider(COLLIDER_ID eColliderID)
+_float CPlayer::Compute_InvincibleTime(COLLIDER_ID eColliderID)
 {
 	switch (eColliderID)
 	{
@@ -666,9 +692,17 @@ HRESULT CPlayer::Ready_PartObjects()
 
 	PotionDesc.eLevelID = m_eLevelID;
 	PotionDesc.iNumPartObjects = CUI2D_PlayerPotion::PART_END;
+	PotionDesc.pParentCurPotion = &m_iCurNumPotion;
+	PotionDesc.pParentNumPotion = &m_iNumPotion;
 
 	if (FAILED(__super::Add_PartObject(PART_POTION, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerPotion"), &PotionDesc)))
 		return E_FAIL;
+
+	m_pUI2DPotion = dynamic_cast<CUI2D_PlayerPotion*>(m_PartObjects[PART_POTION]);
+	if (nullptr == m_pUI2DPotion)
+		return E_FAIL;
+
+	Safe_AddRef(m_pUI2DPotion);
 
 	return S_OK;
 }
@@ -740,6 +774,7 @@ void CPlayer::Free()
 	__super::Free();
 
 	Safe_Release(m_pWeaponPart);
+	Safe_Release(m_pUI2DPotion);
 
 	Safe_Release(m_pCurState);
 	Safe_Release(m_pAttackStrategy);

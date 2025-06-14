@@ -103,6 +103,9 @@ public: /* 상태로 넘겨줄 함수들 */
 	void  Go_Down(_float fTimeDelta, _float fSpeed);
 	void  LookTarget(_float fTimeDelta);
 
+	/* 상호작용 관련 */
+	void  Use_Potion();
+
 public:/* 락온 관련 */
 	void     LockOn();
 	void     LockOff();
@@ -161,6 +164,11 @@ private: /* 체력 */
 	_float m_fHPRecorveryStat = {};
 	_float m_fStaggerRecoveryPerSec = {};
 
+private: /* 포션 */
+	_int   m_iMaxNumPotion = { 4 };
+	_int   m_iNumPotion = {};
+	_int   m_iCurNumPotion = {};
+
 private: /* 스태미나 */
 	_float m_fStamina = {};
 	_float m_fMaxStamina = {};
@@ -185,13 +193,14 @@ private: /* 락온 상태관련 변수들 */
 	_float		m_fFindDistance = {};
 
 private: /* 매번 캐스팅 해주기 싫어서 따로 변수로 받아왔음 */
-	class CWeapon_Player* m_pWeaponPart = { nullptr };
+	class CWeapon_Player*	  m_pWeaponPart = { nullptr };
+	class CUI2D_PlayerPotion* m_pUI2DPotion = { nullptr };
 
 private: /* 실제 플레이어 상태 관련 */
 	void Stamina_Recovery(_float fTimeDelta);
 	virtual void On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDuration) override;
 	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner) override;
-	virtual _float Compute_InvincibleTime_ByCollider(COLLIDER_ID eColliderID) override;
+	virtual _float Compute_InvincibleTime(COLLIDER_ID eColliderID) override;
 
 private: /* 애니 관련 */
 	_bool Is_CurrentAnim(PART ePart, _uint iNextIndex);

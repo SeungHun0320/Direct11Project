@@ -59,7 +59,8 @@ LIFE CUI::Update(_float fTimeDelta)
 
 void CUI::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);
+	if(m_bVisible)
+		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);
 }
 
 HRESULT CUI::Render()
@@ -67,7 +68,7 @@ HRESULT CUI::Render()
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
-	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
+	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", m_iTextureIndex)))
 		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Begin(1)))
@@ -82,8 +83,36 @@ HRESULT CUI::Render()
 	return S_OK;
 }
 
+CUI* CUI::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+{
+	CUI* pInstance = new CUI(pDevice, pContext);
+
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		MSG_BOX("Failed to Created : CUI");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
+CGameObject* CUI::Clone(void* pArg)
+{
+	CUI* pInstance = new CUI(*this);
+
+	if (FAILED(pInstance->Initialize(pArg)))
+	{
+		MSG_BOX("Failed to Cloned : CUI");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
 HRESULT CUI::Ready_Components(void* pArg)
 {
+	DESC* pDesc = static_cast<DESC*>(pArg);
+
 	/* For.Com_Shader */
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxPosTex"),
 		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
@@ -92,6 +121,11 @@ HRESULT CUI::Ready_Components(void* pArg)
 	/* For.Com_VIBuffer */
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_Rect"),
 		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
+		return E_FAIL;
+
+	/* For.Com_Texture */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), pDesc->strPrototypeTag,
+		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
 
 	return S_OK;

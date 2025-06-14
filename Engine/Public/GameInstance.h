@@ -4,9 +4,9 @@
 /* 엔진 내에 존재하는 유일한 싱글톤 클래스이다. */
 /* 엔진 개발자가 클라개밫자에게 보여주고싶은 함수를 ... */
 #include "Prototype_Manager.h"
+#include "Event_Manager.h"
 
 BEGIN(Engine)
-
 
 class ENGINE_DLL CGameInstance final : public CBase
 {
@@ -136,6 +136,21 @@ public:
 	void    Intersect(_uint iColliderGroupID1, _uint iColliderGroupID2);
 #pragma endregion
 
+#pragma region EVENT_MANAGER
+	template<typename... Args>
+	HRESULT Subscribe(const _wstring& strEventTag, Delegate<Args...> dlg)
+	{
+		return m_pEvent_Manager->Subscribe(strEventTag, dlg);
+	}
+
+	template<typename... Args>
+	void Publish(const _wstring& strEventTag, Args... args)
+	{
+		m_pEvent_Manager->Publish(strEventTag, args);
+	}
+
+#pragma endregion
+
 private:
 	class CGraphic_Device*		m_pGraphic_Device = { nullptr };
 	class CInput_Device*		m_pInputDevice = { nullptr };
@@ -151,6 +166,7 @@ private:
 	class CFont_Manager*		m_pFont_Manager = { nullptr };
 	class CCamera_Manager*		m_pCamera_Manager = { nullptr };
 	class CCollider_Manager*	m_pCollider_Manager = { nullptr };
+	class CEvent_Manager*		m_pEvent_Manager = { nullptr };
 
 public:
 	void Release_Engine();

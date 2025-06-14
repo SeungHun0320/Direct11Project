@@ -82,6 +82,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ ID
 	if (nullptr == m_pCollider_Manager)
 		return E_FAIL;
 
+	m_pEvent_Manager = CEvent_Manager::Create();
+	if (nullptr == m_pEvent_Manager)
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -509,8 +513,6 @@ void CGameInstance::Release_Engine()
 
 	Safe_Release(m_pLevel_Manager);
 
-	Safe_Release(m_pGraphic_Device);
-
 	Safe_Release(m_pInputDevice);
 
 	Safe_Release(m_pSound_Device);
@@ -519,14 +521,14 @@ void CGameInstance::Release_Engine()
 
 	Safe_Release(m_pLight_Manager);
 
+	Safe_Release(m_pEvent_Manager);
+
+	Safe_Release(m_pGraphic_Device);
+
 	Destroy_Instance();
 }
 
 void CGameInstance::Free()
 {
-	__super::Free();
-
-
-
-	
+	__super::Free();	
 }

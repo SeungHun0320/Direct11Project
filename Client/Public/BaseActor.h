@@ -87,7 +87,7 @@ protected:
 	void Update_InvicibleTime(_float fTimeDelta);
 	void Start_Invicible(_float fDuration);
 	virtual void On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDuration) {};
-	virtual _float Compute_InvincibleTime_ByCollider(COLLIDER_ID eColliderID) { return 0.f; };
+	virtual _float Compute_InvincibleTime(COLLIDER_ID eColliderID) { return 0.f; };
 
 protected:
 	virtual HRESULT Ready_Components(void* pArg);
