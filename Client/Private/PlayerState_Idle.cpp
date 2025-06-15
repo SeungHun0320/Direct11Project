@@ -31,6 +31,11 @@ void CPlayerState_Idle::Execute(_float fTimeDelta)
 		m_pOwner->Change_States(CPlayer::STATES::MOVE);
 	}
 
+	if (m_pOwner->IsLockOn())
+		m_pOwner->LockOn();
+	else
+		m_pOwner->LockOff();
+
 	/* 나중에 충돌여부 판단해서 상호작용 분기 ㄱㄱ */
 	if (m_pOwner->KeyPressing(DIK_SPACE))
 	{

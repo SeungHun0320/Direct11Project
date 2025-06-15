@@ -117,7 +117,6 @@ public:/* 락온 관련 */
 	void     LockOff();
 	void     LockOnMove(_fvector vDir, _float fTimeDelta, _float fSpeed = 0.f);
 	_vector  Get_TargetState(STATE eState);
-	void	 Set_Target(CTransform* pTargerTransform);
 
 public: /* 키입력에 따른 방향을 결정해주는 함수 */
 	_vector Get_InputDirection();

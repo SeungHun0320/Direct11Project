@@ -339,11 +339,6 @@ _vector CPlayer::Get_TargetState(STATE eState)
 	return m_pTargetTransform->Get_State(eState);
 }
 
-void CPlayer::Set_Target(CTransform* pTargerTransform)
-{
-	m_pTargetTransform = pTargerTransform;
-}
-
 void CPlayer::Go_Dir(_fvector vDir, _float fTimeDelta, _float fSpeed)
 {
 	m_pTransformCom->Set_SpeedPerSec(fSpeed);
