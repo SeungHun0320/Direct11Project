@@ -52,7 +52,7 @@ void CPlayerState_Idle::Execute(_float fTimeDelta)
 
 	/* 나중에 인벤에 어떤 칸에 어떤 아이템이 장착되어 있는지에 따라서 분기 ㄱ */
 	if (m_pOwner->KeyDown(DIK_J))
-		m_pOwner->Change_States(CPlayer::STATES::ATTACK1);
+		m_pOwner->Start_Attack();
 
 	if (m_pOwner->KeyDown(DIK_K))
 		m_pOwner->Change_States(CPlayer::STATES::WIND_UP);

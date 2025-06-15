@@ -37,7 +37,7 @@ HRESULT CUI2D_PlayerPotion::Initialize(void* pArg)
 	for (_int i = PART_POTION; i >= *m_pParentNumPotion; i--)
 		Set_UIVisible(i, false);
 	
-	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(470, 50.f, 0.f, 1.f));
+	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(445, 40.f, 0.f, 1.f));
 
 	return S_OK;
 }

@@ -1,5 +1,7 @@
 #include "UI2D_PlayerHPBar.h"
+
 #include "UI.h"
+#include "UI_Animation.h"
 
 CUI2D_PlayerHPBar::CUI2D_PlayerHPBar(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CUI2DContainerPart{pDevice, pContext}
@@ -33,7 +35,7 @@ HRESULT CUI2D_PlayerHPBar::Initialize(void* pArg)
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
 
-	
+	m_fLerpSpeed = 5.f;
 
 	return S_OK;
 }
@@ -45,6 +47,44 @@ void CUI2D_PlayerHPBar::Priority_Update(_float fTimeDelta)
 
 LIFE CUI2D_PlayerHPBar::Update(_float fTimeDelta)
 {
+	_float fTargetRatio = *m_pParentHP / max(*m_pParentMaxHP, 0.001f);
+
+	if (*m_pParentMaxHP <= 0.f)
+		fTargetRatio = 0.f;
+
+	if (fTargetRatio > m_fHpRatio)
+		m_fHpRatio = Lerp(m_fHpRatio, fTargetRatio, fTimeDelta * m_fLerpSpeed);
+	else
+		m_fHpRatio = fTargetRatio;
+
+
+	CUI* pCap = dynamic_cast<CUI*>(m_PartObjects[PART_HPBARCAP]);
+	if (nullptr != pCap)
+	{
+		// 체력바 기준값
+		_float fHpRatio = clamp(m_fHpRatio, 0.05f, 0.95f);
+
+
+		_float fBarCenterY = g_iWinSizeY * 0.825f;
+		_float fBarHeight = 150.6f;
+		_float fCapRadius = 20.6f * 0.5f;
+
+		// 체력바 위치 기준값
+		_float fBarTopY = fBarCenterY - (fBarHeight * 0.5f);
+		_float fBarBottomY = fBarCenterY + (fBarHeight * 0.5f);
+
+		// 현재 체력 위치 계산 (아래 -> 위)
+		_float fHpY = fBarBottomY - (fBarHeight * fHpRatio);
+
+		// 보정
+		if (fHpRatio >= 1.f)
+			fHpY -= fCapRadius;  // 캡 반지름만큼 위로
+		else if (fHpRatio <= 0.f)
+			fHpY += fCapRadius;  // 캡 반지름만큼 아래로
+
+		pCap->Set_PositionY(fHpY, 0.f);  // fOffset은 보정 없음
+	}
+
 	return __super::Update(fTimeDelta);
 }
 
@@ -60,6 +100,7 @@ HRESULT CUI2D_PlayerHPBar::Render()
 
 void CUI2D_PlayerHPBar::Set_UIVisible(_uint iPart, _bool isVisible)
 {
+	static_cast<CUI*>(m_PartObjects[iPart])->Set_Visible(isVisible);
 }
 
 HRESULT CUI2D_PlayerHPBar::Ready_Components(void* pArg)
@@ -82,26 +123,27 @@ HRESULT CUI2D_PlayerHPBar::Ready_PartObjects()
 	if (FAILED(__super::Add_PartObject(PART_BACK, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI"), &BackDesc)))
 		return E_FAIL;
 
-	CUI::DESC HpBarDesc{};
+	CUI_Animation::DESC HpBarDesc{};
 
 	HpBarDesc.eLevelID = m_eLevelID;
 	HpBarDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
-	HpBarDesc.fSizeX = 37.f;
-	HpBarDesc.fSizeY = 129.f;
-	HpBarDesc.fX = 59.f;
+	HpBarDesc.fSizeX = 62.f;
+	HpBarDesc.fSizeY = 150.6f;
+	HpBarDesc.fX = 60.f;
 	HpBarDesc.fY = g_iWinSizeY * 0.825f;
 	HpBarDesc.strPrototypeTag = TEXT("Prototype_Component_Texture_PlayerHP");
+	HpBarDesc.pRatio = &m_fHpRatio;
 
-	if (FAILED(__super::Add_PartObject(PART_HPBAR, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI"), &HpBarDesc)))
+	if (FAILED(__super::Add_PartObject(PART_HPBAR, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI_Animation"), &HpBarDesc)))
 		return E_FAIL;
 
 	CUI::DESC HpBarCapDesc{};
 
 	HpBarCapDesc.eLevelID = m_eLevelID;
 	HpBarCapDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
-	HpBarCapDesc.fSizeX = 33.3f;
-	HpBarCapDesc.fSizeY = 20.6f;
-	HpBarCapDesc.fX = 59.f;
+	HpBarCapDesc.fSizeX = 32.f;
+	HpBarCapDesc.fSizeY = 18.3f;
+	HpBarCapDesc.fX = 59.5f;
 	HpBarCapDesc.fY = g_iWinSizeY * 0.825f;
 	HpBarCapDesc.strPrototypeTag = TEXT("Prototype_Component_Texture_PlayerHPCap");
 

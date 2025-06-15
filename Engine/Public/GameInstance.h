@@ -25,11 +25,15 @@ public:
 	HRESULT Draw();
 	HRESULT End_Draw();
 
+#pragma region UTILITY
+
 	_float Compute_Random_Normal();
 	_float Compute_Random(_float fMin, _float fMax);
 
 	_string WStringToString(const _wstring& wstr);
 	_wstring StringToWString(const _string& str);
+
+#pragma endregion
 
 #pragma region LEVEL_MANAGER
 public:

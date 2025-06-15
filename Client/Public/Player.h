@@ -6,14 +6,15 @@ BEGIN(Client)
 class CPlayer final : public CBaseActor
 {
 public:
-	typedef struct tagPlayerDesc : public CBaseActor::DESC {
+	typedef struct tagPlayerDesc : public CBaseActor::DESC
+	{
 
 
 	}DESC;
 
 public:
 	enum PART { PART_BODY, PART_WEAPON,
-		PART_HP, PART_STAMINA, PART_MP, PART_ITEM, PART_POTION,
+		PART_HP, PART_STAMINA, PART_MP, PART_ITEMSLOTS, PART_POTION,
 		PART_EFFECT, PART_END };
 
 	enum MESHES	{
@@ -103,8 +104,13 @@ public: /* 상태로 넘겨줄 함수들 */
 	void  Go_Down(_float fTimeDelta, _float fSpeed);
 	void  LookTarget(_float fTimeDelta);
 
-	/* 상호작용 관련 */
+public: /* 상호작용 관련 */
 	void  Use_Potion();
+	void  Heal();
+
+public: /* 공격 */
+	void  Start_Attack();
+	void  SetUp_AttackMeshVisible(WEAPON_TYPE eWeaponType);
 
 public:/* 락온 관련 */
 	void     LockOn();
@@ -132,9 +138,9 @@ public: /* 스테이트 갖고오기 */
 	_float Get_Stamina() const {
 		return m_fStamina;
 	}
-	void Use_Stamina(_float fStamina) {
-		m_fStamina -= fStamina;
-	}
+	void Use_Stamina(_float fStamina);
+	/* 마나 */
+	void Use_Mana(_float fMana);
 
 	/* 방패 관련 */
 	_bool Get_IsShield() const {
@@ -174,6 +180,14 @@ private: /* 스태미나 */
 	_float m_fMaxStamina = {};
 	_float m_fStaminaRecoveryPerSec = {};
 	_float m_fStaminaTimeAcc = {};
+	_bool  m_isUseStamina = { false };
+	_float m_fStaminaDelayTimeAcc = {};
+
+private: /* 마나 */
+	_float m_fMana = {};
+	_float m_fMaxMana = {};
+	_float m_fManaRecoveryPerSec = {};
+	_float m_fManaTimeAcc = {};
 
 private: /* 방패 소유중? */
 	_bool  m_isShield = { false };
@@ -198,6 +212,7 @@ private: /* 매번 캐스팅 해주기 싫어서 따로 변수로 받아왔음 */
 
 private: /* 실제 플레이어 상태 관련 */
 	void Stamina_Recovery(_float fTimeDelta);
+	void Mana_Recovery(_float fTimeDelta);
 	virtual void On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDuration) override;
 	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner) override;
 	virtual _float Compute_InvincibleTime(COLLIDER_ID eColliderID) override;

@@ -126,20 +126,20 @@ void CBlob::Go_Target(_fvector vTarget, _float fTimeDelta, _float fSpeed, _float
 {
 	m_pTransformCom->Set_SpeedPerSec(fSpeed);
 	m_pTransformCom->LookAtLerp(vTarget, fTimeDelta, 10.f);
-	m_pTransformCom->Go_Target(vTarget, fTimeDelta, fMinDistance);
+	m_pTransformCom->Go_Target(vTarget, fTimeDelta, fMinDistance, m_pNavigationCom);
 }
 
 void CBlob::Move(_fvector vDir, _float fTimeDelta, _float fSpeed)
 {
 	m_pTransformCom->Set_SpeedPerSec(fSpeed);
 	m_pTransformCom->LookDirLerp(vDir, fTimeDelta, fSpeed * 1.5f);
-	m_pTransformCom->Go_Dir(vDir, fTimeDelta);
+	m_pTransformCom->Go_Dir(vDir, fTimeDelta, m_pNavigationCom);
 }
 
 void CBlob::Hit(_fvector vDir, _float fTimeDelta, _float fSpeed)
 {
 	m_pTransformCom->Set_SpeedPerSec(fSpeed);
-	m_pTransformCom->Go_Dir(vDir, fTimeDelta);
+	m_pTransformCom->Go_Dir(vDir, fTimeDelta, m_pNavigationCom);
 }
 
 void CBlob::Turn(_fvector vAxis, _float fTimeDelta)

@@ -43,12 +43,6 @@
     <Filter Include="02.GameObjects\00.UI\02.PlayerState">
       <UniqueIdentifier>{acdd028d-888d-43d1-96ea-514ea2c6ee04}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.UI\02.PlayerState\03. Using_Item">
-      <UniqueIdentifier>{236863ca-b3a3-4988-bc0e-547467f75ba8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.UI\02.PlayerState\04. Potion">
-      <UniqueIdentifier>{e0a56d88-4553-40f7-b364-a16b07c8efe4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\00.UI\03.BossState">
       <UniqueIdentifier>{8d2a32b5-60a5-41c9-93a6-afbbed0d7829}</UniqueIdentifier>
     </Filter>
@@ -367,23 +361,23 @@
     <Filter Include="02.GameObjects\00.UI\02.PlayerState\Bar">
       <UniqueIdentifier>{89b42d89-4cd9-43c6-9ccf-11078c6a3cc4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.UI\02.PlayerState\Bar\Notch">
-      <UniqueIdentifier>{996935b4-8b81-4e87-b162-003075ed6a69}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.UI\02.PlayerState\Bar\Back">
-      <UniqueIdentifier>{735bdcb3-3c2b-40c9-8d7f-79b2f92e339a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\00.UI\02.PlayerState\Bar\00. HpBar">
       <UniqueIdentifier>{60c9200d-6118-4587-9ee0-1bcb3f52c367}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.UI\02.PlayerState\Bar\01. StaminaBar">
-      <UniqueIdentifier>{fa8a6485-6e60-4186-aec4-b9d0b8a4e8ce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.UI\02.PlayerState\Bar\02. ManaBar">
-      <UniqueIdentifier>{76ade142-3387-45f1-8a26-dffaefe60af0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\00.UI\Part\UI_Animation">
       <UniqueIdentifier>{0bdab430-8299-40cb-933c-9e326aa6dd1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\02.PlayerState\Bar\01. SPBar">
+      <UniqueIdentifier>{fa8a6485-6e60-4186-aec4-b9d0b8a4e8ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\02.PlayerState\Bar\02. MPBar">
+      <UniqueIdentifier>{76ade142-3387-45f1-8a26-dffaefe60af0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\02.PlayerState\Potion">
+      <UniqueIdentifier>{e0a56d88-4553-40f7-b364-a16b07c8efe4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\02.PlayerState\ItemSlots">
+      <UniqueIdentifier>{236863ca-b3a3-4988-bc0e-547467f75ba8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -670,7 +664,19 @@
       <Filter>02.GameObjects\00.UI\Part\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\public\UI2D_PlayerPotion.h">
-      <Filter>02.GameObjects\00.UI\02.PlayerState\04. Potion</Filter>
+      <Filter>02.GameObjects\00.UI\02.PlayerState\Potion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UI_Animation.h">
+      <Filter>02.GameObjects\00.UI\Part\UI_Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UI2D_PlayerSPBar.h">
+      <Filter>02.GameObjects\00.UI\02.PlayerState\Bar\01. SPBar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UI2D_PlayerMPBar.h">
+      <Filter>02.GameObjects\00.UI\02.PlayerState\Bar\02. MPBar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UI2D_PlayerItemSlots.h">
+      <Filter>02.GameObjects\00.UI\02.PlayerState\ItemSlots</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1003,7 +1009,19 @@
       <Filter>02.GameObjects\00.UI\Part\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\private\UI2D_PlayerPotion.cpp">
-      <Filter>02.GameObjects\00.UI\02.PlayerState\04. Potion</Filter>
+      <Filter>02.GameObjects\00.UI\02.PlayerState\Potion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI_Animation.cpp">
+      <Filter>02.GameObjects\00.UI\Part\UI_Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI2D_PlayerSPBar.cpp">
+      <Filter>02.GameObjects\00.UI\02.PlayerState\Bar\01. SPBar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI2D_PlayerMPBar.cpp">
+      <Filter>02.GameObjects\00.UI\02.PlayerState\Bar\02. MPBar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI2D_PlayerItemSlots.cpp">
+      <Filter>02.GameObjects\00.UI\02.PlayerState\ItemSlots</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

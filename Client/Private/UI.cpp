@@ -83,30 +83,16 @@ HRESULT CUI::Render()
 	return S_OK;
 }
 
-CUI* CUI::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+void CUI::Set_PositionY(_float fY, _float fYOffset)
 {
-	CUI* pInstance = new CUI(pDevice, pContext);
+	m_fY = fY;
 
-	if (FAILED(pInstance->Initialize_Prototype()))
-	{
-		MSG_BOX("Failed to Created : CUI");
-		Safe_Release(pInstance);
-	}
+	D3D11_VIEWPORT ViewportDesc{};
+	_uint iNumViewports = 1;
+	m_pContext->RSGetViewports(&iNumViewports, &ViewportDesc);
 
-	return pInstance;
-}
-
-CGameObject* CUI::Clone(void* pArg)
-{
-	CUI* pInstance = new CUI(*this);
-
-	if (FAILED(pInstance->Initialize(pArg)))
-	{
-		MSG_BOX("Failed to Cloned : CUI");
-		Safe_Release(pInstance);
-	}
-
-	return pInstance;
+	m_pTransformCom->Set_State(STATE::POSITION,
+		XMVectorSet(m_fX - (ViewportDesc.Width * 0.5f), -m_fY + (ViewportDesc.Height * 0.5f) + fYOffset, 0.f, 1.f));
 }
 
 HRESULT CUI::Ready_Components(void* pArg)
@@ -143,6 +129,32 @@ HRESULT CUI::Bind_ShaderResources()
 		return E_FAIL;
 
 	return S_OK;
+}
+
+CUI* CUI::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+{
+	CUI* pInstance = new CUI(pDevice, pContext);
+
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		MSG_BOX("Failed to Created : CUI");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
+CGameObject* CUI::Clone(void* pArg)
+{
+	CUI* pInstance = new CUI(*this);
+
+	if (FAILED(pInstance->Initialize(pArg)))
+	{
+		MSG_BOX("Failed to Cloned : CUI");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
 }
 
 void CUI::Free()

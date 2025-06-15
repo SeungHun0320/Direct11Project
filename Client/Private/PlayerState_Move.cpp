@@ -34,7 +34,7 @@ void CPlayerState_Move::Execute(_float fTimeDelta)
 		m_pOwner->Change_States(CPlayer::STATES::DODGE);
 
 	if (m_pOwner->KeyDown(DIK_J)) 
-		m_pOwner->Change_States(CPlayer::STATES::ATTACK1);
+		m_pOwner->Start_Attack();
 
 	if (m_pOwner->KeyDown(DIK_K))
 		m_pOwner->Change_States(CPlayer::STATES::WIND_UP);

@@ -5,7 +5,10 @@
 #include "Body_Player.h"
 #include "Weapon_Player.h"
 #include "UI2D_PlayerHPBar.h"
+#include "UI2D_PlayerSPBar.h"
+#include "UI2D_PlayerMPBar.h"
 #include "UI2D_PlayerPotion.h"
+#include "UI2D_PlayerItemSlots.h"
 
 #include "PlayerState.h"
 #include "Player_IAttackStrategy.h"
@@ -87,6 +90,10 @@ HRESULT CPlayer::Initialize(void* pArg)
 	m_fStaminaRecoveryPerSec = 20.f;
 	m_fMaxStamina = 100.f;
 	m_fStamina = m_fMaxStamina;
+	/* 마나 */
+	m_fMaxMana = 100.f;
+	m_fManaRecoveryPerSec = 5.f;
+	m_fMana = m_fMaxMana;
 	/* 공격력 */
 	m_pAttackStrategy = new CPlayer_SwordAttack(3, WEAPON_TYPE::SWORD);
 	m_fAttack = m_pAttackStrategy->Get_Attack();
@@ -132,6 +139,7 @@ LIFE CPlayer::Update(_float fTimeDelta)
 
 	Key_Input(fTimeDelta);
 	Stamina_Recovery(fTimeDelta);
+	Mana_Recovery(fTimeDelta);
 
 	if (m_eCurState != m_ePreState)
 	{
@@ -364,7 +372,10 @@ void CPlayer::LookTarget(_float fTimeDelta)
 
 void CPlayer::Use_Potion()
 {
-	if (KeyDown(DIK_P))
+	if (m_fHp == m_fMaxHp)
+		return;
+
+	if (KEY_DOWN(DIK_P))
 	{
 		if (m_iNumPotion >= m_iCurNumPotion && 0 < m_iCurNumPotion)
 		{
@@ -374,9 +385,45 @@ void CPlayer::Use_Potion()
 
 			if (0 >= m_iCurNumPotion)
 				m_iCurNumPotion = 0;
-
-			m_pUI2DPotion->Set_TextureIndex(m_iCurNumPotion, 1);
 		}
+	}
+}
+
+void CPlayer::Heal()
+{
+	m_pUI2DPotion->Set_TextureIndex(m_iCurNumPotion, 1);
+
+	m_fHp = clamp(m_fHp + m_fHPRecorveryStat, 0.f, m_fMaxHp);
+}
+
+void CPlayer::Start_Attack()
+{
+	if (m_pAttackStrategy->Get_WeaponType() == WEAPON_TYPE::DAGGER && m_fMana <= 30.f)
+		return;
+
+	Change_States(STATES::ATTACK1);
+}
+
+void CPlayer::SetUp_AttackMeshVisible(WEAPON_TYPE eWeaponType)
+{
+	for (_uint i = 0; i < MESHES_END; i++)
+	{
+		if (i == MESH_SHILED && m_isShield)
+			continue;
+		Set_MeshVisible(PART_BODY, i, true);
+	}
+
+	switch (eWeaponType)
+	{
+	case WEAPON_TYPE::SWORD:
+		Set_MeshVisible(PART_BODY, MESH_SWORD, false);
+		break;
+	case WEAPON_TYPE::STICK:
+		Set_MeshVisible(PART_BODY, MESH_STICK, false);
+		break;
+	case WEAPON_TYPE::DAGGER:
+		Set_MeshVisible(PART_BODY, MESH_DAGGER, false);
+		break;
 	}
 }
 
@@ -485,6 +532,45 @@ _float CPlayer::Compute_StaggerValue() const
 	return m_pAttackStrategy->Get_StaggerValue();
 }
 
+void CPlayer::Use_Stamina(_float fStamina)
+{
+	m_fStamina -= fStamina;
+	m_fStamina = max(m_fStamina, 0);
+
+	if (!m_isUseStamina)
+	{
+		m_isUseStamina = true;
+		m_fStaminaDelayTimeAcc = 0.f;
+	}
+}
+
+void CPlayer::Use_Mana(_float fMana)
+{
+	m_fMana -= fMana;
+	m_fMana = max(m_fMana, 0);
+}
+
+void CPlayer::Stamina_Recovery(_float fTimeDelta)
+{
+	m_fStaminaDelayTimeAcc += fTimeDelta;
+
+	_float fStaminaDelayTime{};
+	m_fStamina <= 0.f ? fStaminaDelayTime = 3.f : fStaminaDelayTime = 1.5f;
+
+	if (fStaminaDelayTime < m_fStaminaDelayTimeAcc)
+	{
+		m_fStamina += m_fStaminaRecoveryPerSec * fTimeDelta;
+		m_fStamina = min(m_fStamina, m_fMaxStamina);
+		m_isUseStamina = false;
+	}
+}
+
+void CPlayer::Mana_Recovery(_float fTimeDelta)
+{
+	m_fMana += m_fManaRecoveryPerSec * fTimeDelta;
+	m_fMana = min(m_fMana, m_fMaxMana);
+}
+
 void CPlayer::Key_Input(_float fTimeDelta)
 {
 	/* 테스트용으로 냅둔겨 나중에 싹 쳐내소 */
@@ -524,11 +610,7 @@ void CPlayer::Key_Input(_float fTimeDelta)
 		Change_States(STATES::LADDER);
 }
 
-void CPlayer::Stamina_Recovery(_float fTimeDelta)
-{
-	m_fStamina += m_fStaminaRecoveryPerSec * fTimeDelta;
-	m_fStamina = min(m_fStamina, m_fMaxStamina);
-}
+
 
 void CPlayer::On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDuration)
 {
@@ -640,13 +722,6 @@ HRESULT CPlayer::Ready_Components(void* pArg)
 	if (FAILED(__super::Ready_Components(pArg)))
 		return E_FAIL;
 
-	CNavigation::DESC tDesc{};
-	XMStoreFloat3(&tDesc.vInitWorldPos, m_pTransformCom->Get_State(STATE::POSITION));
-
-	if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Navigation"),
-		TEXT("Com_Navigation"), reinterpret_cast<CComponent**>(&m_pNavigationCom), &tDesc)))
-		return E_FAIL;
-
 	return S_OK;
 }
 
@@ -684,8 +759,33 @@ HRESULT CPlayer::Ready_PartObjects()
 
 	HPBarDesc.eLevelID = m_eLevelID;
 	HPBarDesc.iNumPartObjects = CUI2D_PlayerHPBar::PART_END;
+	HPBarDesc.pParentHP = &m_fHp;
+	HPBarDesc.pParentMaxHP = &m_fMaxHp;
+	HPBarDesc.pParentHPRecorveryStat = &m_fHPRecorveryStat;
 
 	if (FAILED(__super::Add_PartObject(PART_HP, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerHPBar"), &HPBarDesc)))
+		return E_FAIL;
+
+	CUI2D_PlayerSPBar::DESC StaminaBarDesc{};
+
+	StaminaBarDesc.eLevelID = m_eLevelID;
+	StaminaBarDesc.iNumPartObjects = CUI2D_PlayerSPBar::PART_END;
+	StaminaBarDesc.pParentStamina = &m_fStamina;
+	StaminaBarDesc.pParentMaxStamina = &m_fMaxStamina;
+	StaminaBarDesc.pParentStaminaRecorveryStat = &m_fStaminaRecoveryPerSec;
+
+	if (FAILED(__super::Add_PartObject(PART_STAMINA, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerStaminaBar"), &StaminaBarDesc)))
+		return E_FAIL;
+
+	CUI2D_PlayerMPBar::DESC ManaBarDesc{};
+
+	ManaBarDesc.eLevelID = m_eLevelID;
+	ManaBarDesc.iNumPartObjects = CUI2D_PlayerMPBar::PART_END;
+	ManaBarDesc.pParentMana = &m_fMana;
+	ManaBarDesc.pParentMaxMana = &m_fMaxMana;
+	ManaBarDesc.pParentManaRecorveryStat = &m_fManaRecoveryPerSec;
+
+	if (FAILED(__super::Add_PartObject(PART_MP, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerManaBar"), &ManaBarDesc)))
 		return E_FAIL;
 
 	CUI2D_PlayerPotion::DESC PotionDesc{};
@@ -703,6 +803,14 @@ HRESULT CPlayer::Ready_PartObjects()
 		return E_FAIL;
 
 	Safe_AddRef(m_pUI2DPotion);
+
+	CUI2D_PlayerItemSlots::DESC ItemSlotsDesc{};
+
+	ItemSlotsDesc.eLevelID = m_eLevelID;
+	ItemSlotsDesc.iNumPartObjects = CUI2D_PlayerItemSlots::PART_END;
+
+	if (FAILED(__super::Add_PartObject(PART_ITEMSLOTS, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerItemSlots"), &ItemSlotsDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }

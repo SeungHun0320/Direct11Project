@@ -118,6 +118,9 @@ void CMonster::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObje
 
 HRESULT CMonster::Ready_Components(void* pArg)
 {
+	if (__super::Ready_Components(pArg))
+		return E_FAIL;
+
 	return S_OK;
 }
 

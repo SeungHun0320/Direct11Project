@@ -42,6 +42,9 @@ public:
 	virtual void Late_Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
+public:
+	void Set_PositionY(_float fY, _float fYOffset = 0.f);
+
 protected:
 	CShader*		   m_pShaderCom   = { nullptr };
 	CTexture*		   m_pTextureCom  = { nullptr };

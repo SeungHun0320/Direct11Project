@@ -7,7 +7,7 @@
 ------------------------- */
 
 CPlayerState_Attack1::CPlayerState_Attack1(CPlayer* pOwner)
-	: CPlayerState{ pOwner }
+	: CPlayerState_Attack{ pOwner }
 {
 }
 
@@ -19,26 +19,10 @@ void CPlayerState_Attack1::Enter(_float fTimeDelta)
     m_iMaxCombo   = pStrategy->Get_MaxComboCount();
     m_eWeaponType = pStrategy->Get_WeaponType();
 
-    for (_uint i = 0; i < CPlayer::MESHES_END; i++)
-    {
-        if (i == CPlayer::MESH_SHILED && m_pOwner->Get_IsShield())
-            continue;
+    m_pOwner->SetUp_AttackMeshVisible(m_eWeaponType);
 
-        m_pOwner->Set_MeshVisible(CPlayer::PART_BODY, i, true);
-    }
-
-    switch (m_eWeaponType)
-    {
-    case WEAPON_TYPE::SWORD:
-        m_pOwner->Set_MeshVisible(CPlayer::PART_BODY, CPlayer::MESH_SWORD, false);
-        break;
-    case WEAPON_TYPE::STICK:
-        m_pOwner->Set_MeshVisible(CPlayer::PART_BODY, CPlayer::MESH_STICK, false);
-        break;
-    case WEAPON_TYPE::DAGGER:
-        m_pOwner->Set_MeshVisible(CPlayer::PART_BODY, CPlayer::MESH_DAGGER, false);
-        break;
-    }
+    if (WEAPON_TYPE::DAGGER == m_eWeaponType)
+        m_pOwner->Use_Mana(30.f);
 
     m_fTimeAcc = 0.f;
     m_fAttackStartTime = 0.3f;
@@ -159,7 +143,7 @@ void CPlayerState_Attack1::Free()
 ------------------------- */
 
 CPlayerState_Attack2::CPlayerState_Attack2(CPlayer* pOwner)
-	: CPlayerState{ pOwner }
+	: CPlayerState_Attack{ pOwner }
 {
 }
 
@@ -173,27 +157,7 @@ void CPlayerState_Attack2::Enter(_float fTimeDelta)
 
     m_fTimeAcc = 0.f;
 
-    for (_uint i = 0; i < CPlayer::MESHES_END; i++)
-    {
-        if (i == CPlayer::MESH_SHILED && m_pOwner->Get_IsShield())
-            continue;
-
-        m_pOwner->Set_MeshVisible(CPlayer::PART_BODY, i, true);
-    }
-
-    switch (m_eWeaponType)
-    {
-    case WEAPON_TYPE::SWORD:
-        m_pOwner->Set_MeshVisible(CPlayer::PART_BODY, CPlayer::MESH_SWORD, false);
-        break;
-    case WEAPON_TYPE::STICK:
-        m_pOwner->Set_MeshVisible(CPlayer::PART_BODY, CPlayer::MESH_STICK, false);
-        break;
-    case WEAPON_TYPE::DAGGER:
-        m_pOwner->Set_MeshVisible(CPlayer::PART_BODY, CPlayer::MESH_DAGGER, false);
-        break;
-    }
-
+    m_pOwner->SetUp_AttackMeshVisible(m_eWeaponType);
     m_pOwner->Set_Active(m_eWeaponType);
 
     XMStoreFloat3(&m_vInputDir, m_pOwner->Get_State(STATE::LOOK));
@@ -284,7 +248,7 @@ void CPlayerState_Attack2::Free()
 ------------------------- */
 
 CPlayerState_Attack3::CPlayerState_Attack3(CPlayer* pOwner)
-	: CPlayerState{ pOwner }
+	: CPlayerState_Attack{ pOwner }
 {
 }
 

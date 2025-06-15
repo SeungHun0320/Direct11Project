@@ -138,8 +138,10 @@ HRESULT CNavigationTool::Render_Cells()
 
 	m_pShader->Begin(0);
 
+#ifdef _DEBUG
 	for (auto& pCell : m_Cells)
 		pCell->Render();
+#endif 
 
 	return S_OK;
 }

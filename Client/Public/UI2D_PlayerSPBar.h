@@ -4,25 +4,27 @@
 
 BEGIN(Client)
 
-class CUI2D_PlayerHPBar final : public CUI2DContainerPart
+class CUI2D_PlayerSPBar final : public CUI2DContainerPart
 {
 public:
-	enum PART { PART_BACK, PART_HPBAR, PART_HPBARCAP,
+	enum PART {
+		PART_BACK, PART_STAMINABAR, PART_STAMINABARCAP,
 		PART_NOTCH_START, PART_NOTCH = 5,
-		PART_END = PART_NOTCH};
+		PART_END = PART_NOTCH
+	};
 
 public:
-	typedef struct tagUI2DPlayerHPBarDesc : public CUI2DContainerPart::DESC
+	typedef struct tagUI2DPlayerSPDesc : public CUI2DContainerPart::DESC
 	{
-		_float* pParentHP{ nullptr };
-		_float* pParentMaxHP{ nullptr };
-		_float* pParentHPRecorveryStat{ nullptr };
+		_float* pParentStamina{ nullptr };
+		_float* pParentMaxStamina{ nullptr };
+		_float* pParentStaminaRecorveryStat{ nullptr };
 	}DESC;
 
 private:
-	CUI2D_PlayerHPBar(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CUI2D_PlayerHPBar(const CUI2D_PlayerHPBar& Prototype);
-	virtual ~CUI2D_PlayerHPBar() = default;
+	CUI2D_PlayerSPBar(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CUI2D_PlayerSPBar(const CUI2D_PlayerSPBar& Prototype);
+	virtual ~CUI2D_PlayerSPBar() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -36,12 +38,12 @@ public:
 	virtual void Set_UIVisible(_uint iPart, _bool isVisible) override;
 
 private:
-	_float* m_pParentHP = { nullptr };
-	_float* m_pParentMaxHP = { nullptr };
-	_float* m_pParentHPRecorveryStat = { nullptr };
+	_float* m_pParentStamina = { nullptr };
+	_float* m_pParentMaxStamina = { nullptr };
+	_float* m_pParentStaminaRecorveryStat = { nullptr };
 
 private:
-	_float m_fHpRatio = {};
+	_float m_fStaminaRatio = {};
 	_float m_fLerpSpeed = {};
 
 private:
@@ -49,7 +51,7 @@ private:
 	virtual HRESULT Ready_PartObjects() override;
 
 public:
-	static CUI2D_PlayerHPBar* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CUI2D_PlayerSPBar* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 };

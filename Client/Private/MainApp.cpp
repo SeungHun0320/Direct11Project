@@ -7,8 +7,14 @@
 #include "Body_Player.h"
 #include "Weapon_Player.h"
 #include "UI2D_PlayerHPBar.h"
+#include "UI2D_PlayerSPBar.h"
+#include "UI2D_PlayerMPBar.h"
 #include "UI2D_PlayerPotion.h"
+#include "UI2D_PlayerItemSlots.h"
+
+
 #include "UI.h"
+#include "UI_Animation.h"
 
 CMainApp::CMainApp()
 	: m_pGameInstance { CGameInstance::Get_Instance() }
@@ -71,6 +77,7 @@ void CMainApp::Update(_float fTimeDelta)
 {
 	m_pGameInstance->Update_Engine(fTimeDelta);
 
+#ifdef _DEBUG
 	m_fTimeAcc += fTimeDelta;
 
 
@@ -83,6 +90,7 @@ void CMainApp::Update(_float fTimeDelta)
 		m_fTimeAcc = 0.f;
 		m_iFPS = 0;
 	}
+#endif
 
 }
 
@@ -92,7 +100,9 @@ HRESULT CMainApp::Render()
 
 	m_pGameInstance->Draw();
 
+#ifdef _DEBUG
 	m_pGameInstance->Draw_Font(TEXT("Font_Money"), m_szFPS, _float2(0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+#endif
 
 	m_pGameInstance->End_Draw();
     return S_OK;
@@ -100,11 +110,6 @@ HRESULT CMainApp::Render()
 
 HRESULT CMainApp::Ready_Prototype_Texture()
 {
-	/* For.Prototype_Component_Texture_PlayerHP */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_PlayerHP"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/HP/HPBar.png")))))
-		return E_FAIL;
-
 	/* For.Prototype_Component_Texture_Potion*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Potion"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/Potion/Potion_%d.png"), 2))))
@@ -124,10 +129,40 @@ HRESULT CMainApp::Ready_Prototype_Texture()
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_HexBar_Notch"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/HexBar_Notch.png")))))
 		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_PlayerHP */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_PlayerHP"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/HP/HPBar.png")))))
+		return E_FAIL;
 	
 	/* For.Prototype_Component_Texture_PlayerHPCap*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_PlayerHPCap"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/HP/HPBarCap.png")))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/HP/HPCap.png")))))
+		return E_FAIL;
+	
+	/* For.Prototype_Component_Texture_PlayerStamina */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_PlayerStamina"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/Stamina/StaminaBar.png")))))
+		return E_FAIL;
+	
+	/* For.Prototype_Component_Texture_PlayerStaminaCap*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_PlayerStaminaCap"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/Stamina/StaminaCap.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_PlayerMana */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_PlayerMana"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/Mana/ManaBar.png")))))
+		return E_FAIL;
+	
+	/* For.Prototype_Component_Texture_PlayerManaCap*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_PlayerManaCap"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/Mana/ManaCap.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_ItemSlot*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_ItemSlot"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/Inventory/ItemSlot.png")))))
 		return E_FAIL;
 
 	return S_OK;
@@ -222,9 +257,24 @@ HRESULT CMainApp::Ready_Prototype_Object()
 		CUI2D_PlayerHPBar::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/*For.Prototype_GameObject_UI2D_PlayerStaminaBar */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerStaminaBar"),
+		CUI2D_PlayerSPBar::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/*For.Prototype_GameObject_UI2D_PlayerManaBar */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerManaBar"),
+		CUI2D_PlayerMPBar::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/*For.Prototype_GameObject_UI2D_PlayerHPBar */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerPotion"),
 		CUI2D_PlayerPotion::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/*For.Prototype_GameObject_UI2D_PlayerItemSlots */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerItemSlots"),
+		CUI2D_PlayerItemSlots::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/*--------------------------------------------플레이어UI(파트)--------------------------------------------------*/
@@ -232,6 +282,11 @@ HRESULT CMainApp::Ready_Prototype_Object()
 	/*For.Prototype_GameObject_UI */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI"),
 		CUI::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/*For.Prototype_GameObject_UI_Animation */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI_Animation"),
+		CUI_Animation::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	return S_OK;

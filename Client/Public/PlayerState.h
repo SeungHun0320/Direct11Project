@@ -99,7 +99,32 @@ public:
 	virtual void Free()override;
 };
 
-class CPlayerState_Attack1 final : public CPlayerState
+class CPlayerState_Attack abstract : public CPlayerState
+{
+public:
+	CPlayerState_Attack(class CPlayer* pOwner)
+		:CPlayerState{ pOwner } {};
+	virtual ~CPlayerState_Attack() = default;
+
+public: // CPlayerState을(를) 통해 상속됨
+	void Enter(_float fTimeDelta) override {};
+	void Execute(_float fTimeDelta) override {};
+	void Exit() override {};
+
+protected:
+	_uint  m_iMaxCombo = {};
+	WEAPON_TYPE m_eWeaponType{};
+
+	_bool  m_isAttackCombo = {};
+	_float3 m_vInputDir{};
+
+	_float m_fAttackStartTime = {};
+
+public:
+	virtual void Free() override {};
+};
+
+class CPlayerState_Attack1 final : public CPlayerState_Attack
 {
 public:
 	CPlayerState_Attack1(class CPlayer* pOwner);
@@ -110,20 +135,11 @@ public: // CPlayerState을(를) 통해 상속됨
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
 
-private:
-	_uint  m_iMaxCombo = {};
-	WEAPON_TYPE m_eWeaponType {};
-
-	_bool  m_isAttackCombo = {};
-	_float3 m_vInputDir{};
-
-	_float m_fAttackStartTime = {};
-
 public:
 	virtual void Free() override;
 };
 
-class CPlayerState_Attack2 final : public CPlayerState
+class CPlayerState_Attack2 final : public CPlayerState_Attack
 {
 public:
 	CPlayerState_Attack2(class CPlayer* pOwner);
@@ -134,20 +150,11 @@ public: // CPlayerState을(를) 통해 상속됨
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
 
-private:
-	_uint  m_iMaxCombo = {};
-	WEAPON_TYPE m_eWeaponType{};
-
-	_bool  m_isAttackCombo = {};
-	_float3 m_vInputDir{};
-
-	_float m_fAttackStartTime = {};
-
 public:
 	virtual void Free() override;
 };
 
-class CPlayerState_Attack3 final : public CPlayerState
+class CPlayerState_Attack3 final : public CPlayerState_Attack
 {
 public:
 	CPlayerState_Attack3(class CPlayer* pOwner);
@@ -157,15 +164,6 @@ public: // CPlayerState을(를) 통해 상속됨
 	void Enter(_float fTimeDelta) override;
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
-
-private:
-	_uint  m_iMaxCombo = {};
-	WEAPON_TYPE m_eWeaponType{};
-
-	_bool  m_isAttackCombo = {};
-	_float3 m_vInputDir{};
-
-	_float m_fAttackStartTime = {};
 
 public:
 	virtual void Free() override;
@@ -278,7 +276,7 @@ public: // CPlayerState을(를) 통해 상속됨
 	void Exit() override;
 
 private:
-	_float3	  m_vPreDir = {};
+	_bool m_isUse = { false };
 
 public:
 	virtual void Free() override;

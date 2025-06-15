@@ -27,7 +27,7 @@ void CPlayerState_Dodge::Enter(_float fTimeDelta)
 
 	XMStoreFloat3(&m_vInputDir, m_pOwner->Get_InputDirectionEx());
 
-	m_pOwner->Use_Stamina(50);
+	m_pOwner->Use_Stamina(25.f);
 }
 
 void CPlayerState_Dodge::Execute(_float fTimeDelta)
