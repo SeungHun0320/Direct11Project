@@ -83,7 +83,7 @@ HRESULT CUI2D_PlayerPotion::Ready_PartObjects()
 	{
 		CUI::DESC PotionDesc{};
 
-		PotionDesc.eLevelID = m_eLevelID;
+		PotionDesc.pParentLevelID = m_pLevelID;
 		PotionDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
 		PotionDesc.fSizeX = 28.5f;
 		PotionDesc.fSizeY = 40.f;
@@ -97,7 +97,7 @@ HRESULT CUI2D_PlayerPotion::Ready_PartObjects()
 
 	CUI::DESC KeyDesc{};
 
-	KeyDesc.eLevelID = m_eLevelID;
+	KeyDesc.pParentLevelID = m_pLevelID;
 	KeyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
 	KeyDesc.fSizeX = 35.f;
 	KeyDesc.fSizeY = 35.f;

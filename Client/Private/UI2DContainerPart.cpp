@@ -20,7 +20,7 @@ HRESULT CUI2DContainerPart::Initialize(void* pArg)
 {
 	DESC* pDesc = static_cast<DESC*>(pArg);
 
-	m_eLevelID = pDesc->eLevelID;
+	m_pLevelID = pDesc->pParentLevelID;
 	m_iNumPartObjects = pDesc->iNumPartObjects;
 
 	m_PartObjects.resize(m_iNumPartObjects);

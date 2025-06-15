@@ -76,7 +76,7 @@ HRESULT CUI2D_PlayerItemSlots::Ready_PartObjects()
 	{
 		CUI::DESC ItemSlotDesc{};
 
-		ItemSlotDesc.eLevelID = m_eLevelID;
+		ItemSlotDesc.pParentLevelID = m_pLevelID;
 		ItemSlotDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
 		ItemSlotDesc.fSizeX = 75.f;
 		ItemSlotDesc.fSizeY = 75.f;

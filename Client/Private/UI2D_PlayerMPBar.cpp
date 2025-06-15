@@ -112,7 +112,7 @@ HRESULT CUI2D_PlayerMPBar::Ready_PartObjects()
 {
 	CUI::DESC BackDesc{};
 
-	BackDesc.eLevelID = m_eLevelID;
+	BackDesc.pParentLevelID = m_pLevelID;
 	BackDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
 	BackDesc.fSizeX = 62.f;
 	BackDesc.fSizeY = 186.f;
@@ -125,7 +125,7 @@ HRESULT CUI2D_PlayerMPBar::Ready_PartObjects()
 
 	CUI_Animation::DESC ManaBarDesc{};
 
-	ManaBarDesc.eLevelID = m_eLevelID;
+	ManaBarDesc.pParentLevelID = m_pLevelID;
 	ManaBarDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
 	ManaBarDesc.fSizeX = 62.f;
 	ManaBarDesc.fSizeY = 150.6f;
@@ -139,7 +139,7 @@ HRESULT CUI2D_PlayerMPBar::Ready_PartObjects()
 
 	CUI::DESC ManaBarCapDesc{};
 
-	ManaBarCapDesc.eLevelID = m_eLevelID;
+	ManaBarCapDesc.pParentLevelID = m_pLevelID;
 	ManaBarCapDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
 	ManaBarCapDesc.fSizeX = 32.f;
 	ManaBarCapDesc.fSizeY = 18.3f;
@@ -155,7 +155,7 @@ HRESULT CUI2D_PlayerMPBar::Ready_PartObjects()
 	{
 		CUI::DESC NotchDesc{};
 
-		NotchDesc.eLevelID = m_eLevelID;
+		NotchDesc.pParentLevelID = m_pLevelID;
 		NotchDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
 		NotchDesc.fSizeX = 28.6f;
 		NotchDesc.fSizeY = 11.6f;

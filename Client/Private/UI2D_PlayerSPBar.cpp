@@ -110,7 +110,7 @@ HRESULT CUI2D_PlayerSPBar::Ready_PartObjects()
 {
 	CUI::DESC BackDesc{};
 
-	BackDesc.eLevelID = m_eLevelID;
+	BackDesc.pParentLevelID = m_pLevelID;
 	BackDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
 	BackDesc.fSizeX = 62.f;
 	BackDesc.fSizeY = 186.f;
@@ -123,7 +123,7 @@ HRESULT CUI2D_PlayerSPBar::Ready_PartObjects()
 
 	CUI_Animation::DESC StaminaBarDesc{};
 
-	StaminaBarDesc.eLevelID = m_eLevelID;
+	StaminaBarDesc.pParentLevelID = m_pLevelID;
 	StaminaBarDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
 	StaminaBarDesc.fSizeX = 62.f;
 	StaminaBarDesc.fSizeY = 150.6f;
@@ -137,7 +137,7 @@ HRESULT CUI2D_PlayerSPBar::Ready_PartObjects()
 
 	CUI::DESC StaminaBarCapDesc{};
 
-	StaminaBarCapDesc.eLevelID = m_eLevelID;
+	StaminaBarCapDesc.pParentLevelID = m_pLevelID;
 	StaminaBarCapDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
 	StaminaBarCapDesc.fSizeX = 32.f;
 	StaminaBarCapDesc.fSizeY = 18.3f;
@@ -153,7 +153,7 @@ HRESULT CUI2D_PlayerSPBar::Ready_PartObjects()
 	{
 		CUI::DESC NotchDesc{};
 
-		NotchDesc.eLevelID = m_eLevelID;
+		NotchDesc.pParentLevelID = m_pLevelID;
 		NotchDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
 		NotchDesc.fSizeX = 28.6f;
 		NotchDesc.fSizeY = 11.6f;

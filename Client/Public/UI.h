@@ -16,7 +16,7 @@ class CUI : public CPartObject
 public:
 	typedef struct tagUIDesc : public CPartObject::DESC
 	{
-		LEVEL	 eLevelID;
+		LEVEL*	 pParentLevelID{ nullptr };
 		_float	 fX, fY, fSizeX, fSizeY;
 		_wstring strPrototypeTag;
 	}DESC;
@@ -51,7 +51,7 @@ protected:
 	CVIBuffer_Rect*    m_pVIBufferCom = { nullptr };
 
 protected:
-	LEVEL m_eLevelID = { LEVEL::LEVEL_END };
+	LEVEL* m_pLevelID = { nullptr };
 
 protected:
 	_bool  m_bVisible = { true };

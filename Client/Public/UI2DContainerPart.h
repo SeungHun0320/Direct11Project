@@ -10,7 +10,7 @@ class CUI2DContainerPart abstract : public CPartObject
 public:
 	typedef struct tagUI2DContainerPartDesc : public CPartObject::DESC
 	{
-		LEVEL	eLevelID{};
+		LEVEL*	pParentLevelID{};
 		_uint	iNumPartObjects{};
 	}DESC;
 
@@ -36,7 +36,7 @@ protected:
 	vector<CPartObject*> m_PartObjects;
 
 protected: 	/* 어떤 레벨에서 쓸지 오브젝트 별로 변수 필요함 */
-	LEVEL m_eLevelID = { LEVEL::LEVEL_END };
+	LEVEL* m_pLevelID = { nullptr };
 
 protected:
 	HRESULT Add_PartObject(_uint iPartID, _uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, void* pArg);
