@@ -4,6 +4,9 @@
 #include "Body_Blob.h"
 #include "BlobState.h"
 
+#include "UI3D_MobHPBar.h"
+#include "UI3D_LockOn.h"
+
 #include "Player.h"
 
 CBlob::CBlob(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -23,12 +26,6 @@ HRESULT CBlob::Initialize_Prototype()
 
 HRESULT CBlob::Initialize(void* pArg)
 {
-	if (FAILED(__super::Initialize(pArg)))
-		return E_FAIL;
-	
-	if (FAILED(Ready_States()))
-		return E_FAIL;
-
 	m_fDetectDistance = 5.f;
 	m_fChaseStopDistance = 10.f;
 
@@ -43,6 +40,12 @@ HRESULT CBlob::Initialize(void* pArg)
 	/* ±×·Î±â */
 	m_fStaggerGage = 20.f;
 	m_fMaxStaggerGage = m_fStaggerGage;
+
+	if (FAILED(__super::Initialize(pArg)))
+		return E_FAIL;
+	
+	if (FAILED(Ready_States()))
+		return E_FAIL;
 
 	Change_States(STATES::IDLE);
 
@@ -216,6 +219,28 @@ HRESULT CBlob::Ready_PartObjects()
 	BodyDesc.pOwner = this;
 
 	if (FAILED(__super::Add_PartObject(PART_BODY, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Body_Blob"), &BodyDesc)))
+		return E_FAIL;
+
+	CUI3D_MobHPBar::DESC HPBarDesc{};
+
+	HPBarDesc.pParentLevelID = &m_eLevelID;
+	HPBarDesc.iNumPartObjects = CUI3D_MobHPBar::PART_END;
+	HPBarDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	HPBarDesc.pParentHP = &m_fHp;
+	HPBarDesc.pParentMaxHP = &m_fMaxHp;
+
+	if (FAILED(__super::Add_PartObject(PART_HP, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_UI3D_MobHPBar"), &HPBarDesc)))
+		return E_FAIL;
+
+	CUI3D_LockOn::DESC LockOnDesc{};
+
+	LEVEL eLevelID = LEVEL::STATIC;
+
+	LockOnDesc.pParentLevelID = &eLevelID;
+	LockOnDesc.iNumPartObjects = CUI3D_LockOn::PART_END;
+	LockOnDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+
+	if (FAILED(__super::Add_PartObject(PART_EFFECT, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI3D_LockOn"), &LockOnDesc)))
 		return E_FAIL;
 
 	return S_OK;

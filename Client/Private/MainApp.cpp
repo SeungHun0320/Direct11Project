@@ -6,6 +6,8 @@
 #include "Player.h"
 #include "Body_Player.h"
 #include "Weapon_Player.h"
+
+#include "UI3D_LockOn.h"
 #include "UI2D_PlayerHPBar.h"
 #include "UI2D_PlayerSPBar.h"
 #include "UI2D_PlayerMPBar.h"
@@ -164,6 +166,16 @@ HRESULT CMainApp::Ready_Prototype_Texture()
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_ItemSlot"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/Inventory/ItemSlot.png")))))
 		return E_FAIL;
+	
+	/* For.Prototype_Component_Texture_LockOnCircle*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_LockOnCircle"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GameUI/LockOnCircle.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_LockOnHex*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_LockOnHex"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GameUI/LockOnHex.png")))))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -276,17 +288,32 @@ HRESULT CMainApp::Ready_Prototype_Object()
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerItemSlots"),
 		CUI2D_PlayerItemSlots::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-
-	/*--------------------------------------------플레이어UI(파트)--------------------------------------------------*/
-
-	/*For.Prototype_GameObject_UI */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI"),
-		CUI::Create(m_pDevice, m_pContext))))
+	
+	/*For.Prototype_GameObject_UI3D_LockOn */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI3D_LockOn"),
+		CUI3D_LockOn::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/*For.Prototype_GameObject_UI_Animation */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI_Animation"),
-		CUI_Animation::Create(m_pDevice, m_pContext))))
+	/*--------------------------------------------UI(파트오브젝트)--------------------------------------------------*/
+
+	/*For.Prototype_GameObject_UI */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D"),
+		CUI::Create(m_pDevice, m_pContext, UI_TYPE::UI2D))))
+		return E_FAIL;
+
+	/*For.Prototype_GameObject_UI3D */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI3D"),
+		CUI::Create(m_pDevice, m_pContext, UI_TYPE::UI3D))))
+		return E_FAIL;
+
+	/*For.Prototype_GameObject_UI2D_Animation */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_Animation"),
+		CUI_Animation::Create(m_pDevice, m_pContext, UI_TYPE::UI2D))))
+		return E_FAIL;
+
+	/*For.Prototype_GameObject_UI3D_Animation */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI3D_Animation"),
+		CUI_Animation::Create(m_pDevice, m_pContext, UI_TYPE::UI3D))))
 		return E_FAIL;
 
 	return S_OK;

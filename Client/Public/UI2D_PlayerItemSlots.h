@@ -1,16 +1,16 @@
 #pragma once
 
-#include "UI2DContainerPart.h"
+#include "UIContainerPart.h"
 
 BEGIN(Client)
 
-class CUI2D_PlayerItemSlots final : public CUI2DContainerPart
+class CUI2D_PlayerItemSlots final : public CUIContainerPart
 {
 public:
 	enum PART { PART_J, PART_K, PART_L, PART_END };
 
 public:
-	typedef struct tagUI2DPlayerItemSlotsDesc : public CUI2DContainerPart::DESC
+	typedef struct tagUI2DPlayerItemSlotsDesc : public CUIContainerPart::DESC
 	{
 
 	}DESC;

@@ -6,6 +6,7 @@
 
 #include "Wizard_SwordState.h"
 
+#include "UI3D_MobHPBar.h"
 
 #include "Player.h"
 
@@ -200,6 +201,17 @@ HRESULT CWizard_Sword::Ready_PartObjects()
 	SwordDesc.pOwner = this;
 
 	if (FAILED(__super::Add_PartObject(PART_SWORD, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Part_WizardSword"), &SwordDesc)))
+		return E_FAIL;
+
+	CUI3D_MobHPBar::DESC HPBarDesc{};
+
+	HPBarDesc.pParentLevelID = &m_eLevelID;
+	HPBarDesc.iNumPartObjects = CUI3D_MobHPBar::PART_END;
+	HPBarDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	HPBarDesc.pParentHP = &m_fHp;
+	HPBarDesc.pParentMaxHP = &m_fMaxHp;
+
+	if (FAILED(__super::Add_PartObject(PART_HP, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_UI3D_MobHPBar"), &HPBarDesc)))
 		return E_FAIL;
 
 	return S_OK;

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "UI2DContainerPart.h"
+#include "UIContainerPart.h"
 
 BEGIN(Client)
 
-class CUI2D_PlayerMPBar final : public CUI2DContainerPart
+class CUI2D_PlayerMPBar final : public CUIContainerPart
 {
 public:
 	enum PART {
@@ -14,7 +14,7 @@ public:
 	};
 
 public:
-	typedef struct tagUI2DPlayerMPBarDesc : public CUI2DContainerPart::DESC
+	typedef struct tagUI2DPlayerMPBarDesc : public CUIContainerPart::DESC
 	{
 		_float* pParentMana{ nullptr };
 		_float* pParentMaxMana{ nullptr };

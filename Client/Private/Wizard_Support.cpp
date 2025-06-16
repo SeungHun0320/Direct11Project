@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "Body_WizardSupport.h"
 #include "Part_WizardStaff.h"
+#include "UI3D_MobHPBar.h"
 
 #include "Wizard_SupportState.h"
 
@@ -207,6 +208,19 @@ HRESULT CWizard_Support::Ready_PartObjects()
 
 	if (FAILED(__super::Add_PartObject(PART_BODY, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Body_Support"), &BodyDesc)))
 		return E_FAIL;
+
+
+	CUI3D_MobHPBar::DESC HPBarDesc{};
+
+	HPBarDesc.pParentLevelID = &m_eLevelID;
+	HPBarDesc.iNumPartObjects = CUI3D_MobHPBar::PART_END;
+	HPBarDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	HPBarDesc.pParentHP = &m_fHp;
+	HPBarDesc.pParentMaxHP = &m_fMaxHp;
+
+	if (FAILED(__super::Add_PartObject(PART_HP, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_UI3D_MobHPBar"), &HPBarDesc)))
+		return E_FAIL;
+
 	return S_OK;
 }
 

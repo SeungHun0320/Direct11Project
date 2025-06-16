@@ -346,12 +346,6 @@
     <Filter Include="02.GameObjects\00.UI\Container">
       <UniqueIdentifier>{b5bde109-c3a5-44df-a7f6-dba38547b163}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.UI\Container\3D">
-      <UniqueIdentifier>{c4b003b1-27af-42f8-a476-7fd2a9d51dd1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.UI\Container\2D">
-      <UniqueIdentifier>{0869c2d5-3bce-496d-a14c-44df8f9a9b87}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\00.UI\Part">
       <UniqueIdentifier>{5dab7d6f-0d4c-4992-ab27-f4240929a215}</UniqueIdentifier>
     </Filter>
@@ -378,6 +372,15 @@
     </Filter>
     <Filter Include="02.GameObjects\00.UI\02.PlayerState\ItemSlots">
       <UniqueIdentifier>{236863ca-b3a3-4988-bc0e-547467f75ba8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\02.PlayerState\Inventory">
+      <UniqueIdentifier>{f3dcd216-5131-480b-bdb9-f86d4348d641}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\04.MobState\HpBar">
+      <UniqueIdentifier>{4977711e-857c-4f4c-a3b4-b67fdda66ec7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\02.PlayerState\LockOn">
+      <UniqueIdentifier>{ba348db8-6856-48fd-bf79-56ec2455d00a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -648,12 +651,6 @@
     <ClInclude Include="..\public\BaseActor.h">
       <Filter>02.GameObjects\03.Actor</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\UI2DContainerPart.h">
-      <Filter>02.GameObjects\00.UI\Container\2D</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\UI3DContainerPart.h">
-      <Filter>02.GameObjects\00.UI\Container\3D</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\NavigationTool.h">
       <Filter>96.Tools\01.NavigationTool</Filter>
     </ClInclude>
@@ -677,6 +674,18 @@
     </ClInclude>
     <ClInclude Include="..\public\UI2D_PlayerItemSlots.h">
       <Filter>02.GameObjects\00.UI\02.PlayerState\ItemSlots</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UI2D_Inventory.h">
+      <Filter>02.GameObjects\00.UI\02.PlayerState\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UI3D_MobHPBar.h">
+      <Filter>02.GameObjects\00.UI\04.MobState\HpBar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UI3D_LockOn.h">
+      <Filter>02.GameObjects\00.UI\02.PlayerState\LockOn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UIContainerPart.h">
+      <Filter>02.GameObjects\00.UI\Container</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -993,12 +1002,6 @@
     <ClCompile Include="..\private\BaseActor.cpp">
       <Filter>02.GameObjects\03.Actor</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\UI2DContainerPart.cpp">
-      <Filter>02.GameObjects\00.UI\Container\2D</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\UI3DContainerPart.cpp">
-      <Filter>02.GameObjects\00.UI\Container\3D</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\NavigationTool.cpp">
       <Filter>96.Tools\01.NavigationTool</Filter>
     </ClCompile>
@@ -1022,6 +1025,18 @@
     </ClCompile>
     <ClCompile Include="..\private\UI2D_PlayerItemSlots.cpp">
       <Filter>02.GameObjects\00.UI\02.PlayerState\ItemSlots</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI2D_Inventory.cpp">
+      <Filter>02.GameObjects\00.UI\02.PlayerState\Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI3D_MobHPBar.cpp">
+      <Filter>02.GameObjects\00.UI\04.MobState\HpBar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI3D_LockOn.cpp">
+      <Filter>02.GameObjects\00.UI\02.PlayerState\LockOn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UIContainerPart.cpp">
+      <Filter>02.GameObjects\00.UI\Container</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -4,12 +4,12 @@
 #include "UI_Animation.h"
 
 CUI2D_PlayerSPBar::CUI2D_PlayerSPBar(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CUI2DContainerPart{ pDevice, pContext }
+	: CUIContainerPart{ pDevice, pContext }
 {
 }
 
 CUI2D_PlayerSPBar::CUI2D_PlayerSPBar(const CUI2D_PlayerSPBar& Prototype)
-	: CUI2DContainerPart(Prototype)
+	: CUIContainerPart(Prototype)
 {
 }
 
@@ -118,7 +118,7 @@ HRESULT CUI2D_PlayerSPBar::Ready_PartObjects()
 	BackDesc.fY = g_iWinSizeY * 0.825f;
 	BackDesc.strPrototypeTag = TEXT("Prototype_Component_Texture_HexBar_Back");
 
-	if (FAILED(__super::Add_PartObject(PART_BACK, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI"), &BackDesc)))
+	if (FAILED(__super::Add_PartObject(PART_BACK, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D"), &BackDesc)))
 		return E_FAIL;
 
 	CUI_Animation::DESC StaminaBarDesc{};
@@ -131,8 +131,9 @@ HRESULT CUI2D_PlayerSPBar::Ready_PartObjects()
 	StaminaBarDesc.fY = g_iWinSizeY * 0.825f;
 	StaminaBarDesc.strPrototypeTag = TEXT("Prototype_Component_Texture_PlayerStamina");
 	StaminaBarDesc.pRatio = &m_fStaminaRatio;
+	StaminaBarDesc.eUIPass = CUI_Animation::PASS_VERTICAL;
 
-	if (FAILED(__super::Add_PartObject(PART_STAMINABAR, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI_Animation"), &StaminaBarDesc)))
+	if (FAILED(__super::Add_PartObject(PART_STAMINABAR, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_Animation"), &StaminaBarDesc)))
 		return E_FAIL;
 
 	CUI::DESC StaminaBarCapDesc{};
@@ -145,7 +146,7 @@ HRESULT CUI2D_PlayerSPBar::Ready_PartObjects()
 	StaminaBarCapDesc.fY = g_iWinSizeY * 0.825f;
 	StaminaBarCapDesc.strPrototypeTag = TEXT("Prototype_Component_Texture_PlayerStaminaCap");
 
-	if (FAILED(__super::Add_PartObject(PART_STAMINABARCAP, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI"), &StaminaBarCapDesc)))
+	if (FAILED(__super::Add_PartObject(PART_STAMINABARCAP, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D"), &StaminaBarCapDesc)))
 		return E_FAIL;
 
 
@@ -161,7 +162,7 @@ HRESULT CUI2D_PlayerSPBar::Ready_PartObjects()
 		NotchDesc.fY = (g_iWinSizeY * 0.525f) + (62.f * i);
 		NotchDesc.strPrototypeTag = TEXT("Prototype_Component_Texture_HexBar_Notch");
 
-		if (FAILED(__super::Add_PartObject(i, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI"), &NotchDesc)))
+		if (FAILED(__super::Add_PartObject(i, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D"), &NotchDesc)))
 			return E_FAIL;
 	}
 

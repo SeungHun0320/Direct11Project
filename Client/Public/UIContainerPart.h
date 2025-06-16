@@ -5,19 +5,19 @@
 
 BEGIN(Client)
 
-class CUI2DContainerPart abstract : public CPartObject
+class CUIContainerPart abstract : public CPartObject
 {
 public:
-	typedef struct tagUI2DContainerPartDesc : public CPartObject::DESC
+	typedef struct tagUIContainerPartDesc : public CPartObject::DESC
 	{
 		LEVEL*	pParentLevelID{};
 		_uint	iNumPartObjects{};
 	}DESC;
 
 protected:
-	CUI2DContainerPart(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CUI2DContainerPart(const CUI2DContainerPart& Prototype);
-	~CUI2DContainerPart() = default;
+	CUIContainerPart(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CUIContainerPart(const CUIContainerPart& Prototype);
+	~CUIContainerPart() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;

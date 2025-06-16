@@ -4,12 +4,12 @@
 #include "UI.h"
 
 CUI2D_PlayerItemSlots::CUI2D_PlayerItemSlots(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CUI2DContainerPart{ pDevice, pContext }
+	: CUIContainerPart{ pDevice, pContext }
 {
 }
 
 CUI2D_PlayerItemSlots::CUI2D_PlayerItemSlots(const CUI2D_PlayerItemSlots& Prototype)
-	: CUI2DContainerPart(Prototype)
+	: CUIContainerPart(Prototype)
 {
 }
 
@@ -84,7 +84,7 @@ HRESULT CUI2D_PlayerItemSlots::Ready_PartObjects()
 		ItemSlotDesc.fY = g_iWinSizeY * 0.1f;
 		ItemSlotDesc.strPrototypeTag = TEXT("Prototype_Component_Texture_ItemSlot");
 
-		if (FAILED(__super::Add_PartObject(i, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI"), &ItemSlotDesc)))
+		if (FAILED(__super::Add_PartObject(i, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D"), &ItemSlotDesc)))
 			return E_FAIL;
 	}
 

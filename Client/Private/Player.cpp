@@ -4,6 +4,7 @@
 
 #include "Body_Player.h"
 #include "Weapon_Player.h"
+
 #include "UI2D_PlayerHPBar.h"
 #include "UI2D_PlayerSPBar.h"
 #include "UI2D_PlayerMPBar.h"
@@ -750,9 +751,11 @@ HRESULT CPlayer::Ready_PartObjects()
 
 	Safe_AddRef(m_pWeaponPart);
 
+	LEVEL eLevelID = LEVEL::STATIC;
+
 	CUI2D_PlayerHPBar::DESC HPBarDesc{};
 
-	HPBarDesc.pParentLevelID = &m_eLevelID;
+	HPBarDesc.pParentLevelID = &eLevelID;
 	HPBarDesc.iNumPartObjects = CUI2D_PlayerHPBar::PART_END;
 	HPBarDesc.pParentHP = &m_fHp;
 	HPBarDesc.pParentMaxHP = &m_fMaxHp;
@@ -763,7 +766,7 @@ HRESULT CPlayer::Ready_PartObjects()
 
 	CUI2D_PlayerSPBar::DESC StaminaBarDesc{};
 
-	StaminaBarDesc.pParentLevelID = &m_eLevelID;
+	StaminaBarDesc.pParentLevelID = &eLevelID;
 	StaminaBarDesc.iNumPartObjects = CUI2D_PlayerSPBar::PART_END;
 	StaminaBarDesc.pParentStamina = &m_fStamina;
 	StaminaBarDesc.pParentMaxStamina = &m_fMaxStamina;
@@ -774,7 +777,7 @@ HRESULT CPlayer::Ready_PartObjects()
 
 	CUI2D_PlayerMPBar::DESC ManaBarDesc{};
 
-	ManaBarDesc.pParentLevelID = &m_eLevelID;
+	ManaBarDesc.pParentLevelID = &eLevelID;
 	ManaBarDesc.iNumPartObjects = CUI2D_PlayerMPBar::PART_END;
 	ManaBarDesc.pParentMana = &m_fMana;
 	ManaBarDesc.pParentMaxMana = &m_fMaxMana;
@@ -785,7 +788,7 @@ HRESULT CPlayer::Ready_PartObjects()
 
 	CUI2D_PlayerPotion::DESC PotionDesc{};
 
-	PotionDesc.pParentLevelID = &m_eLevelID;
+	PotionDesc.pParentLevelID = &eLevelID;
 	PotionDesc.iNumPartObjects = CUI2D_PlayerPotion::PART_END;
 	PotionDesc.pParentCurPotion = &m_iCurNumPotion;
 	PotionDesc.pParentNumPotion = &m_iNumPotion;
@@ -801,7 +804,7 @@ HRESULT CPlayer::Ready_PartObjects()
 
 	CUI2D_PlayerItemSlots::DESC ItemSlotsDesc{};
 
-	ItemSlotsDesc.pParentLevelID = &m_eLevelID;
+	ItemSlotsDesc.pParentLevelID = &eLevelID;
 	ItemSlotsDesc.iNumPartObjects = CUI2D_PlayerItemSlots::PART_END;
 
 	if (FAILED(__super::Add_PartObject(PART_ITEMSLOTS, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerItemSlots"), &ItemSlotsDesc)))

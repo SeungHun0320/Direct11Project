@@ -34,6 +34,8 @@
 #include "Body_WizardSword.h"
 #include "Part_WizardSword.h"
 
+#include "UI3D_MobHPBar.h"
+
 /* ÁöÇü(Åë¸Ê) */
 #include "Courtyard.h"
 #include "Arena.h"
@@ -183,6 +185,16 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 	/* For.Prototype_Component_Texture_Sky */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_Sky"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/SkyBox/Sky_%d.dds"), 5))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Enemy_HexBar*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_Enemy_HexBar"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Monster/Enemy_HexBar.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_HexBar_Notch*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_Enemy_HPBar"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Monster/Enemy_HpBar.png")))))
 		return E_FAIL;
 
 
@@ -410,6 +422,12 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 		CWizard_Sword::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/*For.Prototype_GameObject_UI3D_MobHPBar */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_UI3D_MobHPBar"),
+		CUI3D_MobHPBar::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
 	/* For.Prototype_GameObject_Sky */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Sky"),
 		CSky::Create(m_pDevice, m_pContext))))
@@ -559,6 +577,16 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 	/*For.Prototype_Component_Texture_Sky*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_Sky"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/SkyBox/Sky_%d.dds"), 5))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Enemy_HexBar*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_Enemy_HexBar"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Monster/Enemy_HexBar.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_HexBar_Notch*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_Enemy_HPBar"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Monster/Enemy_HpBar.png")))))
 		return E_FAIL;
 
 
@@ -773,6 +801,11 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 	/* For.Prototype_GameObject_Wizard_Sword */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Wizard_Sword"),
 		CWizard_Sword::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/*For.Prototype_GameObject_UI3D_MobHPBar */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_UI3D_MobHPBar"),
+		CUI3D_MobHPBar::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Sky */

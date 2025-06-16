@@ -7,7 +7,7 @@ BEGIN(Client)
 class CPotion final : public CItem
 {
 public:
-	typedef struct tagCheckPointDesc : public CItem::DESC
+	typedef struct tagPotionDesc : public CItem::DESC
 	{
 
 	}DESC;

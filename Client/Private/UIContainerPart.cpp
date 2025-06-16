@@ -1,22 +1,22 @@
-#include "UI2DContainerPart.h"
+#include "UIContainerPart.h"
 #include "GameInstance.h"
 
-CUI2DContainerPart::CUI2DContainerPart(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CUIContainerPart::CUIContainerPart(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CPartObject{ pDevice, pContext }
 {
 }
 
-CUI2DContainerPart::CUI2DContainerPart(const CUI2DContainerPart& Prototype)
+CUIContainerPart::CUIContainerPart(const CUIContainerPart& Prototype)
 	: CPartObject(Prototype)
 {
 }
 
-HRESULT CUI2DContainerPart::Initialize_Prototype()
+HRESULT CUIContainerPart::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CUI2DContainerPart::Initialize(void* pArg)
+HRESULT CUIContainerPart::Initialize(void* pArg)
 {
 	DESC* pDesc = static_cast<DESC*>(pArg);
 
@@ -31,7 +31,7 @@ HRESULT CUI2DContainerPart::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CUI2DContainerPart::Priority_Update(_float fTimeDelta)
+void CUIContainerPart::Priority_Update(_float fTimeDelta)
 {
 	for (auto& pPartObject : m_PartObjects)
 	{
@@ -40,7 +40,7 @@ void CUI2DContainerPart::Priority_Update(_float fTimeDelta)
 	}
 }
 
-LIFE CUI2DContainerPart::Update(_float fTimeDelta)
+LIFE CUIContainerPart::Update(_float fTimeDelta)
 {
 	LIFE eLife = {};
 	for (auto Iter = m_PartObjects.begin();
@@ -64,7 +64,7 @@ LIFE CUI2DContainerPart::Update(_float fTimeDelta)
 	return LIFE::NONE;
 }
 
-void CUI2DContainerPart::Late_Update(_float fTimeDelta)
+void CUIContainerPart::Late_Update(_float fTimeDelta)
 {
 	for (auto& pPartObject : m_PartObjects)
 	{
@@ -73,12 +73,12 @@ void CUI2DContainerPart::Late_Update(_float fTimeDelta)
 	}
 }
 
-HRESULT CUI2DContainerPart::Render()
+HRESULT CUIContainerPart::Render()
 {
 	return S_OK;
 }
 
-HRESULT CUI2DContainerPart::Add_PartObject(_uint iPartID, _uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, void* pArg)
+HRESULT CUIContainerPart::Add_PartObject(_uint iPartID, _uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, void* pArg)
 {
 	CPartObject* pPartObject = dynamic_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::TYPE_GAMEOBJECT, iPrototypeLevelIndex, strPrototypeTag, pArg));
 	if (nullptr == pPartObject)
@@ -89,12 +89,12 @@ HRESULT CUI2DContainerPart::Add_PartObject(_uint iPartID, _uint iPrototypeLevelI
 	return S_OK;
 }
 
-HRESULT CUI2DContainerPart::Ready_Components(void* pArg)
+HRESULT CUIContainerPart::Ready_Components(void* pArg)
 {
 	return S_OK;
 }
 
-void CUI2DContainerPart::Free()
+void CUIContainerPart::Free()
 {
 	__super::Free();
 

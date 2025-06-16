@@ -4,12 +4,12 @@
 #include "UI.h"
 
 CUI2D_PlayerPotion::CUI2D_PlayerPotion(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CUI2DContainerPart{ pDevice, pContext }
+	: CUIContainerPart{ pDevice, pContext }
 {
 }
 
 CUI2D_PlayerPotion::CUI2D_PlayerPotion(const CUI2D_PlayerPotion& Prototype)
-	: CUI2DContainerPart(Prototype)
+	: CUIContainerPart(Prototype)
 {
 }
 
@@ -91,7 +91,7 @@ HRESULT CUI2D_PlayerPotion::Ready_PartObjects()
 		PotionDesc.fY = g_iWinSizeY * 0.25f;
 		PotionDesc.strPrototypeTag = TEXT("Prototype_Component_Texture_Potion");
 
-		if (FAILED(__super::Add_PartObject(i, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI"), &PotionDesc)))
+		if (FAILED(__super::Add_PartObject(i, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D"), &PotionDesc)))
 			return E_FAIL;
 	}
 
@@ -105,7 +105,7 @@ HRESULT CUI2D_PlayerPotion::Ready_PartObjects()
 	KeyDesc.fY = g_iWinSizeY * 0.25f;
 	KeyDesc.strPrototypeTag = TEXT("Prototype_Component_Texture_PKeyBoard");
 
-	if (FAILED(__super::Add_PartObject(PART_PKEY, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI"), &KeyDesc)))
+	if (FAILED(__super::Add_PartObject(PART_PKEY, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D"), &KeyDesc)))
 		return E_FAIL;
 
 	return S_OK;

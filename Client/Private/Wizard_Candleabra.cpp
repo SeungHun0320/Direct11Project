@@ -4,6 +4,7 @@
 #include "Body_WizardCandleabra.h"
 #include "Part_WizardCandleabra.h"
 #include "Part_WizardSword.h"
+#include "UI3D_MobHPBar.h"
 
 #include "Wizard_CandleabraState.h"
 
@@ -204,6 +205,18 @@ HRESULT CWizard_Candleabra::Ready_PartObjects()
 
 	if (FAILED(__super::Add_PartObject(PART_CANDLEABRA, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Part_WizardCandleabra"), &CandleabraDesc)))
 		return E_FAIL;
+
+	CUI3D_MobHPBar::DESC HPBarDesc{};
+
+	HPBarDesc.pParentLevelID = &m_eLevelID;
+	HPBarDesc.iNumPartObjects = CUI3D_MobHPBar::PART_END;
+	HPBarDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	HPBarDesc.pParentHP = &m_fHp;
+	HPBarDesc.pParentMaxHP = &m_fMaxHp;
+
+	if (FAILED(__super::Add_PartObject(PART_HP, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_UI3D_MobHPBar"), &HPBarDesc)))
+		return E_FAIL;
+
 
 	return S_OK;
 }

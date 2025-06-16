@@ -4,12 +4,12 @@
 #include "UI_Animation.h"
 
 CUI2D_PlayerMPBar::CUI2D_PlayerMPBar(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CUI2DContainerPart{ pDevice, pContext }
+	: CUIContainerPart{ pDevice, pContext }
 {
 }
 
 CUI2D_PlayerMPBar::CUI2D_PlayerMPBar(const CUI2D_PlayerMPBar& Prototype)
-	: CUI2DContainerPart(Prototype)
+	: CUIContainerPart(Prototype)
 {
 }
 
@@ -120,7 +120,7 @@ HRESULT CUI2D_PlayerMPBar::Ready_PartObjects()
 	BackDesc.fY = g_iWinSizeY * 0.825f;
 	BackDesc.strPrototypeTag = TEXT("Prototype_Component_Texture_HexBar_Back");
 
-	if (FAILED(__super::Add_PartObject(PART_BACK, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI"), &BackDesc)))
+	if (FAILED(__super::Add_PartObject(PART_BACK, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D"), &BackDesc)))
 		return E_FAIL;
 
 	CUI_Animation::DESC ManaBarDesc{};
@@ -133,8 +133,9 @@ HRESULT CUI2D_PlayerMPBar::Ready_PartObjects()
 	ManaBarDesc.fY = g_iWinSizeY * 0.825f;
 	ManaBarDesc.strPrototypeTag = TEXT("Prototype_Component_Texture_PlayerMana");
 	ManaBarDesc.pRatio = &m_fManaRatio;
+	ManaBarDesc.eUIPass = CUI_Animation::PASS_VERTICAL;
 
-	if (FAILED(__super::Add_PartObject(PART_MANABAR, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI_Animation"), &ManaBarDesc)))
+	if (FAILED(__super::Add_PartObject(PART_MANABAR, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_Animation"), &ManaBarDesc)))
 		return E_FAIL;
 
 	CUI::DESC ManaBarCapDesc{};
@@ -147,7 +148,7 @@ HRESULT CUI2D_PlayerMPBar::Ready_PartObjects()
 	ManaBarCapDesc.fY = g_iWinSizeY * 0.825f;
 	ManaBarCapDesc.strPrototypeTag = TEXT("Prototype_Component_Texture_PlayerManaCap");
 
-	if (FAILED(__super::Add_PartObject(PART_MANABARCAP, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI"), &ManaBarCapDesc)))
+	if (FAILED(__super::Add_PartObject(PART_MANABARCAP, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D"), &ManaBarCapDesc)))
 		return E_FAIL;
 
 
@@ -163,7 +164,7 @@ HRESULT CUI2D_PlayerMPBar::Ready_PartObjects()
 		NotchDesc.fY = (g_iWinSizeY * 0.525f) + (62.f * i);
 		NotchDesc.strPrototypeTag = TEXT("Prototype_Component_Texture_HexBar_Notch");
 
-		if (FAILED(__super::Add_PartObject(i, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI"), &NotchDesc)))
+		if (FAILED(__super::Add_PartObject(i, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D"), &NotchDesc)))
 			return E_FAIL;
 	}
 

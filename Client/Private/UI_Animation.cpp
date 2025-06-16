@@ -11,8 +11,10 @@ CUI_Animation::CUI_Animation(const CUI_Animation& Prototype)
 {
 }
 
-HRESULT CUI_Animation::Initialize_Prototype()
+HRESULT CUI_Animation::Initialize_Prototype(UI_TYPE eType)
 {
+    m_eType = eType;
+
     return S_OK;
 }
 
@@ -21,6 +23,7 @@ HRESULT CUI_Animation::Initialize(void* pArg)
 	DESC* pDesc = static_cast<DESC*>(pArg);
 
 	m_pRatio = pDesc->pRatio;
+    m_eUIPass = pDesc->eUIPass;
 
     if (FAILED(__super::Initialize(pArg)))
         return E_FAIL;
@@ -54,8 +57,28 @@ HRESULT CUI_Animation::Render()
     if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", m_iTextureIndex)))
         return E_FAIL;
 
-    if (FAILED(m_pShaderCom->Begin(2)))
-        return E_FAIL;
+    switch (m_eUIPass)
+    {
+    case PASS_BLEND:
+        if (FAILED(m_pShaderCom->Begin(PASS_BLEND)))
+            return E_FAIL;
+        break;
+    case PASS_VERTICAL:
+        if (FAILED(m_pShaderCom->Begin(PASS_VERTICAL)))
+            return E_FAIL;
+        break;
+    case PASS_HORIZONTAL_L2R:
+        if (FAILED(m_pShaderCom->Begin(PASS_HORIZONTAL_L2R)))
+            return E_FAIL;
+        break;
+    case PASS_HORIZONTAL_R2L:
+        if (FAILED(m_pShaderCom->Begin(PASS_HORIZONTAL_R2L)))
+            return E_FAIL;
+        break;
+    default:
+        break;
+    }
+
 
     if (FAILED(m_pVIBufferCom->Bind_Buffers()))
         return E_FAIL;
@@ -74,11 +97,11 @@ HRESULT CUI_Animation::Ready_Components(void* pArg)
     return S_OK;
 }
 
-CUI_Animation* CUI_Animation::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CUI_Animation* CUI_Animation::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, UI_TYPE eType)
 {
 	CUI_Animation* pInstance = new CUI_Animation(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize_Prototype()))
+	if (FAILED(pInstance->Initialize_Prototype(eType)))
 	{
 		MSG_BOX("Failed to Created : CUI_Animation");
 		Safe_Release(pInstance);
