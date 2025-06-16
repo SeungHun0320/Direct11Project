@@ -13,7 +13,7 @@ public:
 	}DESC;
 
 public:
-	enum PART { PART_BODY, PART_EFFECT, PART_END };
+	enum PART { PART_BODY, PART_HP, PART_EFFECT, PART_END };
 
 	enum ANIM_STATE {
 		//NONE은 사용안함 ( 나중에 혹시 모름 )

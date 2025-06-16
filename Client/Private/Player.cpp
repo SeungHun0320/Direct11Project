@@ -281,6 +281,11 @@ void CPlayer::LockOn()
 			m_isTarget = false;
 			return;
 		}
+		
+		m_pTarget = dynamic_cast<CMonster*>(pTarget);
+		Safe_AddRef(m_pTarget);
+
+		m_pTarget->Set_IsLockOnTarget();
 
 		m_pTargetTransform = dynamic_cast<CTransform*>(pTarget->Get_Component((TEXT("Com_Transform"))));
 		if (nullptr == m_pTargetTransform)
@@ -300,6 +305,12 @@ void CPlayer::LockOff()
 	{
 		if (nullptr != m_pTargetTransform)
 			Safe_Release(m_pTargetTransform);
+
+		m_pTarget->Set_IsLockOnTarget(false);
+
+		if (nullptr != m_pTarget)
+			Safe_Release(m_pTarget);
+
 		m_isTarget = false;
 	}
 }
@@ -884,6 +895,8 @@ void CPlayer::Free()
 
 	Safe_Release(m_pCurState);
 	Safe_Release(m_pAttackStrategy);
+
+	Safe_Release(m_pTarget);
 	Safe_Release(m_pTargetTransform);
 
 	for (_uint i = 0; i < ENUM_CLASS(STATES::STATES_END); i++)

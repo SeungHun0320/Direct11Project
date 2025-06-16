@@ -228,19 +228,19 @@ HRESULT CBlob::Ready_PartObjects()
 	HPBarDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
 	HPBarDesc.pParentHP = &m_fHp;
 	HPBarDesc.pParentMaxHP = &m_fMaxHp;
+	HPBarDesc.pParentIsTargeted = &m_IsLockOnTarget;
 
 	if (FAILED(__super::Add_PartObject(PART_HP, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_UI3D_MobHPBar"), &HPBarDesc)))
 		return E_FAIL;
 
 	CUI3D_LockOn::DESC LockOnDesc{};
 
-	LEVEL eLevelID = LEVEL::STATIC;
-
-	LockOnDesc.pParentLevelID = &eLevelID;
+	LockOnDesc.pParentLevelID = &m_eLevelID;
 	LockOnDesc.iNumPartObjects = CUI3D_LockOn::PART_END;
 	LockOnDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	LockOnDesc.pParentIsTargeted = &m_IsLockOnTarget;
 
-	if (FAILED(__super::Add_PartObject(PART_EFFECT, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI3D_LockOn"), &LockOnDesc)))
+	if (FAILED(__super::Add_PartObject(PART_EFFECT, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_UI3D_LockOn"), &LockOnDesc)))
 		return E_FAIL;
 
 	return S_OK;

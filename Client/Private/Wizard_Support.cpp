@@ -217,6 +217,7 @@ HRESULT CWizard_Support::Ready_PartObjects()
 	HPBarDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
 	HPBarDesc.pParentHP = &m_fHp;
 	HPBarDesc.pParentMaxHP = &m_fMaxHp;
+	HPBarDesc.pParentIsTargeted = &m_IsLockOnTarget;
 
 	if (FAILED(__super::Add_PartObject(PART_HP, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_UI3D_MobHPBar"), &HPBarDesc)))
 		return E_FAIL;

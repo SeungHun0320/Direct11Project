@@ -4,11 +4,11 @@
 
 BEGIN(Client)
 
-class CUI3D_MobHPBar final : public CUIContainerPart
+class CUI2D_BossHPBar final : public CUIContainerPart
 {
 public:
 	enum PART {
-		PART_BACK, PART_HPBAR, PART_END
+		PART_BACK, PART_HPBAR, PART_DIVIDER_START, PART_DIVIDER = 4, PART_NAME, PART_END
 	};
 
 public:
@@ -16,13 +16,12 @@ public:
 	{
 		_float* pParentHP{ nullptr };
 		_float* pParentMaxHP{ nullptr };
-		_bool*  pParentIsTargeted{ nullptr };
 	}DESC;
 
 private:
-	CUI3D_MobHPBar(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CUI3D_MobHPBar(const CUI3D_MobHPBar& Prototype);
-	virtual ~CUI3D_MobHPBar() = default;
+	CUI2D_BossHPBar(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CUI2D_BossHPBar(const CUI2D_BossHPBar& Prototype);
+	virtual ~CUI2D_BossHPBar() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -38,7 +37,6 @@ public:
 private:
 	_float* m_pParentHP = { nullptr };
 	_float* m_pParentMaxHP = { nullptr };
-	_bool*  m_pParentIsTargeted = { nullptr };
 
 private:
 	_float m_fHpRatio = {};
@@ -49,7 +47,7 @@ private:
 	virtual HRESULT Ready_PartObjects() override;
 
 public:
-	static CUI3D_MobHPBar* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CUI2D_BossHPBar* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 };

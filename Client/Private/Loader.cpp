@@ -17,6 +17,8 @@
 #include "SpiderTank_Bullet.h"
 #include "SpiderTank_Lager.h"
 
+#include "UI2D_BossHpBar.h"
+
 #include "Blob.h"
 #include "Body_Blob.h"
 
@@ -35,6 +37,7 @@
 #include "Part_WizardSword.h"
 
 #include "UI3D_MobHPBar.h"
+#include "UI3D_LockOn.h"
 
 /* 지형(통맵) */
 #include "Courtyard.h"
@@ -192,9 +195,19 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Monster/Enemy_HexBar.png")))))
 		return E_FAIL;
 
-	/* For.Prototype_Component_Texture_HexBar_Notch*/
+	/* For.Prototype_Component_Texture_Enemy_HPBar*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_Enemy_HPBar"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Monster/Enemy_HpBar.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_LockOnCircle*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_LockOnCircle"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GameUI/LockOnCircle.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_LockOnHex*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_LockOnHex"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GameUI/LockOnHex.png")))))
 		return E_FAIL;
 
 
@@ -427,6 +440,11 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 		CUI3D_MobHPBar::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/*For.Prototype_GameObject_UI3D_LockOn */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_UI3D_LockOn"),
+		CUI3D_LockOn::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
 	/* For.Prototype_GameObject_Sky */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Sky"),
@@ -451,6 +469,36 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 	/*For.Prototype_Component_Texture_Sky*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_Sky"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/SkyBox/Sky_%d.dds"), 5))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_LockOnCircle*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_LockOnCircle"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GameUI/LockOnCircle.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_LockOnHex*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_LockOnHex"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GameUI/LockOnHex.png")))))
+		return E_FAIL;
+	
+	/* For.Prototype_Component_Texture_BossHexBar*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_BossHexBar"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Boss/BossHexbar.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_BossHpBar*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_BossHpBar"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Boss/BossHpbar.png")))))
+		return E_FAIL;
+	
+	/* For.Prototype_Component_Texture_BossHpDivider*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_BossHpDivider"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Boss/BossHpDivider.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_BossName*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_BossName"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Boss/BossName.png")))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
@@ -516,6 +564,16 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 	/* For.Prototype_GameObject_SpiderTank_Lager */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_SpiderTank_Lager"),
 		CSpiderTank_Lager::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/*For.Prototype_GameObject_UI2D_BossHPBar */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_UI2D_BossHPBar"),
+		CUI2D_BossHPBar::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/*For.Prototype_GameObject_UI3D_LockOn */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_UI3D_LockOn"),
+		CUI3D_LockOn::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Sky */
@@ -587,6 +645,16 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 	/* For.Prototype_Component_Texture_HexBar_Notch*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_Enemy_HPBar"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Monster/Enemy_HpBar.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_LockOnCircle*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_LockOnCircle"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GameUI/LockOnCircle.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_LockOnHex*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_LockOnHex"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GameUI/LockOnHex.png")))))
 		return E_FAIL;
 
 
@@ -806,6 +874,11 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 	/*For.Prototype_GameObject_UI3D_MobHPBar */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_UI3D_MobHPBar"),
 		CUI3D_MobHPBar::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/*For.Prototype_GameObject_UI3D_LockOn */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_UI3D_LockOn"),
+		CUI3D_LockOn::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Sky */

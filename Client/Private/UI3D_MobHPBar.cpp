@@ -24,6 +24,7 @@ HRESULT CUI3D_MobHPBar::Initialize(void* pArg)
 
 	m_pParentHP = pDesc->pParentHP;
 	m_pParentMaxHP = pDesc->pParentMaxHP;
+	m_pParentIsTargeted = pDesc->pParentIsTargeted;
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -33,9 +34,6 @@ HRESULT CUI3D_MobHPBar::Initialize(void* pArg)
 
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
-
-	for (_uint i = 0; i < PART_END; i++)
-		Set_UIVisible(i, false);
 
 	m_fLerpSpeed = 5.f;
 
@@ -49,6 +47,9 @@ void CUI3D_MobHPBar::Priority_Update(_float fTimeDelta)
 
 LIFE CUI3D_MobHPBar::Update(_float fTimeDelta)
 {
+	if (!(*m_pParentIsTargeted))
+		return LIFE::NONE;
+
 	_float fTargetRatio = *m_pParentHP / max(*m_pParentMaxHP, 0.001f);
 
 	if (*m_pParentMaxHP <= 0.f)
@@ -65,6 +66,9 @@ LIFE CUI3D_MobHPBar::Update(_float fTimeDelta)
 
 void CUI3D_MobHPBar::Late_Update(_float fTimeDelta)
 {
+	if (!(*m_pParentIsTargeted))
+		return;
+
 	__super::Late_Update(fTimeDelta);
 }
 

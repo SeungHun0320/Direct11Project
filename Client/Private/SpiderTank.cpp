@@ -3,6 +3,8 @@
 #include "GameInstance.h"
 #include "Body_SpiderTank.h"
 
+#include "UI2D_BossHpBar.h"
+
 #include "SpiderTankState.h"
 
 #include "SpiderTank_Bullet.h"
@@ -29,12 +31,6 @@ HRESULT CSpiderTank::Initialize_Prototype()
 
 HRESULT CSpiderTank::Initialize(void* pArg)
 {
-	if (FAILED(__super::Initialize(pArg)))
-		return E_FAIL;
-
-	if (Ready_States())
-		return E_FAIL;
-
 	m_fDetectDistance = 10.f;
 	m_fChaseStopDistance = 20.f;
 	m_fPreferredDistance = 13.5f;
@@ -51,6 +47,11 @@ HRESULT CSpiderTank::Initialize(void* pArg)
 	m_fStaggerGage = 100.f;
 	m_fMaxStaggerGage = m_fStaggerGage;
 
+	if (FAILED(__super::Initialize(pArg)))
+		return E_FAIL;
+
+	if (Ready_States())
+		return E_FAIL;
 
 	m_pTransformCom->Rotation(XMConvertToRadians(0.f), XMConvertToRadians(180.f), XMConvertToRadians(0.f));
 
@@ -412,6 +413,18 @@ HRESULT CSpiderTank::Ready_PartObjects()
 	m_pBodyPart = dynamic_cast<CBody_SpiderTank*>(m_PartObjects[PART_BODY]);
 	if (nullptr == m_pBodyPart)
 		return E_FAIL;
+
+	CUI2D_BossHPBar::DESC	HpDesc{};
+
+	HpDesc.pParentLevelID = &m_eLevelID;
+	HpDesc.iNumPartObjects = CUI2D_BossHPBar::PART_END;
+	HpDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	HpDesc.pParentHP = &m_fHp;
+	HpDesc.pParentMaxHP = &m_fMaxHp;
+
+	if (FAILED(__super::Add_PartObject(PART_HP, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_UI2D_BossHPBar"), &HpDesc)))
+		return E_FAIL;
+
 
 	Safe_AddRef(m_pBodyPart);
 

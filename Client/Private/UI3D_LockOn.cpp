@@ -22,6 +22,8 @@ HRESULT CUI3D_LockOn::Initialize(void* pArg)
 {
 	DESC* pDesc = static_cast<DESC*>(pArg);
 
+	m_pParentIsTargeted = pDesc->pParentIsTargeted;
+
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
@@ -30,9 +32,6 @@ HRESULT CUI3D_LockOn::Initialize(void* pArg)
 
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
-
-	for (_uint i = 0; i < PART_END; i++)
-		Set_UIVisible(i, false);
 
 	return S_OK;
 }
@@ -85,18 +84,23 @@ void CUI3D_LockOn::Priority_Update(_float fTimeDelta)
 
 LIFE CUI3D_LockOn::Update(_float fTimeDelta)
 {
-	__super::Update(fTimeDelta);
-	return LIFE::NONE;
+	if (!(*m_pParentIsTargeted))
+		return LIFE::NONE;
+
+	return __super::Update(fTimeDelta);
 }
 
 void CUI3D_LockOn::Late_Update(_float fTimeDelta)
 {
+	if (!(*m_pParentIsTargeted))
+		return;
+
 	__super::Late_Update(fTimeDelta);
 }
 
 HRESULT CUI3D_LockOn::Render()
 {
-	return __super::Render();
+	return S_OK;
 }
 
 void CUI3D_LockOn::Set_UIVisible(_uint iPart, _bool isVisible)

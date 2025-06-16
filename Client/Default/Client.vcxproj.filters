@@ -379,7 +379,7 @@
     <Filter Include="02.GameObjects\00.UI\04.MobState\HpBar">
       <UniqueIdentifier>{4977711e-857c-4f4c-a3b4-b67fdda66ec7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.UI\02.PlayerState\LockOn">
+    <Filter Include="02.GameObjects\00.UI\04.MobState\LockOn">
       <UniqueIdentifier>{ba348db8-6856-48fd-bf79-56ec2455d00a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -682,10 +682,13 @@
       <Filter>02.GameObjects\00.UI\04.MobState\HpBar</Filter>
     </ClInclude>
     <ClInclude Include="..\public\UI3D_LockOn.h">
-      <Filter>02.GameObjects\00.UI\02.PlayerState\LockOn</Filter>
+      <Filter>02.GameObjects\00.UI\04.MobState\LockOn</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\UIContainerPart.h">
       <Filter>02.GameObjects\00.UI\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UI2D_BossHpBar.h">
+      <Filter>02.GameObjects\00.UI\03.BossState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1033,10 +1036,13 @@
       <Filter>02.GameObjects\00.UI\04.MobState\HpBar</Filter>
     </ClCompile>
     <ClCompile Include="..\private\UI3D_LockOn.cpp">
-      <Filter>02.GameObjects\00.UI\02.PlayerState\LockOn</Filter>
+      <Filter>02.GameObjects\00.UI\04.MobState\LockOn</Filter>
     </ClCompile>
     <ClCompile Include="..\private\UIContainerPart.cpp">
       <Filter>02.GameObjects\00.UI\Container</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI2D_BossHpBar.cpp">
+      <Filter>02.GameObjects\00.UI\03.BossState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

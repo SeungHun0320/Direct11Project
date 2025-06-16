@@ -12,7 +12,7 @@ public:
 public:
 	typedef struct tagUI3DLockOnDesc : public CUIContainerPart::DESC
 	{
-
+		_bool* pParentIsTargeted{ nullptr };
 	}DESC;
 
 private:
@@ -31,6 +31,9 @@ public:
 public:
 	virtual void Set_UIVisible(_uint iPart, _bool isVisible) override;
 	virtual void Set_TextureIndex(_uint iPart, _uint iTextureIdx)override;
+
+private:
+	_bool* m_pParentIsTargeted = { nullptr };
 
 private:
 	_float m_fHexAngleAcc{};

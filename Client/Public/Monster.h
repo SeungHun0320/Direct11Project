@@ -32,6 +32,11 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public: /* 락온에 잡혔을 때 유아이 렌더용 */
+	void Set_IsLockOnTarget(_bool IsLockOnTarget = true) {
+		m_IsLockOnTarget = IsLockOnTarget;
+	}
+
 public: /* 타깃 관련 */
 	virtual _bool Find_Player();
 
@@ -76,6 +81,7 @@ protected: /* 상태 관련 변수들 */
 	_float m_fChaseStopDistance = {};
 	_float m_fPreferredDistance = {};
 	_bool  m_IsFind = {};
+	_bool  m_IsLockOnTarget = {};
 
 protected:
 	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner) override;

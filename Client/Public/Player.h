@@ -201,9 +201,10 @@ private: /* 전략 패턴 트라이 */
 	class CPlayer_IAttackStrategy* m_pAttackStrategy = { nullptr };
 
 private: /* 락온 상태관련 변수들 */
-	CTransform* m_pTargetTransform = { nullptr };
-	_bool       m_isTarget = { false };
-	_float		m_fFindDistance = {};
+	class CMonster* m_pTarget = { nullptr };
+	CTransform*		m_pTargetTransform = { nullptr };
+	_bool			m_isTarget = { false };
+	_float			m_fFindDistance = {};
 
 private: /* 매번 캐스팅 해주기 싫어서 따로 변수로 받아왔음 */
 	class CWeapon_Player*	  m_pWeaponPart = { nullptr };

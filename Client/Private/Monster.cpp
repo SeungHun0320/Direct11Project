@@ -111,7 +111,12 @@ void CMonster::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObje
 	switch (eColliderID)
 	{	
 	case COLLIDER_ID::BUSH:
-		// 밀어낸다
+		CCollider* pCollider = Get_Collider();
+		if (nullptr == pCollider)
+			return;
+
+		m_pTransformCom->Apply_Sliding(pCollider->Get_SlidingVector());
+		m_isBlocked = true;
 		break;
 	}
 }

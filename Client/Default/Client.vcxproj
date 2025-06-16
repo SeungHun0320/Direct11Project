@@ -214,6 +214,7 @@
     <ClInclude Include="..\public\Player.h" />
     <ClInclude Include="..\Public\PlayerState.h" />
     <ClInclude Include="..\Public\Player_IAttackStrategy.h" />
+    <ClInclude Include="..\public\UI2D_BossHpBar.h" />
     <ClInclude Include="..\public\UI2D_Inventory.h" />
     <ClInclude Include="..\public\UI2D_PlayerItemSlots.h" />
     <ClInclude Include="..\public\UI2D_PlayerMPBar.h" />
@@ -330,6 +331,7 @@
     <ClCompile Include="..\Private\PlayerState_Move.cpp" />
     <ClCompile Include="..\Private\PlayerState_Sprint.cpp" />
     <ClCompile Include="..\Private\Player_IAttackStrategy.cpp" />
+    <ClCompile Include="..\private\UI2D_BossHpBar.cpp" />
     <ClCompile Include="..\private\UI2D_Inventory.cpp" />
     <ClCompile Include="..\private\UI2D_PlayerItemSlots.cpp" />
     <ClCompile Include="..\private\UI2D_PlayerMPBar.cpp" />
