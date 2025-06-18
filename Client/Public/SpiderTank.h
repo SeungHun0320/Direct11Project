@@ -13,7 +13,7 @@ public:
 	}DESC;
 
 public:
-	enum PART { PART_BODY, PART_HP, PART_EFFECT, PART_END };
+	enum PART { PART_BODY, PART_HP, PART_LOCKON_START, PART_LOCKON_END, PART_EFFECT, PART_END };
 
 	enum ANIM_STATE {
 		//NONE은 사용안함 ( 나중에 혹시 모름 )
@@ -121,14 +121,20 @@ private: /* 쿨타임 */
 
 private: /* 서순 */
 	_uint  m_iSequence = {};
+
+private: /* 필요해 */
 	const _float4x4* m_pHeadBoneMatrix = { nullptr };
-	_float4x4		 m_LagerMatrix = {};
+	_float4x4		 m_HeadBoneWolrdMatrix = {};
+
+	const _float4x4* m_pPowerCellBoneMatrix = { nullptr };
+	_float4x4		 m_PowerCellBoneWolrdMatrix = {};
 
 private: /* 매번 캐스팅 해주기 싫어서 변수로 선언함 */
 	class CBody_SpiderTank* m_pBodyPart = { nullptr };
 
 private:
-	void Update_HeadBoneMatrix();
+	void Update_BoneWorldMatrices(const _float4x4* pBoneMatrix, _float4x4* pBoneWorldMatrix);
+	const _float4x4* Get_BoneMatrix(const _string& strBoneName);
 	virtual void On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDuration = 0.5f) override;
 	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner) override;
 

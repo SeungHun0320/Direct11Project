@@ -20,6 +20,9 @@ public:
 	void Update(_float fTimeDelta);
 	HRESULT Render();
 
+public:
+	void Respawn_Objects();
+
 
 private:
 	_uint					m_iCurrentLevelIndex = {};

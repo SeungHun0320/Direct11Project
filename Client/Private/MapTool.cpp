@@ -953,8 +953,9 @@ HRESULT CMapTool::Save_Map(const _string& strMapPath)
 			_float fSpeedPerSec = pTransform->Get_SpeedPerSec();
 			_float fRotationPerSec = pTransform->Get_RotationPerSec();
 			_wstring strPrototype = pObject->Get_Name();
-			_uint    iNumPartObjects = dynamic_cast<CContainerObject*>(pObject)->Get_NumPartObjects();
+			_uint    iNumPartObjects = iNumPartObjects = CEnvironment_Object::PART_END;
 			iSaveLength = static_cast<_int>(strPrototype.length());
+
 
 			OutFile.write(reinterpret_cast<const _char*>(&iSaveLength), sizeof(_int));
 			OutFile.write(reinterpret_cast<const _char*>(strPrototype.c_str()), sizeof(_tchar) * iSaveLength);
@@ -1180,8 +1181,6 @@ HRESULT CMapTool::Load_Map(const _string& strMapPath)
 		LoadFile.read(reinterpret_cast<_char*>(&tDesc.iNumPartObjects), sizeof(_uint));
 
 		tDesc.WorldMatrix = XMLoadFloat4x4(&WorldMatrix);
-
-		tDesc.iNumPartObjects = 4;
 
 		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_") + tDesc.strName,
 			ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Environment_Object"), &tDesc)))

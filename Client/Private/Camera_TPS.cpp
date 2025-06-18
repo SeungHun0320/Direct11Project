@@ -40,11 +40,19 @@ HRESULT CCamera_TPS::Initialize(void* pArg)
 		else
 			Safe_AddRef(m_pTargetTransformCom);
 	}
-		
+
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
 	Ready_For_BossCamera(TEXT("SpiderTank"));
+
+	Delegate<> ClearBossRefDele;
+	ClearBossRefDele.Bind<CCamera_TPS, &CCamera_TPS::Clear_BossRef>(this);
+	m_pGameInstance->Subscribe_Event(TEXT("Clear_BossRef"), ClearBossRefDele);
+
+	Delegate<_wstring> AddBossRefDele;
+	AddBossRefDele.Bind<CCamera_TPS, &CCamera_TPS::Add_BossRef>(this);
+	m_pGameInstance->Subscribe_Event(TEXT("Add_BossRef"), AddBossRefDele);
 
 	XMStoreFloat3(&m_vCurrentFocusPos, m_pTargetTransformCom->Get_State(STATE::POSITION));
 	m_vTargetFocusPos = m_vCurrentFocusPos;
@@ -126,6 +134,20 @@ void CCamera_TPS::Late_Update(_float fTimeDelta)
 HRESULT CCamera_TPS::Render()
 {
 	return S_OK;
+}
+
+void CCamera_TPS::Clear_BossRef()
+{
+	if (nullptr != m_pBoss)
+		Safe_Release(m_pBoss);
+
+	if (nullptr != m_pBossTransformCom)
+		Safe_Release(m_pBossTransformCom);
+}
+
+void CCamera_TPS::Add_BossRef(_wstring strBossName)
+{
+	Ready_For_BossCamera(strBossName);
 }
 
 void CCamera_TPS::Update_LockOnCamera(_float fTimeDelta)
@@ -246,17 +268,14 @@ void CCamera_TPS::Update_BossCamera(_float fTimeDelta)
 
 HRESULT CCamera_TPS::Ready_For_BossCamera(const _wstring& strBossName)
 {
-	m_pBoss = m_pGameInstance->Find_ObjectByName(ENUM_CLASS(m_eLevelID), TEXT("Layer_Monster"), strBossName);
+ 	m_pBoss = m_pGameInstance->Find_ObjectByName(ENUM_CLASS(m_eLevelID), TEXT("Layer_Monster"), strBossName);
 
 	if (nullptr != m_pBoss)
 	{
-		Safe_AddRef(m_pBoss);
 		m_pBossTransformCom = dynamic_cast<CTransform*>(m_pBoss->Get_Component(TEXT("Com_Transform")));
 
 		if (nullptr == m_pBossTransformCom)
 			return E_FAIL;
-		else
-			Safe_AddRef(m_pBossTransformCom);
 	}
 
 	return S_OK;
@@ -297,4 +316,7 @@ void CCamera_TPS::Free()
 
 	Safe_Release(m_pBoss);
 	Safe_Release(m_pBossTransformCom);
+
+	m_pGameInstance->Unsubscribe_Event<>(this);             
+	m_pGameInstance->Unsubscribe_Event<_wstring>(this);
 }	

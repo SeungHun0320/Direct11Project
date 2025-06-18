@@ -3,6 +3,8 @@
 #include "Level.h"
 #include "GameInstance.h"
 
+#include "Monster.h"
+
 BEGIN(Client)
 
 class CLevel_Arena final : public CLevel
@@ -20,6 +22,9 @@ private:
 	CSound_Core* m_pBGM = { nullptr };
 
 private:
+	vector<CMonster::DESC> m_MonsterDescs;
+
+private:
 	HRESULT Ready_Layer_Pawn(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_Camera(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_Monster(const _wstring& strLayerTag);
@@ -28,7 +33,9 @@ private:
 private:
 	virtual HRESULT Load_Map(const _wstring& strMapFileTag) override;
 	virtual HRESULT Ready_Lights() override;
+	virtual HRESULT Respawn_Objects() override;
 	virtual void    Check_Collision() override;
+
 
 public:
 	static CLevel_Arena* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

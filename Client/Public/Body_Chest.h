@@ -15,7 +15,7 @@ class CBody_Chest final : public CBody_Environment_Object
 public:
 	typedef struct tagBodyChestDesc : public CBody_Environment_Object::DESC
 	{
-
+		_bool* pParentisCollision{ nullptr };
 	}DESC;
 private:
 	CBody_Chest(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -29,6 +29,13 @@ public:
 	virtual LIFE Update(_float fTimeDelta) override;
 	virtual void Late_Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
+
+public:
+	void Chest_Open(_bool isOpen);
+
+private:
+	_bool    m_isOpened = { false };
+	_bool*   m_pParentisCollisioned = { nullptr };
 
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;

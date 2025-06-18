@@ -21,8 +21,16 @@ HRESULT CBody_Chest::Initialize(void* pArg)
 {
     DESC* pDesc = static_cast<DESC*>(pArg);
 
+    m_pParentisCollisioned = pDesc->pParentisCollision;
+
     if (FAILED(__super::Initialize(pArg)))
         return E_FAIL;
+
+    m_pModelCom->Set_Animation(1, false);
+
+    Delegate<_bool> ChestOpenDele;
+    ChestOpenDele.Bind<CBody_Chest, &CBody_Chest::Chest_Open>(this);
+    m_pGameInstance->Subscribe_Event(TEXT("Chest_Open"), ChestOpenDele);
 
     return S_OK;
 }
@@ -33,7 +41,15 @@ void CBody_Chest::Priority_Update(_float fTimeDelta)
 
 LIFE CBody_Chest::Update(_float fTimeDelta)
 {
-    m_pModelCom->Play_Animation(fTimeDelta);
+    if (!m_isOpened)
+    {
+        m_pModelCom->Set_CurrnetTrackPosition(0.f);
+    }
+
+    if (m_pModelCom->Play_Animation(fTimeDelta))
+    {
+        m_pModelCom->Set_Animation(0, false);
+    }
 
     return __super::Update(fTimeDelta);
 }
@@ -71,6 +87,16 @@ HRESULT CBody_Chest::Render()
 #endif
 
     return S_OK;
+}
+
+void CBody_Chest::Chest_Open(_bool isOpen)
+{
+    if (!m_isOpened && (*m_pParentisCollisioned)) 
+    {
+        m_isOpened = isOpen;
+
+        // 나중에 뭐 이것저것 해볼만하다고 생각됨
+    }
 }
 
 HRESULT CBody_Chest::Ready_Components(void* pArg)

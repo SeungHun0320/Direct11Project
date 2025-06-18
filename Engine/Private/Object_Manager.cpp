@@ -165,6 +165,19 @@ void CObject_Manager::Clear(_uint iLevelIndex)
 	m_pLayers[iLevelIndex].clear();
 }
 
+void CObject_Manager::Layer_Clear(_uint iLevelIndex, const _wstring& strLayerTag)
+{
+	if (iLevelIndex >= m_iNumLevels)
+		return;
+
+	CLayer* pLayer = Find_Layer(iLevelIndex, strLayerTag);
+	if (nullptr == pLayer)
+		return;
+
+	pLayer->Clear();
+
+}
+
 CLayer* CObject_Manager::Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag)
 {
 	auto	iter = m_pLayers[iLevelIndex].find(strLayerTag);

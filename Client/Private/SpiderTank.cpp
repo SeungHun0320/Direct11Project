@@ -4,6 +4,7 @@
 #include "Body_SpiderTank.h"
 
 #include "UI2D_BossHpBar.h"
+#include "UI3D_LockOn.h"
 
 #include "SpiderTankState.h"
 
@@ -56,6 +57,7 @@ HRESULT CSpiderTank::Initialize(void* pArg)
 	m_pTransformCom->Rotation(XMConvertToRadians(0.f), XMConvertToRadians(180.f), XMConvertToRadians(0.f));
 
 	m_pHeadBoneMatrix = m_PartObjects[PART_BODY]->Get_BoneMatrix("head");
+	m_pPowerCellBoneMatrix = m_PartObjects[PART_BODY]->Get_BoneMatrix("powercell");
 
 	m_pBodyPart->Set_Active(LEFT_ARM, false);
 	m_pBodyPart->Set_Active(RIGHT_ARM, false);
@@ -77,7 +79,8 @@ LIFE CSpiderTank::Update(_float fTimeDelta)
 
 	__super::Update(fTimeDelta);
 
-	Update_HeadBoneMatrix();
+	Update_BoneWorldMatrices(m_pHeadBoneMatrix, &m_HeadBoneWolrdMatrix);
+	Update_BoneWorldMatrices(m_pPowerCellBoneMatrix, &m_PowerCellBoneWolrdMatrix);
 
 	if (KEY_DOWN(DIK_2))
 		Change_States(STATES::KNOCKBACK);
@@ -305,7 +308,7 @@ HRESULT CSpiderTank::Shot_Lager()
 
 	tDesc.eLevelID = m_eLevelID;
 	tDesc.strName = TEXT("SpiderTank_Lager");
-	tDesc.pParentMatrix = &m_LagerMatrix;
+	tDesc.pParentMatrix = &m_HeadBoneWolrdMatrix;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_") + tDesc.strName,
 		ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_MonsterBullet"), &tDesc)))
@@ -324,12 +327,12 @@ void CSpiderTank::Change_Camera(CAM_MODE eMode)
 	m_pGameInstance->Set_CameraMode(ENUM_CLASS(m_eLevelID), TEXT("Camera_TPS"), ENUM_CLASS(eMode));
 }
 
-void CSpiderTank::Update_HeadBoneMatrix()
+void CSpiderTank::Update_BoneWorldMatrices(const _float4x4* pBoneMatrix, _float4x4* pBoneWorldMatrix)
 {
-	if (nullptr == m_pHeadBoneMatrix || STATES::LAGER != m_eCurState)
+	if (nullptr == pBoneMatrix)
 		return;
 
-	_matrix matWorld = XMLoadFloat4x4(m_pHeadBoneMatrix) * m_pTransformCom->Get_WorldMatrix();
+	_matrix matWorld = XMLoadFloat4x4(pBoneMatrix) * m_pTransformCom->Get_WorldMatrix();
 
 	for (_uint i = 0; i < 3; ++i)
 		matWorld.r[i] = XMVector3Normalize(matWorld.r[i]);
@@ -338,7 +341,12 @@ void CSpiderTank::Update_HeadBoneMatrix()
 
 	matWorld = RotationMatrix * matWorld;
 
-	XMStoreFloat4x4(&m_LagerMatrix, matWorld);
+	XMStoreFloat4x4(pBoneWorldMatrix, matWorld);
+}
+
+const _float4x4* CSpiderTank::Get_BoneMatrix(const _string& strBoneName)
+{
+	return m_PartObjects[PART_BODY]->Get_BoneMatrix(strBoneName);
 }
 
 void CSpiderTank::On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDuration)
@@ -414,6 +422,7 @@ HRESULT CSpiderTank::Ready_PartObjects()
 	if (nullptr == m_pBodyPart)
 		return E_FAIL;
 
+
 	CUI2D_BossHPBar::DESC	HpDesc{};
 
 	HpDesc.pParentLevelID = &m_eLevelID;
@@ -423,6 +432,23 @@ HRESULT CSpiderTank::Ready_PartObjects()
 	HpDesc.pParentMaxHP = &m_fMaxHp;
 
 	if (FAILED(__super::Add_PartObject(PART_HP, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_UI2D_BossHPBar"), &HpDesc)))
+		return E_FAIL;
+
+	CUI3D_LockOn::DESC LockOnDesc{};
+
+	LockOnDesc.pParentLevelID = &m_eLevelID;
+	LockOnDesc.iNumPartObjects = CUI3D_LockOn::PART_END;
+	LockOnDesc.pParentMatrix = &m_HeadBoneWolrdMatrix;
+	LockOnDesc.pParentIsTargeted = &m_IsLockOnTarget;
+	LockOnDesc.strName = TEXT("HeadLockOn");
+
+	if (FAILED(__super::Add_PartObject(PART_LOCKON_START, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_UI3D_LockOn"), &LockOnDesc)))
+		return E_FAIL;
+
+	LockOnDesc.pParentMatrix = &m_PowerCellBoneWolrdMatrix;
+	LockOnDesc.strName = TEXT("PowercellLockOn");
+
+	if (FAILED(__super::Add_PartObject(PART_LOCKON_END, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_UI3D_LockOn"), &LockOnDesc)))
 		return E_FAIL;
 
 

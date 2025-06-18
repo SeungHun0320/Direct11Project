@@ -21,6 +21,9 @@ public:
 		m_iNextLevel = iLevelIndex;
 	}
 
+public:
+	virtual HRESULT Respawn_Objects() { return S_OK; }
+
 protected:
 	ID3D11Device*			m_pDevice = { nullptr };
 	ID3D11DeviceContext*	m_pContext = { nullptr };

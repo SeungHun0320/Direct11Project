@@ -28,6 +28,7 @@ public:
 	_bool	isMove(_fvector vWorldPos);
 	_vector SetUp_Height(_fvector vWorldPos);
 	_vector Compute_SlidingVector(_fvector vWorldPos, _fvector vMovePoint);
+	void    Update_CellIndex(_fvector vWorldPos);
 
 #ifdef _DEBUG
 public:

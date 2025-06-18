@@ -39,6 +39,7 @@ public:
 public:
 	HRESULT Change_Level(_uint iLevelIndex, class CLevel* pNewLevel);
 	void Change_Level(_uint iLevelIndex);
+	void Respawn_Objects();
 #pragma endregion
 
 #pragma region PROTOTYPE_MANAGER
@@ -58,6 +59,7 @@ public:
 	class CGameObject* Find_Picked_Object(_uint iLevelIndex, const _wstring& strLayerTag);
 	/* 이거 좀 이상하긴 함 ㅋㅋ*/
 	class CGameObject* Find_ObjectByName(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strObjectName);
+	void Layer_Clear(_uint iLevelIndex, const _wstring& strLayerTag);
 #pragma endregion
 
 #pragma region RENDERER
@@ -136,21 +138,28 @@ public:
 	void Reset_SlidingVectors();
 	void Delete_Collider(const class CGameObject* pOwner);
 	void Clear_Colliders();
+	void Clear_ColliderGroup(_uint iColliderGroup);
 	HRESULT Add_Collider(class CCollider* pCollider, _uint iColliderGroupID);
 	void    Intersect(_uint iColliderGroupID1, _uint iColliderGroupID2);
 #pragma endregion
 
 #pragma region EVENT_MANAGER
 	template<typename... Args>
-	HRESULT Subscribe(const _wstring& strEventTag, Delegate<Args...> dlg)
+	HRESULT Subscribe_Event(const _wstring& strEventTag, Delegate<Args...> dlg)
 	{
 		return m_pEvent_Manager->Subscribe(strEventTag, dlg);
 	}
 
 	template<typename... Args>
-	void Publish(const _wstring& strEventTag, Args... args)
+	void Publish_Event(const _wstring& strEventTag, Args... args)
 	{
-		m_pEvent_Manager->Publish(strEventTag, args);
+		m_pEvent_Manager->Publish(strEventTag, args...);
+	}
+
+	template<typename... Args>
+	void Unsubscribe_Event(void* pListener)
+	{
+		m_pEvent_Manager->Unsubscribe<Args...>(pListener);
 	}
 
 #pragma endregion

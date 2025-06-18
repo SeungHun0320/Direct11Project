@@ -194,6 +194,10 @@ void CGameInstance::Change_Level(_uint iLevelIndex)
 {
 	m_pLevel_Manager->Change_Level(iLevelIndex);
 }
+void CGameInstance::Respawn_Objects()
+{
+	m_pLevel_Manager->Respawn_Objects();
+}
 #pragma endregion
 
 #pragma region PROTOTYPE_MANAGER
@@ -243,6 +247,11 @@ CGameObject* CGameInstance::Find_Picked_Object(_uint iLevelIndex, const _wstring
 CGameObject* CGameInstance::Find_ObjectByName(_uint iLevelIndex, const _wstring& strLayerTag, const _wstring& strObjectName)
 {
 	return m_pObject_Manager->Find_ObjectByName(iLevelIndex, strLayerTag, strObjectName);
+}
+
+void CGameInstance::Layer_Clear(_uint iLevelIndex, const _wstring& strLayerTag)
+{
+	m_pObject_Manager->Layer_Clear(iLevelIndex, strLayerTag);
 }
 
 #pragma endregion
@@ -481,6 +490,10 @@ void CGameInstance::Delete_Collider(const CGameObject* pOwner)
 void CGameInstance::Clear_Colliders()
 {
 	m_pCollider_Manager->Clear();
+}
+void CGameInstance::Clear_ColliderGroup(_uint iColliderGroup)
+{
+	m_pCollider_Manager->Clear_ColliderGroup(iColliderGroup);
 }
 HRESULT CGameInstance::Add_Collider(CCollider* pCollider, _uint iColliderGroupID)
 {

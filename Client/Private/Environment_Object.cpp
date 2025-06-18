@@ -49,6 +49,8 @@ LIFE CEnvironment_Object::Update(_float fTimeDelta)
 void CEnvironment_Object::Late_Update(_float fTimeDelta)
 {
 	__super::Late_Update(fTimeDelta);
+
+	m_isCollision = false;
 }
 
 HRESULT CEnvironment_Object::Render()
@@ -58,6 +60,11 @@ HRESULT CEnvironment_Object::Render()
 
 void CEnvironment_Object::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
 {
+	COLLIDER_ID eColliderID = static_cast<COLLIDER_ID>(OtherColliderID);
+
+	if (CI_PLAYER(eColliderID))
+		m_isCollision = true;
+
 }
 
 HRESULT CEnvironment_Object::Ready_Components(void* pArg)

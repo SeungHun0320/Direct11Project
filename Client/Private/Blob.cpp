@@ -240,7 +240,7 @@ HRESULT CBlob::Ready_PartObjects()
 	LockOnDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
 	LockOnDesc.pParentIsTargeted = &m_IsLockOnTarget;
 
-	if (FAILED(__super::Add_PartObject(PART_EFFECT, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_UI3D_LockOn"), &LockOnDesc)))
+	if (FAILED(__super::Add_PartObject(PART_LOCKON, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_UI3D_LockOn"), &LockOnDesc)))
 		return E_FAIL;
 
 	return S_OK;

@@ -140,6 +140,14 @@ _vector CNavigation::Compute_SlidingVector(_fvector vWorldPos, _fvector vMovePoi
 	return XMVector3TransformCoord(m_Cells[m_iIndex]->Compute_SlidingVector(vLocalPos, vMovePoint), WorldMatrix);
 }
 
+void CNavigation::Update_CellIndex(_fvector vWorldPos)
+{
+	_int iNewIndex = Find_CellIndex(vWorldPos);
+
+	if (-1 != iNewIndex)
+		m_iIndex = iNewIndex;
+}
+
 #ifdef _DEBUG
 HRESULT CNavigation::Render()
 {

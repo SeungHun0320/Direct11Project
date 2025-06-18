@@ -17,6 +17,16 @@ void CCollider_Manager::Clear()
     }
 }
 
+void CCollider_Manager::Clear_ColliderGroup(_uint iColliderGroup)
+{
+    if (iColliderGroup >= m_iNumGroups)
+        return;
+
+    for (auto& Collider : m_pColliders[iColliderGroup])
+        Safe_Release(Collider);
+    m_pColliders[iColliderGroup].clear();
+}
+
 void CCollider_Manager::Delete_Collider(const CGameObject* pOwner)
 {
     for (_uint i = 0; i < m_iNumGroups; ++i)

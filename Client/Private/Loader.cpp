@@ -61,6 +61,8 @@
 /* 아이템들 */
 #include "Potion.h"
 
+#include "UI3D_Interaction.h"
+
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice { pDevice }
@@ -208,6 +210,11 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 	/* For.Prototype_Component_Texture_LockOnHex*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_LockOnHex"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GameUI/LockOnHex.png")))))
+		return E_FAIL;
+	
+	/* For.Prototype_Component_Texture_SpaceKeyBoard*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_SpaceKeyBoard"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GameUI/SpaceKeyBoard.png")))))
 		return E_FAIL;
 
 
@@ -445,6 +452,11 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 		CUI3D_LockOn::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/*For.Prototype_GameObject_UI3D_Interaction */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_UI3D_Interaction"),
+		CUI3D_Interaction::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
 	/* For.Prototype_GameObject_Sky */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Sky"),
@@ -500,6 +512,12 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_BossName"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Boss/BossName.png")))))
 		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_SpaceKeyBoard*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_SpaceKeyBoard"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GameUI/SpaceKeyBoard.png")))))
+		return E_FAIL;
+
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
 	_matrix		PreTransformMatrix = XMMatrixIdentity();
@@ -576,6 +594,12 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 		CUI3D_LockOn::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/*For.Prototype_GameObject_UI3D_Interaction */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_UI3D_Interaction"),
+		CUI3D_Interaction::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
 	/* For.Prototype_GameObject_Sky */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Sky"),
 		CSky::Create(m_pDevice, m_pContext))))
@@ -591,6 +615,12 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 HRESULT CLoader::Loading_For_Shop(LEVEL eLevelID)
 {
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
+
+	/* For.Prototype_Component_Texture_SpaceKeyBoard*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_SpaceKeyBoard"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GameUI/SpaceKeyBoard.png")))))
+		return E_FAIL;
+
 
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
@@ -621,6 +651,12 @@ HRESULT CLoader::Loading_For_Shop(LEVEL eLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Shop"),
 		CShop::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+	/*For.Prototype_GameObject_UI3D_Interaction */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_UI3D_Interaction"),
+		CUI3D_Interaction::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
@@ -655,6 +691,11 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 	/* For.Prototype_Component_Texture_LockOnHex*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_LockOnHex"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GameUI/LockOnHex.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_SpaceKeyBoard*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_SpaceKeyBoard"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GameUI/SpaceKeyBoard.png")))))
 		return E_FAIL;
 
 
@@ -880,6 +921,12 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_UI3D_LockOn"),
 		CUI3D_LockOn::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+	/*For.Prototype_GameObject_UI3D_Interaction */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_UI3D_Interaction"),
+		CUI3D_Interaction::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
 	/* For.Prototype_GameObject_Sky */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Sky"),

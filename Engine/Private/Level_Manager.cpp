@@ -46,6 +46,12 @@ HRESULT CLevel_Manager::Render()
     return S_OK;
 }
 
+void CLevel_Manager::Respawn_Objects()
+{
+    if(nullptr != m_pCurrentLevel)
+        m_pCurrentLevel->Respawn_Objects();
+}
+
 CLevel_Manager* CLevel_Manager::Create()
 {
 	return new CLevel_Manager();

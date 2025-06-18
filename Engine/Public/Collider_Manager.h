@@ -20,6 +20,7 @@ public:
 	void    Intersect(_uint iColliderGroupID1, _uint iColliderGroupID2);
 	/* 등록된 콜라이더 삭제 레벨 넘어갈 때 호출하면 됨 */
 	void Clear();
+	void Clear_ColliderGroup(_uint iColliderGroup);
 	/* 오우너가 죽었을때 매니저에 등록된 콜라이더 삭제 */
 	void Delete_Collider(const class CGameObject* pOwner);
 	/* 슬라이딩 벡터 초기화 */

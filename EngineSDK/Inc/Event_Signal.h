@@ -18,6 +18,12 @@ public:
         for (auto& Listener : m_Listeners)
             Listener.Execute(args...);
     }
+    void Unsubscribe(void* pListener) {
+        m_Listeners.erase(remove_if(m_Listeners.begin(), m_Listeners.end(),
+            [pListener](const DelType& d) {
+                return d.Get_Instance() == pListener;
+            }), m_Listeners.end());
+    }
 };
 
 END

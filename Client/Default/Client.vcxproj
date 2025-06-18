@@ -187,6 +187,7 @@
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Client_Enum.h" />
     <ClInclude Include="..\Public\Client_Macro.h" />
+    <ClInclude Include="..\Public\Client_Struct.h" />
     <ClInclude Include="..\public\Courtyard.h" />
     <ClInclude Include="..\public\Environment_Object.h" />
     <ClInclude Include="..\public\Grass.h" />
@@ -223,6 +224,7 @@
     <ClInclude Include="..\public\UI.h" />
     <ClInclude Include="..\public\UI2D_PlayerHPBar.h" />
     <ClInclude Include="..\public\UI2D_PlayerSPBar.h" />
+    <ClInclude Include="..\public\UI3D_Interaction.h" />
     <ClInclude Include="..\public\UI3D_LockOn.h" />
     <ClInclude Include="..\public\UI3D_MobHPBar.h" />
     <ClInclude Include="..\public\UI_Animation.h" />
@@ -350,6 +352,7 @@
     <ClCompile Include="..\private\Terrain.cpp" />
     <ClCompile Include="..\private\Tool.cpp" />
     <ClCompile Include="..\private\UI.cpp" />
+    <ClCompile Include="..\private\UI3D_Interaction.cpp" />
     <ClCompile Include="..\private\UIContainerPart.cpp" />
     <ClCompile Include="..\private\UI2D_PlayerHPBar.cpp" />
     <ClCompile Include="..\private\UI2D_PlayerSPBar.cpp" />

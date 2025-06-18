@@ -116,7 +116,7 @@ HRESULT CMainApp::Ready_Prototype_Texture()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/Potion/Potion_%d.png"), 2))))
 		return E_FAIL;
 
-	/* For.Prototype_Component_Texture_PKey*/
+	/* For.Prototype_Component_Texture_PKeyBoard*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_PKeyBoard"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GameUI/PKeyBoard.png")))))
 		return E_FAIL;

@@ -80,6 +80,7 @@ void CUI::Priority_Update(_float fTimeDelta)
 		vOutScreenPos.w = vParentPos.w;
 
 		m_pTransformCom->Set_State(STATE::POSITION, XMLoadFloat4(&vOutScreenPos));
+		m_pTransformCom->Scaling(_float3(m_fSizeX, m_fSizeY, 1.f));
 	}
 }
 

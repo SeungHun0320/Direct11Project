@@ -1,6 +1,8 @@
 #include "PlayerState.h"
 #include "Player.h"
 
+#include "GameInstance.h"
+
 /* --------------------------
 		  »óÀÚ ¿ÀÇÂ
 ------------------------- */
@@ -16,6 +18,8 @@ void CPlayerState_OpenChest::Enter(_float fTimeDelta)
 	m_fTimeAcc  = 0.f;
 
 	m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::OPEN_CHEST, false, 0.2f);
+
+	CGameInstance::Get_Instance()->Publish_Event(TEXT("Chest_Open"), true);
 }
 
 void CPlayerState_OpenChest::Execute(_float fTimeDelta)

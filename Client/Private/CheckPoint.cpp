@@ -3,6 +3,8 @@
 
 #include "Body_CheckPoint.h"
 
+#include "UI3D_Interaction.h"
+
 CCheckPoint::CCheckPoint(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CEnvironment_Object{pDevice, pContext}
 {
@@ -51,7 +53,7 @@ HRESULT CCheckPoint::Render()
 
 void CCheckPoint::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
 {
-	cout << "첵포 개같이 성공\n";
+	__super::On_Collision(MyColliderID, OtherColliderID, pOwner);
 }
 
 HRESULT CCheckPoint::Ready_Components(void* pArg)
@@ -70,6 +72,16 @@ HRESULT CCheckPoint::Ready_PartObjects()
 	BodyDesc.pOwner = this;
 
 	if (FAILED(__super::Add_PartObject(PART_BODY, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Body_CheckPoint"), &BodyDesc)))
+		return E_FAIL;
+
+	CUI3D_Interaction::DESC InteractionDesc{};
+
+	InteractionDesc.pParentLevelID = &m_eLevelID;
+	InteractionDesc.iNumPartObjects = CUI3D_Interaction::PART_END;
+	InteractionDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	InteractionDesc.pParentIsCollisioned = &m_isCollision;
+
+	if (FAILED(__super::Add_PartObject(PART_INTERACTION, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_UI3D_Interaction"), &InteractionDesc)))
 		return E_FAIL;
 
 	return S_OK;

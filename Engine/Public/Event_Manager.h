@@ -56,6 +56,16 @@ public:
 		pEvent->Publish(args...);
 	}
 
+	template<typename... Args>
+	void Unsubscribe(void* pListener)
+	{
+		for (auto& [tag, pBaseEvent] : m_Events)
+		{
+			if (CEvent_Signal<Args...>* pStr = dynamic_cast<CEvent_Signal<Args...>*>(pBaseEvent))
+				pStr->Unsubscribe(pListener);
+		}
+	}
+
 private:
 	// EventSignal 클래스는 템플릿 클래스이기 때문에 CBase로 관리
 	unordered_map<_wstring, class CBase*> m_Events;

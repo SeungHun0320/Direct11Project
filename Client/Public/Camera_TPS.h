@@ -39,6 +39,10 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public:
+	void Clear_BossRef();
+	void Add_BossRef(_wstring strBossName);
+
 private:
 	void Update_LockOnCamera(_float fTimeDelta);
 	void Update_BossCamera(_float fTimeDelta);

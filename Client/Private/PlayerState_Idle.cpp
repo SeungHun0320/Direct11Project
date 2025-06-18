@@ -43,16 +43,16 @@ void CPlayerState_Idle::Execute(_float fTimeDelta)
 
 		if (1.f <= m_fHoldTime)
 		{
-			m_pOwner->Change_States(CPlayer::STATES::KNEEL);
-			//m_pOwner->Change_States(CPlayer::STATES::OPEN_CHEST);
-	
+			m_pOwner->Change_States(CPlayer::STATES::KNEEL);	
 			m_fHoldTime = 0.f;
 		}
 	}
 	else
 	{
-		if(0.f < m_fHoldTime && 1.f >= m_fHoldTime)
-			m_pOwner->Change_States(CPlayer::STATES::DODGE);
+		if (0.f < m_fHoldTime && 1.f >= m_fHoldTime)
+		{
+			m_pOwner->Change_States_ByInteract();
+		}
 	}
 
 	/* 나중에 인벤에 어떤 칸에 어떤 아이템이 장착되어 있는지에 따라서 분기 ㄱ */

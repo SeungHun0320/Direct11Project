@@ -58,6 +58,7 @@ private:
 
 public: /* 레벨 관련 */
 	virtual void Set_Level(LEVEL eLevelID);
+	void Set_SavePosition();
 	void Change_Level();
 
 public:
@@ -105,6 +106,9 @@ public: /* 상태로 넘겨줄 함수들 */
 	void  LookTarget(_float fTimeDelta);
 
 public: /* 상호작용 관련 */
+	void  Change_States_ByInteract();
+	void  Active_CheckPoint();
+	void  Respawn();
 	void  Use_Potion();
 	void  Heal();
 
@@ -161,9 +165,6 @@ public: /* 전략패턴 트라이 */
 		return m_pAttackStrategy;
 	};
 
-private:
-	void Key_Input(_float fTimeDelta);
-
 /* 실제 플레이어 상태관련  */
 private: /* 체력 */
 	_float m_fHPRecorveryStat = {};
@@ -191,6 +192,12 @@ private: /* 마나 */
 private: /* 방패 소유중? */
 	_bool  m_isShield = { false };
 
+private: /* 현재 충돌한 상호작용 오브젝트의 콜라이더 아이디 */
+	COLLIDER_ID m_eCurInteractID = { COLLIDER_ID::CI_END };
+
+private: /* 체크포인트 관련 변수 */
+	_float3 m_vSavePosition = {};
+
 private: /* 상태 패턴들 */
 	STATES m_eCurState{ STATES::STATES_END };
 	STATES m_ePreState{ STATES::STATES_END };
@@ -211,8 +218,11 @@ private: /* 매번 캐스팅 해주기 싫어서 따로 변수로 받아왔음 */
 	class CUI2D_PlayerPotion* m_pUI2DPotion = { nullptr };
 
 private: /* 실제 플레이어 상태 관련 */
+	void Key_Input(_float fTimeDelta);
 	void Stamina_Recovery(_float fTimeDelta);
 	void Mana_Recovery(_float fTimeDelta);
+
+private:
 	virtual void On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDuration) override;
 	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner) override;
 	virtual _float Compute_InvincibleTime(COLLIDER_ID eColliderID) override;

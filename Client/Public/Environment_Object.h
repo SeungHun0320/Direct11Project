@@ -14,7 +14,7 @@ public:
 	}DESC;
 
 public:
-	enum PART { PART_BODY, PART_EFFECT, PART_END };
+	enum PART { PART_BODY, PART_INTERACTION, PART_EFFECT, PART_END };
 
 protected:
 	CEnvironment_Object(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -34,6 +34,7 @@ public:
 
 protected:
 	LEVEL m_eLevelID = { LEVEL::LEVEL_END };
+	_bool m_isCollision = { false };
 
 protected:
 	virtual HRESULT Ready_Components(void* pArg);

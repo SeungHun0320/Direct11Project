@@ -178,6 +178,12 @@
     <ClInclude Include="..\public\Event_Manager.h">
       <Filter>01.Utility\10.Event\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Instance.h">
+      <Filter>01.Utility\04.Components\VIBuffer\Instance</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Rect_Instance.h">
+      <Filter>01.Utility\04.Components\VIBuffer\Instance\Rect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Timer.cpp">
@@ -338,6 +344,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Event_Manager.cpp">
       <Filter>01.Utility\10.Event\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Instance.cpp">
+      <Filter>01.Utility\04.Components\VIBuffer\Instance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Rect_Instance.cpp">
+      <Filter>01.Utility\04.Components\VIBuffer\Instance\Rect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -526,6 +538,12 @@
     </Filter>
     <Filter Include="01.Utility\10.Event\Manager">
       <UniqueIdentifier>{c3c68073-890b-4a02-a678-b3307e4fbb23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\VIBuffer\Instance">
+      <UniqueIdentifier>{dd7fed50-c0e0-4df6-b018-282467ced346}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\VIBuffer\Instance\Rect">
+      <UniqueIdentifier>{959e4c84-8482-4f63-9f37-cb6e3f0c42cc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

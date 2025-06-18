@@ -4,7 +4,9 @@
 #include "Body_WizardCandleabra.h"
 #include "Part_WizardCandleabra.h"
 #include "Part_WizardSword.h"
+
 #include "UI3D_MobHPBar.h"
+#include "UI3D_LockOn.h"
 
 #include "Wizard_CandleabraState.h"
 
@@ -216,6 +218,16 @@ HRESULT CWizard_Candleabra::Ready_PartObjects()
 	HPBarDesc.pParentIsTargeted = &m_IsLockOnTarget;
 
 	if (FAILED(__super::Add_PartObject(PART_HP, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_UI3D_MobHPBar"), &HPBarDesc)))
+		return E_FAIL;
+
+	CUI3D_LockOn::DESC LockOnDesc{};
+
+	LockOnDesc.pParentLevelID = &m_eLevelID;
+	LockOnDesc.iNumPartObjects = CUI3D_LockOn::PART_END;
+	LockOnDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	LockOnDesc.pParentIsTargeted = &m_IsLockOnTarget;
+
+	if (FAILED(__super::Add_PartObject(PART_LOCKON, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_UI3D_LockOn"), &LockOnDesc)))
 		return E_FAIL;
 
 

@@ -159,6 +159,8 @@ HRESULT CLevel_Arena::Ready_Layer_Monster(const _wstring& strLayerTag)
 	tDesc.WorldMatrix = XMMatrixTranslation( 0.f, 8.f, 200.f );
 	tDesc.iNumPartObjects = CSpiderTank::PART_END;
 
+	m_MonsterDescs.push_back(tDesc);
+
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + tDesc.strName,
 		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
 		return E_FAIL;
@@ -296,6 +298,8 @@ HRESULT CLevel_Arena::Load_Map(const _wstring& strMapFileTag)
 	_uint iNumMonsters{};
 	LoadFile.read(reinterpret_cast<_char*>(&iNumMonsters), sizeof(_uint));
 
+	m_MonsterDescs.reserve(iNumMonsters);
+
 	for (_uint i = 0; i < iNumMonsters; i++)
 	{
 		_int iLoadLength{};
@@ -313,6 +317,8 @@ HRESULT CLevel_Arena::Load_Map(const _wstring& strMapFileTag)
 		LoadFile.read(reinterpret_cast<_char*>(&tDesc.iNumPartObjects), sizeof(_uint));
 
 		tDesc.WorldMatrix = XMLoadFloat4x4(&WorldMatrix);
+
+		m_MonsterDescs.push_back(tDesc);
 
 		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + tDesc.strName,
 			ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Monster"), &tDesc)))
@@ -335,6 +341,31 @@ HRESULT CLevel_Arena::Ready_Lights()
 
 	if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Arena::Respawn_Objects()
+{
+	m_pGameInstance->Clear_ColliderGroup(ENUM_CLASS(COLLIDER_GROUP::MONSTER));
+	m_pGameInstance->Clear_ColliderGroup(ENUM_CLASS(COLLIDER_GROUP::MONSTER_ATTACK));
+
+	m_pGameInstance->Publish_Event(TEXT("Clear_BossRef"));
+	m_pGameInstance->Layer_Clear(ENUM_CLASS(CurLevel), TEXT("Layer_Monster"));
+
+	for (auto& pMobDesc : m_MonsterDescs)
+	{
+		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + pMobDesc.strName,
+			ENUM_CLASS(pMobDesc.eLevelID), TEXT("Layer_Monster"), &pMobDesc)))
+			return E_FAIL;
+
+		if (TEXT("SpiderTank") == pMobDesc.strName)
+		{
+			_wstring strBossName = TEXT("SpiderTank");
+			m_pGameInstance->Publish_Event(TEXT("Add_BossRef"), strBossName);
+		}
+		
+	}
 
 	return S_OK;
 }
@@ -376,6 +407,8 @@ void CLevel_Arena::Free()
 
 	m_pBGM->Stop();
 	Safe_Release(m_pBGM);
+
+	m_MonsterDescs.clear();
 }
 
 

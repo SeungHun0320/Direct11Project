@@ -28,6 +28,7 @@ public:
 	void Update(_float fTimeDelta);
 	void Late_Update(_float fTimeDelta);
 	void Clear(_uint iLevelIndex);
+	void Layer_Clear(_uint iLevelIndex, const _wstring& strLayerTag);
 
 private:	
 	_uint								m_iNumLevels = {};

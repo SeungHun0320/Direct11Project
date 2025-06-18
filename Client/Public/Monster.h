@@ -33,7 +33,7 @@ public:
 	virtual HRESULT Render();
 
 public: /* 락온에 잡혔을 때 유아이 렌더용 */
-	void Set_IsLockOnTarget(_bool IsLockOnTarget = true) {
+	virtual void Set_IsLockOnTarget(_bool IsLockOnTarget = true) {
 		m_IsLockOnTarget = IsLockOnTarget;
 	}
 

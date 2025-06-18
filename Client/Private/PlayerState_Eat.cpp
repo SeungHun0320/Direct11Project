@@ -40,7 +40,7 @@ void CPlayerState_Eat::Execute(_float fTimeDelta)
 	else
 	{
 		if (m_pOwner->IsAnyMoveKeyPressed())
-			m_pOwner->Move(m_pOwner->Get_InputDirection(), fTimeDelta, SPEED);
+			m_pOwner->Move(m_pOwner->Get_InputDirectionEx(), fTimeDelta, SPEED);
 	}
 }
 

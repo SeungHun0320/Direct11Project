@@ -40,23 +40,14 @@ void CUI3D_LockOn::Priority_Update(_float fTimeDelta)
 {
 	__super::Priority_Update(fTimeDelta);
 
-	// 1. 중심 위치 구하기 (ParentMatrix 기준)
-	_matrix matParent = XMLoadFloat4x4(m_pParentMatrix);
-	_vector vCenter = XMVector3TransformCoord(XMVectorZero(), matParent);
-
 	_matrix ViewProjMat =
 		m_pGameInstance->Get_Transform_Matrix(D3DTS::VIEW) *
 		m_pGameInstance->Get_Transform_Matrix(D3DTS::PROJ);
 
-	// 3. 회전 각도 누적
-	m_fHexAngleAcc += fTimeDelta * XMConvertToRadians(180.f); // 회전 속도
-
-	if (m_fHexAngleAcc > XM_2PI)
-		m_fHexAngleAcc -= XM_2PI;
+	m_fHexAngleAcc += fTimeDelta * XMConvertToRadians(180.f); 
 
 	const _float fRadius = 85.f;
 	const _uint iHexCount = PART_HEX - PART_HEX_START + 1;
-
 
 	CUI* pRing = static_cast<CUI*>(m_PartObjects[PART_RING]);
 	_vector vRingScreenPos = pRing->Get_State(STATE::POSITION);
@@ -77,7 +68,7 @@ void CUI3D_LockOn::Priority_Update(_float fTimeDelta)
 		_float fFinalY = fRingY + fOffsetY;
 
 		_float4 vHexPos = { fFinalX, fFinalY, 0.f, 1.f };
-		static_cast<CUI*>(m_PartObjects[PART_HEX_START + i])->Set_State(STATE::POSITION, XMLoadFloat4(&vHexPos));
+ 		static_cast<CUI*>(m_PartObjects[PART_HEX_START + i])->Set_State(STATE::POSITION, XMLoadFloat4(&vHexPos));
 	}
 
 }

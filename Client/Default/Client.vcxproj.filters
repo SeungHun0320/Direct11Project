@@ -43,9 +43,6 @@
     <Filter Include="02.GameObjects\00.UI\02.PlayerState">
       <UniqueIdentifier>{acdd028d-888d-43d1-96ea-514ea2c6ee04}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.UI\03.BossState">
-      <UniqueIdentifier>{8d2a32b5-60a5-41c9-93a6-afbbed0d7829}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\00.UI\04.MobState">
       <UniqueIdentifier>{33264931-0c65-41a0-9a43-974ab3204344}</UniqueIdentifier>
     </Filter>
@@ -346,20 +343,11 @@
     <Filter Include="02.GameObjects\00.UI\Container">
       <UniqueIdentifier>{b5bde109-c3a5-44df-a7f6-dba38547b163}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.UI\Part">
-      <UniqueIdentifier>{5dab7d6f-0d4c-4992-ab27-f4240929a215}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.UI\Part\UI">
-      <UniqueIdentifier>{b30e92f1-66cb-41ef-a7b4-cbaeb4b3269c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\00.UI\02.PlayerState\Bar">
       <UniqueIdentifier>{89b42d89-4cd9-43c6-9ccf-11078c6a3cc4}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\00.UI\02.PlayerState\Bar\00. HpBar">
       <UniqueIdentifier>{60c9200d-6118-4587-9ee0-1bcb3f52c367}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.UI\Part\UI_Animation">
-      <UniqueIdentifier>{0bdab430-8299-40cb-933c-9e326aa6dd1d}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\00.UI\02.PlayerState\Bar\01. SPBar">
       <UniqueIdentifier>{fa8a6485-6e60-4186-aec4-b9d0b8a4e8ce}</UniqueIdentifier>
@@ -381,6 +369,21 @@
     </Filter>
     <Filter Include="02.GameObjects\00.UI\04.MobState\LockOn">
       <UniqueIdentifier>{ba348db8-6856-48fd-bf79-56ec2455d00a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\03.BossState">
+      <UniqueIdentifier>{8d2a32b5-60a5-41c9-93a6-afbbed0d7829}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\05.Interaction">
+      <UniqueIdentifier>{bf3745ef-a6a8-4473-b2bd-2fdd398f5287}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\Container\Part">
+      <UniqueIdentifier>{5dab7d6f-0d4c-4992-ab27-f4240929a215}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\Container\Part\UI">
+      <UniqueIdentifier>{b30e92f1-66cb-41ef-a7b4-cbaeb4b3269c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\Container\Part\UI_Animation">
+      <UniqueIdentifier>{0bdab430-8299-40cb-933c-9e326aa6dd1d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -658,13 +661,13 @@
       <Filter>02.GameObjects\00.UI\02.PlayerState\Bar\00. HpBar</Filter>
     </ClInclude>
     <ClInclude Include="..\public\UI.h">
-      <Filter>02.GameObjects\00.UI\Part\UI</Filter>
+      <Filter>02.GameObjects\00.UI\Container\Part\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\public\UI2D_PlayerPotion.h">
       <Filter>02.GameObjects\00.UI\02.PlayerState\Potion</Filter>
     </ClInclude>
     <ClInclude Include="..\public\UI_Animation.h">
-      <Filter>02.GameObjects\00.UI\Part\UI_Animation</Filter>
+      <Filter>02.GameObjects\00.UI\Container\Part\UI_Animation</Filter>
     </ClInclude>
     <ClInclude Include="..\public\UI2D_PlayerSPBar.h">
       <Filter>02.GameObjects\00.UI\02.PlayerState\Bar\01. SPBar</Filter>
@@ -689,6 +692,12 @@
     </ClInclude>
     <ClInclude Include="..\public\UI2D_BossHpBar.h">
       <Filter>02.GameObjects\00.UI\03.BossState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UI3D_Interaction.h">
+      <Filter>02.GameObjects\00.UI\05.Interaction</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Client_Struct.h">
+      <Filter>99.Defines</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1012,13 +1021,13 @@
       <Filter>02.GameObjects\00.UI\02.PlayerState\Bar\00. HpBar</Filter>
     </ClCompile>
     <ClCompile Include="..\private\UI.cpp">
-      <Filter>02.GameObjects\00.UI\Part\UI</Filter>
+      <Filter>02.GameObjects\00.UI\Container\Part\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\private\UI2D_PlayerPotion.cpp">
       <Filter>02.GameObjects\00.UI\02.PlayerState\Potion</Filter>
     </ClCompile>
     <ClCompile Include="..\private\UI_Animation.cpp">
-      <Filter>02.GameObjects\00.UI\Part\UI_Animation</Filter>
+      <Filter>02.GameObjects\00.UI\Container\Part\UI_Animation</Filter>
     </ClCompile>
     <ClCompile Include="..\private\UI2D_PlayerSPBar.cpp">
       <Filter>02.GameObjects\00.UI\02.PlayerState\Bar\01. SPBar</Filter>
@@ -1043,6 +1052,9 @@
     </ClCompile>
     <ClCompile Include="..\private\UI2D_BossHpBar.cpp">
       <Filter>02.GameObjects\00.UI\03.BossState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI3D_Interaction.cpp">
+      <Filter>02.GameObjects\00.UI\05.Interaction</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

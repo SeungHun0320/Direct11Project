@@ -37,11 +37,10 @@ void CPlayer::Set_Level(LEVEL eLevelID)
 	m_pGameInstance->Add_Collider(dynamic_cast<CCollider*>(m_PartObjects[PART_WEAPON]->Get_Component(TEXT("Com_Collider_Sword"))), ENUM_CLASS(COLLIDER_GROUP::WEAPON));
 	m_pGameInstance->Add_Collider(dynamic_cast<CCollider*>(m_PartObjects[PART_WEAPON]->Get_Component(TEXT("Com_Collider_Dagger"))), ENUM_CLASS(COLLIDER_GROUP::WEAPON));
 
+	Set_SavePosition();
 
 	if (nullptr != m_pNavigationCom)
-	{
 		Safe_Release(m_pNavigationCom);
-	}
 
 	CNavigation::DESC tDesc{};
 	XMStoreFloat3(&tDesc.vInitWorldPos, m_pTransformCom->Get_State(STATE::POSITION));
@@ -49,6 +48,24 @@ void CPlayer::Set_Level(LEVEL eLevelID)
 	if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Navigation"),
 		TEXT("Com_Navigation"), reinterpret_cast<CComponent**>(&m_pNavigationCom), &tDesc)))
 		return;
+}
+
+void CPlayer::Set_SavePosition()
+{
+	switch (m_eLevelID)
+	{
+	case LEVEL::COURTYARD:
+		XMStoreFloat3(&m_vSavePosition, XMVectorSet(-40.f, -2.f, -123.f, 1.f));
+		break;
+	case LEVEL::ARENA:
+		XMStoreFloat3(&m_vSavePosition, XMVectorSet(-0.f, -4.f, 35.f, 1.f));
+		break;
+	case LEVEL::SHOP:
+		XMStoreFloat3(&m_vSavePosition, XMVectorSet(6.f, 4.f, -41.f, 1.f));
+		break;
+	default:
+		break;
+	}
 }
 
 void CPlayer::Change_Level()
@@ -121,6 +138,8 @@ HRESULT CPlayer::Initialize(void* pArg)
 		m_PartObjects[PART_BODY]->Set_MeshVisible(i, true);
 	}
 
+	Set_SavePosition();
+
 	Set_AttackStrategy(new CPlayer_SwordAttack(3, WEAPON_TYPE::SWORD));
 	m_fAttack = m_pAttackStrategy->Get_Attack();
 
@@ -135,8 +154,8 @@ void CPlayer::Priority_Update(_float fTimeDelta)
 
 LIFE CPlayer::Update(_float fTimeDelta)
 {
-	//if (m_bDead)
-	//	return LIFE::DEAD;
+	if (m_bDead)
+		Respawn();
 
 	Key_Input(fTimeDelta);
 	Stamina_Recovery(fTimeDelta);
@@ -159,7 +178,10 @@ void CPlayer::Late_Update(_float fTimeDelta)
 {
 	__super::Late_Update(fTimeDelta);
 
+	m_eCurInteractID = COLLIDER_ID::CI_END;
+
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+
 }
 
 HRESULT CPlayer::Render()
@@ -377,6 +399,31 @@ void CPlayer::LookTarget(_float fTimeDelta)
 	}
 }
 
+void CPlayer::Change_States_ByInteract()
+{
+	switch (m_eCurInteractID)
+	{
+	case COLLIDER_ID::CHEST:
+		Change_States(STATES::OPEN_CHEST);
+		break;
+	case COLLIDER_ID::LADDER:
+		Change_States(STATES::LADDER);
+		break;
+	case COLLIDER_ID::SWITCH:
+		Change_States(STATES::ON_SWITCH);
+		break;
+	case COLLIDER_ID::CHECKPOINT:
+		Active_CheckPoint();
+		Change_States(STATES::KNEEL);
+		break;
+	default:
+		Change_States(STATES::DODGE);
+		break;
+	}
+
+	m_eCurInteractID = COLLIDER_ID::CI_END;
+}
+
 void CPlayer::Use_Potion()
 {
 	if (m_fHp == m_fMaxHp)
@@ -578,6 +625,45 @@ void CPlayer::Mana_Recovery(_float fTimeDelta)
 	m_fMana = min(m_fMana, m_fMaxMana);
 }
 
+void CPlayer::Active_CheckPoint()
+{
+	XMStoreFloat3(&m_vSavePosition, m_pTransformCom->Get_State(STATE::POSITION));
+
+	m_fHp = m_fMaxHp;
+	m_fStamina = m_fMaxStamina;
+	m_fMana = m_fMaxMana;
+	m_fStaggerGage = m_fMaxStaggerGage;
+
+	m_iCurNumPotion = m_iNumPotion;
+	for (_int i = 0; i < m_iNumPotion; i++)
+		m_pUI2DPotion->Set_TextureIndex(i, 0);
+
+	m_pGameInstance->Respawn_Objects();
+}
+
+void CPlayer::Respawn()
+{
+	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSetW(XMLoadFloat3(&m_vSavePosition), 1.f));
+
+	m_fHp = m_fMaxHp;
+	m_fStamina = m_fMaxStamina;
+	m_fMana = m_fMaxMana;
+	m_fStaggerGage = m_fMaxStaggerGage;
+
+	m_iCurNumPotion = m_iNumPotion;
+	for (_int i = 0; i < m_iNumPotion; i++)
+		m_pUI2DPotion->Set_TextureIndex(i, 0);
+
+	m_pNavigationCom->Update_CellIndex(XMVectorSetW(XMLoadFloat3(&m_vSavePosition), 1.f));
+
+	m_bDead = false;
+	m_isHit = false;
+
+	m_pGameInstance->Respawn_Objects();
+
+	m_pGameInstance->Set_CameraMode(ENUM_CLASS(m_eLevelID), TEXT("Camera_TPS"), ENUM_CLASS(CAM_MODE::TPS));
+}
+
 void CPlayer::Key_Input(_float fTimeDelta)
 {
 	/* Å×½ºÆ®¿ëÀ¸·Î ³ÀµÐ°Ü ³ªÁß¿¡ ½Ï ÃÄ³»¼Ò */
@@ -611,13 +697,11 @@ void CPlayer::Key_Input(_float fTimeDelta)
 	}
 
 	if (KEY_DOWN(DIK_7))
-		m_bDead = true;
+		Change_States(STATES::DIE);
 
-	if (KEY_DOWN(DIK_LCONTROL))
-		Change_States(STATES::LADDER);
+	//if (KEY_DOWN(DIK_LCONTROL))
+	//	Change_States(STATES::LADDER);
 }
-
-
 
 void CPlayer::On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDuration)
 {
@@ -632,7 +716,6 @@ void CPlayer::On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDura
 	if (0 >= m_fHp)
 	{
 		m_fHp = 0.f;
-		m_bDead = true;
 		Change_States(STATES::DIE);
 	}
 	else
@@ -684,6 +767,9 @@ void CPlayer::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObjec
 		}
 	}
 
+	if (CI_ENVIRONMENT(eColliderID))
+		m_eCurInteractID = eColliderID;
+
 	switch (eColliderID)
 	{
 	case COLLIDER_ID::BUSH:
@@ -695,6 +781,19 @@ void CPlayer::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObjec
 		m_pTransformCom->Apply_Sliding(pCollider->Get_SlidingVector(), m_pNavigationCom);
 		m_isBlocked = true;
 	}
+		break;
+	case COLLIDER_ID::CHEST:
+	{
+		CCollider* pCollider = Get_Collider(PART_BODY);
+		if (nullptr == pCollider)
+			break;
+
+		m_pTransformCom->Apply_Sliding(pCollider->Get_SlidingVector(), m_pNavigationCom);
+		m_isBlocked = true;
+	}
+	break;
+	case COLLIDER_ID::CHECKPOINT:
+
 		break;
 	default:
 		break;
@@ -896,8 +995,8 @@ void CPlayer::Free()
 	Safe_Release(m_pCurState);
 	Safe_Release(m_pAttackStrategy);
 
-	Safe_Release(m_pTarget);
 	Safe_Release(m_pTargetTransform);
+	Safe_Release(m_pTarget);
 
 	for (_uint i = 0; i < ENUM_CLASS(STATES::STATES_END); i++)
 		Safe_Release(m_pStates[i]);

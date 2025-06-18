@@ -24,7 +24,7 @@ void CPlayerState_Die::Execute(_float fTimeDelta)
 
 void CPlayerState_Die::Exit()
 {
-	m_pOwner->Set_Dead(false);
+	m_pOwner->Set_Dead(true);
 	m_fTimeAcc = 0.f;
 	m_fDuration = 1.f;
 }
