@@ -12,7 +12,8 @@
 #include "UI2D_PlayerMPBar.h"
 #include "UI2D_PlayerPotion.h"
 #include "UI2D_PlayerItemSlots.h"
-
+#include "UI2D_Inventory.h"
+#include "UI2D_InventorySlot.h"
 
 #include "UI.h"
 #include "UI_Animation.h"
@@ -111,6 +112,8 @@ HRESULT CMainApp::Render()
 
 HRESULT CMainApp::Ready_Prototype_Texture()
 {
+	/*-------------------------------------------포션----------------------------------------------------*/
+
 	/* For.Prototype_Component_Texture_Potion*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Potion"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/Potion/Potion_%d.png"), 2))))
@@ -120,6 +123,8 @@ HRESULT CMainApp::Ready_Prototype_Texture()
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_PKeyBoard"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GameUI/PKeyBoard.png")))))
 		return E_FAIL;
+
+	/*-------------------------------------------상태바----------------------------------------------------*/
 
 	/* For.Prototype_Component_Texture_HexBar_Back*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_HexBar_Back"),
@@ -161,9 +166,81 @@ HRESULT CMainApp::Ready_Prototype_Texture()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/Mana/ManaCap.png")))))
 		return E_FAIL;
 
+	/* ----------------------------------------------인벤토리 관련------------------------------------------------------- */
+
 	/* For.Prototype_Component_Texture_ItemSlot*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_ItemSlot"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/Inventory/ItemSlot.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_UIMask*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_UIMask"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Inventory/UI_Fauxmask.png")))))
+		return E_FAIL;
+	
+	/* For.Prototype_Component_Texture_TABKeyBoard*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_TABKeyBoard"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Inventory/TABKeyBoard.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_UIMoneyText*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_UIMoneyText"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Inventory/UI_MoneyText.png")))))
+		return E_FAIL;
+	
+	/* For.Prototype_Component_Texture_UIPassiveItemText*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_UIPassiveItemText"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Inventory/UI_PassiveItemText.png")))))
+		return E_FAIL;
+	
+	/* For.Prototype_Component_Texture_UIUseItemText*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_UIUseItemText"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Inventory/UI_UseItemText.png")))))
+		return E_FAIL;
+	
+	/* For.Prototype_Component_Texture_UIWeaponText*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_UIWeaponText"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Inventory/UI_WeaponText.png")))))
+		return E_FAIL;	
+
+	/* For.Prototype_Component_Texture_UIDivider*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_UIDivider"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Inventory/UI_Divider.png")))))
+		return E_FAIL;
+	
+	/* For.Prototype_Component_Texture_UIDivider*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_UILine"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Inventory/UI_Line.png")))))
+		return E_FAIL;
+	
+	/* For.Prototype_Component_Texture_UIHexagon*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_UIHexagon"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Inventory/Hexagon_Backing.png")))))
+		return E_FAIL;
+	
+	/* For.Prototype_Component_Texture_UICoinIcon*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_UICoinIcon"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Inventory/CoinIcon.png")))))
+		return E_FAIL;
+		
+	/* For.Prototype_Component_Texture_Item_Backing*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Item_Backing"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Inventory/Inven_Backing.png")))))
+		return E_FAIL;
+			
+	/* For.Prototype_Component_Texture_UIItems*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_UIItems"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Inventory/Inven_Item_%d.png"), 8))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_UISelector*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_UISelector"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Inventory/UI_selector.png")))))
+		return E_FAIL;
+
+		/* For.Prototype_Component_Texture_UIPotion*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_UIPotion"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Inventory/UIItem_Potion.png")))))
 		return E_FAIL;
 	
 	return S_OK;
@@ -276,6 +353,16 @@ HRESULT CMainApp::Ready_Prototype_Object()
 	/*For.Prototype_GameObject_UI2D_PlayerItemSlots */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerItemSlots"),
 		CUI2D_PlayerItemSlots::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	
+	/*For.Prototype_GameObject_UI2D_Inventory */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_Inventory"),
+		CUI2D_Inventory::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+		
+	/*For.Prototype_GameObject_UI2D_InventorySlot */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_InventorySlot"),
+		CUI2D_InventorySlot::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/*--------------------------------------------UI(파트오브젝트)--------------------------------------------------*/

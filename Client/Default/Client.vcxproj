@@ -191,6 +191,7 @@
     <ClInclude Include="..\public\Courtyard.h" />
     <ClInclude Include="..\public\Environment_Object.h" />
     <ClInclude Include="..\public\Grass.h" />
+    <ClInclude Include="..\public\Inventory.h" />
     <ClInclude Include="..\public\Item.h" />
     <ClInclude Include="..\public\Level_Arena.h" />
     <ClInclude Include="..\Public\Level_Courtyard.h" />
@@ -217,6 +218,7 @@
     <ClInclude Include="..\Public\Player_IAttackStrategy.h" />
     <ClInclude Include="..\public\UI2D_BossHpBar.h" />
     <ClInclude Include="..\public\UI2D_Inventory.h" />
+    <ClInclude Include="..\public\UI2D_InventorySlot.h" />
     <ClInclude Include="..\public\UI2D_PlayerItemSlots.h" />
     <ClInclude Include="..\public\UI2D_PlayerMPBar.h" />
     <ClInclude Include="..\public\UI2D_PlayerPotion.h" />
@@ -224,12 +226,13 @@
     <ClInclude Include="..\public\UI.h" />
     <ClInclude Include="..\public\UI2D_PlayerHPBar.h" />
     <ClInclude Include="..\public\UI2D_PlayerSPBar.h" />
+    <ClInclude Include="..\public\UI2D_Reward.h" />
     <ClInclude Include="..\public\UI3D_Interaction.h" />
     <ClInclude Include="..\public\UI3D_LockOn.h" />
     <ClInclude Include="..\public\UI3D_MobHPBar.h" />
     <ClInclude Include="..\public\UI_Animation.h" />
     <ClInclude Include="..\public\Weapon_Player.h" />
-    <ClInclude Include="..\public\Potion.h" />
+    <ClInclude Include="..\public\Item_Potion.h" />
     <ClInclude Include="..\public\Shop.h" />
     <ClInclude Include="..\public\Sky.h" />
     <ClInclude Include="..\public\SpiderTank.h" />
@@ -293,6 +296,7 @@
     <ClCompile Include="..\private\Courtyard.cpp" />
     <ClCompile Include="..\private\Environment_Object.cpp" />
     <ClCompile Include="..\private\Grass.cpp" />
+    <ClCompile Include="..\private\Inventory.cpp" />
     <ClCompile Include="..\private\Item.cpp" />
     <ClCompile Include="..\private\Level_Arena.cpp" />
     <ClCompile Include="..\Private\Level_Courtyard.cpp" />
@@ -335,10 +339,11 @@
     <ClCompile Include="..\Private\Player_IAttackStrategy.cpp" />
     <ClCompile Include="..\private\UI2D_BossHpBar.cpp" />
     <ClCompile Include="..\private\UI2D_Inventory.cpp" />
+    <ClCompile Include="..\private\UI2D_InventorySlot.cpp" />
     <ClCompile Include="..\private\UI2D_PlayerItemSlots.cpp" />
     <ClCompile Include="..\private\UI2D_PlayerMPBar.cpp" />
     <ClCompile Include="..\private\UI2D_PlayerPotion.cpp" />
-    <ClCompile Include="..\private\Potion.cpp" />
+    <ClCompile Include="..\private\Item_Potion.cpp" />
     <ClCompile Include="..\private\Shop.cpp" />
     <ClCompile Include="..\private\Sky.cpp" />
     <ClCompile Include="..\private\SpiderTank.cpp" />
@@ -352,6 +357,7 @@
     <ClCompile Include="..\private\Terrain.cpp" />
     <ClCompile Include="..\private\Tool.cpp" />
     <ClCompile Include="..\private\UI.cpp" />
+    <ClCompile Include="..\private\UI2D_Reward.cpp" />
     <ClCompile Include="..\private\UI3D_Interaction.cpp" />
     <ClCompile Include="..\private\UIContainerPart.cpp" />
     <ClCompile Include="..\private\UI2D_PlayerHPBar.cpp" />

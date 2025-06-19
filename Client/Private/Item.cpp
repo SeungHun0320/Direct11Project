@@ -70,6 +70,10 @@ HRESULT CItem::Render()
 	return S_OK;
 }
 
+void CItem::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
+{
+}
+
 HRESULT CItem::Ready_Components(void* pArg)
 {
 	/* For.Com_Shader */

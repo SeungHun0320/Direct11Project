@@ -7,11 +7,32 @@ BEGIN(Client)
 class CUI2D_Inventory final : public CUIContainerPart
 {
 public:
-	enum PART { PART_MONEY, PART_PASSIVEITEM, PART_USEITEM, PART_WEAPON, PART_END };
+	enum PART { PART_MASK,
+		/* æ∆¿Ã≈€ΩΩ∑‘µÈ */
+		PART_PASSIVEITEMSLOT_START,
+		PART_USEITEMSLOT_START, PART_USEITEMSLOT = 5,
+		PART_WEAPONSLOT_START, PART_WEAPONSLOT_END = 8,
+		/*µﬁ πË∞Ê*/
+		PART_PASSIVE_DIVIDER, PART_USEITEM_DIVIDER, PART_WEAPON_DIVIDER,
+		PART_MONEYTEXT, PART_PASSIVEITEMTEXT, PART_USEITEMTEXT, PART_WEAPONTEXT,
+		PART_TAB, PART_LINE, PART_HEXAGON, PART_COINICON,
+		PART_END };
+
+	enum SLOT {
+		SLOT_PASSIVEITEM,
+		SLOT_USEITEM0, SLOT_USEITEM1, SLOT_USEITEM2, SLOT_USEITEM3,
+		SLOT_WEAPON0, SLOT_WEAPON1, SLOT_WEAPON2, SLOT_END
+	};
+
+	enum ITEMS {
+		BERRY, BLUEBERRY, COIN_QUESTION, FIRE_CRACKER, SHILED, STICK, DAGGER, SWORD, ITEMS_END
+	};
 
 public:
 	typedef struct tagUI2DInventoryDesc : public CUIContainerPart::DESC
 	{
+		_bool* pParentIsOnInven{ nullptr };
+
 	}DESC;
 
 private:
@@ -30,6 +51,20 @@ public:
 public:
 	virtual void Set_UIVisible(_uint iPart, _bool isVisible) override;
 	virtual void Set_TextureIndex(_uint iPart, _uint iTextureIdx)override;
+
+private:
+	_bool* m_pParentIsOnInven = { nullptr };
+
+private:
+	_int m_iSelectSlotIndex{};
+
+	_uint m_iNumInvenSlots{};
+	vector<class CUI2D_InventorySlot*> m_InvenSlots;
+
+
+private:
+	void Key_Input();
+	void Move_Selector(_uint iSlotIndex);
 
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;

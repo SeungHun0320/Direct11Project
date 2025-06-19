@@ -23,7 +23,6 @@ HRESULT CUI_Animation::Initialize(void* pArg)
 	DESC* pDesc = static_cast<DESC*>(pArg);
 
 	m_pRatio = pDesc->pRatio;
-    m_eUIPass = pDesc->eUIPass;
 
     if (FAILED(__super::Initialize(pArg)))
         return E_FAIL;
@@ -57,28 +56,8 @@ HRESULT CUI_Animation::Render()
     if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", m_iTextureIndex)))
         return E_FAIL;
 
-    switch (m_eUIPass)
-    {
-    case PASS_BLEND:
-        if (FAILED(m_pShaderCom->Begin(PASS_BLEND)))
-            return E_FAIL;
-        break;
-    case PASS_VERTICAL:
-        if (FAILED(m_pShaderCom->Begin(PASS_VERTICAL)))
-            return E_FAIL;
-        break;
-    case PASS_HORIZONTAL_L2R:
-        if (FAILED(m_pShaderCom->Begin(PASS_HORIZONTAL_L2R)))
-            return E_FAIL;
-        break;
-    case PASS_HORIZONTAL_R2L:
-        if (FAILED(m_pShaderCom->Begin(PASS_HORIZONTAL_R2L)))
-            return E_FAIL;
-        break;
-    default:
-        break;
-    }
-
+    if (FAILED(m_pShaderCom->Begin(m_eUIPass)))
+        return E_FAIL;
 
     if (FAILED(m_pVIBufferCom->Bind_Buffers()))
         return E_FAIL;

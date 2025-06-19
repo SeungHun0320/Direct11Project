@@ -13,9 +13,14 @@ BEGIN(Client)
 class CItem abstract : public CGameObject
 {
 public:
+	enum PART {PART_BODY, PART_};
+
+public:
 	typedef struct tagItemDesc : public CGameObject::DESC
 	{
 		LEVEL eLevelID;
+		_wstring strModelTag;
+
 	}DESC;
 protected:
 	CItem(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -36,6 +41,9 @@ protected:
 
 protected:
 	LEVEL m_eLevelID = { LEVEL::LEVEL_END };
+
+protected:
+	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner) override;
 
 protected:
 	virtual HRESULT Ready_Components(void* pArg);

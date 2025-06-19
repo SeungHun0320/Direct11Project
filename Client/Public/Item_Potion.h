@@ -4,7 +4,7 @@
 
 BEGIN(Client)
 
-class CPotion final : public CItem
+class CItem_Potion final : public CItem
 {
 public:
 	typedef struct tagPotionDesc : public CItem::DESC
@@ -12,9 +12,9 @@ public:
 
 	}DESC;
 private:
-	CPotion(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CPotion(const CPotion& Prototype);
-	virtual ~CPotion() = default;
+	CItem_Potion(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CItem_Potion(const CItem_Potion& Prototype);
+	virtual ~CItem_Potion() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -28,7 +28,7 @@ private:
 	virtual HRESULT Ready_Components(void* pArg);
 
 public:
-	static CPotion* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CItem_Potion* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg)override;
 	virtual void Free()override;
 };

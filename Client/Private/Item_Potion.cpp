@@ -1,22 +1,22 @@
-#include "Potion.h"
+#include "Item_Potion.h"
 #include "GameInstance.h"
 
-CPotion::CPotion(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CItem_Potion::CItem_Potion(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CItem{ pDevice, pContext }
 {
 }
 
-CPotion::CPotion(const CPotion& Prototype)
+CItem_Potion::CItem_Potion(const CItem_Potion& Prototype)
 	: CItem(Prototype)
 {
 }
 
-HRESULT CPotion::Initialize_Prototype()
+HRESULT CItem_Potion::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CPotion::Initialize(void* pArg)
+HRESULT CItem_Potion::Initialize(void* pArg)
 {
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -24,12 +24,12 @@ HRESULT CPotion::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CPotion::Priority_Update(_float fTimeDelta)
+void CItem_Potion::Priority_Update(_float fTimeDelta)
 {
 	__super::Priority_Update(fTimeDelta);
 }
 
-LIFE CPotion::Update(_float fTimeDelta)
+LIFE CItem_Potion::Update(_float fTimeDelta)
 {
 	if (m_bDead)
 		return LIFE::DEAD;
@@ -37,17 +37,17 @@ LIFE CPotion::Update(_float fTimeDelta)
 	return __super::Update(fTimeDelta);
 }
 
-void CPotion::Late_Update(_float fTimeDelta)
+void CItem_Potion::Late_Update(_float fTimeDelta)
 {
 	__super::Late_Update(fTimeDelta);
 }
 
-HRESULT CPotion::Render()
+HRESULT CItem_Potion::Render()
 {
 	return __super::Render();
 }
 
-HRESULT CPotion::Ready_Components(void* pArg)
+HRESULT CItem_Potion::Ready_Components(void* pArg)
 {
 	if (__super::Ready_Components(pArg))
 		return E_FAIL;
@@ -60,33 +60,33 @@ HRESULT CPotion::Ready_Components(void* pArg)
 	return S_OK;
 }
 
-CPotion* CPotion::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CItem_Potion* CItem_Potion::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	CPotion* pInstance = new CPotion(pDevice, pContext);
+	CItem_Potion* pInstance = new CItem_Potion(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created : CPotion");
+		MSG_BOX("Failed to Created : CItem_Potion");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-CGameObject* CPotion::Clone(void* pArg)
+CGameObject* CItem_Potion::Clone(void* pArg)
 {
-	CPotion* pInstance = new CPotion(*this);
+	CItem_Potion* pInstance = new CItem_Potion(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Cloned : CPotion");
+		MSG_BOX("Failed to Cloned : CItem_Potion");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CPotion::Free()
+void CItem_Potion::Free()
 {
 	__super::Free();
 }

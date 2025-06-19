@@ -132,9 +132,9 @@ HRESULT CUI2D_BossHPBar::Ready_PartObjects()
 	CUI::DESC NameDesc{};
 	NameDesc.pParentLevelID = m_pLevelID;
 	NameDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
-	NameDesc.fSizeX = 190.2f;
+	NameDesc.fSizeX = 358.4f;
 	NameDesc.fSizeY = 38.4f;
-	NameDesc.fX = (g_iWinSizeX * 0.87f);
+	NameDesc.fX = (g_iWinSizeX * 0.8f);
 	NameDesc.fY = g_iWinSizeY * 0.85f;
 	NameDesc.strPrototypeTag = TEXT("Prototype_Component_Texture_BossName");
 

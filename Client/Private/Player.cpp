@@ -10,6 +10,7 @@
 #include "UI2D_PlayerMPBar.h"
 #include "UI2D_PlayerPotion.h"
 #include "UI2D_PlayerItemSlots.h"
+#include "UI2D_Inventory.h"
 
 #include "PlayerState.h"
 #include "Player_IAttackStrategy.h"
@@ -68,8 +69,19 @@ void CPlayer::Set_SavePosition()
 	}
 }
 
+void CPlayer::Clear_Target()
+{
+	if (nullptr != m_pTargetTransform)
+		Safe_Release(m_pTargetTransform);
+
+	if (nullptr != m_pTarget)
+		Safe_Release(m_pTarget);
+}
+
 void CPlayer::Change_Level()
 {
+	Clear_Target();
+
 	LEVEL eNextLevelID{};
 
 	switch (m_eLevelID)
@@ -266,7 +278,8 @@ void CPlayer::CheckChange_Anim(PART ePart, _uint iNextIndex, _bool isLoop, _floa
 
 void CPlayer::Set_Active(PART ePart, _bool isActive)
 {
-	m_PartObjects[ePart]->Set_Active(isActive);
+	if(COLLIDER_ID::BUSH != m_eCurInteractID)
+		m_PartObjects[ePart]->Set_Active(isActive);
 }
 
 void CPlayer::Set_Active(WEAPON_TYPE eType, _bool isActive)
@@ -666,6 +679,11 @@ void CPlayer::Respawn()
 
 void CPlayer::Key_Input(_float fTimeDelta)
 {
+	if (KEY_DOWN(DIK_TAB))
+	{
+		m_isOnInven = !m_isOnInven;
+	}
+
 	/* Å×½ºÆ®¿ëÀ¸·Î ³ÀµÐ°Ü ³ªÁß¿¡ ½Ï ÃÄ³»¼Ò */
 	if (KEY_DOWN(DIK_1))
 	{
@@ -705,7 +723,7 @@ void CPlayer::Key_Input(_float fTimeDelta)
 
 void CPlayer::On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDuration)
 {
-	if (m_isInvincible || m_bDead)
+	if (m_isInvincible || STATES::DIE == m_eCurState )
 		return;
 
 	m_fHp -= fDamage;
@@ -723,7 +741,7 @@ void CPlayer::On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDura
 		if (0 >= m_fStaggerGage)
 		{
 			m_isStagger = true;
-			m_fInvicibleTime = 4.f;
+			m_fInvicibleTime = 4.3f;
 			m_fStaggerGage = m_fMaxStaggerGage;
 		}
 		else
@@ -919,6 +937,16 @@ HRESULT CPlayer::Ready_PartObjects()
 
 	if (FAILED(__super::Add_PartObject(PART_ITEMSLOTS, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerItemSlots"), &ItemSlotsDesc)))
 		return E_FAIL;
+
+	CUI2D_Inventory::DESC InvenDesc{};
+
+	InvenDesc.pParentLevelID = &eLevelID;
+	InvenDesc.iNumPartObjects = CUI2D_Inventory::PART_END;
+	InvenDesc.pParentIsOnInven = &m_isOnInven;
+
+	if (FAILED(__super::Add_PartObject(PART_INVEN, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_Inventory"), &InvenDesc)))
+		return E_FAIL;
+
 
 	return S_OK;
 }

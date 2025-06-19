@@ -7,12 +7,15 @@ CVIBuffer_Instance::CVIBuffer_Instance(ID3D11Device* pDevice, ID3D11DeviceContex
 
 CVIBuffer_Instance::CVIBuffer_Instance(const CVIBuffer_Instance& Prototype)
     : CVIBuffer(Prototype)
+	, m_pVBInstance {Prototype.m_pVBInstance}
     , m_VBInstanceDesc {Prototype.m_VBInstanceDesc}
     , m_VBInstanceSubResourceData{ Prototype.m_VBInstanceSubResourceData }
     , m_iNumInstance {Prototype.m_iNumInstance}
     , m_iVertexInstanceStride {Prototype.m_iVertexInstanceStride}
-    , m_pVertexInstances {Prototype.m_pVertexInstances}
+	, m_iNumIndexPerInstance{ Prototype.m_iNumIndexPerInstance }
+
 {
+	Safe_AddRef(m_pVBInstance);
 }
 
 HRESULT CVIBuffer_Instance::Initialize_Prototype()
@@ -22,9 +25,6 @@ HRESULT CVIBuffer_Instance::Initialize_Prototype()
 
 HRESULT CVIBuffer_Instance::Initialize(void* pArg)
 {
-    if (FAILED(m_pDevice->CreateBuffer(&m_VBInstanceDesc, &m_VBInstanceSubResourceData, &m_pVBInstance)))
-        return E_FAIL;
-
     return S_OK;
 }
 
@@ -65,9 +65,5 @@ void CVIBuffer_Instance::Free()
 {
 	__super::Free();
 
-	if (false == m_isCloned)
-		Safe_Delete_Array(m_pVertexInstances);
-
 	Safe_Release(m_pVBInstance);
-
 }

@@ -25,11 +25,8 @@ void CPlayerState_Idle::Execute(_float fTimeDelta)
 {
 	m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta);
 
-
 	if (m_pOwner->IsMoveKeyPressed())
-	{
 		m_pOwner->Change_States(CPlayer::STATES::MOVE);
-	}
 
 	if (m_pOwner->IsLockOn())
 		m_pOwner->LockOn();
@@ -52,6 +49,7 @@ void CPlayerState_Idle::Execute(_float fTimeDelta)
 		if (0.f < m_fHoldTime && 1.f >= m_fHoldTime)
 		{
 			m_pOwner->Change_States_ByInteract();
+			m_fHoldTime = 0.f;
 		}
 	}
 

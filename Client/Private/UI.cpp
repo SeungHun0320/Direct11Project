@@ -28,6 +28,7 @@ HRESULT CUI::Initialize(void* pArg)
 	m_fSizeX = pDesc->fSizeX;
 	m_fSizeY = pDesc->fSizeY;
 	m_fOffset = pDesc->fOffset;
+	m_eUIPass = pDesc->eUIPass;
 
 	m_pLevelID = pDesc->pParentLevelID;
 
@@ -115,7 +116,7 @@ HRESULT CUI::Render()
 	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", m_iTextureIndex)))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Begin(1)))
+	if (FAILED(m_pShaderCom->Begin(m_eUIPass)))
 		return E_FAIL;
 
 	if (FAILED(m_pVIBufferCom->Bind_Buffers()))

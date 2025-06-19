@@ -14,12 +14,16 @@ BEGIN(Client)
 class CUI : public CPartObject
 {
 public:
+	enum UI_PASS { PASS_DEFAULT, PASS_BLEND, PASS_BLEND_POINT, PASS_VERTICAL, PASS_HORIZONTAL_L2R, PASS_HORIZONTAL_R2L, PASS_END };
+
+public:
 	typedef struct tagUIDesc : public CPartObject::DESC
 	{
 		LEVEL*	 pParentLevelID{ nullptr };
 		_float	 fX, fY, fSizeX, fSizeY;
 		_float   fOffset{};
 		_wstring strPrototypeTag;
+		UI_PASS  eUIPass{ PASS_BLEND };
 	}DESC;
 
 protected:
@@ -56,8 +60,9 @@ protected:
 	CVIBuffer_Rect*    m_pVIBufferCom = { nullptr };
 
 protected:
-	LEVEL*  m_pLevelID = { nullptr };
-	UI_TYPE m_eType = {};
+	LEVEL*		m_pLevelID = { nullptr };
+	UI_TYPE		m_eType = {};
+	UI_PASS	    m_eUIPass = { PASS_END };
 
 protected:
 	_bool  m_bVisible = { true };

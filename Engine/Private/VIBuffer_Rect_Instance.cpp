@@ -7,7 +7,10 @@ CVIBuffer_Rect_Instance::CVIBuffer_Rect_Instance(ID3D11Device* pDevice, ID3D11De
 }
 
 CVIBuffer_Rect_Instance::CVIBuffer_Rect_Instance(const CVIBuffer_Rect_Instance& Prototype)
-    :CVIBuffer_Instance(Prototype)
+    : CVIBuffer_Instance(Prototype)
+	, m_pVertexInstances{ Prototype.m_pVertexInstances }
+	, m_pSpeeds{ Prototype.m_pSpeeds }
+	, m_isLoop{ Prototype.m_isLoop }
 {
 }
 
@@ -15,14 +18,16 @@ HRESULT CVIBuffer_Rect_Instance::Initialize_Prototype(const DESC* pArg)
 {
 	const DESC* pDesc = static_cast<const DESC*>(pArg);
 
+	m_isLoop = pDesc->isLoop;
 	m_iNumIndexPerInstance = 6;
-	m_iVertexInstanceStride = sizeof(VTXMATRIX);
+	m_iVertexInstanceStride = sizeof(VTXRECT_PARTICLE_INSTANCE);
 	m_iNumInstance = pDesc->iNumInstance;
 
 	m_iNumVertexBuffers = 2;
 	m_iNumVertices = 4;
 	m_iVertexStride = sizeof(VTXPOSTEX);
-	m_iNumIndices = m_iNumIndexPerInstance * m_iNumInstance;
+	m_iNumIndices = m_iNumIndexPerInstance;
+
 	m_iIndexStride = sizeof(_ushort);
 	m_eIndexFormat = DXGI_FORMAT_R16_UINT;
 	m_ePrimitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
@@ -84,17 +89,14 @@ HRESULT CVIBuffer_Rect_Instance::Initialize_Prototype(const DESC* pArg)
 
 	_uint		iNumIndices = {};
 
-	for (size_t i = 0; i < m_iNumInstance; i++)
-	{
-		pIndices[iNumIndices++] = 0;
-		pIndices[iNumIndices++] = 1;
-		pIndices[iNumIndices++] = 2;
-
-		pIndices[iNumIndices++] = 0;
-		pIndices[iNumIndices++] = 2;
-		pIndices[iNumIndices++] = 3;
-	}
-
+	pIndices[iNumIndices++] = 0;
+	pIndices[iNumIndices++] = 1;
+	pIndices[iNumIndices++] = 2;
+	
+	pIndices[iNumIndices++] = 0;
+	pIndices[iNumIndices++] = 2;
+	pIndices[iNumIndices++] = 3;
+	
 	D3D11_SUBRESOURCE_DATA		IBInitialData{};
 	IBInitialData.pSysMem = pIndices;
 
@@ -102,35 +104,46 @@ HRESULT CVIBuffer_Rect_Instance::Initialize_Prototype(const DESC* pArg)
 		return E_FAIL;
 
 	Safe_Delete_Array(pIndices);
+
 #pragma endregion 
 
 #pragma region INSTANCEBUFFER
 	m_VBInstanceDesc.ByteWidth = m_iNumInstance * m_iVertexInstanceStride;
 	m_VBInstanceDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	m_VBInstanceDesc.Usage = D3D11_USAGE_DEFAULT;
-	m_VBInstanceDesc.CPUAccessFlags = 0;
+	m_VBInstanceDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	m_VBInstanceDesc.StructureByteStride = m_iVertexInstanceStride;
 	m_VBInstanceDesc.MiscFlags = 0;
 
-	m_pVertexInstances = new VTXMATRIX[m_iNumInstance];
+	m_pVertexInstances = new VTXRECT_PARTICLE_INSTANCE[m_iNumInstance];
+	m_pSpeeds = new _float[m_iNumInstance];
 
 	for (_uint i = 0; i < m_iNumInstance; i++)
 	{
-		m_pVertexInstances[i].vRight = _float4(1.f, 0.f, 0.f, 0.f);
-		m_pVertexInstances[i].vUp = _float4(0.f, 1.f, 0.f, 0.f);
-		m_pVertexInstances[i].vLook = _float4(0.f, 0.f, 1.f, 0.f);
+		m_pSpeeds[i] = m_pGameInstance->Compute_Random(pDesc->vSpeed.x, pDesc->vSpeed.y);
+		_float	fSize = m_pGameInstance->Compute_Random(pDesc->vSize.x, pDesc->vSize.y);
+
+		m_pVertexInstances[i].vRight = _float4(fSize, 0.f, 0.f, 0.f);
+		m_pVertexInstances[i].vUp = _float4(0.f, fSize, 0.f, 0.f);
+		m_pVertexInstances[i].vLook = _float4(0.f, 0.f, fSize, 0.f);
 
 
 		m_pVertexInstances[i].vTranslation = _float4(
-			m_pGameInstance->Compute_Random(-5.f, 5.f),
-			m_pGameInstance->Compute_Random(-5.f, 5.f),
-			m_pGameInstance->Compute_Random(-5.f, 5.f),
+			m_pGameInstance->Compute_Random(pDesc->vCenter.x - pDesc->vRange.x * 0.5f, pDesc->vCenter.x + pDesc->vRange.x * 0.5f),
+			m_pGameInstance->Compute_Random(pDesc->vCenter.y - pDesc->vRange.y * 0.5f, pDesc->vCenter.y + pDesc->vRange.y * 0.5f),
+			m_pGameInstance->Compute_Random(pDesc->vCenter.z - pDesc->vRange.z * 0.5f, pDesc->vCenter.z + pDesc->vRange.z * 0.5f),
 			1.f
+		);
+
+		m_pVertexInstances[i].vLifeTime = _float2(
+			m_pGameInstance->Compute_Random(pDesc->vLifeTime.x, pDesc->vLifeTime.y),
+			0.f
 		);
 	}
 
 	m_VBInstanceSubResourceData.pSysMem = m_pVertexInstances;
 
+	/* 각각의 멤버변수들에 저장만 하고 사본이 복사해서 씀, 실제 할당도 이니셜라이즈에서 함 */
 #pragma endregion 
 
 	return S_OK;
@@ -138,10 +151,39 @@ HRESULT CVIBuffer_Rect_Instance::Initialize_Prototype(const DESC* pArg)
 
 HRESULT CVIBuffer_Rect_Instance::Initialize(void* pArg)
 {
-	if (__super::Initialize(pArg))
+	if (FAILED(m_pDevice->CreateBuffer(&m_VBInstanceDesc, &m_VBInstanceSubResourceData, &m_pVBInstance)))
 		return E_FAIL;
 
     return S_OK;
+}
+
+void CVIBuffer_Rect_Instance::Drop(_float fTimeDelta)
+{
+	D3D11_MAPPED_SUBRESOURCE	SubResource{};
+
+	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+
+	VTXRECT_PARTICLE_INSTANCE* pVertices = static_cast<VTXRECT_PARTICLE_INSTANCE*>(SubResource.pData);
+
+	for (size_t i = 0; i < m_iNumInstance; i++)
+	{
+		pVertices[i].vLifeTime.y += fTimeDelta;
+
+		pVertices[i].vTranslation.y -= m_pSpeeds[i] * fTimeDelta;
+
+		if (true == m_isLoop &&
+			pVertices[i].vLifeTime.y >= pVertices[i].vLifeTime.x)
+		{
+			pVertices[i].vLifeTime.y = 0.f;
+			pVertices[i].vTranslation.y = m_pVertexInstances[i].vTranslation.y;
+		}
+	}
+
+	m_pContext->Unmap(m_pVBInstance, 0);
+}
+
+void CVIBuffer_Rect_Instance::Spread(_float fTimeDelta)
+{
 }
 
 CVIBuffer_Rect_Instance* CVIBuffer_Rect_Instance::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const DESC* pArg)
@@ -173,4 +215,11 @@ CComponent* CVIBuffer_Rect_Instance::Clone(void* pArg)
 void CVIBuffer_Rect_Instance::Free()
 {
 	__super::Free();
+
+	if (false == m_isCloned)
+	{
+		Safe_Delete_Array(m_pVertexInstances);
+		Safe_Delete_Array(m_pSpeeds);
+	}
+
 }

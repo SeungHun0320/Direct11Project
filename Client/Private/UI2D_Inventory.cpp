@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 
 #include "UI.h"
+#include "UI2D_InventorySlot.h"
 
 CUI2D_Inventory::CUI2D_Inventory(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CUIContainerPart{ pDevice, pContext }
@@ -22,6 +23,8 @@ HRESULT CUI2D_Inventory::Initialize(void* pArg)
 {
 	DESC* pDesc = static_cast<DESC*>(pArg);
 
+	m_pParentIsOnInven = pDesc->pParentIsOnInven;
+
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
@@ -31,29 +34,49 @@ HRESULT CUI2D_Inventory::Initialize(void* pArg)
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(445, 40.f, 0.f, 1.f));
+	m_InvenSlots[SLOT_PASSIVEITEM]->Set_State(STATE::POSITION, XMVectorSet(0.f, 80.f, 0.f, 1.f));
+
+	for (_uint i = 0; i < SLOT_USEITEM3; i++)
+		m_InvenSlots[SLOT_USEITEM0 + i]->Set_State(STATE::POSITION, XMVectorSet((80.f * i), -65.f, 0.f, 1.f));
+
+	for(_uint i = 0; i < 3; i++)
+		m_InvenSlots[SLOT_WEAPON0 + i]->Set_State(STATE::POSITION, XMVectorSet((80.f * i), -240.f, 0.f, 1.f));
+
+
+	m_InvenSlots[SLOT_USEITEM0]->Set_Selected(true);
 
 	return S_OK;
 }
 
 void CUI2D_Inventory::Priority_Update(_float fTimeDelta)
 {
+	if (!(*m_pParentIsOnInven))
+		return;
+
+	Key_Input();
+
 	__super::Priority_Update(fTimeDelta);
 }
 
 LIFE CUI2D_Inventory::Update(_float fTimeDelta)
 {
+	if (!(*m_pParentIsOnInven))
+		return LIFE::NONE;
+
 	return 	__super::Update(fTimeDelta);
 }
 
 void CUI2D_Inventory::Late_Update(_float fTimeDelta)
 {
+	if (!(*m_pParentIsOnInven))
+		return;
+
 	__super::Late_Update(fTimeDelta);
 }
 
 HRESULT CUI2D_Inventory::Render()
 {
-	return __super::Render();
+	return S_OK;
 }
 
 void CUI2D_Inventory::Set_UIVisible(_uint iPart, _bool isVisible)
@@ -66,6 +89,31 @@ void CUI2D_Inventory::Set_TextureIndex(_uint iPart, _uint iTextureIdx)
 	static_cast<CUI*>(m_PartObjects[iPart])->Set_TextureIndex(iTextureIdx);
 }
 
+void CUI2D_Inventory::Key_Input()
+{
+	if (KEY_DOWN(DIK_UP))
+		Move_Selector(+1);
+	if (KEY_DOWN(DIK_DOWN))
+		Move_Selector(-1);
+	if(KEY_DOWN(DIK_LEFT))
+		Move_Selector(-1);
+	if(KEY_DOWN(DIK_RIGHT))
+		Move_Selector(+1);
+}
+
+void CUI2D_Inventory::Move_Selector(_uint iSlotIndex)
+{
+	if (m_InvenSlots.empty())
+		return;
+
+	m_InvenSlots[m_iSelectSlotIndex]->Set_Selected(false);
+
+	m_iSelectSlotIndex += iSlotIndex;
+	m_iSelectSlotIndex = clamp(m_iSelectSlotIndex, 1, (_int)SLOT_END - 1);
+
+	m_InvenSlots[m_iSelectSlotIndex]->Set_Selected(true);
+}
+
 HRESULT CUI2D_Inventory::Ready_Components(void* pArg)
 {
 	return S_OK;
@@ -73,6 +121,157 @@ HRESULT CUI2D_Inventory::Ready_Components(void* pArg)
 
 HRESULT CUI2D_Inventory::Ready_PartObjects()
 {
+	CUI::DESC MaskDesc{};
+
+	MaskDesc.pParentLevelID = m_pLevelID;
+	MaskDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	MaskDesc.fSizeX = g_iWinSizeX;
+	MaskDesc.fSizeY = g_iWinSizeY;
+	MaskDesc.fX = g_iWinSizeX * 0.5f;
+	MaskDesc.fY = g_iWinSizeY * 0.5f;
+	MaskDesc.strPrototypeTag = TEXT("Prototype_Component_Texture_UIMask");
+	MaskDesc.eUIPass = CUI::PASS_BLEND_POINT;
+
+	if (FAILED(__super::Add_PartObject(PART_MASK, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D"), &MaskDesc)))
+		return E_FAIL;
+
+
+	for (_uint i = PART_PASSIVEITEMSLOT_START; i <= PART_WEAPONSLOT_END; i++)
+	{
+		CUI2D_InventorySlot::DESC SlotDesc{};
+		SlotDesc.iNumPartObjects = CUI2D_InventorySlot::PART_END;
+		SlotDesc.pParentLevelID = m_pLevelID;
+		SlotDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+		SlotDesc.pParentIsOnInven = m_pParentIsOnInven;
+
+		if (FAILED(__super::Add_PartObject(i, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_InventorySlot"), &SlotDesc)))
+			return E_FAIL;
+		
+		if (nullptr != m_PartObjects[i])
+		{
+			if (CUI2D_InventorySlot* pInvenSlot = dynamic_cast<CUI2D_InventorySlot*>(m_PartObjects[i]))
+				m_InvenSlots.push_back(pInvenSlot);
+		}
+
+		++m_iNumInvenSlots;
+	}
+
+	for (auto& pInvenSlot : m_InvenSlots)
+		Safe_AddRef(pInvenSlot);
+
+	CUI::DESC DividerDesc{};
+	DividerDesc.pParentLevelID = m_pLevelID;
+	DividerDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	DividerDesc.strPrototypeTag = TEXT("Prototype_Component_Texture_UIDivider");
+	DividerDesc.fSizeX = 511.3f;
+	DividerDesc.fSizeY = 8.f;
+	DividerDesc.fX = g_iWinSizeX * 0.34f;
+
+	DividerDesc.fY = g_iWinSizeY * 0.33f;
+	if (FAILED(__super::Add_PartObject(PART_PASSIVE_DIVIDER, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D"), &DividerDesc)))
+		return E_FAIL;
+
+	DividerDesc.fY = (g_iWinSizeY * 0.53f);
+	if (FAILED(__super::Add_PartObject(PART_USEITEM_DIVIDER, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D"), &DividerDesc)))
+		return E_FAIL;
+
+	DividerDesc.fY = (g_iWinSizeY * 0.77f);
+	if (FAILED(__super::Add_PartObject(PART_WEAPON_DIVIDER, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D"), &DividerDesc)))
+		return E_FAIL;
+
+	CUI::DESC TextDesc{};
+
+	TextDesc.pParentLevelID = m_pLevelID;
+	TextDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	TextDesc.eUIPass = CUI::UI_PASS::PASS_BLEND_POINT;
+	TextDesc.fSizeX = 46.8f;
+	TextDesc.fSizeY = 30.4f;
+	TextDesc.fX = g_iWinSizeX * 0.15f;
+	TextDesc.fY = g_iWinSizeY * 0.11f;
+	TextDesc.strPrototypeTag = TEXT("Prototype_Component_Texture_UIMoneyText");
+
+	if (FAILED(__super::Add_PartObject(PART_MONEYTEXT, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D"), &TextDesc)))
+		return E_FAIL;
+
+	TextDesc.fSizeX = 21.75f;
+	TextDesc.fSizeY = 33.75f;
+	TextDesc.fX = g_iWinSizeX * 0.15f;
+	TextDesc.fY = (g_iWinSizeY * 0.3f);
+	TextDesc.strPrototypeTag = TEXT("Prototype_Component_Texture_UIPassiveItemText");
+
+	if (FAILED(__super::Add_PartObject(PART_PASSIVEITEMTEXT, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D"), &TextDesc)))
+		return E_FAIL;
+
+	TextDesc.fSizeX = 109.5f;
+	TextDesc.fSizeY = 34.5f;
+	TextDesc.fX = g_iWinSizeX * 0.18f;
+	TextDesc.fY = g_iWinSizeY * 0.5f;
+	TextDesc.strPrototypeTag = TEXT("Prototype_Component_Texture_UIUseItemText");
+
+	if (FAILED(__super::Add_PartObject(PART_USEITEMTEXT, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D"), &TextDesc)))
+		return E_FAIL;
+
+
+	TextDesc.fSizeX = 99.5f;
+	TextDesc.fSizeY = 38.5f;
+	TextDesc.fX = g_iWinSizeX * 0.18f;
+	TextDesc.fY = g_iWinSizeY * 0.73f;
+	TextDesc.strPrototypeTag = TEXT("Prototype_Component_Texture_UIWeaponText");
+
+	if (FAILED(__super::Add_PartObject(PART_WEAPONTEXT, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D"), &TextDesc)))
+		return E_FAIL;
+
+	CUI::DESC TABKeyDesc{};
+
+	TABKeyDesc.pParentLevelID = m_pLevelID;
+	TABKeyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	TABKeyDesc.fSizeX = 102.4f;
+	TABKeyDesc.fSizeY = 66.4f;
+	TABKeyDesc.fX = 100.f;
+	TABKeyDesc.fY = g_iWinSizeY * 0.075f;
+	TABKeyDesc.strPrototypeTag = TEXT("Prototype_Component_Texture_TABKeyBoard");
+
+	if (FAILED(__super::Add_PartObject(PART_TAB, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D"), &TABKeyDesc)))
+		return E_FAIL;
+
+	CUI::DESC LineDesc{};
+
+	LineDesc.pParentLevelID = m_pLevelID;
+	LineDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	LineDesc.fSizeX = 244.5f;
+	LineDesc.fSizeY = 7.f;
+	LineDesc.fX = g_iWinSizeX * 0.23f;
+	LineDesc.fY = g_iWinSizeY * 0.14f;
+	LineDesc.strPrototypeTag = TEXT("Prototype_Component_Texture_UILine");
+
+	if (FAILED(__super::Add_PartObject(PART_LINE, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D"), &LineDesc)))
+		return E_FAIL;
+
+	CUI::DESC HexagonDesc{};
+
+	HexagonDesc.pParentLevelID = m_pLevelID;
+	HexagonDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	HexagonDesc.fSizeX = 170.4f;
+	HexagonDesc.fSizeY = 195.6f;
+	HexagonDesc.fX = (g_iWinSizeX * 0.45f);
+	HexagonDesc.fY = g_iWinSizeY * 0.15f;
+	HexagonDesc.strPrototypeTag = TEXT("Prototype_Component_Texture_UIHexagon");
+
+	if (FAILED(__super::Add_PartObject(PART_HEXAGON, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D"), &HexagonDesc)))
+		return E_FAIL;
+
+	CUI::DESC CoinIconDesc{};
+
+	CoinIconDesc.pParentLevelID = m_pLevelID;
+	CoinIconDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	CoinIconDesc.fSizeX = 33.1f;
+	CoinIconDesc.fSizeY = 33.7f;
+	CoinIconDesc.fX = (g_iWinSizeX * 0.15f);
+	CoinIconDesc.fY = g_iWinSizeY * 0.2f;
+	CoinIconDesc.strPrototypeTag = TEXT("Prototype_Component_Texture_UICoinIcon");
+
+	if (FAILED(__super::Add_PartObject(PART_COINICON, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D"), &CoinIconDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -106,4 +305,9 @@ CGameObject* CUI2D_Inventory::Clone(void* pArg)
 void CUI2D_Inventory::Free()
 {
 	__super::Free();
+
+	for (auto& pInvenSlot : m_InvenSlots)
+		Safe_Release(pInvenSlot);
+
+	m_InvenSlots.clear();
 }

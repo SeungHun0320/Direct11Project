@@ -385,6 +385,21 @@
     <Filter Include="02.GameObjects\00.UI\Container\Part\UI_Animation">
       <UniqueIdentifier>{0bdab430-8299-40cb-933c-9e326aa6dd1d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Player\Inventory">
+      <UniqueIdentifier>{d7cc1ef6-da75-4b20-a87f-170e1e67ab63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\02.PlayerState\Inventory\InventorySlot">
+      <UniqueIdentifier>{25e3c154-73fa-45bb-9325-174189bc2105}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Item\Item_Coin">
+      <UniqueIdentifier>{3ded3f23-5700-41a7-aa86-f86b998f6c13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\05.Interaction\Interaction">
+      <UniqueIdentifier>{0f64821a-138b-4819-a1d5-6a29ea7f70fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\05.Interaction\Reward">
+      <UniqueIdentifier>{2b7a1a83-a94f-4a92-9e87-a932228a710c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -528,7 +543,7 @@
     <ClInclude Include="..\public\Item.h">
       <Filter>02.GameObjects\07.Item</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Potion.h">
+    <ClInclude Include="..\public\Item_Potion.h">
       <Filter>02.GameObjects\07.Item\Item_Potion</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState.h">
@@ -693,12 +708,19 @@
     <ClInclude Include="..\public\UI2D_BossHpBar.h">
       <Filter>02.GameObjects\00.UI\03.BossState</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\UI3D_Interaction.h">
-      <Filter>02.GameObjects\00.UI\05.Interaction</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Client_Struct.h">
       <Filter>99.Defines</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Inventory.h">
+      <Filter>02.GameObjects\03.Actor\Player\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UI2D_InventorySlot.h">
+      <Filter>02.GameObjects\00.UI\02.PlayerState\Inventory\InventorySlot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UI3D_Interaction.h">
+      <Filter>02.GameObjects\00.UI\05.Interaction\Interaction</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UI2D_Reward.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -831,7 +853,7 @@
     <ClCompile Include="..\private\Item.cpp">
       <Filter>02.GameObjects\07.Item</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Potion.cpp">
+    <ClCompile Include="..\private\Item_Potion.cpp">
       <Filter>02.GameObjects\07.Item\Item_Potion</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Die.cpp">
@@ -1053,9 +1075,16 @@
     <ClCompile Include="..\private\UI2D_BossHpBar.cpp">
       <Filter>02.GameObjects\00.UI\03.BossState</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\UI3D_Interaction.cpp">
-      <Filter>02.GameObjects\00.UI\05.Interaction</Filter>
+    <ClCompile Include="..\private\Inventory.cpp">
+      <Filter>02.GameObjects\03.Actor\Player\Inventory</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\UI2D_InventorySlot.cpp">
+      <Filter>02.GameObjects\00.UI\02.PlayerState\Inventory\InventorySlot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI3D_Interaction.cpp">
+      <Filter>02.GameObjects\00.UI\05.Interaction\Interaction</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI2D_Reward.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">

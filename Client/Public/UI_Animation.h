@@ -7,12 +7,10 @@ BEGIN(Client)
 class CUI_Animation : public CUI
 {
 public:
-	enum UI_PASS { PASS_DEFAULT, PASS_BLEND, PASS_VERTICAL, PASS_HORIZONTAL_L2R, PASS_HORIZONTAL_R2L, PASS_END };
-public:
 	typedef struct tagUIAnimationDesc : CUI::DESC
 	{
 		const float* pRatio{ nullptr };
-		UI_PASS      eUIPass{ PASS_END };
+
 	}DESC;
 
 protected:
@@ -30,7 +28,7 @@ public:
 
 protected:
 	const _float* m_pRatio = {};
-	UI_PASS	      m_eUIPass = { PASS_END };
+
 
 protected:
 	virtual HRESULT Ready_Components(void* pArg) override;

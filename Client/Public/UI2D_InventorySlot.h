@@ -4,22 +4,22 @@
 
 BEGIN(Client)
 
-class CUI2D_PlayerItemSlots final : public CUIContainerPart
+class CUI2D_InventorySlot final : public CUIContainerPart
 {
 public:
-	enum PART { PART_J, PART_K, PART_L,
-				PART_J_ITEMS, PART_K_ITEMS, PART_L_ITEMS, PART_END };
+	enum PART { PART_BACK, PART_ITEMS, PART_SELECTOR, PART_END };
 
 public:
-	typedef struct tagUI2DPlayerItemSlotsDesc : public CUIContainerPart::DESC
+	typedef struct tagUI2DInventoryDesc : public CUIContainerPart::DESC
 	{
+		_bool* pParentIsOnInven{ nullptr };
 
 	}DESC;
 
 private:
-	CUI2D_PlayerItemSlots(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CUI2D_PlayerItemSlots(const CUI2D_PlayerItemSlots& Prototype);
-	virtual ~CUI2D_PlayerItemSlots() = default;
+	CUI2D_InventorySlot(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CUI2D_InventorySlot(const CUI2D_InventorySlot& Prototype);
+	virtual ~CUI2D_InventorySlot() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -30,18 +30,25 @@ public:
 	virtual HRESULT Render() override;
 
 public:
+	_fvector Get_State(STATE eState);
+	void Set_State(STATE eState, _fvector vState);
+	void Set_Selected(_bool isSelected);
+
+public:
 	virtual void Set_UIVisible(_uint iPart, _bool isVisible) override;
 	virtual void Set_TextureIndex(_uint iPart, _uint iTextureIdx)override;
+
+private:
+	_bool* m_pParentIsOnInven = { nullptr };
 
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;
 	virtual HRESULT Ready_PartObjects() override;
 
 public:
-	static CUI2D_PlayerItemSlots* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CUI2D_InventorySlot* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
-
 };
 
 END

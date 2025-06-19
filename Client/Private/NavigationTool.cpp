@@ -128,7 +128,6 @@ HRESULT CNavigationTool::Render_Cells()
 	if (nullptr == m_pMap)
 		return E_FAIL;
 
-
 	_float4x4		WorldMatrix = *dynamic_cast<CTransform*>(m_pMap->Get_Component(TEXT("Com_Transform")))->Get_WorldMatrix_Float4x4();
 	WorldMatrix.m[3][1] += 0.2f;
 

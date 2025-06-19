@@ -14,7 +14,7 @@ public:
 
 public:
 	enum PART { PART_BODY, PART_WEAPON,
-		PART_HP, PART_STAMINA, PART_MP, PART_ITEMSLOTS, PART_POTION, PART_LOCKON,
+		PART_HP, PART_STAMINA, PART_MP, PART_ITEMSLOTS, PART_POTION, PART_INVENUI, PART_INVEN,
 		PART_EFFECT, PART_END };
 
 	enum MESHES	{
@@ -59,6 +59,7 @@ private:
 public: /* 레벨 관련 */
 	virtual void Set_Level(LEVEL eLevelID);
 	void Set_SavePosition();
+	void Clear_Target();
 	void Change_Level();
 
 public:
@@ -191,6 +192,9 @@ private: /* 마나 */
 
 private: /* 방패 소유중? */
 	_bool  m_isShield = { false };
+
+private: /* 인벤 켰음? */
+	_bool  m_isOnInven = { false };
 
 private: /* 현재 충돌한 상호작용 오브젝트의 콜라이더 아이디 */
 	COLLIDER_ID m_eCurInteractID = { COLLIDER_ID::CI_END };

@@ -361,7 +361,6 @@ void CSpiderTank::On_Hit(_float fDamage, _float fStaggerValue, _float fInvicible
 	if (0 >= m_fHp)
 	{
 		m_fHp = 0.f;
-		m_bDead = true;
 		Change_States(STATES::DEAD);
 	}
 	else

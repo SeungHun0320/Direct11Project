@@ -31,6 +31,7 @@ HRESULT CUI2D_PlayerItemSlots::Initialize(void* pArg)
 
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
+	Set_TextureIndex(PART_J_ITEMS, 7);
 
 	return S_OK;
 }
@@ -72,7 +73,7 @@ HRESULT CUI2D_PlayerItemSlots::Ready_Components(void* pArg)
 
 HRESULT CUI2D_PlayerItemSlots::Ready_PartObjects()
 {
-	for (_uint i = 0; i < PART_END; i++)
+	for (_uint i = 0; i <= PART_L; i++)
 	{
 		CUI::DESC ItemSlotDesc{};
 
@@ -83,6 +84,22 @@ HRESULT CUI2D_PlayerItemSlots::Ready_PartObjects()
 		ItemSlotDesc.fX = (g_iWinSizeX * 0.8f) + (80 * i);
 		ItemSlotDesc.fY = g_iWinSizeY * 0.1f;
 		ItemSlotDesc.strPrototypeTag = TEXT("Prototype_Component_Texture_ItemSlot");
+
+		if (FAILED(__super::Add_PartObject(i, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D"), &ItemSlotDesc)))
+			return E_FAIL;
+	}
+
+	for (_uint i = PART_J_ITEMS; i <= PART_L_ITEMS; i++)
+	{
+		CUI::DESC ItemSlotDesc{};
+
+		ItemSlotDesc.pParentLevelID = m_pLevelID;
+		ItemSlotDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+		ItemSlotDesc.fSizeX = 50.f;
+		ItemSlotDesc.fSizeY = 50.f;
+		ItemSlotDesc.fX = (g_iWinSizeX * 0.612f) + (80 * i);
+		ItemSlotDesc.fY = g_iWinSizeY * 0.1f;
+		ItemSlotDesc.strPrototypeTag = TEXT("Prototype_Component_Texture_UIItems");
 
 		if (FAILED(__super::Add_PartObject(i, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D"), &ItemSlotDesc)))
 			return E_FAIL;
