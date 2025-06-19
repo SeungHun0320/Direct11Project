@@ -62,6 +62,7 @@
 #include "Item_Potion.h"
 
 #include "UI3D_Interaction.h"
+#include "UI2D_Reward.h"
 
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -463,6 +464,10 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 		CUI3D_Interaction::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/*For.Prototype_GameObject_UI2D_Reward */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_UI2D_Reward"),
+		CUI2D_Reward::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	/* For.Prototype_GameObject_Sky */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Sky"),
@@ -605,6 +610,11 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 		CUI3D_Interaction::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/*For.Prototype_GameObject_UI2D_Reward */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_UI2D_Reward"),
+		CUI2D_Reward::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
 	/* For.Prototype_GameObject_Sky */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Sky"),
@@ -661,6 +671,11 @@ HRESULT CLoader::Loading_For_Shop(LEVEL eLevelID)
 	/*For.Prototype_GameObject_UI3D_Interaction */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_UI3D_Interaction"),
 		CUI3D_Interaction::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/*For.Prototype_GameObject_UI2D_Reward */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_UI2D_Reward"),
+		CUI2D_Reward::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 
@@ -932,6 +947,12 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_UI3D_Interaction"),
 		CUI3D_Interaction::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+	/*For.Prototype_GameObject_UI2D_Reward */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_UI2D_Reward"),
+		CUI2D_Reward::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
 
 	/* For.Prototype_GameObject_Sky */

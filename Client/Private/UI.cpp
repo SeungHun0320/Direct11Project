@@ -29,6 +29,7 @@ HRESULT CUI::Initialize(void* pArg)
 	m_fSizeY = pDesc->fSizeY;
 	m_fOffset = pDesc->fOffset;
 	m_eUIPass = pDesc->eUIPass;
+	m_iTextureIndex = pDesc->iTextureIndex;
 
 	m_pLevelID = pDesc->pParentLevelID;
 

@@ -10,8 +10,8 @@ class CInventory final : public CPartObject
 public:
 	typedef struct tagInventoryDesc : public CPartObject::DESC
 	{
-		LEVEL eLevelID;
-	};
+		LEVEL* pParentLevelID;
+	}DESC;
 
 private:
 	CInventory(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -33,6 +33,9 @@ public:
 	void Add_Coin(_int iPrice) {
 		m_iCoin += iPrice;
 	};
+
+private:
+	LEVEL* m_pLevelID = { nullptr };
 
 
 private:

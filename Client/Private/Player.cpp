@@ -11,6 +11,7 @@
 #include "UI2D_PlayerPotion.h"
 #include "UI2D_PlayerItemSlots.h"
 #include "UI2D_Inventory.h"
+#include "Inventory.h"
 
 #include "PlayerState.h"
 #include "Player_IAttackStrategy.h"
@@ -938,15 +939,33 @@ HRESULT CPlayer::Ready_PartObjects()
 	if (FAILED(__super::Add_PartObject(PART_ITEMSLOTS, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerItemSlots"), &ItemSlotsDesc)))
 		return E_FAIL;
 
-	CUI2D_Inventory::DESC InvenDesc{};
+	CUI2D_Inventory::DESC UIInvenDesc{};
 
-	InvenDesc.pParentLevelID = &eLevelID;
-	InvenDesc.iNumPartObjects = CUI2D_Inventory::PART_END;
-	InvenDesc.pParentIsOnInven = &m_isOnInven;
+	UIInvenDesc.pParentLevelID = &eLevelID;
+	UIInvenDesc.iNumPartObjects = CUI2D_Inventory::PART_END;
+	UIInvenDesc.pParentIsOnInven = &m_isOnInven;
 
-	if (FAILED(__super::Add_PartObject(PART_INVEN, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_Inventory"), &InvenDesc)))
+	if (FAILED(__super::Add_PartObject(PART_UIINVEN, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_Inventory"), &UIInvenDesc)))
 		return E_FAIL;
 
+	m_pUI2DInventory = dynamic_cast<CUI2D_Inventory*>(m_PartObjects[PART_UIINVEN]);
+	if (nullptr == m_pUI2DInventory)
+		return E_FAIL;
+
+	Safe_AddRef(m_pUI2DInventory);
+
+	CInventory::DESC InvenDesc{};
+
+	InvenDesc.pParentLevelID = &eLevelID;
+
+	if (FAILED(__super::Add_PartObject(PART_INVEN, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Inventory"), &InvenDesc)))
+		return E_FAIL;
+
+	m_pInventory = dynamic_cast<CInventory*>(m_PartObjects[PART_INVEN]);
+	if (nullptr == m_pInventory)
+		return E_FAIL;
+
+	Safe_AddRef(m_pInventory);
 
 	return S_OK;
 }
@@ -1019,6 +1038,8 @@ void CPlayer::Free()
 
 	Safe_Release(m_pWeaponPart);
 	Safe_Release(m_pUI2DPotion);
+	Safe_Release(m_pUI2DInventory);
+	Safe_Release(m_pInventory);
 
 	Safe_Release(m_pCurState);
 	Safe_Release(m_pAttackStrategy);

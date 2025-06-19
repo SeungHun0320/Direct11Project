@@ -4,6 +4,7 @@
 #include "Body_Chest.h"
 
 #include "UI3D_Interaction.h"
+#include "UI2D_Reward.h"
 
 CChest::CChest(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CEnvironment_Object{ pDevice, pContext }
@@ -22,6 +23,10 @@ HRESULT CChest::Initialize_Prototype()
 
 HRESULT CChest::Initialize(void* pArg)
 {
+	DESC* pDesc = static_cast<DESC*>(pArg);
+
+	m_eType = pDesc->eType;
+
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
@@ -56,6 +61,7 @@ void CChest::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject
 	__super::On_Collision(MyColliderID, OtherColliderID, pOwner);
 }
 
+
 HRESULT CChest::Ready_Components(void* pArg)
 {
 	return S_OK;
@@ -83,15 +89,16 @@ HRESULT CChest::Ready_PartObjects()
 	if (FAILED(__super::Add_PartObject(PART_INTERACTION, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_UI3D_Interaction"), &InteractionDesc)))
 		return E_FAIL;
 
-	//CUI3D_Interaction::DESC InteractionDesc{};
+	CUI2D_Reward::DESC RewardDesc{};
 
-	//InteractionDesc.pParentLevelID = &m_eLevelID;
-	//InteractionDesc.iNumPartObjects = CUI3D_Interaction::PART_END;
-	//InteractionDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
-	//InteractionDesc.pParentIsCollisioned = &m_isCollision;
+	RewardDesc.pParentLevelID = &m_eLevelID;
+	RewardDesc.iNumPartObjects = CUI2D_Reward::PART_END;
+	RewardDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	RewardDesc.pParentIsOpen = static_cast<CBody_Chest*>(m_PartObjects[PART_BODY])->Get_isOpened();
+	RewardDesc.pParentItemType = &m_eType;
 
-	//if (FAILED(__super::Add_PartObject(PART_INTERACTION, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_UI3D_Interaction"), &InteractionDesc)))
-	//	return E_FAIL;
+	if (FAILED(__super::Add_PartObject(PART_REWARD, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_UI2D_Reward"), &RewardDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }

@@ -23,6 +23,11 @@ private:
 	virtual ~CBody_Chest() = default;
 
 public:
+	_bool* Get_isOpened() {
+		return &m_isOpened;
+	}
+
+public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
 	virtual void Priority_Update(_float fTimeDelta) override;

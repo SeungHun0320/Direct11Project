@@ -8,12 +8,17 @@ class CChest final : public CEnvironment_Object
 public:
 	typedef struct tagChestDesc : public CEnvironment_Object::DESC
 	{
-
+		ITEM_TYPE eType{ ITEM_TYPE::IT_END };
 	}DESC;
 private:
 	CChest(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CChest(const CChest& Prototype);
 	virtual ~CChest() = default;
+
+public:
+	ITEM_TYPE Get_ItemType() const {
+		return m_eType;
+	}
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -25,6 +30,9 @@ public:
 
 public: /* Ãæ µ¹ */
 	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner) override;
+
+private:
+	ITEM_TYPE m_eType = { ITEM_TYPE::IT_END };
 
 private:
 	virtual HRESULT Ready_Components(void* pArg);

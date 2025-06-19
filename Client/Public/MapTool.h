@@ -16,7 +16,6 @@ public:
 	enum ENVIRONMENT_MODEL { BUSH, CHECKPOINT, GRASS, MODEL_END };
 	enum ITEM_MODEL { POTION, IM_END };
 	enum ENEMY_MODEL { BLOB, CANDLEABRA, SUPPORT, SWORD, EM_END };
-	enum CHEST_TYPE { CT_MONEY, CT_ITEM, CT_END };
 	enum MODE { CREATE, MODIFY, NORMAL, MODE_END };
 	enum LIST { ENVIRONMENT, ITEM, CHEST, ENEMY, LIST_END };
 private:
@@ -63,8 +62,11 @@ private: /* 현재 선택된 맵 정보 */
 	MAP m_eCurrentMap = { MAP_END };
 	MAP m_ePreMap = { MAP_END };
 
-private: /* 몬스터 정보 저장용 구조체 */
+private: /* 컨테이너 파트갯수 저장용 구조체 */
 	_uint m_iNumPartObjects{};
+
+private: /* 아이템 종류 */
+	ITEM_TYPE m_eItemType{};
 
 private:
 	ImGuizmo::OPERATION m_eGizmoOp = { ImGuizmo::TRANSLATE };

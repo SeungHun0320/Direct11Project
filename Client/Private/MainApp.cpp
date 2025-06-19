@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "Body_Player.h"
 #include "Weapon_Player.h"
+#include "Inventory.h"
 
 #include "UI2D_PlayerHPBar.h"
 #include "UI2D_PlayerSPBar.h"
@@ -230,17 +231,12 @@ HRESULT CMainApp::Ready_Prototype_Texture()
 			
 	/* For.Prototype_Component_Texture_UIItems*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_UIItems"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Inventory/Inven_Item_%d.png"), 8))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Inventory/Inven_Item_%d.png"), 9))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_UISelector*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_UISelector"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Inventory/UI_selector.png")))))
-		return E_FAIL;
-
-		/* For.Prototype_Component_Texture_UIPotion*/
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_UIPotion"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Inventory/UIItem_Potion.png")))))
 		return E_FAIL;
 	
 	return S_OK;
@@ -363,6 +359,11 @@ HRESULT CMainApp::Ready_Prototype_Object()
 	/*For.Prototype_GameObject_UI2D_InventorySlot */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_InventorySlot"),
 		CUI2D_InventorySlot::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+			
+	/*For.Prototype_GameObject_Inventory */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Inventory"),
+		CInventory::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/*--------------------------------------------UI(파트오브젝트)--------------------------------------------------*/

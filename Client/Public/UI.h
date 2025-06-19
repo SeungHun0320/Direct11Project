@@ -23,6 +23,7 @@ public:
 		_float	 fX, fY, fSizeX, fSizeY;
 		_float   fOffset{};
 		_wstring strPrototypeTag;
+		_uint    iTextureIndex;
 		UI_PASS  eUIPass{ PASS_BLEND };
 	}DESC;
 

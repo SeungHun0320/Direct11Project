@@ -14,7 +14,7 @@ public:
 
 public:
 	enum PART { PART_BODY, PART_WEAPON,
-		PART_HP, PART_STAMINA, PART_MP, PART_ITEMSLOTS, PART_POTION, PART_INVENUI, PART_INVEN,
+		PART_HP, PART_STAMINA, PART_MP, PART_ITEMSLOTS, PART_POTION, PART_UIINVEN, PART_INVEN,
 		PART_EFFECT, PART_END };
 
 	enum MESHES	{
@@ -220,6 +220,8 @@ private: /* 락온 상태관련 변수들 */
 private: /* 매번 캐스팅 해주기 싫어서 따로 변수로 받아왔음 */
 	class CWeapon_Player*	  m_pWeaponPart = { nullptr };
 	class CUI2D_PlayerPotion* m_pUI2DPotion = { nullptr };
+	class CUI2D_Inventory*    m_pUI2DInventory = { nullptr };
+	class CInventory*		  m_pInventory = { nullptr };
 
 private: /* 실제 플레이어 상태 관련 */
 	void Key_Input(_float fTimeDelta);

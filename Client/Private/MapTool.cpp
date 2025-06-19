@@ -182,6 +182,7 @@ void CMapTool::Update(_float fTimeDelta)
 			tDesc.strName = m_strName;
 			tDesc.iNumPartObjects = m_iNumPartObjects;
 			tDesc.WorldMatrix = XMMatrixTranslation(vInitPos.x, vInitPos.y, vInitPos.z);
+			tDesc.eType = m_eItemType;
 
 			if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_") + tDesc.strName,
 				ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Chest"), &tDesc)))
@@ -612,7 +613,9 @@ HRESULT CMapTool::Chest_ListBox()
 {
 	static _int iCurrentObjIndex = { -1 }, iOldObjType = { -1 };
 	const _char* szChests[] =
-	{ u8"돈 상자", u8"아이템 상자"};
+	{   u8"베리 상자", u8"블루베리상자", u8"우물코인상자", u8"폭탄상자",
+		u8"방패상자", u8"나뭇가지상자", u8"대거상자", u8"검상자", u8"포션상자",
+		u8"돈상자" };
 
 	ImGui::Text(u8"상자 종류");
 	ImGui::ListBox(u8"##ChestTypes", &iCurrentObjIndex, szChests, IM_ARRAYSIZE(szChests));
@@ -620,12 +623,36 @@ HRESULT CMapTool::Chest_ListBox()
 	/* 상자는 DESC를 멤버변수로 들고 있어야 할 것 같음 */
 	switch (iCurrentObjIndex)
 	{
-	case CHEST_TYPE::CT_MONEY:
+	case ENUM_CLASS(ITEM_TYPE::COIN):
+		m_eItemType = ITEM_TYPE::COIN;
 		break;
-
-	case CHEST_TYPE::CT_ITEM:
+	case ENUM_CLASS(ITEM_TYPE::BERRY):
+		m_eItemType = ITEM_TYPE::BERRY;
 		break;
-
+	case ENUM_CLASS(ITEM_TYPE::BLUEBERRY):
+		m_eItemType = ITEM_TYPE::BLUEBERRY;
+		break;
+	case ENUM_CLASS(ITEM_TYPE::COIN_QUESTION):
+		m_eItemType = ITEM_TYPE::COIN_QUESTION;
+		break;
+	case ENUM_CLASS(ITEM_TYPE::FIRE_CRACKER):
+		m_eItemType = ITEM_TYPE::FIRE_CRACKER;
+		break;
+	case ENUM_CLASS(ITEM_TYPE::SHILED):
+		m_eItemType = ITEM_TYPE::SHILED;
+		break;
+	case ENUM_CLASS(ITEM_TYPE::STICK):
+		m_eItemType = ITEM_TYPE::STICK;
+		break;
+	case ENUM_CLASS(ITEM_TYPE::DAGGER):
+		m_eItemType = ITEM_TYPE::DAGGER;
+		break;
+	case ENUM_CLASS(ITEM_TYPE::SWORD):
+		m_eItemType = ITEM_TYPE::SWORD;
+		break;
+	case ENUM_CLASS(ITEM_TYPE::POTION):
+		m_eItemType = ITEM_TYPE::POTION;
+		break;
 	default:
 		break;
 	}
@@ -1026,6 +1053,7 @@ HRESULT CMapTool::Save_Map(const _string& strMapPath)
 			_float fRotationPerSec = pTransform->Get_RotationPerSec();
 			_wstring strPrototype = pObject->Get_Name();
 			_uint    iNumPartObjects = dynamic_cast<CContainerObject*>(pObject)->Get_NumPartObjects();
+			ITEM_TYPE eItemType = dynamic_cast<CChest*>(pObject)->Get_ItemType();
 			iSaveLength = static_cast<_int>(strPrototype.length());
 
 			OutFile.write(reinterpret_cast<const _char*>(&iSaveLength), sizeof(_int));
@@ -1034,6 +1062,7 @@ HRESULT CMapTool::Save_Map(const _string& strMapPath)
 			OutFile.write(reinterpret_cast<const _char*>(&fSpeedPerSec), sizeof(_float));
 			OutFile.write(reinterpret_cast<const _char*>(&fRotationPerSec), sizeof(_float));
 			OutFile.write(reinterpret_cast<const _char*>(&iNumPartObjects), sizeof(_uint));
+			OutFile.write(reinterpret_cast<const _char*>(&eItemType), sizeof(ITEM_TYPE));
 		}
 	}
 	/* 몬스터 저장 */
@@ -1232,6 +1261,7 @@ HRESULT CMapTool::Load_Map(const _string& strMapPath)
 		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fSpeedPerSec), sizeof(_float));
 		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fRotationPerSec), sizeof(_float));
 		LoadFile.read(reinterpret_cast<_char*>(&tDesc.iNumPartObjects), sizeof(_uint));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.eType), sizeof(ITEM_TYPE));
 
 		tDesc.WorldMatrix = XMLoadFloat4x4(&WorldMatrix);
 

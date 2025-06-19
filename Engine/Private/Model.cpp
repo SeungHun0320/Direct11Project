@@ -258,8 +258,6 @@ _bool CModel::Compute_PickedPosition_World(const _float4x4* pWorldMatrix, _float
     _float fMinDist = FLT_MAX;
     _bool bHit = false;
 
-    const _float3 vRayOrigin = m_pGameInstance->Get_MousePos();
-
     for (auto& pMesh : m_Meshes)
     {
         _float fDist = FLT_MAX;

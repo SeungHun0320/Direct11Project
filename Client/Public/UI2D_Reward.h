@@ -10,7 +10,8 @@ public:
 public:
 	typedef struct tagUI2DRewardDesc : public CUIContainerPart::DESC
 	{
-
+		_bool*		pParentIsOpen{ nullptr };
+		ITEM_TYPE*  pParentItemType{ nullptr };
 	}DESC;
 
 private:
@@ -25,6 +26,12 @@ public:
 	virtual LIFE Update(_float fTimeDelta) override;
 	virtual void Late_Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
+
+private:
+	ITEM_TYPE*  m_pParentItemType = { nullptr };
+	_bool*		m_pParentIsOpen = { nullptr };
+	_float		m_fTimeAcc = {};
+	_bool		m_isExpired = { false };
 
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;

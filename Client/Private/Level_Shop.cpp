@@ -242,6 +242,7 @@ HRESULT CLevel_Shop::Load_Map(const _wstring& strMapFileTag)
 		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fSpeedPerSec), sizeof(_float));
 		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fRotationPerSec), sizeof(_float));
 		LoadFile.read(reinterpret_cast<_char*>(&tDesc.iNumPartObjects), sizeof(_uint));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.eType), sizeof(ITEM_TYPE));
 
 		tDesc.WorldMatrix = XMLoadFloat4x4(&WorldMatrix);
 

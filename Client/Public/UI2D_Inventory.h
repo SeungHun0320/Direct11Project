@@ -24,10 +24,6 @@ public:
 		SLOT_WEAPON0, SLOT_WEAPON1, SLOT_WEAPON2, SLOT_END
 	};
 
-	enum ITEMS {
-		BERRY, BLUEBERRY, COIN_QUESTION, FIRE_CRACKER, SHILED, STICK, DAGGER, SWORD, ITEMS_END
-	};
-
 public:
 	typedef struct tagUI2DInventoryDesc : public CUIContainerPart::DESC
 	{
