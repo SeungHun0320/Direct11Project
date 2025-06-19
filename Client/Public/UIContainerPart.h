@@ -28,8 +28,8 @@ public:
 	virtual HRESULT Render() override;
 
 public:
-	virtual void Set_UIVisible(_uint iPart, _bool isVisible) {};
-	virtual void Set_TextureIndex(_uint iPart, _uint iTextureIdx) {};
+	void Set_UIVisible(_uint iPart, _bool isVisible);
+	void Set_TextureIndex(_uint iPart, _uint iTextureIdx);
 
 protected:
 	_uint				 m_iNumPartObjects = {};

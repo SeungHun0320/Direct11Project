@@ -29,10 +29,6 @@ public:
 	virtual void Late_Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
-public:
-	virtual void Set_UIVisible(_uint iPart, _bool isVisible) override;
-	virtual void Set_TextureIndex(_uint iPart, _uint iTextureIdx)override;
-
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;
 	virtual HRESULT Ready_PartObjects() override;

@@ -59,16 +59,6 @@ HRESULT CUI3D_Interaction::Render()
 	return S_OK;
 }
 
-void CUI3D_Interaction::Set_UIVisible(_uint iPart, _bool isVisible)
-{
-	static_cast<CUI*>(m_PartObjects[iPart])->Set_Visible(isVisible);
-}
-
-void CUI3D_Interaction::Set_TextureIndex(_uint iPart, _uint iTextureIdx)
-{
-	static_cast<CUI*>(m_PartObjects[iPart])->Set_TextureIndex(iTextureIdx);
-}
-
 HRESULT CUI3D_Interaction::Ready_Components(void* pArg)
 {
 	return S_OK;

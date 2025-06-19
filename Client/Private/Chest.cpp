@@ -83,15 +83,15 @@ HRESULT CChest::Ready_PartObjects()
 	if (FAILED(__super::Add_PartObject(PART_INTERACTION, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_UI3D_Interaction"), &InteractionDesc)))
 		return E_FAIL;
 
-	CUI2D_Interaction::DESC InteractionDesc{};
+	//CUI3D_Interaction::DESC InteractionDesc{};
 
-	InteractionDesc.pParentLevelID = &m_eLevelID;
-	InteractionDesc.iNumPartObjects = CUI3D_Interaction::PART_END;
-	InteractionDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
-	InteractionDesc.pParentIsCollisioned = &m_isCollision;
+	//InteractionDesc.pParentLevelID = &m_eLevelID;
+	//InteractionDesc.iNumPartObjects = CUI3D_Interaction::PART_END;
+	//InteractionDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	//InteractionDesc.pParentIsCollisioned = &m_isCollision;
 
-	if (FAILED(__super::Add_PartObject(PART_INTERACTION, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_UI3D_Interaction"), &InteractionDesc)))
-		return E_FAIL;
+	//if (FAILED(__super::Add_PartObject(PART_INTERACTION, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_UI3D_Interaction"), &InteractionDesc)))
+	//	return E_FAIL;
 
 	return S_OK;
 }

@@ -38,7 +38,6 @@ public:
 private:
 	_int m_iCoin = {};
 
-
 private:
 	virtual HRESULT Ready_Components(void* pArg);
 

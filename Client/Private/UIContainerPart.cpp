@@ -1,6 +1,7 @@
 #include "UIContainerPart.h"
 #include "GameInstance.h"
 
+#include "UI.h"
 CUIContainerPart::CUIContainerPart(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CPartObject{ pDevice, pContext }
 {
@@ -76,6 +77,16 @@ void CUIContainerPart::Late_Update(_float fTimeDelta)
 HRESULT CUIContainerPart::Render()
 {
 	return S_OK;
+}
+
+void CUIContainerPart::Set_UIVisible(_uint iPart, _bool isVisible)
+{
+	static_cast<CUI*>(m_PartObjects[iPart])->Set_Visible(isVisible);
+}
+
+void CUIContainerPart::Set_TextureIndex(_uint iPart, _uint iTextureIdx)
+{
+	static_cast<CUI*>(m_PartObjects[iPart])->Set_TextureIndex(iTextureIdx);
 }
 
 HRESULT CUIContainerPart::Add_PartObject(_uint iPartID, _uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, void* pArg)

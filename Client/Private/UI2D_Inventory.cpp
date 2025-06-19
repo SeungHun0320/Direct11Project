@@ -79,16 +79,6 @@ HRESULT CUI2D_Inventory::Render()
 	return S_OK;
 }
 
-void CUI2D_Inventory::Set_UIVisible(_uint iPart, _bool isVisible)
-{
-	static_cast<CUI*>(m_PartObjects[iPart])->Set_Visible(isVisible);
-}
-
-void CUI2D_Inventory::Set_TextureIndex(_uint iPart, _uint iTextureIdx)
-{
-	static_cast<CUI*>(m_PartObjects[iPart])->Set_TextureIndex(iTextureIdx);
-}
-
 void CUI2D_Inventory::Key_Input()
 {
 	if (KEY_DOWN(DIK_UP))

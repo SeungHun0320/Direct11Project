@@ -34,9 +34,6 @@ public:
 	virtual void Late_Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
-public:
-	virtual void Set_UIVisible(_uint iPart, _bool isVisible) override;
-
 private:
 	_float* m_pParentMana = { nullptr };
 	_float* m_pParentMaxMana = { nullptr };

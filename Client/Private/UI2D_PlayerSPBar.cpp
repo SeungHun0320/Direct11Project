@@ -96,11 +96,6 @@ HRESULT CUI2D_PlayerSPBar::Render()
 	return S_OK;
 }
 
-void CUI2D_PlayerSPBar::Set_UIVisible(_uint iPart, _bool isVisible)
-{
-	static_cast<CUI*>(m_PartObjects[iPart])->Set_Visible(isVisible);
-}
-
 HRESULT CUI2D_PlayerSPBar::Ready_Components(void* pArg)
 {
 	return S_OK;

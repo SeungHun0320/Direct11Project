@@ -82,16 +82,6 @@ void CUI2D_InventorySlot::Set_Selected(_bool isSelected)
     Set_UIVisible(PART_SELECTOR, isSelected);
 }
 
-void CUI2D_InventorySlot::Set_UIVisible(_uint iPart, _bool isVisible)
-{
-    static_cast<CUI*>(m_PartObjects[iPart])->Set_Visible(isVisible);
-}
-
-void CUI2D_InventorySlot::Set_TextureIndex(_uint iPart, _uint iTextureIdx)
-{
-    static_cast<CUI*>(m_PartObjects[iPart])->Set_TextureIndex(iTextureIdx);
-}
-
 HRESULT CUI2D_InventorySlot::Ready_Components(void* pArg)
 {
     return S_OK;

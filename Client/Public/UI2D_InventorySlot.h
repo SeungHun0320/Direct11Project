@@ -34,10 +34,6 @@ public:
 	void Set_State(STATE eState, _fvector vState);
 	void Set_Selected(_bool isSelected);
 
-public:
-	virtual void Set_UIVisible(_uint iPart, _bool isVisible) override;
-	virtual void Set_TextureIndex(_uint iPart, _uint iTextureIdx)override;
-
 private:
 	_bool* m_pParentIsOnInven = { nullptr };
 

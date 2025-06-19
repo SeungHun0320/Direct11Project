@@ -77,10 +77,6 @@ HRESULT CUI3D_MobHPBar::Render()
 	return S_OK;
 }
 
-void CUI3D_MobHPBar::Set_UIVisible(_uint iPart, _bool isVisible)
-{
-	static_cast<CUI*>(m_PartObjects[iPart])->Set_Visible(isVisible);
-}
 
 HRESULT CUI3D_MobHPBar::Ready_Components(void* pArg)
 {

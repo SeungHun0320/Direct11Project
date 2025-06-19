@@ -720,7 +720,9 @@
     <ClInclude Include="..\public\UI3D_Interaction.h">
       <Filter>02.GameObjects\00.UI\05.Interaction\Interaction</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\UI2D_Reward.h" />
+    <ClInclude Include="..\public\UI2D_Reward.h">
+      <Filter>02.GameObjects\00.UI\05.Interaction\Reward</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1084,7 +1086,9 @@
     <ClCompile Include="..\private\UI3D_Interaction.cpp">
       <Filter>02.GameObjects\00.UI\05.Interaction\Interaction</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\UI2D_Reward.cpp" />
+    <ClCompile Include="..\private\UI2D_Reward.cpp">
+      <Filter>02.GameObjects\00.UI\05.Interaction\Reward</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">

@@ -59,7 +59,7 @@
 #include "Chest.h"
 
 /* 아이템들 */
-#include "Potion.h"
+#include "Item_Potion.h"
 
 #include "UI3D_Interaction.h"
 

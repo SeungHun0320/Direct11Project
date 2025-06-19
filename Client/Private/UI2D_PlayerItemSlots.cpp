@@ -56,16 +56,6 @@ HRESULT CUI2D_PlayerItemSlots::Render()
 	return __super::Render();
 }
 
-void CUI2D_PlayerItemSlots::Set_UIVisible(_uint iPart, _bool isVisible)
-{
-	static_cast<CUI*>(m_PartObjects[iPart])->Set_Visible(isVisible);
-}
-
-void CUI2D_PlayerItemSlots::Set_TextureIndex(_uint iPart, _uint iTextureIdx)
-{
-	static_cast<CUI*>(m_PartObjects[iPart])->Set_TextureIndex(iTextureIdx);
-}
-
 HRESULT CUI2D_PlayerItemSlots::Ready_Components(void* pArg)
 {
 	return S_OK;

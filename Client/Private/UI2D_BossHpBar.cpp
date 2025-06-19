@@ -74,11 +74,6 @@ HRESULT CUI2D_BossHPBar::Render()
 	return S_OK;
 }
 
-void CUI2D_BossHPBar::Set_UIVisible(_uint iPart, _bool isVisible)
-{
-	static_cast<CUI*>(m_PartObjects[iPart])->Set_Visible(isVisible);
-}
-
 HRESULT CUI2D_BossHPBar::Ready_Components(void* pArg)
 {
 	return S_OK;
