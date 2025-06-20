@@ -8,9 +8,17 @@ BEGIN(Client)
 class CInventory final : public CPartObject
 {
 public:
+	enum SLOT {
+		SLOT_PASSIVEITEM = 0,
+		SLOT_USEITEM0, SLOT_USEITEM1, SLOT_USEITEM2, SLOT_USEITEM3,
+		SLOT_WEAPON0, SLOT_WEAPON1, SLOT_WEAPON2, SLOT_END
+	};
+
+public:
 	typedef struct tagInventoryDesc : public CPartObject::DESC
 	{
 		LEVEL* pParentLevelID;
+		_bool* pParentIsOnInven{ nullptr };
 	}DESC;
 
 private:
@@ -27,7 +35,9 @@ public:
 	virtual HRESULT Render() override;
 
 public: /* 이벤트 매니저 용 */
+	void Subscribe_Events();
 	void Acquire_Potion();
+	void Acquire_Shield(_bool isShield);
 
 
 public: /* 코인 */
@@ -48,11 +58,18 @@ public: /* 포션 */
 
 public: /* 방패 */
 	_bool Get_isShield() const { return m_isShield; }
+	void  Set_isShield(_bool isShield) { m_isShield = isShield; }
+
+public: /* 무기들 */
+
+public: /* 사용아이템들 */
+
+public: /* 아이템 선택관련 */
+	_int Get_SeletSlotIndex() const { return m_iSelectSlotIndex; }
 
 
 private:
 	LEVEL* m_pLevelID = { nullptr };
-
 
 private: /* 코인 */
 	_int m_iCoin = {};
@@ -64,6 +81,24 @@ private: /* 포션 */
 
 private: /* 방패 소유중? */
 	_bool  m_isShield = { false };
+
+private: /* 무기 */
+	_bool m_bHasWeapon[3] = {};
+	ITEM_TYPE m_eWeaponSlot[3] = {};
+private: /* 사용 아이템 */
+	_bool m_bHasUseItem[3] = {};
+	ITEM_TYPE m_eUseItemSlot[3] = {};
+
+private: /* 아이템 선택관련 */
+	_int m_iSelectSlotIndex = {1};
+
+private:
+	_bool* m_pParentIsOnInven = { nullptr };
+
+private: /* 키입력 */
+	void Key_Input();
+	void Move_Selector(_uint iSlotIndex);
+
 
 private:
 	virtual HRESULT Ready_Components(void* pArg);

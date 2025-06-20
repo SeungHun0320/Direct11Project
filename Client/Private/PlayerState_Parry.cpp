@@ -17,7 +17,7 @@ void CPlayerState_Parry::Enter(_float fTimeDelta)
 
 void CPlayerState_Parry::Execute(_float fTimeDelta)
 {
-	if (!m_pOwner->Get_IsShield())
+	if (!m_pOwner->Has_Shield())
 		m_pOwner->Change_States(CPlayer::STATES::MOVE);
 
 	m_fTimeAcc += fTimeDelta;

@@ -33,12 +33,9 @@ protected:
 	virtual ~CUI() = default;
 
 public:
-	void Set_Visible(_bool isVisible){
-		m_bVisible = isVisible;	};
-
-	void Set_TextureIndex(_uint iTextureIdx) {
-		m_iTextureIndex = iTextureIdx;
-	}
+	_bool Get_Visible() const { return m_isVisible; }
+	void Set_Visible(_bool isVisible){	m_isVisible = isVisible;	}
+	void Set_TextureIndex(_uint iTextureIdx) { m_iTextureIndex = iTextureIdx; }
 
 public:
 	virtual HRESULT Initialize_Prototype(UI_TYPE eType);
@@ -54,7 +51,6 @@ public:
 	_matrix Get_CombinedMatrix();
 	void Set_State(STATE eState, _fvector vState);
 
-
 protected:
 	CShader*		   m_pShaderCom   = { nullptr };
 	CTexture*		   m_pTextureCom  = { nullptr };
@@ -66,7 +62,7 @@ protected:
 	UI_PASS	    m_eUIPass = { PASS_END };
 
 protected:
-	_bool  m_bVisible = { true };
+	_bool  m_isVisible = { true };
 	_uint  m_iTextureIndex = {};
 
 protected:

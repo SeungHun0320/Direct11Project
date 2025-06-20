@@ -56,7 +56,7 @@ HRESULT CUI::Initialize(void* pArg)
 
 void CUI::Priority_Update(_float fTimeDelta)
 {
-	if (!m_bVisible)
+	if (!m_isVisible)
 		return;
 
 	if (UI_TYPE::UI3D == m_eType)
@@ -88,7 +88,7 @@ void CUI::Priority_Update(_float fTimeDelta)
 
 LIFE CUI::Update(_float fTimeDelta)
 {
-	if (!m_bVisible)
+	if (!m_isVisible)
 		return LIFE::NONE;
 
 	if (m_eType == UI_TYPE::UI3D)
@@ -105,7 +105,7 @@ LIFE CUI::Update(_float fTimeDelta)
 
 void CUI::Late_Update(_float fTimeDelta)
 {
-	if(m_bVisible)
+	if(m_isVisible)
 		m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);
 }
 

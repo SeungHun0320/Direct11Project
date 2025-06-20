@@ -44,7 +44,7 @@ void CPlayerState_Move::Execute(_float fTimeDelta)
 		
 	m_pOwner->Use_Potion();
 
-	if (m_pOwner->KeyDown(DIK_SEMICOLON))
+	if (m_pOwner->KeyDown(DIK_SEMICOLON) && m_pOwner->Has_Shield())
 		m_pOwner->Change_States(CPlayer::STATES::PARRY);
 
 	if (!m_pOwner->IsAnyMoveKeyPressed())

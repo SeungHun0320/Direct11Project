@@ -18,12 +18,6 @@ public:
 		PART_TAB, PART_LINE, PART_HEXAGON, PART_COINICON,
 		PART_END };
 
-	enum SLOT {
-		SLOT_PASSIVEITEM,
-		SLOT_USEITEM0, SLOT_USEITEM1, SLOT_USEITEM2, SLOT_USEITEM3,
-		SLOT_WEAPON0, SLOT_WEAPON1, SLOT_WEAPON2, SLOT_END
-	};
-
 public:
 	typedef struct tagUI2DInventoryDesc : public CUIContainerPart::DESC
 	{
@@ -52,15 +46,12 @@ private:
 	_bool* m_pParentIsOnInven = { nullptr };
 
 private:
-	_int m_iSelectSlotIndex{};
-
 	_uint m_iNumInvenSlots{};
 	vector<class CUI2D_InventorySlot*> m_InvenSlots;
 
-
 private:
-	void Key_Input();
-
+	void Update_Seletor();
+	void Update_Shield();
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;
 	virtual HRESULT Ready_PartObjects() override;

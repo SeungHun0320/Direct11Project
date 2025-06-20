@@ -108,7 +108,6 @@ HRESULT CPlayer::Initialize_Prototype()
 
 HRESULT CPlayer::Initialize(void* pArg)
 {
-
 	/* Ã¼·Â */
 	m_fHp = 100.f;
 	m_fHPRecorveryStat = 20.f;
@@ -140,13 +139,14 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 	for (_uint i = 0; i < CPlayer::MESHES_END; i++)
 	{
-		if (i == CPlayer::MESH_SHILED && Get_IsShield())
+		if (i == CPlayer::MESH_SHILED && Has_Shield())
 			continue;
 
 		m_PartObjects[PART_BODY]->Set_MeshVisible(i, true);
 	}
 
 	Set_SavePosition();
+	Subscribe_Events();
 
 	Set_AttackStrategy(new CPlayer_SwordAttack(3, WEAPON_TYPE::SWORD));
 	m_fAttack = m_pAttackStrategy->Get_Attack();
@@ -464,7 +464,7 @@ void CPlayer::SetUp_AttackMeshVisible(WEAPON_TYPE eWeaponType)
 {
 	for (_uint i = 0; i < MESHES_END; i++)
 	{
-		if (i == MESH_SHILED && Get_IsShield())
+		if (i == MESH_SHILED && Has_Shield())
 			continue;
 		Set_MeshVisible(PART_BODY, i, true);
 	}
@@ -572,6 +572,18 @@ _bool CPlayer::IsMoveKeyPressed()
 		KEY_PRESSING(DIK_S) || KEY_PRESSING(DIK_D);
 }
 
+void CPlayer::Subscribe_Events()
+{
+	Delegate<> InvenPotionDele;
+	InvenPotionDele.Bind<CPlayer, &CPlayer::Equip_Shield>(this);
+	m_pGameInstance->Subscribe_Event(TEXT("Equip_Shield"), InvenPotionDele);
+}
+
+void CPlayer::Equip_Shield()
+{
+	m_PartObjects[PART_BODY]->Set_MeshVisible(MESH_SHILED, false);
+}
+
 _bool CPlayer::IsLockOn() const
 {
 	return KEY_PRESSING(DIK_LSHIFT);
@@ -593,10 +605,20 @@ void CPlayer::Use_Stamina(_float fStamina)
 	m_fStamina -= fStamina;
 	m_fStamina = max(m_fStamina, 0);
 
-	if (!m_isUseStamina)
+	m_isUseStamina = true;
+	m_fStaminaDelayTimeAcc = 0.f;
+	m_fStamina <= 0.f ? m_fStaminaDelayTime = 3.f : m_fStaminaDelayTime = 1.5f;
+}
+
+void CPlayer::Stamina_Recovery(_float fTimeDelta)
+{
+	m_fStaminaDelayTimeAcc += fTimeDelta;
+
+	if (m_fStaminaDelayTime <= m_fStaminaDelayTimeAcc)
 	{
-		m_isUseStamina = true;
-		m_fStaminaDelayTimeAcc = 0.f;
+		m_fStamina += m_fStaminaRecoveryPerSec * fTimeDelta;
+		m_fStamina = min(m_fStamina, m_fMaxStamina);
+		m_isUseStamina = false;
 	}
 }
 
@@ -606,25 +628,12 @@ void CPlayer::Use_Mana(_float fMana)
 	m_fMana = max(m_fMana, 0);
 }
 
-_bool CPlayer::Get_IsShield() const
+_bool CPlayer::Has_Shield() const
 {
 	return m_pInventory->Get_isShield();
 }
 
-void CPlayer::Stamina_Recovery(_float fTimeDelta)
-{
-	m_fStaminaDelayTimeAcc += fTimeDelta;
 
-	_float fStaminaDelayTime{};
-	m_fStamina <= 0.f ? fStaminaDelayTime = 3.f : fStaminaDelayTime = 1.5f;
-
-	if (fStaminaDelayTime < m_fStaminaDelayTimeAcc)
-	{
-		m_fStamina += m_fStaminaRecoveryPerSec * fTimeDelta;
-		m_fStamina = min(m_fStamina, m_fMaxStamina);
-		m_isUseStamina = false;
-	}
-}
 
 void CPlayer::Mana_Recovery(_float fTimeDelta)
 {
@@ -907,6 +916,7 @@ HRESULT CPlayer::Ready_PartObjects()
 	CInventory::DESC InvenDesc{};
 
 	InvenDesc.pParentLevelID = &eLevelID;
+	InvenDesc.pParentIsOnInven = &m_isOnInven;
 
 	if (FAILED(__super::Add_PartObject(PART_INVEN, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Inventory"), &InvenDesc)))
 		return E_FAIL;
@@ -944,12 +954,6 @@ HRESULT CPlayer::Ready_PartObjects()
 
 	if (FAILED(__super::Add_PartObject(PART_UIINVEN, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_Inventory"), &UIInvenDesc)))
 		return E_FAIL;
-
-	m_pUI2DInventory = dynamic_cast<CUI2D_Inventory*>(m_PartObjects[PART_UIINVEN]);
-	if (nullptr == m_pUI2DInventory)
-		return E_FAIL;
-
-	Safe_AddRef(m_pUI2DInventory);
 
 	return S_OK;
 }
@@ -1021,7 +1025,6 @@ void CPlayer::Free()
 	__super::Free();
 
 	Safe_Release(m_pWeaponPart);
-	Safe_Release(m_pUI2DInventory);
 	Safe_Release(m_pInventory);
 
 	Safe_Release(m_pCurState);
@@ -1032,5 +1035,4 @@ void CPlayer::Free()
 
 	for (_uint i = 0; i < ENUM_CLASS(STATES::STATES_END); i++)
 		Safe_Release(m_pStates[i]);
-
 }

@@ -125,42 +125,34 @@ public: /* 키입력에 따른 방향을 결정해주는 함수 */
 	_vector Get_InputDirection();
 	_vector Get_InputDirectionEx();
 
+public: /* 이벤트 매니저 관련 */
+	void  Subscribe_Events();
+	void  Equip_Shield();
 
 public: /* 스테이트 갖고오기 */
-	STATES Get_CurState() {
-		return m_eCurState;
-	}
-	STATES Get_PreState() {
-		return m_ePreState;
-	}
+	STATES Get_CurState() {	return m_eCurState; }
+	STATES Get_PreState() { return m_ePreState; }
 
 	_float Compute_StaggerValue() const;
 
 	/* 스태미나 */
-	_float Get_Stamina() const {
-		return m_fStamina;
-	}
+	_float Get_Stamina() const { return m_fStamina; }
 	void Use_Stamina(_float fStamina);
+
 	/* 마나 */
 	void Use_Mana(_float fMana);
 
 	/* 방패 관련 */
-	_bool Get_IsShield() const;
+	_bool Has_Shield() const;
 
     /* 타깃 관련 */
-	_bool Get_IsTarget() const {
-		return m_isTarget;
-	}
-
-	_float Get_FindDistance() const {
-		return m_fFindDistance;
-	}
+	_bool Get_IsTarget() const { return m_isTarget; }
+	_float Get_FindDistance() const { return m_fFindDistance; }
 
 public: /* 전략패턴 트라이 */
 	void Set_AttackStrategy(class CPlayer_IAttackStrategy* pStrategy);
 	class CPlayer_IAttackStrategy* Get_AttackStrategy() const {
-		return m_pAttackStrategy;
-	};
+		return m_pAttackStrategy; }
 
 /* 실제 플레이어 상태관련  */
 private: /* 체력 */
@@ -174,6 +166,7 @@ private: /* 스태미나 */
 	_float m_fStaminaTimeAcc = {};
 	_bool  m_isUseStamina = { false };
 	_float m_fStaminaDelayTimeAcc = {};
+	_float m_fStaminaDelayTime = {};
 
 private: /* 마나 */
 	_float m_fMana = {};
@@ -207,8 +200,6 @@ private: /* 락온 상태관련 변수들 */
 
 private: /* 매번 캐스팅 해주기 싫어서 따로 변수로 받아왔음 */
 	class CWeapon_Player*	  m_pWeaponPart = { nullptr };
-	class CUI2D_PlayerPotion* m_pUI2DPotion = { nullptr };
-	class CUI2D_Inventory*    m_pUI2DInventory = { nullptr };
 	class CInventory*		  m_pInventory = { nullptr };
 
 private: /* 실제 플레이어 상태 관련 */

@@ -11,23 +11,23 @@ CPlayerState_Dodge::CPlayerState_Dodge(CPlayer* pOwner)
 
 void CPlayerState_Dodge::Enter(_float fTimeDelta)
 {
-	if (0 >= m_pOwner->Get_Stamina())
-	{
-		m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::FAIL_DODGE, false, 0.1f);
-		m_fDuration = 0.75f;
-	}
-	else
+	if (0.f < m_pOwner->Get_Stamina())
 	{
 		m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::DODGE, false, 0.1f);
 		m_fDuration = 0.7f;
 		m_pOwner->Set_Active(CPlayer::PART_BODY, false);
 	}
+	else
+	{
+		m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::FAIL_DODGE, false, 0.1f);
+		m_fDuration = 0.75f;
+	}
 
 	m_fTimeAcc = 0.f;
 
-	XMStoreFloat3(&m_vInputDir, m_pOwner->Get_InputDirectionEx());
-
 	m_pOwner->Use_Stamina(25.f);
+
+	XMStoreFloat3(&m_vInputDir, m_pOwner->Get_InputDirectionEx());
 }
 
 void CPlayerState_Dodge::Execute(_float fTimeDelta)

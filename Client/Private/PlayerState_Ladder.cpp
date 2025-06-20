@@ -82,7 +82,7 @@ void CPlayerState_OnLadder::Exit()
 	m_fTimeAcc = 0.f;
 	m_fDuration = 0.f;
 
-	if (m_pOwner->Get_IsShield())
+	if (m_pOwner->Has_Shield())
 		m_pOwner->Set_MeshVisible(CPlayer::PART_BODY, CPlayer::MESH_SHILED, false);
 }
 
@@ -135,7 +135,7 @@ void CPlayerState_OffLadder::Exit()
 	m_fTimeAcc = 0.f;
 	m_fDuration = 0.f;
 
-	if (m_pOwner->Get_IsShield())
+	if (m_pOwner->Has_Shield())
 		m_pOwner->Set_MeshVisible(CPlayer::PART_BODY, CPlayer::MESH_SHILED, false);
 
 }

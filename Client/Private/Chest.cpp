@@ -93,9 +93,7 @@ void CChest::On_Opened()
 		}
 	}
 	else
-	{
-		/* 인벤토리에 아이템 지급(이벤트매니저로 처리 고고) */
-	}
+		Give_Item();
 
 	m_IsOpend = true;
 }
@@ -104,7 +102,7 @@ HRESULT CChest::Spawn_Coin(const _float3& vSpawnPos)
 {
 	CItem_Coin::DESC tDesc{};
 	tDesc.eLevelID = m_eLevelID;
-	tDesc.fSpeedPerSec = 7.5f;
+	tDesc.fSpeedPerSec = 10.f;
 	tDesc.iNumPartObjects = CItem_Coin::PART_END;
 	tDesc.WorldMatrix = XMMatrixTranslation(vSpawnPos.x , vSpawnPos.y, vSpawnPos.z);
 
@@ -113,6 +111,36 @@ HRESULT CChest::Spawn_Coin(const _float3& vSpawnPos)
 		return E_FAIL;
 
 	return S_OK;
+}
+
+void CChest::Give_Item()
+{
+	switch (m_eType)
+	{
+	case ITEM_TYPE::BERRY:
+		break;
+	case ITEM_TYPE::BLUEBERRY:
+		break;
+	case ITEM_TYPE::COIN_QUESTION:
+		break;
+	case ITEM_TYPE::DAGGER:
+		break;
+	case ITEM_TYPE::FIRE_CRACKER:
+		break;
+	case ITEM_TYPE::POTION:
+		m_pGameInstance->Publish_Event(TEXT("Acquire_Potion"));
+		break;
+	case ITEM_TYPE::SWORD:
+		break;
+	case ITEM_TYPE::SHILED:
+		m_pGameInstance->Publish_Event(TEXT("Acquire_Shield"), true);
+		m_pGameInstance->Publish_Event(TEXT("Equip_Shield"));
+		break;
+	case ITEM_TYPE::STICK:
+		break;
+	default:
+		break;
+	}
 }
 
 HRESULT CChest::Ready_Components(void* pArg)

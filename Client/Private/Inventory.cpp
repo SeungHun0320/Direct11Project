@@ -23,6 +23,7 @@ HRESULT CInventory::Initialize(void* pArg)
     DESC* pDesc = static_cast<DESC*>(pArg);
 
     m_pLevelID = pDesc->pParentLevelID;
+    m_pParentIsOnInven = pDesc->pParentIsOnInven;
     
     /* 코인 */
     m_iCoin = 0;
@@ -31,20 +32,20 @@ HRESULT CInventory::Initialize(void* pArg)
     m_iNumPotion = 2;
     m_iCurNumPotion = 2;
 
-    /* 방패 */
-    m_isShield = true;
-
     if (FAILED(__super::Initialize(pArg)))
         return E_FAIL;
 
     if (FAILED(Ready_Components(pArg)))
         return E_FAIL;
 
+    Subscribe_Events();
+
     return S_OK;
 }
 
 void CInventory::Priority_Update(_float fTimeDelta)
 {
+    Key_Input();
 }
 
 LIFE CInventory::Update(_float fTimeDelta)
@@ -61,9 +62,25 @@ HRESULT CInventory::Render()
     return S_OK;
 }
 
+void CInventory::Subscribe_Events()
+{
+    Delegate<> InvenPotionDele;
+    InvenPotionDele.Bind<CInventory, &CInventory::Acquire_Potion>(this);
+    m_pGameInstance->Subscribe_Event(TEXT("Acquire_Potion"), InvenPotionDele);
+
+    Delegate<_bool> InvenShiledDele;
+    InvenShiledDele.Bind<CInventory, &CInventory::Acquire_Shield>(this);
+    m_pGameInstance->Subscribe_Event(TEXT("Acquire_Shield"), InvenShiledDele);
+}
+
 void CInventory::Acquire_Potion()
 {
     Add_Potion();
+}
+
+void CInventory::Acquire_Shield(_bool isShield)
+{
+    Set_isShield(isShield);
 }
 
 _bool CInventory::Add_Potion(_int iCount)
@@ -84,6 +101,27 @@ _bool CInventory::Use_Potion()
 
     m_iCurNumPotion = max(m_iCurNumPotion - 1, 0);
     return true;
+}
+
+void CInventory::Key_Input()
+{
+    if (!(*m_pParentIsOnInven))
+        return;
+
+    if (KEY_DOWN(DIK_UP))
+        Move_Selector(+1);
+    if (KEY_DOWN(DIK_DOWN))
+        Move_Selector(-1);
+    if (KEY_DOWN(DIK_LEFT))
+        Move_Selector(-1);
+    if (KEY_DOWN(DIK_RIGHT))
+        Move_Selector(+1);
+}
+
+void CInventory::Move_Selector(_uint iSlotIndex)
+{
+    m_iSelectSlotIndex += iSlotIndex;
+    m_iSelectSlotIndex = clamp(m_iSelectSlotIndex, 1, (_int)SLOT_END - 1);
 }
 
 HRESULT CInventory::Ready_Components(void* pArg)

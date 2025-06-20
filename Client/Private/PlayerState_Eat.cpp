@@ -15,7 +15,7 @@ void CPlayerState_Eat::Enter(_float fTimeDelta)
 
 	for (_uint i = 0; i < CPlayer::MESHES_END; i++)
 	{
-		if (i == CPlayer::MESH_SHILED && m_pOwner->Get_IsShield())
+		if (i == CPlayer::MESH_SHILED && m_pOwner->Has_Shield())
 			continue;
 
 		m_pOwner->Set_MeshVisible(CPlayer::PART_BODY, i, true);

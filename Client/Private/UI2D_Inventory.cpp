@@ -42,16 +42,16 @@ HRESULT CUI2D_Inventory::Initialize(void* pArg)
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
 
-	m_InvenSlots[SLOT_PASSIVEITEM]->Set_State(STATE::POSITION, XMVectorSet(0.f, 80.f, 0.f, 1.f));
+	m_InvenSlots[CInventory::SLOT_PASSIVEITEM]->Set_State(STATE::POSITION, XMVectorSet(0.f, 80.f, 0.f, 1.f));
 
-	for (_uint i = 0; i < SLOT_USEITEM3; i++)
-		m_InvenSlots[SLOT_USEITEM0 + i]->Set_State(STATE::POSITION, XMVectorSet((80.f * i), -65.f, 0.f, 1.f));
+	for (_uint i = 0; i < CInventory::SLOT_USEITEM3; i++)
+		m_InvenSlots[CInventory::SLOT_USEITEM0 + i]->Set_State(STATE::POSITION, XMVectorSet((80.f * i), -65.f, 0.f, 1.f));
 
 	for(_uint i = 0; i < 3; i++)
-		m_InvenSlots[SLOT_WEAPON0 + i]->Set_State(STATE::POSITION, XMVectorSet((80.f * i), -240.f, 0.f, 1.f));
+		m_InvenSlots[CInventory::SLOT_WEAPON0 + i]->Set_State(STATE::POSITION, XMVectorSet((80.f * i), -240.f, 0.f, 1.f));
 
 
-	m_InvenSlots[SLOT_USEITEM0]->Set_Selected(true);
+	m_InvenSlots[CInventory::SLOT_USEITEM0]->Set_Selected(true);
 
 	return S_OK;
 }
@@ -60,8 +60,6 @@ void CUI2D_Inventory::Priority_Update(_float fTimeDelta)
 {
 	if (!(*m_pParentIsOnInven))
 		return;
-
-	Key_Input();
 
 	__super::Priority_Update(fTimeDelta);
 }
@@ -79,6 +77,9 @@ void CUI2D_Inventory::Late_Update(_float fTimeDelta)
 	if (!(*m_pParentIsOnInven))
 		return;
 
+	Update_Seletor();
+	Update_Shield();
+
 	__super::Late_Update(fTimeDelta);
 
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);
@@ -94,29 +95,22 @@ HRESULT CUI2D_Inventory::Render()
 	return S_OK;
 }
 
-void CUI2D_Inventory::Key_Input()
+void CUI2D_Inventory::Update_Seletor()
 {
-	if (KEY_DOWN(DIK_UP))
-		Move_Selector(+1);
-	if (KEY_DOWN(DIK_DOWN))
-		Move_Selector(-1);
-	if(KEY_DOWN(DIK_LEFT))
-		Move_Selector(-1);
-	if(KEY_DOWN(DIK_RIGHT))
-		Move_Selector(+1);
+	for (auto& pSlot : m_InvenSlots)
+		pSlot->Set_Selected(false);
+
+	m_InvenSlots[m_pInventory->Get_SeletSlotIndex()]->Set_Selected(true);
 }
 
-void CUI2D_Inventory::Move_Selector(_uint iSlotIndex)
+void CUI2D_Inventory::Update_Shield()
 {
-	if (m_InvenSlots.empty())
-		return;
+	if (m_pInventory->Get_isShield())
+	{
+		m_InvenSlots[CInventory::SLOT_PASSIVEITEM]->Set_UIVisible(CUI2D_InventorySlot::PART_ITEMS, true);
+		m_InvenSlots[CInventory::SLOT_PASSIVEITEM]->Set_TextureIndex(CUI2D_InventorySlot::PART_ITEMS, ENUM_CLASS(ITEM_TYPE::SHILED));
+	}
 
-	m_InvenSlots[m_iSelectSlotIndex]->Set_Selected(false);
-
-	m_iSelectSlotIndex += iSlotIndex;
-	m_iSelectSlotIndex = clamp(m_iSelectSlotIndex, 1, (_int)SLOT_END - 1);
-
-	m_InvenSlots[m_iSelectSlotIndex]->Set_Selected(true);
 }
 
 HRESULT CUI2D_Inventory::Ready_Components(void* pArg)

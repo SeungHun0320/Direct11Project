@@ -40,6 +40,7 @@ private:
 private:
 	void On_Opened();
 	HRESULT Spawn_Coin(const _float3& vSpawnPos);
+	void Give_Item();
 
 private:
 	virtual HRESULT Ready_Components(void* pArg);
