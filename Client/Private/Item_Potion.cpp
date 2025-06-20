@@ -1,6 +1,8 @@
 #include "Item_Potion.h"
 #include "GameInstance.h"
 
+/* 갈아엎으셔야 합니다 감사합니다 */
+
 CItem_Potion::CItem_Potion(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CItem{ pDevice, pContext }
 {
@@ -52,11 +54,11 @@ HRESULT CItem_Potion::Ready_Components(void* pArg)
 	if (__super::Ready_Components(pArg))
 		return E_FAIL;
 
-	/* For.Com_Model */
-	if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Model_Potion"),
-		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
-		return E_FAIL;
+	return S_OK;
+}
 
+HRESULT CItem_Potion::Ready_PartObjects()
+{
 	return S_OK;
 }
 

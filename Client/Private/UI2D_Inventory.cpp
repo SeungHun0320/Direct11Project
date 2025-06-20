@@ -4,6 +4,8 @@
 #include "UI.h"
 #include "UI2D_InventorySlot.h"
 
+#include "Inventory.h"
+
 CUI2D_Inventory::CUI2D_Inventory(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CUIContainerPart{ pDevice, pContext }
 {
@@ -24,6 +26,12 @@ HRESULT CUI2D_Inventory::Initialize(void* pArg)
 	DESC* pDesc = static_cast<DESC*>(pArg);
 
 	m_pParentIsOnInven = pDesc->pParentIsOnInven;
+	m_pInventory = pDesc->pInventory;
+
+	if (nullptr == m_pInventory)
+		return E_FAIL;
+
+	Safe_AddRef(m_pInventory);
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -72,10 +80,17 @@ void CUI2D_Inventory::Late_Update(_float fTimeDelta)
 		return;
 
 	__super::Late_Update(fTimeDelta);
+
+	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);
 }
 
 HRESULT CUI2D_Inventory::Render()
 {
+	_int iCoin = m_pInventory->Get_Coin();
+	const wstring& strCoin = to_wstring(iCoin);
+
+	m_pGameInstance->Draw_Font(TEXT("Font_Money"), strCoin.c_str(), _float2(220.f, 132.5f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+
 	return S_OK;
 }
 
@@ -133,6 +148,7 @@ HRESULT CUI2D_Inventory::Ready_PartObjects()
 		SlotDesc.pParentLevelID = m_pLevelID;
 		SlotDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
 		SlotDesc.pParentIsOnInven = m_pParentIsOnInven;
+		SlotDesc.pInventory = m_pInventory;
 
 		if (FAILED(__super::Add_PartObject(i, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_InventorySlot"), &SlotDesc)))
 			return E_FAIL;
@@ -296,8 +312,9 @@ void CUI2D_Inventory::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pInventory);
+
 	for (auto& pInvenSlot : m_InvenSlots)
 		Safe_Release(pInvenSlot);
-
 	m_InvenSlots.clear();
 }

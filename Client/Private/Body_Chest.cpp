@@ -95,7 +95,8 @@ void CBody_Chest::Chest_Open(_bool isOpen)
     {
         m_isOpened = isOpen;
 
-        // 나중에 뭐 이것저것 해볼만하다고 생각됨
+        // 나중에 뭐 이것저것 해볼만하다고 생각됨 사실 부모쪽에서 해주는게 맞긴함,,
+
     }
 }
 

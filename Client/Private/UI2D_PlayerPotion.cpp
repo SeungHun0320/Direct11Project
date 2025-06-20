@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 
 #include "UI.h"
+#include "Inventory.h"
 
 CUI2D_PlayerPotion::CUI2D_PlayerPotion(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CUIContainerPart{ pDevice, pContext }
@@ -21,9 +22,12 @@ HRESULT CUI2D_PlayerPotion::Initialize_Prototype()
 HRESULT CUI2D_PlayerPotion::Initialize(void* pArg)
 {
 	DESC* pDesc = static_cast<DESC*>(pArg);
+	m_pInventory = pDesc->pInventory;
 
-	m_pParentCurPotion = pDesc->pParentCurPotion;
-	m_pParentNumPotion = pDesc->pParentNumPotion;
+	if (nullptr == m_pInventory)
+		return E_FAIL;
+
+	Safe_AddRef(m_pInventory);
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -34,7 +38,7 @@ HRESULT CUI2D_PlayerPotion::Initialize(void* pArg)
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
 
-	for (_int i = PART_POTION; i >= *m_pParentNumPotion; i--)
+	for (_int i = PART_POTION; i >= m_pInventory->Get_NumPotion(); i--)
 		Set_UIVisible(i, false);
 	
 	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(445, 40.f, 0.f, 1.f));
@@ -54,6 +58,17 @@ LIFE CUI2D_PlayerPotion::Update(_float fTimeDelta)
 
 void CUI2D_PlayerPotion::Late_Update(_float fTimeDelta)
 {
+	_int iCurNumPotion = m_pInventory->Get_CurPotion();
+	_int iNumPotion = m_pInventory->Get_NumPotion();
+
+	Set_UIVisible(iNumPotion - 1, true);
+
+	for (_int i = 0; i < iNumPotion; i++)
+	{
+		Set_TextureIndex(i, i < iCurNumPotion ? 0 : 1);
+	}
+		
+
 	__super::Late_Update(fTimeDelta);
 }
 
@@ -130,4 +145,6 @@ CGameObject* CUI2D_PlayerPotion::Clone(void* pArg)
 void CUI2D_PlayerPotion::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_pInventory);
 }

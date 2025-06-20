@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 
 #include "UI.h"
+#include "Inventory.h"
 
 CUI2D_InventorySlot::CUI2D_InventorySlot(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : CUIContainerPart {pDevice, pContext}
@@ -23,6 +24,12 @@ HRESULT CUI2D_InventorySlot::Initialize(void* pArg)
     DESC* pDesc = static_cast<DESC*>(pArg);
 
     m_pParentIsOnInven = pDesc->pParentIsOnInven;
+    m_pInventory = pDesc->pInventory;
+
+    if (nullptr == m_pInventory)
+        return E_FAIL;
+
+    Safe_AddRef(m_pInventory);
 
     if (FAILED(__super::Initialize(pArg)))
         return E_FAIL;
@@ -34,6 +41,7 @@ HRESULT CUI2D_InventorySlot::Initialize(void* pArg)
         return E_FAIL;
 
     Set_UIVisible(PART_SELECTOR, false);
+    Set_UIVisible(PART_ITEMS, false);
 
     return S_OK;
 }
@@ -160,4 +168,6 @@ CGameObject* CUI2D_InventorySlot::Clone(void* pArg)
 void CUI2D_InventorySlot::Free()
 {
     __super::Free();
+
+    Safe_Release(m_pInventory);
 }

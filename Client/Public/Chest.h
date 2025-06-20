@@ -33,6 +33,13 @@ public: /* Ãæ µ¹ */
 
 private:
 	ITEM_TYPE m_eType = { ITEM_TYPE::IT_END };
+	_bool*    m_pBodyIsOpened = { nullptr };
+	_bool     m_IsOpend = { false };
+	_float    m_fTimeAcc = {};
+
+private:
+	void On_Opened();
+	HRESULT Spawn_Coin(const _float3& vSpawnPos);
 
 private:
 	virtual HRESULT Ready_Components(void* pArg);

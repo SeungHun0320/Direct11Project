@@ -3,10 +3,6 @@
 #include "Client_Defines.h"
 #include "Body_Environment_Object.h"
 
-BEGIN(Engine)
-class CShader;
-class CModel;
-END
 
 BEGIN(Client)
 

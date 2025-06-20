@@ -108,9 +108,6 @@ HRESULT CPlayer::Initialize_Prototype()
 
 HRESULT CPlayer::Initialize(void* pArg)
 {
-	/* 포션 */
-	m_iNumPotion = 2;
-	m_iCurNumPotion = 2;
 
 	/* 체력 */
 	m_fHp = 100.f;
@@ -135,8 +132,6 @@ HRESULT CPlayer::Initialize(void* pArg)
 	/* 타깃 */
 	m_fFindDistance = 20.f;
 
-	m_isShield = true;
-
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
@@ -145,7 +140,7 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 	for (_uint i = 0; i < CPlayer::MESHES_END; i++)
 	{
-		if (i == CPlayer::MESH_SHILED && m_isShield)
+		if (i == CPlayer::MESH_SHILED && Get_IsShield())
 			continue;
 
 		m_PartObjects[PART_BODY]->Set_MeshVisible(i, true);
@@ -445,22 +440,15 @@ void CPlayer::Use_Potion()
 
 	if (KEY_DOWN(DIK_P))
 	{
-		if (m_iNumPotion >= m_iCurNumPotion && 0 < m_iCurNumPotion)
+		if (m_pInventory->Use_Potion())
 		{
 			Change_States(CPlayer::STATES::USE_POTION);
-
-			--m_iCurNumPotion;
-
-			if (0 >= m_iCurNumPotion)
-				m_iCurNumPotion = 0;
 		}
 	}
 }
 
 void CPlayer::Heal()
 {
-	m_pUI2DPotion->Set_TextureIndex(m_iCurNumPotion, 1);
-
 	m_fHp = clamp(m_fHp + m_fHPRecorveryStat, 0.f, m_fMaxHp);
 }
 
@@ -476,7 +464,7 @@ void CPlayer::SetUp_AttackMeshVisible(WEAPON_TYPE eWeaponType)
 {
 	for (_uint i = 0; i < MESHES_END; i++)
 	{
-		if (i == MESH_SHILED && m_isShield)
+		if (i == MESH_SHILED && Get_IsShield())
 			continue;
 		Set_MeshVisible(PART_BODY, i, true);
 	}
@@ -618,6 +606,11 @@ void CPlayer::Use_Mana(_float fMana)
 	m_fMana = max(m_fMana, 0);
 }
 
+_bool CPlayer::Get_IsShield() const
+{
+	return m_pInventory->Get_isShield();
+}
+
 void CPlayer::Stamina_Recovery(_float fTimeDelta)
 {
 	m_fStaminaDelayTimeAcc += fTimeDelta;
@@ -648,9 +641,7 @@ void CPlayer::Active_CheckPoint()
 	m_fMana = m_fMaxMana;
 	m_fStaggerGage = m_fMaxStaggerGage;
 
-	m_iCurNumPotion = m_iNumPotion;
-	for (_int i = 0; i < m_iNumPotion; i++)
-		m_pUI2DPotion->Set_TextureIndex(i, 0);
+	m_pInventory->Refill_Potion();
 
 	m_pGameInstance->Respawn_Objects();
 }
@@ -664,9 +655,7 @@ void CPlayer::Respawn()
 	m_fMana = m_fMaxMana;
 	m_fStaggerGage = m_fMaxStaggerGage;
 
-	m_iCurNumPotion = m_iNumPotion;
-	for (_int i = 0; i < m_iNumPotion; i++)
-		m_pUI2DPotion->Set_TextureIndex(i, 0);
+	m_pInventory->Refill_Potion();
 
 	m_pNavigationCom->Update_CellIndex(XMVectorSetW(XMLoadFloat3(&m_vSavePosition), 1.f));
 
@@ -702,19 +691,7 @@ void CPlayer::Key_Input(_float fTimeDelta)
 		m_fAttack = m_pAttackStrategy->Get_Attack();
 	}
 	if (KEY_DOWN(DIK_4))
-	{
-		m_pUI2DPotion->Set_UIVisible(m_iNumPotion, true);
-		++m_iNumPotion;
-
-		if (m_iMaxNumPotion <= m_iNumPotion)
-			m_iNumPotion = m_iMaxNumPotion;
-
-		m_iCurNumPotion = m_iNumPotion;
-
-		for (_int i = 0; i < m_iNumPotion; i++)
-			m_pUI2DPotion->Set_TextureIndex(i, 0);
-	}
-
+		m_pInventory->Add_Potion();
 	if (KEY_DOWN(DIK_7))
 		Change_States(STATES::DIE);
 
@@ -812,7 +789,17 @@ void CPlayer::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObjec
 	}
 	break;
 	case COLLIDER_ID::CHECKPOINT:
+	{
+		CCollider* pCollider = Get_Collider(PART_BODY);
+		if (nullptr == pCollider)
+			break;
 
+		m_pTransformCom->Apply_Sliding(pCollider->Get_SlidingVector(), m_pNavigationCom);
+		m_isBlocked = true;
+	}
+	break;
+	case COLLIDER_ID::COIN:
+		m_pInventory->Add_Coin(10);
 		break;
 	default:
 		break;
@@ -915,44 +902,7 @@ HRESULT CPlayer::Ready_PartObjects()
 	if (FAILED(__super::Add_PartObject(PART_MP, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerManaBar"), &ManaBarDesc)))
 		return E_FAIL;
 
-	CUI2D_PlayerPotion::DESC PotionDesc{};
-
-	PotionDesc.pParentLevelID = &eLevelID;
-	PotionDesc.iNumPartObjects = CUI2D_PlayerPotion::PART_END;
-	PotionDesc.pParentCurPotion = &m_iCurNumPotion;
-	PotionDesc.pParentNumPotion = &m_iNumPotion;
-
-	if (FAILED(__super::Add_PartObject(PART_POTION, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerPotion"), &PotionDesc)))
-		return E_FAIL;
-
-	m_pUI2DPotion = dynamic_cast<CUI2D_PlayerPotion*>(m_PartObjects[PART_POTION]);
-	if (nullptr == m_pUI2DPotion)
-		return E_FAIL;
-
-	Safe_AddRef(m_pUI2DPotion);
-
-	CUI2D_PlayerItemSlots::DESC ItemSlotsDesc{};
-
-	ItemSlotsDesc.pParentLevelID = &eLevelID;
-	ItemSlotsDesc.iNumPartObjects = CUI2D_PlayerItemSlots::PART_END;
-
-	if (FAILED(__super::Add_PartObject(PART_ITEMSLOTS, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerItemSlots"), &ItemSlotsDesc)))
-		return E_FAIL;
-
-	CUI2D_Inventory::DESC UIInvenDesc{};
-
-	UIInvenDesc.pParentLevelID = &eLevelID;
-	UIInvenDesc.iNumPartObjects = CUI2D_Inventory::PART_END;
-	UIInvenDesc.pParentIsOnInven = &m_isOnInven;
-
-	if (FAILED(__super::Add_PartObject(PART_UIINVEN, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_Inventory"), &UIInvenDesc)))
-		return E_FAIL;
-
-	m_pUI2DInventory = dynamic_cast<CUI2D_Inventory*>(m_PartObjects[PART_UIINVEN]);
-	if (nullptr == m_pUI2DInventory)
-		return E_FAIL;
-
-	Safe_AddRef(m_pUI2DInventory);
+	/* 인벤이 무조건 인벤관련UI들보다 먼저 만들어지게,,*/
 
 	CInventory::DESC InvenDesc{};
 
@@ -966,6 +916,40 @@ HRESULT CPlayer::Ready_PartObjects()
 		return E_FAIL;
 
 	Safe_AddRef(m_pInventory);
+
+	CUI2D_PlayerPotion::DESC PotionDesc{};
+
+	PotionDesc.pParentLevelID = &eLevelID;
+	PotionDesc.iNumPartObjects = CUI2D_PlayerPotion::PART_END;
+	PotionDesc.pInventory = m_pInventory;
+
+	if (FAILED(__super::Add_PartObject(PART_POTION, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerPotion"), &PotionDesc)))
+		return E_FAIL;
+
+	CUI2D_PlayerItemSlots::DESC ItemSlotsDesc{};
+
+	ItemSlotsDesc.pParentLevelID = &eLevelID;
+	ItemSlotsDesc.iNumPartObjects = CUI2D_PlayerItemSlots::PART_END;
+	ItemSlotsDesc.pInventory = m_pInventory;
+
+	if (FAILED(__super::Add_PartObject(PART_ITEMSLOTS, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerItemSlots"), &ItemSlotsDesc)))
+		return E_FAIL;
+
+	CUI2D_Inventory::DESC UIInvenDesc{};
+
+	UIInvenDesc.pParentLevelID = &eLevelID;
+	UIInvenDesc.iNumPartObjects = CUI2D_Inventory::PART_END;
+	UIInvenDesc.pParentIsOnInven = &m_isOnInven;
+	UIInvenDesc.pInventory = m_pInventory;
+
+	if (FAILED(__super::Add_PartObject(PART_UIINVEN, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_Inventory"), &UIInvenDesc)))
+		return E_FAIL;
+
+	m_pUI2DInventory = dynamic_cast<CUI2D_Inventory*>(m_PartObjects[PART_UIINVEN]);
+	if (nullptr == m_pUI2DInventory)
+		return E_FAIL;
+
+	Safe_AddRef(m_pUI2DInventory);
 
 	return S_OK;
 }
@@ -1037,7 +1021,6 @@ void CPlayer::Free()
 	__super::Free();
 
 	Safe_Release(m_pWeaponPart);
-	Safe_Release(m_pUI2DPotion);
 	Safe_Release(m_pUI2DInventory);
 	Safe_Release(m_pInventory);
 

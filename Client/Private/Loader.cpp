@@ -60,6 +60,8 @@
 
 /* 아이템들 */
 #include "Item_Potion.h"
+#include "Item_Coin.h"
+#include "Body_Item.h"
 
 #include "UI3D_Interaction.h"
 #include "UI2D_Reward.h"
@@ -317,10 +319,10 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/Anim/Monster/Wizard/Weapons/Staff.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
-	/*For.Prototype_Component_Model_exclamation_mark*/
+	/*For.Prototype_Component_Model_Coin*/
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_exclamation_mark"),
-		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Effect/exclamation_mark.Model"), PreTransformMatrix))))
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Coin"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Coin/Coin.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("네비게이션을(를) 로딩중입니다."));
@@ -394,6 +396,15 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Potion"),
 		CItem_Potion::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	/* For.Prototype_GameObject_Coin */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Coin"),
+		CItem_Coin::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	/* For.Prototype_GameObject_Body_Item */
+ 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Body_Item"),
+		CBody_Item::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
 	/* For.Prototype_GameObject_Body_Blob */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Body_Blob"),
@@ -615,6 +626,12 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 		CUI2D_Reward::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_Coin */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Coin"),
+		CItem_Coin::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
 
 	/* For.Prototype_GameObject_Sky */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Sky"),
@@ -667,6 +684,12 @@ HRESULT CLoader::Loading_For_Shop(LEVEL eLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Shop"),
 		CShop::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+	/* For.Prototype_GameObject_Body_Item */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Body_Item"),
+		CBody_Item::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
 	/*For.Prototype_GameObject_UI3D_Interaction */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_UI3D_Interaction"),
@@ -770,6 +793,13 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Potion"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Potion/Potion.Model"), PreTransformMatrix))))
 		return E_FAIL;
+
+	/*For.Prototype_Component_Model_Coin*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Coin"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Coin/Coin.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
 
 	/*For.Prototype_Component_Model_Blob*/
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
@@ -884,6 +914,17 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Potion"),
 		CItem_Potion::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	
+	/* For.Prototype_GameObject_Coin */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Coin"),
+		CItem_Coin::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Body_Item */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Body_Item"),
+		CBody_Item::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
 	/* For.Prototype_GameObject_Body_Blob */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Body_Blob"),

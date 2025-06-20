@@ -8,13 +8,11 @@ class CPlayer final : public CBaseActor
 public:
 	typedef struct tagPlayerDesc : public CBaseActor::DESC
 	{
-
-
 	}DESC;
 
 public:
 	enum PART { PART_BODY, PART_WEAPON,
-		PART_HP, PART_STAMINA, PART_MP, PART_ITEMSLOTS, PART_POTION, PART_UIINVEN, PART_INVEN,
+		PART_HP, PART_STAMINA, PART_MP, PART_INVEN, PART_ITEMSLOTS, PART_POTION, PART_UIINVEN,
 		PART_EFFECT, PART_END };
 
 	enum MESHES	{
@@ -147,9 +145,7 @@ public: /* 스테이트 갖고오기 */
 	void Use_Mana(_float fMana);
 
 	/* 방패 관련 */
-	_bool Get_IsShield() const {
-		return m_isShield;
-	}
+	_bool Get_IsShield() const;
 
     /* 타깃 관련 */
 	_bool Get_IsTarget() const {
@@ -171,11 +167,6 @@ private: /* 체력 */
 	_float m_fHPRecorveryStat = {};
 	_float m_fStaggerRecoveryPerSec = {};
 
-private: /* 포션 */
-	_int   m_iMaxNumPotion = { 4 };
-	_int   m_iNumPotion = {};
-	_int   m_iCurNumPotion = {};
-
 private: /* 스태미나 */
 	_float m_fStamina = {};
 	_float m_fMaxStamina = {};
@@ -189,9 +180,6 @@ private: /* 마나 */
 	_float m_fMaxMana = {};
 	_float m_fManaRecoveryPerSec = {};
 	_float m_fManaTimeAcc = {};
-
-private: /* 방패 소유중? */
-	_bool  m_isShield = { false };
 
 private: /* 인벤 켰음? */
 	_bool  m_isOnInven = { false };

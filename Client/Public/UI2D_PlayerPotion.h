@@ -12,8 +12,7 @@ public:
 public:
 	typedef struct tagUI2DPlayerPotionDesc : public CUIContainerPart::DESC
 	{
-		_int* pParentNumPotion{ nullptr };
-		_int* pParentCurPotion{ nullptr };
+		class CInventory* pInventory{ nullptr };
 	}DESC;
 
 private:
@@ -30,8 +29,7 @@ public:
 	virtual HRESULT Render() override;
 
 private:
-	_int* m_pParentNumPotion = { nullptr };
-	_int* m_pParentCurPotion = { nullptr };
+	class CInventory* m_pInventory = { nullptr };
 
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;

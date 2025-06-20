@@ -169,6 +169,7 @@
     <ClInclude Include="..\Public\Body_Chest.h" />
     <ClInclude Include="..\public\Body_Environment_Object.h" />
     <ClInclude Include="..\public\Body_Grass.h" />
+    <ClInclude Include="..\public\Body_Item.h" />
     <ClInclude Include="..\public\Body_Wizard.h" />
     <ClInclude Include="..\Public\Body_WizardCandleabra.h" />
     <ClInclude Include="..\public\Body_Player.h" />
@@ -193,6 +194,7 @@
     <ClInclude Include="..\public\Grass.h" />
     <ClInclude Include="..\public\Inventory.h" />
     <ClInclude Include="..\public\Item.h" />
+    <ClInclude Include="..\public\Item_Coin.h" />
     <ClInclude Include="..\public\Level_Arena.h" />
     <ClInclude Include="..\Public\Level_Courtyard.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
@@ -278,6 +280,7 @@
     <ClCompile Include="..\Private\Body_Chest.cpp" />
     <ClCompile Include="..\private\Body_Environment_Object.cpp" />
     <ClCompile Include="..\private\Body_Grass.cpp" />
+    <ClCompile Include="..\private\Body_Item.cpp" />
     <ClCompile Include="..\private\Body_Wizard.cpp" />
     <ClCompile Include="..\Private\Body_WizardCandleabra.cpp" />
     <ClCompile Include="..\private\Body_Player.cpp" />
@@ -298,6 +301,7 @@
     <ClCompile Include="..\private\Grass.cpp" />
     <ClCompile Include="..\private\Inventory.cpp" />
     <ClCompile Include="..\private\Item.cpp" />
+    <ClCompile Include="..\private\Item_Coin.cpp" />
     <ClCompile Include="..\private\Level_Arena.cpp" />
     <ClCompile Include="..\Private\Level_Courtyard.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />

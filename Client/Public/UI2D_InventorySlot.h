@@ -13,6 +13,7 @@ public:
 	typedef struct tagUI2DInventoryDesc : public CUIContainerPart::DESC
 	{
 		_bool* pParentIsOnInven{ nullptr };
+		class CInventory* pInventory{ nullptr };
 
 	}DESC;
 
@@ -35,7 +36,11 @@ public:
 	void Set_Selected(_bool isSelected);
 
 private:
+	class CInventory* m_pInventory = { nullptr };
+
+private:
 	_bool* m_pParentIsOnInven = { nullptr };
+
 
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;

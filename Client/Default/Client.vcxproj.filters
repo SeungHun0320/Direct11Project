@@ -400,6 +400,9 @@
     <Filter Include="02.GameObjects\00.UI\05.Interaction\Reward">
       <UniqueIdentifier>{2b7a1a83-a94f-4a92-9e87-a932228a710c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\07.Item\Body">
+      <UniqueIdentifier>{83d99c17-d5f7-43e7-a5dc-39173297ca00}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -722,6 +725,12 @@
     </ClInclude>
     <ClInclude Include="..\public\UI2D_Reward.h">
       <Filter>02.GameObjects\00.UI\05.Interaction\Reward</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Body_Item.h">
+      <Filter>02.GameObjects\07.Item\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Item_Coin.h">
+      <Filter>02.GameObjects\07.Item\Item_Coin</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1088,6 +1097,12 @@
     </ClCompile>
     <ClCompile Include="..\private\UI2D_Reward.cpp">
       <Filter>02.GameObjects\00.UI\05.Interaction\Reward</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Body_Item.cpp">
+      <Filter>02.GameObjects\07.Item\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Item_Coin.cpp">
+      <Filter>02.GameObjects\07.Item\Item_Coin</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

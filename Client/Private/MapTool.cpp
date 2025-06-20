@@ -150,7 +150,7 @@ void CMapTool::Update(_float fTimeDelta)
 			tDesc.fSpeedPerSec = 0.f;
 			tDesc.strName = m_strName;
 			tDesc.WorldMatrix = XMMatrixTranslation(vInitPos.x, vInitPos.y, vInitPos.z);
-			tDesc.iNumPartObjects = m_iNumPartObjects;
+			tDesc.iNumPartObjects = CEnvironment_Object::PART_END;
 
 			if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_") + tDesc.strName,
 				ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Environment_Object"), &tDesc)))
@@ -167,6 +167,7 @@ void CMapTool::Update(_float fTimeDelta)
 			tDesc.fSpeedPerSec = m_fSpeedPerSec;
 			tDesc.strName = m_strName;
 			tDesc.WorldMatrix = XMMatrixTranslation(vInitPos.x, vInitPos.y, vInitPos.z);
+			tDesc.iNumPartObjects = CItem::PART_END;
 
 			if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_") + tDesc.strName,
 				ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Item"), &tDesc)))
@@ -180,7 +181,7 @@ void CMapTool::Update(_float fTimeDelta)
 			tDesc.fRotationPerSec = m_fRotationPerSec;
 			tDesc.fSpeedPerSec = m_fSpeedPerSec;
 			tDesc.strName = m_strName;
-			tDesc.iNumPartObjects = m_iNumPartObjects;
+			tDesc.iNumPartObjects = CChest::PART_END;
 			tDesc.WorldMatrix = XMMatrixTranslation(vInitPos.x, vInitPos.y, vInitPos.z);
 			tDesc.eType = m_eItemType;
 
@@ -572,8 +573,6 @@ HRESULT CMapTool::Environment_ListBox()
 	default:
 		break;
 	}
-
-	m_iNumPartObjects = CEnvironment_Object::PART_END;
 
 	return S_OK;
 }
@@ -1017,6 +1016,7 @@ HRESULT CMapTool::Save_Map(const _string& strMapPath)
 			_float fSpeedPerSec = pTransform->Get_SpeedPerSec();
 			_float fRotationPerSec = pTransform->Get_RotationPerSec();
 			_wstring strPrototype = pObject->Get_Name();
+			_uint    iNumPartObjects = dynamic_cast<CContainerObject*>(pObject)->Get_NumPartObjects();
 			iSaveLength = static_cast<_int>(strPrototype.length());
 
 			OutFile.write(reinterpret_cast<const _char*>(&iSaveLength), sizeof(_int));
@@ -1024,6 +1024,7 @@ HRESULT CMapTool::Save_Map(const _string& strMapPath)
 			OutFile.write(reinterpret_cast<const _char*>(&WorldMatrix), sizeof(_float4x4));
 			OutFile.write(reinterpret_cast<const _char*>(&fSpeedPerSec), sizeof(_float));
 			OutFile.write(reinterpret_cast<const _char*>(&fRotationPerSec), sizeof(_float));
+			OutFile.write(reinterpret_cast<const _char*>(&iNumPartObjects), sizeof(_uint));
 
 		}
 	}
@@ -1235,6 +1236,7 @@ HRESULT CMapTool::Load_Map(const _string& strMapPath)
 		LoadFile.read(reinterpret_cast<_char*>(&WorldMatrix), sizeof(_float4x4));
 		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fSpeedPerSec), sizeof(_float));
 		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fRotationPerSec), sizeof(_float));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.iNumPartObjects), sizeof(_uint));
 
 		tDesc.WorldMatrix = XMLoadFloat4x4(&WorldMatrix);
 

@@ -28,6 +28,7 @@ public:
 	typedef struct tagUI2DInventoryDesc : public CUIContainerPart::DESC
 	{
 		_bool* pParentIsOnInven{ nullptr };
+		class CInventory* pInventory{ nullptr };
 
 	}DESC;
 
@@ -43,6 +44,9 @@ public:
 	virtual LIFE Update(_float fTimeDelta) override;
 	virtual void Late_Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
+
+private:
+	class CInventory* m_pInventory = { nullptr };
 
 private:
 	_bool* m_pParentIsOnInven = { nullptr };
