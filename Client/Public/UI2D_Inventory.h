@@ -60,7 +60,6 @@ private:
 
 private:
 	void Key_Input();
-	void Move_Selector(_uint iSlotIndex);
 
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;
