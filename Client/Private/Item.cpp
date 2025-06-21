@@ -21,7 +21,8 @@ HRESULT CItem::Initialize(void* pArg)
 {
 	DESC* pDesc = static_cast<DESC*>(pArg);
 
-	m_eLevelID = pDesc->eLevelID;
+	m_eLevelID  = pDesc->eLevelID;
+	m_eItemType = pDesc->eItemType;
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -64,6 +65,32 @@ HRESULT CItem::Ready_Components(void* pArg)
 	return S_OK;
 }
 
+
+CItem* CItem::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+{
+	CItem* pInstance = new CItem(pDevice, pContext);
+
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		MSG_BOX("Failed to Created : CItem");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
+CGameObject* CItem::Clone(void* pArg)
+{
+	CItem* pInstance = new CItem(*this);
+
+	if (FAILED(pInstance->Initialize(pArg)))
+	{
+		MSG_BOX("Failed to Cloned : CItem");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
 
 void CItem::Free()
 {

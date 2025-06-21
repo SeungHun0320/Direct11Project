@@ -1,5 +1,5 @@
 #pragma once
-class CItem_Potion
+class CItem_Berry
 {
 };
 

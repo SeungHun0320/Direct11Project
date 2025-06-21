@@ -60,6 +60,10 @@ void CMapTool::Add_ListBoxName()
 		L"Grass", L"Bush", L"CheckPoint"
 	};
 
+	vector<_wstring> ItemFilters = {
+		L"Potion", L"Berry", L"BlueBerry", L"CoinQuestion", L"FireCracker"
+	};
+
 	vector<_wstring> MonsterFilters = {
 		L"Blob", L"Wizard"
 	};
@@ -77,7 +81,16 @@ void CMapTool::Add_ListBoxName()
 				if (Pair.first.find(L"Body") != _wstring::npos || Pair.first.find(L"Part") != _wstring::npos)
 					m_ProtoEnvironmentNames.pop_back();
 			}
+		}
 
+		for (const auto& KeyWord : ItemFilters)
+		{
+			if (Pair.first.find(KeyWord) != _wstring::npos)
+			{
+				m_ProtoItemNames.push_back(m_pGameInstance->WStringToString(Pair.first));
+				//if (Pair.first.find(L"Body") != _wstring::npos || Pair.first.find(L"Part") != _wstring::npos)
+				//	m_ProtoItemNames.pop_back();
+			}
 		}
 
 		for (const auto& KeyWord : MonsterFilters)
@@ -88,7 +101,6 @@ void CMapTool::Add_ListBoxName()
 				if (Pair.first.find(L"Body") != _wstring::npos || Pair.first.find(L"Part") != _wstring::npos)
 					m_ProtoMonsterNames.pop_back();
 			}
-				
 		}
 	}
 }
@@ -158,6 +170,7 @@ void CMapTool::Update(_float fTimeDelta)
 			tDesc.strName = m_strName;
 			tDesc.WorldMatrix = XMMatrixTranslation(vInitPos.x, vInitPos.y, vInitPos.z);
 			tDesc.iNumPartObjects = CItem::PART_END;
+			tDesc.eItemType = m_eItemType;
 
 			if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_") + tDesc.strName,
 				ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Item"), &tDesc)))
@@ -573,13 +586,18 @@ HRESULT CMapTool::Item_ListBox()
 
 	// 리스트박스 출력 // 와 이거 프로토타입을 순서대로 만들어줘야되네?
 	// 그리고 얘는 아이템 객체 돌려쓸 생각인데, 방식을 바꿔야할듯
-	const _char* szItems[] =
-	{ u8"베리 상자", u8"블루베리상자", u8"우물코인상자", u8"폭탄상자",
-		u8"방패상자", u8"나뭇가지상자", u8"대거상자", u8"검상자", u8"포션상자",
-		u8"돈상자" };
-
-	ImGui::Text(u8"아이템 종류");
-	ImGui::ListBox(u8"##ItemTypes", &iCurrentObjIndex, szItems, IM_ARRAYSIZE(szItems));
+	// 리스트박스 출력
+	ImGui::Text(u8"환경 프로토타입");
+	if (ImGui::BeginListBox("##ProtoEnv", ImVec2(300, 100)))
+	{
+		for (_uint i = 0; i < m_ProtoItemNames.size(); ++i)
+		{
+			_bool bSelected = (iCurrentObjIndex == i);
+			if (ImGui::Selectable(m_ProtoItemNames[i].c_str(), bSelected))
+				iCurrentObjIndex = i;
+		}
+		ImGui::EndListBox();
+	}
 
 	/* 바꾸삼 */
 	switch (iCurrentObjIndex)
@@ -1017,6 +1035,7 @@ HRESULT CMapTool::Save_Map(const _string& strMapPath)
 			_float fRotationPerSec = pTransform->Get_RotationPerSec();
 			_wstring strPrototype = pObject->Get_Name();
 			_uint    iNumPartObjects = dynamic_cast<CContainerObject*>(pObject)->Get_NumPartObjects();
+			ITEM_TYPE eItemType = dynamic_cast<CItem*>(pObject)->Get_ItemType();
 			iSaveLength = static_cast<_int>(strPrototype.length());
 
 			OutFile.write(reinterpret_cast<const _char*>(&iSaveLength), sizeof(_int));
@@ -1025,6 +1044,7 @@ HRESULT CMapTool::Save_Map(const _string& strMapPath)
 			OutFile.write(reinterpret_cast<const _char*>(&fSpeedPerSec), sizeof(_float));
 			OutFile.write(reinterpret_cast<const _char*>(&fRotationPerSec), sizeof(_float));
 			OutFile.write(reinterpret_cast<const _char*>(&iNumPartObjects), sizeof(_uint));
+			OutFile.write(reinterpret_cast<const _char*>(&eItemType), sizeof(ITEM_TYPE));
 
 		}
 	}
@@ -1237,6 +1257,7 @@ HRESULT CMapTool::Load_Map(const _string& strMapPath)
 		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fSpeedPerSec), sizeof(_float));
 		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fRotationPerSec), sizeof(_float));
 		LoadFile.read(reinterpret_cast<_char*>(&tDesc.iNumPartObjects), sizeof(_uint));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.eItemType), sizeof(ITEM_TYPE));
 
 		tDesc.WorldMatrix = XMLoadFloat4x4(&WorldMatrix);
 
@@ -1364,6 +1385,7 @@ void CMapTool::Free()
 	__super::Free();
 
 	m_ProtoEnvironmentNames.clear();
+	m_ProtoItemNames.clear();
 	m_ProtoMonsterNames.clear();
 
 	m_EnvironmentNames.clear();

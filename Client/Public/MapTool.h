@@ -40,6 +40,7 @@ public:
 
 private:/* 프로토타입 이름 받아올 벡터 */
 	vector<_string> m_ProtoEnvironmentNames;
+	vector<_string> m_ProtoItemNames;
 	vector<_string> m_ProtoMonsterNames;
 
 	_wstring m_strLayerTag;

@@ -5,7 +5,7 @@
 
 BEGIN(Client)
 
-class CItem abstract : public CContainerObject
+class CItem : public CContainerObject
 {
 public:
 	enum PART {PART_BODY, PART_INTERACTION, PART_PRICE, PART_UISHOP, PART_REWARD, PART_END};
@@ -14,6 +14,7 @@ public:
 	typedef struct tagItemDesc : public CContainerObject::DESC
 	{
 		LEVEL eLevelID;
+		ITEM_TYPE eItemType{ ITEM_TYPE::IT_END };
 
 	}DESC;
 protected:

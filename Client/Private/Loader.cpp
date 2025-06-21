@@ -59,7 +59,6 @@
 #include "Chest.h"
 
 /* 아이템들 */
-#include "Item_Potion.h"
 #include "Item_Coin.h"
 #include "Body_Item.h"
 
@@ -392,9 +391,9 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 		CChest::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_Potion */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Potion"),
-		CItem_Potion::Create(m_pDevice, m_pContext))))
+	/* For.Prototype_GameObject_Item */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Item"),
+		CItem::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	/* For.Prototype_GameObject_Coin */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Coin"),
@@ -685,11 +684,20 @@ HRESULT CLoader::Loading_For_Shop(LEVEL eLevelID)
 		CShop::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_Item */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Item"),
+		CItem::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Coin */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Coin"),
+		CItem_Coin::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* For.Prototype_GameObject_Body_Item */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Body_Item"),
 		CBody_Item::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-
 
 	/*For.Prototype_GameObject_UI3D_Interaction */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_UI3D_Interaction"),
@@ -910,9 +918,9 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 		CChest::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_Potion */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Potion"),
-		CItem_Potion::Create(m_pDevice, m_pContext))))
+	/* For.Prototype_GameObject_Item */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Item"),
+		CItem::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	
 	/* For.Prototype_GameObject_Coin */

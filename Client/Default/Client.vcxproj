@@ -194,8 +194,12 @@
     <ClInclude Include="..\public\Grass.h" />
     <ClInclude Include="..\public\Inventory.h" />
     <ClInclude Include="..\public\Item.h" />
+    <ClInclude Include="..\public\Item_Berry.h" />
+    <ClInclude Include="..\public\Item_BlueBerry.h" />
     <ClInclude Include="..\public\Item_Coin.h" />
+    <ClInclude Include="..\public\Item_CoinQuestion.h" />
     <ClInclude Include="..\public\item_FireCracker.h" />
+    <ClInclude Include="..\public\Item_Potion.h" />
     <ClInclude Include="..\public\Level_Arena.h" />
     <ClInclude Include="..\Public\Level_Courtyard.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
@@ -235,7 +239,6 @@
     <ClInclude Include="..\public\UI3D_MobHPBar.h" />
     <ClInclude Include="..\public\UI_Animation.h" />
     <ClInclude Include="..\public\Weapon_Player.h" />
-    <ClInclude Include="..\public\Item_Potion.h" />
     <ClInclude Include="..\public\Shop.h" />
     <ClInclude Include="..\public\Sky.h" />
     <ClInclude Include="..\public\SpiderTank.h" />
@@ -302,8 +305,12 @@
     <ClCompile Include="..\private\Grass.cpp" />
     <ClCompile Include="..\private\Inventory.cpp" />
     <ClCompile Include="..\private\Item.cpp" />
+    <ClCompile Include="..\private\Item_Berry.cpp" />
+    <ClCompile Include="..\private\Item_BlueBerry.cpp" />
     <ClCompile Include="..\private\Item_Coin.cpp" />
+    <ClCompile Include="..\private\Item_CoinQuestion.cpp" />
     <ClCompile Include="..\private\item_FireCracker.cpp" />
+    <ClCompile Include="..\private\Item_Potion.cpp" />
     <ClCompile Include="..\private\Level_Arena.cpp" />
     <ClCompile Include="..\Private\Level_Courtyard.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />
@@ -349,7 +356,6 @@
     <ClCompile Include="..\private\UI2D_PlayerItemSlots.cpp" />
     <ClCompile Include="..\private\UI2D_PlayerMPBar.cpp" />
     <ClCompile Include="..\private\UI2D_PlayerPotion.cpp" />
-    <ClCompile Include="..\private\Item_Potion.cpp" />
     <ClCompile Include="..\private\Shop.cpp" />
     <ClCompile Include="..\private\Sky.cpp" />
     <ClCompile Include="..\private\SpiderTank.cpp" />
