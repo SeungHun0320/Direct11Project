@@ -121,9 +121,6 @@ HRESULT CPlayer::Initialize(void* pArg)
 	m_fMaxMana = 100.f;
 	m_fManaRecoveryPerSec = 5.f;
 	m_fMana = m_fMaxMana;
-	/* 공격력 */
-	m_pAttackStrategy = new CPlayer_SwordAttack(3, WEAPON_TYPE::SWORD);
-	m_fAttack = m_pAttackStrategy->Get_Attack();
 	/* 그로기 */
 	m_fStaggerGage = 100.f;
 	m_fMaxStaggerGage = m_fStaggerGage;
@@ -147,9 +144,6 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 	Set_SavePosition();
 	Subscribe_Events();
-
-	Set_AttackStrategy(new CPlayer_SwordAttack(3, WEAPON_TYPE::SWORD));
-	m_fAttack = m_pAttackStrategy->Get_Attack();
 
 	Change_States(STATES::WAKE_UP);
 	return S_OK;
@@ -382,6 +376,76 @@ _vector CPlayer::Get_TargetState(STATE eState)
 	return m_pTargetTransform->Get_State(eState);
 }
 
+CInventory* CPlayer::Get_Inventory() const
+{
+	return m_pInventory;
+}
+
+void CPlayer::Use_QuickSlot(_uint eSlot)
+{
+	CInventory::QSLOT_TYPE eQSlotType = static_cast<CInventory::QSLOT_TYPE>(eSlot);
+	CInventory::QUICK_SLOT QuickSlot = m_pInventory->Get_QuickSlot(eQSlotType);
+
+	if (!QuickSlot.bHasItem)
+		return;
+
+	if (m_pInventory->Is_UseItem(QuickSlot.eType))
+	{
+		if (!m_pInventory->Use_QuickSlot(eQSlotType))
+			return;
+	}
+
+	switch (QuickSlot.eType)
+	{
+	case ITEM_TYPE::STICK:
+		Equip_Weapon(new CPlayer_SwordAttack(1, WEAPON_TYPE::STICK));
+		break;
+	case ITEM_TYPE::SWORD:
+		Equip_Weapon(new CPlayer_SwordAttack(3, WEAPON_TYPE::SWORD));
+		break;
+	case ITEM_TYPE::DAGGER:
+		Equip_Weapon(new CPlayer_DaggerAttack(1, WEAPON_TYPE::DAGGER));
+		break;
+	case ITEM_TYPE::BERRY:
+		Use_Berrys();
+		break;
+	case ITEM_TYPE::BLUEBERRY:
+		Use_Berrys();
+		break;
+	case ITEM_TYPE::COIN_QUESTION:
+		Use_Coin_Question();
+		break;
+	case ITEM_TYPE::FIRE_CRACKER:
+		Use_FireCracker();
+		break;
+	default:
+		break;
+	}
+
+}
+
+void CPlayer::Equip_Weapon(CPlayer_IAttackStrategy* pStrategy)
+{
+	Set_AttackStrategy(pStrategy);
+	m_fAttack = m_pAttackStrategy->Get_Attack();
+	Start_Attack();
+}
+
+void CPlayer::Use_Berrys()
+{
+	Change_States(STATES::EAT);
+}
+
+void CPlayer::Use_Coin_Question()
+{
+	Change_States(STATES::COIN_FLIP);
+}
+
+void CPlayer::Use_FireCracker()
+{
+	Change_States(STATES::WIND_UP);
+}
+
 void CPlayer::Go_Dir(_fvector vDir, _float fTimeDelta, _float fSpeed)
 {
 	m_pTransformCom->Set_SpeedPerSec(fSpeed);
@@ -483,6 +547,49 @@ void CPlayer::SetUp_AttackMeshVisible(WEAPON_TYPE eWeaponType)
 	}
 }
 
+_bool CPlayer::DodgeComboAttack(ITEM_TYPE eItemType)
+{
+	if (nullptr == m_pAttackStrategy)
+		return false;
+
+	WEAPON_TYPE eType{ WEAPON_TYPE::WT_END };
+
+	switch (eItemType)
+	{
+	case ITEM_TYPE::STICK:
+		eType =  WEAPON_TYPE::STICK;
+		break;
+	case ITEM_TYPE::SWORD:
+		eType = WEAPON_TYPE::SWORD;
+		break;
+	case ITEM_TYPE::DAGGER:
+		eType = WEAPON_TYPE::DAGGER;
+		break;
+	default:
+		eType = WEAPON_TYPE::WT_END;
+		break;
+	}
+
+	return eType == m_pAttackStrategy->Get_WeaponType();
+}
+
+_bool CPlayer::CheckDodgeComboWeapon()
+{
+	ITEM_TYPE eItemType{ ITEM_TYPE::IT_END };
+
+	if (KeyPressing(DIK_J))
+		eItemType = m_pInventory->IsWeaponInQuickSlot(CInventory::QSLOT_J);
+	else if (KeyPressing(DIK_K))
+		eItemType = m_pInventory->IsWeaponInQuickSlot(CInventory::QSLOT_K);
+	else if(KeyPressing(DIK_L))
+		eItemType = m_pInventory->IsWeaponInQuickSlot(CInventory::QSLOT_L);
+
+	if (ITEM_TYPE::IT_END == eItemType)
+		return false;
+
+	return DodgeComboAttack(eItemType);//여기서 타입을 받아서 바꾸고, 똑같은 녀석일때만 리턴 하면 될 듯
+}
+
 _vector CPlayer::Get_InputDirection()
 {
 	_vector vInputDir{};
@@ -539,28 +646,39 @@ _vector CPlayer::Get_InputDirectionEx()
 }
 
 _vector CPlayer::Get_State(STATE eState)
-
 {
 	return m_pTransformCom->Get_State(eState);
 }
 
 _bool CPlayer::KeyDown(_ubyte eKeyID)
 {
+	if (m_isOnInven)
+		return false;
+
 	return KEY_DOWN(eKeyID);
 }
 
 _bool CPlayer::KeyPressing(_ubyte eKeyID)
 {
+	if (m_isOnInven)
+		return false;
+
 	return KEY_PRESSING(eKeyID);
 }
 
 _bool CPlayer::KeyUp(_ubyte eKeyID)
 {
+	if (m_isOnInven)
+		return false;
+
 	return KEY_UP(eKeyID);
 }
 
 _bool CPlayer::IsAnyMoveKeyPressed() const
 {
+	if (m_isOnInven)
+		return false;
+
 	return KEY_PRESSING(DIK_W) || KEY_PRESSING(DIK_A) ||
 		KEY_PRESSING(DIK_S) || KEY_PRESSING(DIK_D) ||
 		KEY_PRESSING(DIK_SPACE);
@@ -568,6 +686,9 @@ _bool CPlayer::IsAnyMoveKeyPressed() const
 
 _bool CPlayer::IsMoveKeyPressed()
 {
+	if (m_isOnInven)
+		return false;
+
 	return KEY_PRESSING(DIK_W) || KEY_PRESSING(DIK_A) ||
 		KEY_PRESSING(DIK_S) || KEY_PRESSING(DIK_D);
 }
@@ -632,8 +753,6 @@ _bool CPlayer::Has_Shield() const
 {
 	return m_pInventory->Get_isShield();
 }
-
-
 
 void CPlayer::Mana_Recovery(_float fTimeDelta)
 {

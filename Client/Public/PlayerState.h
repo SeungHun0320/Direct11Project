@@ -112,6 +112,24 @@ public: // CPlayerState을(를) 통해 상속됨
 	void Exit() override {};
 
 protected:
+	WEAPON_TYPE ToWeaponType(ITEM_TYPE eItemType)
+	{
+		switch (eItemType)
+		{
+		case ITEM_TYPE::STICK:
+			return WEAPON_TYPE::STICK;
+		case ITEM_TYPE::SWORD:
+			return WEAPON_TYPE::SWORD;
+		case ITEM_TYPE::DAGGER:
+			return WEAPON_TYPE::DAGGER;
+		default:
+			return WEAPON_TYPE::WT_END;
+		}
+	}
+	void Try_Combo(_uint iQuickSlotIdx);
+	void Check_ComboKey();
+
+protected:
 	_uint  m_iMaxCombo = {};
 	WEAPON_TYPE m_eWeaponType{};
 

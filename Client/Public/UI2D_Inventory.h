@@ -50,6 +50,7 @@ private:
 	vector<class CUI2D_InventorySlot*> m_InvenSlots;
 
 private:
+	void Update_Slots();
 	void Update_Seletor();
 	void Update_Shield();
 private:

@@ -40,7 +40,8 @@ void CPlayerState_Dodge::Execute(_float fTimeDelta)
 
 		m_pOwner->LookTarget(fTimeDelta);
 
-		if (m_pOwner->KeyPressing(DIK_J) || m_pOwner->KeyDown(DIK_K) || m_pOwner->KeyDown(DIK_L))
+
+		if (m_pOwner->CheckDodgeComboWeapon())
 		{
 			WEAPON_TYPE eWeaponType = m_pOwner->Get_AttackStrategy()->Get_WeaponType();
 			switch (eWeaponType)
@@ -55,7 +56,7 @@ void CPlayerState_Dodge::Execute(_float fTimeDelta)
 		}
 		else if (m_pOwner->KeyPressing(DIK_SPACE))
 		{
-			if(!m_pOwner->IsLockOn())
+			if (!m_pOwner->IsLockOn())
 				m_pOwner->Change_States(CPlayer::STATES::SPRINT);
 			else
 				m_pOwner->Change_States(CPlayer::STATES::IDLE);
@@ -66,14 +67,12 @@ void CPlayerState_Dodge::Execute(_float fTimeDelta)
 		}
 		else
 			m_pOwner->Change_States(CPlayer::STATES::IDLE);
-
-
 	}
 	else
 	{
 		m_pOwner->Dodge(XMLoadFloat3(&m_vInputDir), fTimeDelta, SPEED);
 	}
-		
+
 }
 
 void CPlayerState_Dodge::Exit()

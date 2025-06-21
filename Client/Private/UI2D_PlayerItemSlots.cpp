@@ -54,12 +54,56 @@ LIFE CUI2D_PlayerItemSlots::Update(_float fTimeDelta)
 
 void CUI2D_PlayerItemSlots::Late_Update(_float fTimeDelta)
 {
+	for (_uint i = 0; i < CInventory::QSLOT_END; i++)
+	{
+		const CInventory::QUICK_SLOT QuickSlot = m_pInventory->Get_QuickSlot(static_cast<CInventory::QSLOT_TYPE>(i));
+		const CInventory::INVEN_SLOT InvenSlot = m_pInventory->Get_Slot(static_cast<CInventory::SLOT>(i));
+
+		_uint iSlotItemIndex = PART_J_ITEMS + i;
+
+		if (QuickSlot.bHasItem)
+		{
+			Set_UIVisible(iSlotItemIndex, true);
+			Set_TextureIndex(iSlotItemIndex, ENUM_CLASS(QuickSlot.eType));
+		}
+		else
+		{
+			Set_UIVisible(iSlotItemIndex, false);
+		}
+
+	}
+
 	__super::Late_Update(fTimeDelta);
+
+	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);
 }
 
 HRESULT CUI2D_PlayerItemSlots::Render()
 {
-	return __super::Render();
+	for (_uint i = 0; i <= PART_L; i++)
+	{
+		const CInventory::QUICK_SLOT QuickSlot = m_pInventory->Get_QuickSlot(static_cast<CInventory::QSLOT_TYPE>(i));
+		const CInventory::INVEN_SLOT InvenSlot = m_pInventory->Get_Slot(static_cast<CInventory::SLOT>(QuickSlot.iInvenSlotIndex));
+
+		if (!QuickSlot.bHasItem || 0 >= InvenSlot.iCount)
+			continue;
+
+		const wstring& strCount = to_wstring(InvenSlot.iCount);
+
+		_float3 vPos{};
+		XMStoreFloat3(&vPos, Get_State(i, STATE::POSITION));
+
+		_float2 vFontPos = _float2(vPos.x + 655.f, vPos.y - 200.f);
+
+		m_pGameInstance->Draw_Font(TEXT("Font_Money"), strCount.c_str(), vFontPos, XMVectorSet(1.f, 1.f, 1.f, 1.f), 0.f, _float2(0.f, 0.f), 0.8f);
+	}
+
+	return S_OK;
+}
+
+_vector CUI2D_PlayerItemSlots::Get_State(_int iPartIndex, STATE eState)
+{
+	return static_cast<CUI*>(m_PartObjects[iPartIndex])->Get_State(eState);
 }
 
 HRESULT CUI2D_PlayerItemSlots::Ready_Components(void* pArg)

@@ -60,10 +60,6 @@ void CMapTool::Add_ListBoxName()
 		L"Grass", L"Bush", L"CheckPoint"
 	};
 
-	vector<_wstring> ItemFilters = {
-		L"Potion"
-	};
-
 	vector<_wstring> MonsterFilters = {
 		L"Blob", L"Wizard"
 	};
@@ -82,12 +78,6 @@ void CMapTool::Add_ListBoxName()
 					m_ProtoEnvironmentNames.pop_back();
 			}
 
-		}
-
-		for (const auto& KeyWord : ItemFilters)
-		{
-			if (Pair.first.find(KeyWord) != _wstring::npos)
-				m_ProtoItemNames.push_back(m_pGameInstance->WStringToString(Pair.first));
 		}
 
 		for (const auto& KeyWord : MonsterFilters)
@@ -183,7 +173,7 @@ void CMapTool::Update(_float fTimeDelta)
 			tDesc.strName = m_strName;
 			tDesc.iNumPartObjects = CChest::PART_END;
 			tDesc.WorldMatrix = XMMatrixTranslation(vInitPos.x, vInitPos.y, vInitPos.z);
-			tDesc.eType = m_eItemType;
+			tDesc.eType = m_eChestItemType;
 
 			if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_") + tDesc.strName,
 				ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Chest"), &tDesc)))
@@ -581,29 +571,39 @@ HRESULT CMapTool::Item_ListBox()
 {
 	static _int iCurrentObjIndex = { -1 }, iOldObjType = { -1 };
 
-	// 리스트박스 출력
-	ImGui::Text(u8"아이템 프로토타입");
-	if (ImGui::BeginListBox("##ProtoItem", ImVec2(300, 100)))
-	{
-		for (_uint i = 0; i < m_ProtoItemNames.size(); ++i)
-		{
-			_bool bSelected = (iCurrentObjIndex == i);
-			if (ImGui::Selectable(m_ProtoItemNames[i].c_str(), bSelected))
-				iCurrentObjIndex = i;
-		}
-		ImGui::EndListBox();
-	}
+	// 리스트박스 출력 // 와 이거 프로토타입을 순서대로 만들어줘야되네?
+	// 그리고 얘는 아이템 객체 돌려쓸 생각인데, 방식을 바꿔야할듯
+	const _char* szItems[] =
+	{ u8"베리 상자", u8"블루베리상자", u8"우물코인상자", u8"폭탄상자",
+		u8"방패상자", u8"나뭇가지상자", u8"대거상자", u8"검상자", u8"포션상자",
+		u8"돈상자" };
+
+	ImGui::Text(u8"아이템 종류");
+	ImGui::ListBox(u8"##ItemTypes", &iCurrentObjIndex, szItems, IM_ARRAYSIZE(szItems));
 
 	/* 바꾸삼 */
 	switch (iCurrentObjIndex)
 	{
 	case POTION:
-		m_strName = TEXT("Potion");
+		m_eItemType = ITEM_TYPE::POTION;
 		break;
-
+	case BERRY:
+		m_eItemType = ITEM_TYPE::BERRY;
+		break;
+	case BLUEBERRY:
+		m_eItemType = ITEM_TYPE::BLUEBERRY;
+		break;
+	case COIN_QUESTION:
+		m_eItemType = ITEM_TYPE::COIN_QUESTION;
+		break;
+	case FIRE_CRACKER:
+		m_eItemType = ITEM_TYPE::FIRE_CRACKER;
+		break;
 	default:
 		break;
 	}
+
+	m_strName = TEXT("Item");
 
 	return S_OK;
 }
@@ -623,34 +623,34 @@ HRESULT CMapTool::Chest_ListBox()
 	switch (iCurrentObjIndex)
 	{
 	case ENUM_CLASS(ITEM_TYPE::COIN):
-		m_eItemType = ITEM_TYPE::COIN;
+		m_eChestItemType = ITEM_TYPE::COIN;
 		break;
 	case ENUM_CLASS(ITEM_TYPE::BERRY):
-		m_eItemType = ITEM_TYPE::BERRY;
+		m_eChestItemType = ITEM_TYPE::BERRY;
 		break;
 	case ENUM_CLASS(ITEM_TYPE::BLUEBERRY):
-		m_eItemType = ITEM_TYPE::BLUEBERRY;
+		m_eChestItemType = ITEM_TYPE::BLUEBERRY;
 		break;
 	case ENUM_CLASS(ITEM_TYPE::COIN_QUESTION):
-		m_eItemType = ITEM_TYPE::COIN_QUESTION;
+		m_eChestItemType = ITEM_TYPE::COIN_QUESTION;
 		break;
 	case ENUM_CLASS(ITEM_TYPE::FIRE_CRACKER):
-		m_eItemType = ITEM_TYPE::FIRE_CRACKER;
+		m_eChestItemType = ITEM_TYPE::FIRE_CRACKER;
 		break;
 	case ENUM_CLASS(ITEM_TYPE::SHILED):
-		m_eItemType = ITEM_TYPE::SHILED;
+		m_eChestItemType = ITEM_TYPE::SHILED;
 		break;
 	case ENUM_CLASS(ITEM_TYPE::STICK):
-		m_eItemType = ITEM_TYPE::STICK;
+		m_eChestItemType = ITEM_TYPE::STICK;
 		break;
 	case ENUM_CLASS(ITEM_TYPE::DAGGER):
-		m_eItemType = ITEM_TYPE::DAGGER;
+		m_eChestItemType = ITEM_TYPE::DAGGER;
 		break;
 	case ENUM_CLASS(ITEM_TYPE::SWORD):
-		m_eItemType = ITEM_TYPE::SWORD;
+		m_eChestItemType = ITEM_TYPE::SWORD;
 		break;
 	case ENUM_CLASS(ITEM_TYPE::POTION):
-		m_eItemType = ITEM_TYPE::POTION;
+		m_eChestItemType = ITEM_TYPE::POTION;
 		break;
 	default:
 		break;
@@ -1364,7 +1364,6 @@ void CMapTool::Free()
 	__super::Free();
 
 	m_ProtoEnvironmentNames.clear();
-	m_ProtoItemNames.clear();
 	m_ProtoMonsterNames.clear();
 
 	m_EnvironmentNames.clear();

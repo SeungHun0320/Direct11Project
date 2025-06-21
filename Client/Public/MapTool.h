@@ -14,7 +14,7 @@ class CMapTool final : public CTool
 public:
 	enum MAP { COURTYARD, ARENA, SHOP, MAP_END };
 	enum ENVIRONMENT_MODEL { BUSH, CHECKPOINT, GRASS, MODEL_END };
-	enum ITEM_MODEL { POTION, IM_END };
+	enum ITEM_MODEL { POTION, BERRY, BLUEBERRY, COIN_QUESTION, FIRE_CRACKER, IM_END };
 	enum ENEMY_MODEL { BLOB, CANDLEABRA, SUPPORT, SWORD, EM_END };
 	enum MODE { CREATE, MODIFY, NORMAL, MODE_END };
 	enum LIST { ENVIRONMENT, ITEM, CHEST, ENEMY, LIST_END };
@@ -40,7 +40,6 @@ public:
 
 private:/* 프로토타입 이름 받아올 벡터 */
 	vector<_string> m_ProtoEnvironmentNames;
-	vector<_string> m_ProtoItemNames;
 	vector<_string> m_ProtoMonsterNames;
 
 	_wstring m_strLayerTag;
@@ -65,7 +64,10 @@ private: /* 현재 선택된 맵 정보 */
 private: /* 컨테이너 파트갯수 저장용 구조체 */
 	_uint m_iNumPartObjects{};
 
-private: /* 아이템 종류 */
+private: /* 상자가 쓸 아이템 종류 */
+	ITEM_TYPE m_eChestItemType{};
+
+private: /* 아이템이 쓸 아이템 종류 */
 	ITEM_TYPE m_eItemType{};
 
 private:

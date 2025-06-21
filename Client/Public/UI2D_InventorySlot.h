@@ -34,12 +34,14 @@ public:
 	_fvector Get_State(STATE eState);
 	void Set_State(STATE eState, _fvector vState);
 	void Set_Selected(_bool isSelected);
+	void Set_ItemCount(_int iCount) { m_iCount = iCount; }
 
 private:
 	class CInventory* m_pInventory = { nullptr };
 
 private:
 	_bool* m_pParentIsOnInven = { nullptr };
+	_int   m_iCount{};
 
 
 private:

@@ -74,6 +74,8 @@ LIFE CUI2D_Inventory::Update(_float fTimeDelta)
 
 void CUI2D_Inventory::Late_Update(_float fTimeDelta)
 {
+	Update_Slots();
+
 	if (!(*m_pParentIsOnInven))
 		return;
 
@@ -93,6 +95,25 @@ HRESULT CUI2D_Inventory::Render()
 	m_pGameInstance->Draw_Font(TEXT("Font_Money"), strCoin.c_str(), _float2(220.f, 132.5f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
 
 	return S_OK;
+}
+
+void CUI2D_Inventory::Update_Slots()
+{
+	for (_uint i = CInventory::SLOT_USEITEM0; i < CInventory::SLOT_END; i++)
+	{
+		CInventory::INVEN_SLOT InvenSlot = m_pInventory->Get_Slot(static_cast<CInventory::SLOT>(i));
+		if (InvenSlot.bHasItem)
+		{
+			m_InvenSlots[i]->Set_UIVisible(CUI2D_InventorySlot::PART_ITEMS, true);
+			m_InvenSlots[i]->Set_TextureIndex(CUI2D_InventorySlot::PART_ITEMS, ENUM_CLASS(InvenSlot.eType));
+		}
+		else
+		{
+			m_InvenSlots[i]->Set_UIVisible(CUI2D_InventorySlot::PART_ITEMS, false);
+		}
+
+		m_InvenSlots[i]->Set_ItemCount(InvenSlot.iCount);
+	}
 }
 
 void CUI2D_Inventory::Update_Seletor()

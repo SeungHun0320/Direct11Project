@@ -29,6 +29,9 @@ public:
 	virtual void Late_Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
+public:
+	_vector Get_State(_int iPartIndex, STATE eState);
+
 private:
 	class CInventory* m_pInventory = { nullptr };
 

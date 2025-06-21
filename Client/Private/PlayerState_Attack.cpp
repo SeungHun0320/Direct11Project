@@ -2,6 +2,33 @@
 #include "Player.h"
 #include "Player_IAttackStrategy.h"
 
+#include "Inventory.h"
+
+/* --------------------------
+        어택 부모 함수
+------------------------- */
+void CPlayerState_Attack::Try_Combo(_uint iQuickSlotIdx)
+{
+    CInventory::QUICK_SLOT QuickSlot = m_pOwner->Get_Inventory()->
+        Get_QuickSlot(static_cast<CInventory::QSLOT_TYPE>(iQuickSlotIdx));
+
+    if (!QuickSlot.bHasItem)
+        return;
+
+    if (m_eWeaponType == ToWeaponType(QuickSlot.eType))
+        m_isAttackCombo = true;
+}
+void CPlayerState_Attack::Check_ComboKey()
+{
+    if (m_pOwner->KeyDown(DIK_J))
+        Try_Combo(CInventory::QSLOT_J);
+    else if (m_pOwner->KeyDown(DIK_K))
+        Try_Combo(CInventory::QSLOT_K);
+    else if (m_pOwner->KeyDown(DIK_L))
+        Try_Combo(CInventory::QSLOT_L);
+}
+
+
 /* --------------------------
            어택 1
 ------------------------- */
@@ -37,8 +64,7 @@ void CPlayerState_Attack1::Execute(_float fTimeDelta)
 
     _bool isBlocked = m_pOwner->Get_IsBlocked();
 
-    if (m_pOwner->KeyDown(DIK_J))
-        m_isAttackCombo = true;
+    Check_ComboKey();
 
     if(m_fAttackStartTime <= m_fTimeAcc)
         m_pOwner->Set_Active(m_eWeaponType);
@@ -171,8 +197,7 @@ void CPlayerState_Attack2::Execute(_float fTimeDelta)
     
     _bool isBlocked = m_pOwner->Get_IsBlocked();
 
-    if (m_pOwner->KeyDown(DIK_J)) // m_fTimeAcc >= m_fDuration && 
-        m_isAttackCombo = true;
+    Check_ComboKey();
 
     if (WEAPON_TYPE::STICK == m_eWeaponType)
     {
@@ -272,12 +297,8 @@ void CPlayerState_Attack3::Execute(_float fTimeDelta)
 {
     m_fTimeAcc += fTimeDelta;
 
-    if (m_pOwner->Get_Dead())
-        m_pOwner->Change_States(CPlayer::STATES::DIE);
-
-
-    if (m_fTimeAcc >= m_fDuration && m_pOwner->KeyDown(DIK_J))
-        m_isAttackCombo = true;
+    if(m_fTimeAcc >= m_fDuration)
+        Check_ComboKey();
 
     if (WEAPON_TYPE::SWORD == m_eWeaponType)
     {

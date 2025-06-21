@@ -21,6 +21,11 @@ protected:
 	CItem(const CItem& Prototype);
 	virtual ~CItem() = default;
 
+public: /* ¸ÊÅø ½È¾î */
+	ITEM_TYPE Get_ItemType() const {
+		return m_eItemType;
+	}
+
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
@@ -31,6 +36,7 @@ public:
 
 protected:
 	LEVEL m_eLevelID = { LEVEL::LEVEL_END };
+	ITEM_TYPE m_eItemType = { ITEM_TYPE::IT_END };
 
 protected:
 	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner) override;

@@ -68,10 +68,24 @@ void CUI2D_InventorySlot::Late_Update(_float fTimeDelta)
         return;
 
     __super::Late_Update(fTimeDelta);
+
+    m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);
 }
 
 HRESULT CUI2D_InventorySlot::Render()
 {
+    if (!(*m_pParentIsOnInven))
+        return E_FAIL;
+
+    const wstring& strCount = to_wstring(m_iCount);
+
+    _float3 vPos{};
+    XMStoreFloat3(&vPos, m_pTransformCom->Get_State(STATE::POSITION));
+    _float2 vFontPos = _float2(fabs(vPos.x) + 230.f, fabs(vPos.y) + 370.f);
+
+    if(0 != m_iCount)
+        m_pGameInstance->Draw_Font(TEXT("Font_Money"), strCount.c_str(), vFontPos, XMVectorSet(1.f, 1.f, 1.f, 1.f), 0.f, _float2(0.f, 0.f), 0.8f);
+        
     return S_OK;
 }
 

@@ -64,23 +64,52 @@ HRESULT CInventory::Render()
 
 void CInventory::Subscribe_Events()
 {
-    Delegate<> InvenPotionDele;
-    InvenPotionDele.Bind<CInventory, &CInventory::Acquire_Potion>(this);
-    m_pGameInstance->Subscribe_Event(TEXT("Acquire_Potion"), InvenPotionDele);
+    Delegate<ITEM_TYPE> InvenItemDele;
+    InvenItemDele.Bind<CInventory, &CInventory::Acquire_Item>(this);
+    m_pGameInstance->Subscribe_Event(TEXT("Acquire_Item"), InvenItemDele);
 
-    Delegate<_bool> InvenShiledDele;
-    InvenShiledDele.Bind<CInventory, &CInventory::Acquire_Shield>(this);
-    m_pGameInstance->Subscribe_Event(TEXT("Acquire_Shield"), InvenShiledDele);
+    Delegate<ITEM_TYPE, _int> BuyShopItemDele;
+    BuyShopItemDele.Bind<CInventory, &CInventory::Buy_ShopItem>(this);
+    m_pGameInstance->Subscribe_Event(TEXT("Buy_ShopItem"), BuyShopItemDele);
+
 }
 
-void CInventory::Acquire_Potion()
+void CInventory::Acquire_Item(ITEM_TYPE eType)
 {
-    Add_Potion();
+    switch (eType)
+    {
+    case ITEM_TYPE::BERRY:
+    case ITEM_TYPE::BLUEBERRY:
+    case ITEM_TYPE::COIN_QUESTION:
+        Add_UseItemSlot(eType);
+        break;
+    case ITEM_TYPE::FIRE_CRACKER:
+        Add_UseItemSlot(eType, 3);
+        break;
+    case ITEM_TYPE::STICK:
+    case ITEM_TYPE::SWORD:
+    case ITEM_TYPE::DAGGER:
+        Add_WeaponSlot(eType);
+        break;
+    case ITEM_TYPE::POTION:
+        Add_Potion();
+        break;
+    case ITEM_TYPE::SHILED:
+        Set_isShield(true);
+        m_pGameInstance->Publish_Event(TEXT("Equip_Shield"));
+        break;
+    default:
+        break;
+    }
 }
 
-void CInventory::Acquire_Shield(_bool isShield)
+void CInventory::Buy_ShopItem(ITEM_TYPE eType, _int iPrice)
 {
-    Set_isShield(isShield);
+    if (iPrice > m_iCoin)
+        return;
+
+    Use_Coin(iPrice);
+    Acquire_Item(eType);
 }
 
 _bool CInventory::Add_Potion(_int iCount)
@@ -103,6 +132,123 @@ _bool CInventory::Use_Potion()
     return true;
 }
 
+void CInventory::Add_UseItemSlot(ITEM_TYPE eType, _int iCount)
+{
+    for (_uint i = SLOT_USEITEM0; i <= SLOT_USEITEM3; i++)
+    {
+        if (m_InvenSlot[i].bHasItem && eType == m_InvenSlot[i].eType)
+        {
+            m_InvenSlot[i].iCount += iCount;
+            return;
+        }
+    }
+
+    for (_uint i = SLOT_USEITEM0; i <= SLOT_USEITEM3; i++)
+    {
+        if (!m_InvenSlot[i].bHasItem)
+        {
+            m_InvenSlot[i].eType = eType;
+            m_InvenSlot[i].bHasItem = true;
+            ++m_InvenSlot[i].iCount = iCount;
+            return;
+        }
+    }
+}
+
+void CInventory::Add_WeaponSlot(ITEM_TYPE eType)
+{
+    for (_uint i = SLOT_WEAPON0; i <= SLOT_WEAPON2; i++)
+    {
+        if (!m_InvenSlot[i].bHasItem)
+        {
+            m_InvenSlot[i].eType = eType;
+            m_InvenSlot[i].bHasItem = true;
+            break;
+        }
+    }
+}
+
+_bool CInventory::Is_UseItem(ITEM_TYPE eType)
+{
+    switch (eType)
+    {
+    case ITEM_TYPE::BERRY:
+    case ITEM_TYPE::BLUEBERRY:
+    case ITEM_TYPE::COIN_QUESTION:
+    case ITEM_TYPE::FIRE_CRACKER:
+        return true;
+    default:
+        return false;
+    }
+}
+
+_bool CInventory::Use_QuickSlot(QSLOT_TYPE eSlot)
+{
+    if (!m_QuickSlot[eSlot].bHasItem)
+        return false;
+
+    if (0 >= m_InvenSlot[m_QuickSlot[eSlot].iInvenSlotIndex].iCount)
+        return false;
+
+    --m_InvenSlot[m_QuickSlot[eSlot].iInvenSlotIndex].iCount;
+
+    if (0 == m_InvenSlot[m_QuickSlot[eSlot].iInvenSlotIndex].iCount)
+    {
+        m_InvenSlot[m_QuickSlot[eSlot].iInvenSlotIndex].iCount = 0;
+        m_InvenSlot[m_QuickSlot[eSlot].iInvenSlotIndex].eType = ITEM_TYPE::IT_END;
+        m_InvenSlot[m_QuickSlot[eSlot].iInvenSlotIndex].bHasItem = false;
+
+        m_QuickSlot[eSlot].eType = ITEM_TYPE::IT_END;
+        m_QuickSlot[eSlot].iInvenSlotIndex = 0;
+        m_QuickSlot[eSlot].bHasItem = false;
+    }
+
+    return true;
+}
+
+ITEM_TYPE CInventory::IsWeaponInQuickSlot(QSLOT_TYPE eQuickSlot)
+{
+    switch (m_QuickSlot[eQuickSlot].eType)
+    {
+    case ITEM_TYPE::STICK:
+    case ITEM_TYPE::SWORD:
+    case ITEM_TYPE::DAGGER:
+        return m_QuickSlot[eQuickSlot].eType;
+    default:
+        break;
+    }
+
+    return ITEM_TYPE::IT_END;
+}
+
+void CInventory::Register_QuickSlot(_uint iQuickSlotIndex)
+{
+    if (QSLOT_END <= iQuickSlotIndex)
+        return;
+
+    const ITEM_TYPE eType = m_InvenSlot[m_iSelectSlotIndex].eType;
+
+    for (_uint i = 0; i < QSLOT_END; i++)
+    {
+        if (i == iQuickSlotIndex)
+        {
+            // 애니메이션 처리 해주면 될듯
+            continue;
+        }
+
+        if (eType == m_QuickSlot[i].eType)
+        {
+            m_QuickSlot[i].bHasItem = false;
+            m_QuickSlot[i].eType = ITEM_TYPE::IT_END;
+            m_QuickSlot->iInvenSlotIndex = 0;
+        }
+    }
+
+    m_QuickSlot[iQuickSlotIndex].bHasItem = true;
+    m_QuickSlot[iQuickSlotIndex].eType = eType;
+    m_QuickSlot[iQuickSlotIndex].iInvenSlotIndex = m_iSelectSlotIndex;
+}
+
 void CInventory::Key_Input()
 {
     if (!(*m_pParentIsOnInven))
@@ -116,6 +262,13 @@ void CInventory::Key_Input()
         Move_Selector(-1);
     if (KEY_DOWN(DIK_RIGHT))
         Move_Selector(+1);
+
+    if (KEY_DOWN(DIK_J))
+        Register_QuickSlot(QSLOT_J);
+    if(KEY_DOWN(DIK_K))
+        Register_QuickSlot(QSLOT_K);
+    if(KEY_DOWN(DIK_L))
+        Register_QuickSlot(QSLOT_L);
 }
 
 void CInventory::Move_Selector(_uint iSlotIndex)

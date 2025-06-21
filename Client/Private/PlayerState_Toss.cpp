@@ -32,7 +32,7 @@ void CPlayerState_WindUp::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 
-	if (0.8f <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta))
+	if (0.1f <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta))
 	{
 		m_pOwner->Change_States(CPlayer::STATES::TOSS);
 	}

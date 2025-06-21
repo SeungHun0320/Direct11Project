@@ -400,8 +400,23 @@
     <Filter Include="02.GameObjects\00.UI\05.Interaction\Reward">
       <UniqueIdentifier>{2b7a1a83-a94f-4a92-9e87-a932228a710c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\07.Item\Body">
+    <Filter Include="02.GameObjects\07.Item\Part">
+      <UniqueIdentifier>{b7500f4a-0632-4bce-8ee3-67ec502f0707}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Item\Part\Body">
       <UniqueIdentifier>{83d99c17-d5f7-43e7-a5dc-39173297ca00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Item\Item_Berry">
+      <UniqueIdentifier>{f003743d-9de7-49de-8c53-b890849e5d00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Item\Item_BlueBerry">
+      <UniqueIdentifier>{95afbada-5a65-4962-8f5b-8f2d4f1305ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Item\Item_CoinQuestion">
+      <UniqueIdentifier>{12118521-2d94-41cf-b00e-c12a49d36055}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Item\Item_FireCracker">
+      <UniqueIdentifier>{a81821d6-6bfa-4cd0-8ecc-0fa79a074ec2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -727,10 +742,13 @@
       <Filter>02.GameObjects\00.UI\05.Interaction\Reward</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Body_Item.h">
-      <Filter>02.GameObjects\07.Item\Body</Filter>
+      <Filter>02.GameObjects\07.Item\Part\Body</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Item_Coin.h">
       <Filter>02.GameObjects\07.Item\Item_Coin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\item_FireCracker.h">
+      <Filter>02.GameObjects\07.Item\Item_FireCracker</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1099,10 +1117,13 @@
       <Filter>02.GameObjects\00.UI\05.Interaction\Reward</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Body_Item.cpp">
-      <Filter>02.GameObjects\07.Item\Body</Filter>
+      <Filter>02.GameObjects\07.Item\Part\Body</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Item_Coin.cpp">
       <Filter>02.GameObjects\07.Item\Item_Coin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\item_FireCracker.cpp">
+      <Filter>02.GameObjects\07.Item\Item_FireCracker</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,8 @@
 #include "PlayerState.h"
 #include "Player.h"
 
+#include "Inventory.h"
+
 #define SPEED 5.f
 
 CPlayerState_Move::CPlayerState_Move(CPlayer* pOwner)
@@ -33,14 +35,14 @@ void CPlayerState_Move::Execute(_float fTimeDelta)
 	if (m_pOwner->KeyDown(DIK_SPACE))
 		m_pOwner->Change_States(CPlayer::STATES::DODGE);
 
-	if (m_pOwner->KeyDown(DIK_J)) 
-		m_pOwner->Start_Attack();
+	if (m_pOwner->KeyDown(DIK_J))
+		m_pOwner->Use_QuickSlot(CInventory::QSLOT_J);
 
 	if (m_pOwner->KeyDown(DIK_K))
-		m_pOwner->Change_States(CPlayer::STATES::WIND_UP);
+		m_pOwner->Use_QuickSlot(CInventory::QSLOT_K);
 
 	if (m_pOwner->KeyDown(DIK_L))
-		m_pOwner->Change_States(CPlayer::STATES::EAT);
+		m_pOwner->Use_QuickSlot(CInventory::QSLOT_L);
 		
 	m_pOwner->Use_Potion();
 

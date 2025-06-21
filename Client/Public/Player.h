@@ -114,12 +114,23 @@ public: /* 상호작용 관련 */
 public: /* 공격 */
 	void  Start_Attack();
 	void  SetUp_AttackMeshVisible(WEAPON_TYPE eWeaponType);
+	_bool DodgeComboAttack(ITEM_TYPE eItemType);
+	_bool CheckDodgeComboWeapon();
 
 public:/* 락온 관련 */
 	void     LockOn();
 	void     LockOff();
 	void     LockOnMove(_fvector vDir, _float fTimeDelta, _float fSpeed = 0.f);
 	_vector  Get_TargetState(STATE eState);
+
+public: /* 인벤토리 관련 */
+	class CInventory* Get_Inventory() const;
+
+	void Use_QuickSlot(_uint eSlot);
+	void Equip_Weapon(class CPlayer_IAttackStrategy* pStrategy);
+	void Use_Berrys();
+	void Use_Coin_Question();
+	void Use_FireCracker();
 
 public: /* 키입력에 따른 방향을 결정해주는 함수 */
 	_vector Get_InputDirection();

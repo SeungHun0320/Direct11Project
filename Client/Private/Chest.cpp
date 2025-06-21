@@ -115,32 +115,7 @@ HRESULT CChest::Spawn_Coin(const _float3& vSpawnPos)
 
 void CChest::Give_Item()
 {
-	switch (m_eType)
-	{
-	case ITEM_TYPE::BERRY:
-		break;
-	case ITEM_TYPE::BLUEBERRY:
-		break;
-	case ITEM_TYPE::COIN_QUESTION:
-		break;
-	case ITEM_TYPE::DAGGER:
-		break;
-	case ITEM_TYPE::FIRE_CRACKER:
-		break;
-	case ITEM_TYPE::POTION:
-		m_pGameInstance->Publish_Event(TEXT("Acquire_Potion"));
-		break;
-	case ITEM_TYPE::SWORD:
-		break;
-	case ITEM_TYPE::SHILED:
-		m_pGameInstance->Publish_Event(TEXT("Acquire_Shield"), true);
-		m_pGameInstance->Publish_Event(TEXT("Equip_Shield"));
-		break;
-	case ITEM_TYPE::STICK:
-		break;
-	default:
-		break;
-	}
+	m_pGameInstance->Publish_Event(TEXT("Acquire_Item"), m_eType);
 }
 
 HRESULT CChest::Ready_Components(void* pArg)

@@ -1,6 +1,8 @@
 #include "PlayerState.h"
 #include "Player.h"
 
+#include "Inventory.h"
+
 CPlayerState_Idle::CPlayerState_Idle(CPlayer* pOwner)
 	: CPlayerState{ pOwner }
 {
@@ -55,13 +57,13 @@ void CPlayerState_Idle::Execute(_float fTimeDelta)
 
 	/* 나중에 인벤에 어떤 칸에 어떤 아이템이 장착되어 있는지에 따라서 분기 ㄱ */
 	if (m_pOwner->KeyDown(DIK_J))
-		m_pOwner->Start_Attack();
+		m_pOwner->Use_QuickSlot(CInventory::QSLOT_J);
 
 	if (m_pOwner->KeyDown(DIK_K))
-		m_pOwner->Change_States(CPlayer::STATES::WIND_UP);
+		m_pOwner->Use_QuickSlot(CInventory::QSLOT_K);
 
 	if (m_pOwner->KeyDown(DIK_L))
-		m_pOwner->Change_States(CPlayer::STATES::COIN_FLIP);
+		m_pOwner->Use_QuickSlot(CInventory::QSLOT_L);
 
 	m_pOwner->Use_Potion();
 
