@@ -36,8 +36,10 @@ public:
 	virtual HRESULT Render() override;
 
 protected:
-	LEVEL m_eLevelID = { LEVEL::LEVEL_END };
+	LEVEL	  m_eLevelID = { LEVEL::LEVEL_END };
+
 	ITEM_TYPE m_eItemType = { ITEM_TYPE::IT_END };
+	_int	  m_iPrice = {};
 
 protected:
 	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner) override;

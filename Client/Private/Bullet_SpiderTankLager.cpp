@@ -1,23 +1,23 @@
-#include "SpiderTank_Lager.h"
+#include "Bullet_SpiderTankLager.h"
 
 #include "GameInstance.h"
 
-CSpiderTank_Lager::CSpiderTank_Lager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    :CMonster_Bullet{pDevice, pContext}
+CBullet_SpiderTankLager::CBullet_SpiderTankLager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+    :CBullet_Monster{pDevice, pContext}
 {
 }
 
-CSpiderTank_Lager::CSpiderTank_Lager(const CSpiderTank_Lager& Prototype)
-    :CMonster_Bullet(Prototype)
+CBullet_SpiderTankLager::CBullet_SpiderTankLager(const CBullet_SpiderTankLager& Prototype)
+    :CBullet_Monster(Prototype)
 {
 }
 
-HRESULT CSpiderTank_Lager::Initialize_Prototype()
+HRESULT CBullet_SpiderTankLager::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT CSpiderTank_Lager::Initialize(void* pArg)
+HRESULT CBullet_SpiderTankLager::Initialize(void* pArg)
 {
     if (FAILED(__super::Initialize(pArg)))
         return E_FAIL;
@@ -29,17 +29,16 @@ HRESULT CSpiderTank_Lager::Initialize(void* pArg)
 	m_pTransformCom->Set_Matrix(XMLoadFloat4x4(m_pParentMatrix));
 
 	m_fDeadTime = 1.f;
-	m_fTimeAcc = 0.f;
 
     return S_OK;
 }
 
-void CSpiderTank_Lager::Priority_Update(_float fTimeDelta)
+void CBullet_SpiderTankLager::Priority_Update(_float fTimeDelta)
 {
     __super::Priority_Update(fTimeDelta);
 }
 
-LIFE CSpiderTank_Lager::Update(_float fTimeDelta)
+LIFE CBullet_SpiderTankLager::Update(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 
@@ -47,19 +46,19 @@ LIFE CSpiderTank_Lager::Update(_float fTimeDelta)
 		return LIFE::DEAD;
 
 	if (m_fDeadTime <= m_fTimeAcc)
-		m_bDead = true;
+		Set_Dead(true);
 
 	m_pColliderCom->Update(XMLoadFloat4x4(m_pParentMatrix));
 
     return LIFE::NONE;
 }
 
-void CSpiderTank_Lager::Late_Update(_float fTimeDelta)
+void CBullet_SpiderTankLager::Late_Update(_float fTimeDelta)
 {
     __super::Late_Update(fTimeDelta);
 }
 
-HRESULT CSpiderTank_Lager::Render()
+HRESULT CBullet_SpiderTankLager::Render()
 {
 #ifdef _DEBUG
 	m_pColliderCom->Render();
@@ -68,10 +67,15 @@ HRESULT CSpiderTank_Lager::Render()
     return S_OK;
 }
 
-HRESULT CSpiderTank_Lager::Ready_Components(void* pArg)
+HRESULT CBullet_SpiderTankLager::Ready_Components(void* pArg)
 {
-    if (FAILED(__super::Ready_Components(pArg)))
-        return E_FAIL;
+    //if (FAILED(__super::Ready_Components(pArg))) // 나중에 추가
+    //    return E_FAIL;
+
+	/* For.Com_Shader */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxMesh"),
+		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
+		return E_FAIL;
 
 	/* For.Com_Collider */
 	CBounding_OBB::DESC	OBBDesc{};
@@ -90,33 +94,33 @@ HRESULT CSpiderTank_Lager::Ready_Components(void* pArg)
     return S_OK;
 }
 
-CSpiderTank_Lager* CSpiderTank_Lager::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CBullet_SpiderTankLager* CBullet_SpiderTankLager::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	CSpiderTank_Lager* pInstance = new CSpiderTank_Lager(pDevice, pContext);
+	CBullet_SpiderTankLager* pInstance = new CBullet_SpiderTankLager(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created : CSpiderTank_Lager");
+		MSG_BOX("Failed to Created : CBullet_SpiderTankLager");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-CGameObject* CSpiderTank_Lager::Clone(void* pArg)
+CGameObject* CBullet_SpiderTankLager::Clone(void* pArg)
 {
-	CSpiderTank_Lager* pInstance = new CSpiderTank_Lager(*this);
+	CBullet_SpiderTankLager* pInstance = new CBullet_SpiderTankLager(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Cloned : CSpiderTank_Lager");
+		MSG_BOX("Failed to Cloned : CBullet_SpiderTankLager");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CSpiderTank_Lager::Free()
+void CBullet_SpiderTankLager::Free()
 {
     __super::Free();
 }

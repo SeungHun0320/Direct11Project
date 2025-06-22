@@ -8,9 +8,9 @@
 
 #include "SpiderTankState.h"
 
-#include "SpiderTank_Bullet.h"
-#include "SpiderTank_Orb.h"
-#include "SpiderTank_Lager.h"
+#include "Bullet_SpiderTank.h"
+#include "Bullet_SpiderTankOrb.h"
+#include "Bullet_SpiderTankLager.h"
 
 
 #include "Player.h"
@@ -258,17 +258,17 @@ _bool CSpiderTank::Is_TargetOnRight()
 
 HRESULT CSpiderTank::Shot_Bullet()
 {
-	CSpiderTank_Bullet::DESC tDesc{};
+	CBullet_SpiderTank::DESC tDesc{};
+	_float3 vPos{};
 
 	tDesc.eLevelID = m_eLevelID;
 	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	tDesc.fSpeedPerSec = 50.f;
 	tDesc.strName = TEXT("SpiderTank_Bullet");
-	_float3 vPos{};
+	tDesc.strPrototypeModelTag = TEXT("Prototype_Component_Model_SpiderTankOrb");
+
 	XMStoreFloat3(&vPos, m_pTransformCom->Get_State(STATE::POSITION));
-
 	_vector vTarget = Get_TargetPosition();
-
 	XMStoreFloat3(&tDesc.vDir, vTarget);
 
 	tDesc.WorldMatrix = XMMatrixTranslation(vPos.x, vPos.y + 7.5f, vPos.z);
@@ -282,14 +282,16 @@ HRESULT CSpiderTank::Shot_Bullet()
 
 HRESULT CSpiderTank::Shot_Bomb()
 {
-	CSpiderTank_Orb::DESC tDesc{};
-	
+	CBullet_SpiderTankOrb::DESC tDesc{};
+	_float3 vPos{};
+
 	tDesc.eLevelID = m_eLevelID;
 	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	tDesc.fSpeedPerSec = 10.f;
 	tDesc.strName = TEXT("SpiderTank_Orb");
+	tDesc.strPrototypeModelTag = TEXT("Prototype_Component_Model_SpiderTankOrb");
+
 	XMStoreFloat3(&tDesc.vDir, m_pTransformCom->Get_State(STATE::LOOK));
-	_float3 vPos{};
 	XMStoreFloat3(&vPos, m_pTransformCom->Get_State(STATE::POSITION));
 
 	tDesc.WorldMatrix = XMMatrixTranslation(vPos.x , vPos.y + 13.f , vPos.z);
@@ -304,7 +306,7 @@ HRESULT CSpiderTank::Shot_Bomb()
 HRESULT CSpiderTank::Shot_Lager()
 {
 	_float3 vPos{};
-	CSpiderTank_Lager::DESC tDesc{};
+	CBullet_SpiderTankLager::DESC tDesc{};
 
 	tDesc.eLevelID = m_eLevelID;
 	tDesc.strName = TEXT("SpiderTank_Lager");
@@ -389,12 +391,24 @@ void CSpiderTank::On_Hit(_float fDamage, _float fStaggerValue, _float fInvicible
 
 void CSpiderTank::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
 {
-	if (CI_WEAPON(static_cast<COLLIDER_ID>(OtherColliderID)))
+	COLLIDER_ID eColliderID = static_cast<COLLIDER_ID>(OtherColliderID);
+
+	if (CI_WEAPON(eColliderID))
 	{
 		if (CPlayer* pPlayer = dynamic_cast<CPlayer*>(pOwner))
 		{
 			On_Hit(pPlayer->Get_AttackValue(), pPlayer->Compute_StaggerValue());
 		}
+	}
+
+	switch (eColliderID)
+	{
+	case COLLIDER_ID::BULLET_EXPLOSION:
+		if (CBullet* pBullet = dynamic_cast<CBullet*>(pOwner))
+		{
+			On_Hit(pBullet->Get_AttackValue(), pBullet->Get_StaggerValue());
+		}
+		break;
 	}
 }
 

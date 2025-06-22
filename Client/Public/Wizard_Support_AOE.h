@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Monster_Bullet_AOE.h"
+#include "Bullet_Monster_AOE.h"
 
-class CWizard_Support_AOE final : public CMonster_Bullet_AOE
+class CWizard_Support_AOE final : public CBullet_Monster_AOE
 {
 public:
-	typedef struct tagWizardSupportAOEDesc : public CMonster_Bullet_AOE::DESC
+	typedef struct tagWizardSupportAOEDesc : public CBullet_Monster_AOE::DESC
 	{
 
 	}DESC;

@@ -2,12 +2,12 @@
 #include "GameInstance.h"
 
 CWizard_Support_AOE::CWizard_Support_AOE(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    :CMonster_Bullet_AOE{pDevice, pContext}
+    :CBullet_Monster_AOE{pDevice, pContext}
 {
 }
 
 CWizard_Support_AOE::CWizard_Support_AOE(const CWizard_Support_AOE& Prototype)
-    :CMonster_Bullet_AOE(Prototype)
+    :CBullet_Monster_AOE(Prototype)
 {
 }
 
@@ -35,15 +35,6 @@ void CWizard_Support_AOE::Priority_Update(_float fTimeDelta)
 
 LIFE CWizard_Support_AOE::Update(_float fTimeDelta)
 {
-    m_fTimeAcc += fTimeDelta;
-
-    if (m_bDead)
-        return LIFE::DEAD;
-
-
-    if (m_fDeadTime <= m_fTimeAcc)
-        m_bDead = true;
-
     return __super::Update(fTimeDelta);
 }
 
@@ -62,7 +53,12 @@ HRESULT CWizard_Support_AOE::Render()
 
 HRESULT CWizard_Support_AOE::Ready_Components(void* pArg)
 {
-    if (FAILED(__super::Ready_Components(pArg)))
+    //if (FAILED(__super::Ready_Components(pArg))) // 나중에 추가 
+    //    return E_FAIL;
+
+    /* For.Com_Shader */
+    if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxMesh"),
+        TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
         return E_FAIL;
 
     CBounding_AABB::DESC	AABBDesc{};

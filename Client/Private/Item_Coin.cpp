@@ -39,9 +39,6 @@ void CItem_Coin::Priority_Update(_float fTimeDelta)
 
 LIFE CItem_Coin::Update(_float fTimeDelta)
 {
-	if (m_bDead)
-		return LIFE::DEAD;
-
 	m_fTimeAcc += fTimeDelta;
 
 	if (2.f <= m_fTimeAcc)
@@ -85,7 +82,7 @@ HRESULT CItem_Coin::Ready_PartObjects()
 	BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
 	BodyDesc.strPrototypeModelTag = TEXT("Prototype_Component_Model_Coin");
 	BodyDesc.vExtents =  _float3(0.2f, 0.2f, 0.2f);
-	BodyDesc.vCenter =	_float3(0.0f, BodyDesc.vExtents.y, 0.f);
+	BodyDesc.vCenter =	_float3(0.f, 0.f, 0.f);
 	BodyDesc.iColliderGroupID = ENUM_CLASS(COLLIDER_GROUP::ITEM);
 	BodyDesc.iColliderID = ENUM_CLASS(COLLIDER_ID::COIN);
 	BodyDesc.pOwner = this;

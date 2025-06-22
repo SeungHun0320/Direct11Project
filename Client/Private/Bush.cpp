@@ -57,7 +57,10 @@ void CBush::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject*
 	{
 	case COLLIDER_ID::SWORD:
 		/* 나중에 바로 죽이지 말고 좀 머 어? 감사합니다. */
-		m_bDead = true;
+		Set_Dead(true);
+		break;
+	case COLLIDER_ID::BULLET_EXPLOSION:
+		Set_Dead(true);
 		break;
 	}
 }

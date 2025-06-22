@@ -2,7 +2,7 @@
 #include "Layer.h"
 
 #include "GameInstance.h"
-#include "GameObject.h"
+#include "ContainerObject.h"
 #include "Mesh.h"
 
 CObject_Manager::CObject_Manager()
@@ -61,9 +61,9 @@ CGameObject* CObject_Manager::Find_Picked_Object(_uint iLevelIndex, const _wstri
 	CGameObject* pReturnObject = { nullptr };
 
 	for (auto& pGameObj : *pGameObjects)
-	{
-		CModel* pModelCom = static_cast<CModel*>(pGameObj->Get_Component(TEXT("Com_Model")));
-		CTransform* pTransform = static_cast<CTransform*>(pGameObj->Get_Component(TEXT("Com_Transform")));
+	{						/* 무조건 바디가 0 이어야됨 *//* 무조건 바디가 0 이어야됨 *//* 무조건 바디가 0 이어야됨 *//* 무조건 바디가 0 이어야됨 */								
+		CModel* pModelCom = dynamic_cast<CModel*>(dynamic_cast<CContainerObject*>(pGameObj)->Get_Component(0, TEXT("Com_Model")));
+		CTransform* pTransform = dynamic_cast<CTransform*>(pGameObj->Get_Component(TEXT("Com_Transform")));
 
 		if (nullptr == pModelCom || nullptr == pTransform)
 			continue;

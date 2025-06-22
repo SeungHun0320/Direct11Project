@@ -37,6 +37,7 @@ void CBody_Item::Priority_Update(_float fTimeDelta)
 
 LIFE CBody_Item::Update(_float fTimeDelta)
 {
+
 	XMStoreFloat4x4(&m_CombinedWorldMatrix, m_pTransformCom->Get_WorldMatrix() * XMLoadFloat4x4(m_pParentMatrix));
 
 	m_pColliderCom->Update(XMLoadFloat4x4(&m_CombinedWorldMatrix));

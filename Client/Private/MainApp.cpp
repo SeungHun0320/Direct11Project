@@ -7,6 +7,7 @@
 #include "Body_Player.h"
 #include "Weapon_Player.h"
 #include "Inventory.h"
+#include "Bullet_FireCracker.h"
 
 #include "UI2D_PlayerHPBar.h"
 #include "UI2D_PlayerSPBar.h"
@@ -387,6 +388,14 @@ HRESULT CMainApp::Ready_Prototype_Object()
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI3D_Animation"),
 		CUI_Animation::Create(m_pDevice, m_pContext, UI_TYPE::UI3D))))
 		return E_FAIL;
+
+	/*--------------------------------------------ÆøÅº(ÃÑ¾Ë)--------------------------------------------------*/
+
+	/*For.Prototype_GameObject_Bullet_FireCracker */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Bullet_FireCracker"),
+		CBullet_FireCracker::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
 	return S_OK;
 }

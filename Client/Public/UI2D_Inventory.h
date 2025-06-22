@@ -53,6 +53,7 @@ private:
 	void Update_Slots();
 	void Update_Seletor();
 	void Update_Shield();
+
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;
 	virtual HRESULT Ready_PartObjects() override;

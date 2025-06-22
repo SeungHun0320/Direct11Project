@@ -25,7 +25,7 @@ void CPlayerState_WindUp::Enter(_float fTimeDelta)
 		m_pOwner->Set_MeshVisible(CPlayer::PART_BODY, i, true);
 	}
 
-	m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::WINDUP, false, 0.1f);
+	m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::WINDUP, false);
 }
 
 void CPlayerState_WindUp::Execute(_float fTimeDelta)
@@ -68,6 +68,7 @@ void CPlayerState_Toss::Enter(_float fTimeDelta)
 {
 	m_fTimeAcc = 0.f;
 	m_fDuration = 0.f;
+	m_isToss = false;
 
 	m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::TOSS, false, 0.3f);
 }
@@ -75,6 +76,13 @@ void CPlayerState_Toss::Enter(_float fTimeDelta)
 void CPlayerState_Toss::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
+
+	if (0.4f <= m_fTimeAcc && !m_isToss)
+	{
+		m_pOwner->Use_FireCracker();
+		m_isToss = true;
+	}
+		
 
 	if (0.8f <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta))
 	{
@@ -91,7 +99,7 @@ void CPlayerState_Toss::Exit()
 {
 	m_fTimeAcc = 0.f;
 	m_fDuration = 0.f;
-
+	m_isToss = false;
 	
 }
 

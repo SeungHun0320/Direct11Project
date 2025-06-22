@@ -1,23 +1,23 @@
-#include "SpiderTank_Orb.h"
+#include "Bullet_SpiderTankOrb.h"
 
 #include "GameInstance.h"
 
-CSpiderTank_Orb::CSpiderTank_Orb(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CMonster_Bullet { pDevice, pContext }
+CBullet_SpiderTankOrb::CBullet_SpiderTankOrb(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	: CBullet_Monster { pDevice, pContext }
 {
 }
 
-CSpiderTank_Orb::CSpiderTank_Orb(const CSpiderTank_Orb& Prototype)
-	: CMonster_Bullet( Prototype )
+CBullet_SpiderTankOrb::CBullet_SpiderTankOrb(const CBullet_SpiderTankOrb& Prototype)
+	: CBullet_Monster( Prototype )
 {
 }
 
-HRESULT CSpiderTank_Orb::Initialize_Prototype()
+HRESULT CBullet_SpiderTankOrb::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CSpiderTank_Orb::Initialize(void* pArg)
+HRESULT CBullet_SpiderTankOrb::Initialize(void* pArg)
 {
 	DESC* pDesc = static_cast<DESC*>(pArg);
 
@@ -29,19 +29,18 @@ HRESULT CSpiderTank_Orb::Initialize(void* pArg)
 
 	m_pColliderCom->Set_Active(false);
 
+	m_fDeadTime = 3.f;
+
 	return S_OK;
 }
 
-void CSpiderTank_Orb::Priority_Update(_float fTimeDelta)
+void CBullet_SpiderTankOrb::Priority_Update(_float fTimeDelta)
 {
 	
 }
 
-LIFE CSpiderTank_Orb::Update(_float fTimeDelta)
+LIFE CBullet_SpiderTankOrb::Update(_float fTimeDelta)
 {
-	if (m_bDead)
-		return LIFE::DEAD;
-
 	if (!m_bGrounded)
 	{
 		// 위치 적용
@@ -58,7 +57,6 @@ LIFE CSpiderTank_Orb::Update(_float fTimeDelta)
 			m_pColliderCom->Set_Active();
 			m_bGrounded = true;
 		}
-
 	}
 	else
 	{
@@ -69,45 +67,40 @@ LIFE CSpiderTank_Orb::Update(_float fTimeDelta)
 	return __super::Update(fTimeDelta);
 }
 
-void CSpiderTank_Orb::Late_Update(_float fTimeDelta)
+void CBullet_SpiderTankOrb::Late_Update(_float fTimeDelta)
 {
 	__super::Late_Update(fTimeDelta);
 }
 
-HRESULT CSpiderTank_Orb::Render()
+HRESULT CBullet_SpiderTankOrb::Render()
 {
 	return  __super::Render();
 }
 
-void CSpiderTank_Orb::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
+void CBullet_SpiderTankOrb::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
 {
 	COLLIDER_ID eColliderID = static_cast<COLLIDER_ID>(OtherColliderID);
 
 	switch (eColliderID)
 	{
 	case COLLIDER_ID::PLAYER:
-		m_bDead = true;
+		Set_Dead(true);
 		break;
 
 	case COLLIDER_ID::SPIDERTANK_HEAD:
-		m_bDead = true;
+		Set_Dead(true);
 		break;
 		
 	case COLLIDER_ID::SPIDERTANK_WEAK:
-		m_bDead = true;
+		Set_Dead(true);
 		break;
 	}
 
 }
 
-HRESULT CSpiderTank_Orb::Ready_Components(void* pArg)
+HRESULT CBullet_SpiderTankOrb::Ready_Components(void* pArg)
 {
 	if (FAILED(__super::Ready_Components(pArg)))
-		return E_FAIL;
-
-	/* For.Com_Model */
-	if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Model_SpiderTankOrb"),
-		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
 		return E_FAIL;
 
 	/* For.Com_Collider */
@@ -127,33 +120,33 @@ HRESULT CSpiderTank_Orb::Ready_Components(void* pArg)
 	return S_OK;
 }
 
-CSpiderTank_Orb* CSpiderTank_Orb::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CBullet_SpiderTankOrb* CBullet_SpiderTankOrb::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	CSpiderTank_Orb* pInstance = new CSpiderTank_Orb(pDevice, pContext);
+	CBullet_SpiderTankOrb* pInstance = new CBullet_SpiderTankOrb(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created : CSpiderTank_Orb");
+		MSG_BOX("Failed to Created : CBullet_SpiderTankOrb");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-CGameObject* CSpiderTank_Orb::Clone(void* pArg)
+CGameObject* CBullet_SpiderTankOrb::Clone(void* pArg)
 {
-	CSpiderTank_Orb* pInstance = new CSpiderTank_Orb(*this);
+	CBullet_SpiderTankOrb* pInstance = new CBullet_SpiderTankOrb(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Cloned : CSpiderTank_Orb");
+		MSG_BOX("Failed to Cloned : CBullet_SpiderTankOrb");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CSpiderTank_Orb::Free()
+void CBullet_SpiderTankOrb::Free()
 {
 	__super::Free();
 

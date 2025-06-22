@@ -158,14 +158,6 @@ void CWizard_Candleabra::On_Hit(_float fDamage, _float fStaggerValue, _float fIn
 void CWizard_Candleabra::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
 {
 	__super::On_Collision(MyColliderID, OtherColliderID, pOwner);
-
-	if (CI_WEAPON(static_cast<COLLIDER_ID>(OtherColliderID)))
-	{
-		if (CPlayer* pPlayer = dynamic_cast<CPlayer*>(pOwner))
-		{
-			On_Hit(pPlayer->Get_AttackValue(), pPlayer->Compute_StaggerValue());
-		}
-	}
 }
 
 HRESULT CWizard_Candleabra::Ready_Components(void* pArg)

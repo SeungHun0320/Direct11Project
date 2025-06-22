@@ -1,19 +1,19 @@
 #pragma once
 
-#include "Monster_Bullet.h"
+#include "Bullet_Monster.h"
 
-class CSpiderTank_Lager final : public CMonster_Bullet
+class CBullet_SpiderTankLager final : public CBullet_Monster
 {
 public:
-	typedef struct tagSpiderBulletOrb : public CMonster_Bullet::DESC
+	typedef struct tagSpiderBulletOrb : public CBullet_Monster::DESC
 	{
 		const _float4x4* pParentMatrix{ nullptr };
 	}DESC;
 
 private:
-	CSpiderTank_Lager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CSpiderTank_Lager(const CSpiderTank_Lager& Prototype);
-	virtual ~CSpiderTank_Lager() = default;
+	CBullet_SpiderTankLager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CBullet_SpiderTankLager(const CBullet_SpiderTankLager& Prototype);
+	virtual ~CBullet_SpiderTankLager() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -30,7 +30,7 @@ private:
 	virtual HRESULT Ready_Components(void* pArg) override;
 
 public:
-	static CSpiderTank_Lager* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CBullet_SpiderTankLager* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 };

@@ -13,9 +13,9 @@
 #include "SpiderTank.h"
 #include "Body_SpiderTank.h"
 // 총알 추가
-#include "SpiderTank_Orb.h"
-#include "SpiderTank_Bullet.h"
-#include "SpiderTank_Lager.h"
+#include "Bullet_SpiderTankOrb.h"
+#include "Bullet_SpiderTank.h"
+#include "Bullet_SpiderTankLager.h"
 
 #include "UI2D_BossHpBar.h"
 
@@ -59,7 +59,12 @@
 #include "Chest.h"
 
 /* 아이템들 */
+#include "Item_Berry.h"
+#include "Item_BlueBerry.h"
+#include "Item_CoinQuestion.h"
+#include "Item_FireCracker.h"
 #include "Item_Coin.h"
+#include "Item_Potion.h"
 #include "Body_Item.h"
 
 #include "UI3D_Interaction.h"
@@ -268,12 +273,6 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 		CModel::Create(m_pDevice, m_pContext, MODEL::ANIM, TEXT("../Bin/Resources/Models/Anim/Environment_Objects/Chest/Chest.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
-	/*For.Prototype_Component_Model_Potion*/
-	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Potion"),
-		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Potion/Potion.Model"), PreTransformMatrix))))
-		return E_FAIL;
-
 	/*For.Prototype_Component_Model_Blob*/
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Blob"),
@@ -322,6 +321,36 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Coin"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Coin/Coin.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_Potion*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Potion"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Potion/Potion.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_Berry*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Berry"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Berry/Berry.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_BlueBerry*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_BlueBerry"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Berry(MP)/Berry(MP).Model"), PreTransformMatrix))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_FireCrackers*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_FireCrackers"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Firecrackers/Firecrackers.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_Trinket_Coin*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Trinket_Coin"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Trinket_Coin/TrinketCoin.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("네비게이션을(를) 로딩중입니다."));
@@ -391,19 +420,46 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 		CChest::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_Item */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Item"),
-		CItem::Create(m_pDevice, m_pContext))))
+	/* For.Prototype_GameObject_Item_Berry */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Item_Berry"),
+		CItem_Berry::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+	/* For.Prototype_GameObject_Item_BlueBerry */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Item_BlueBerry"),
+		CItem_BlueBerry::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	
+	/* For.Prototype_GameObject_Item_CoinQuestion */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Item_CoinQuestion"),
+		CItem_CoinQuestion::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	
+	/* For.Prototype_GameObject_Item_Potion */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Item_Potion"),
+		CItem_Potion::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_FireCracker*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_FireCracker"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Firecrackers/Firecracker.Model"), PreTransformMatrix))))
+		return E_FAIL;
+	
+	/* For.Prototype_GameObject_Item_FireCracker */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Item_FireCracker"),
+		CItem_FireCracker::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* For.Prototype_GameObject_Coin */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Coin"),
 		CItem_Coin::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
 	/* For.Prototype_GameObject_Body_Item */
  	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Body_Item"),
 		CBody_Item::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-
 
 	/* For.Prototype_GameObject_Body_Blob */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Body_Blob"),
@@ -561,6 +617,12 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/Anim/Monster/Spidertank/Orb/Spidertank_Orb.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
+	/*For.Prototype_Component_Model_FireCracker*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_FireCracker"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Firecrackers/Firecracker.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
 	lstrcpy(m_szLoadingText, TEXT("네비게이션을(를) 로딩중입니다."));
 	/* Prototype_Component_Navigation */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Navigation"),
@@ -592,17 +654,17 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 
 	/* For.Prototype_GameObject_SpiderTank_Bullet */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_SpiderTank_Bullet"),
-		CSpiderTank_Bullet::Create(m_pDevice, m_pContext))))
+		CBullet_SpiderTank::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_SpiderTank_Orb */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_SpiderTank_Orb"),
-		CSpiderTank_Orb::Create(m_pDevice, m_pContext))))
+		CBullet_SpiderTankOrb::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_SpiderTank_Lager */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_SpiderTank_Lager"),
-		CSpiderTank_Lager::Create(m_pDevice, m_pContext))))
+		CBullet_SpiderTankLager::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/*For.Prototype_GameObject_UI2D_BossHPBar */
@@ -664,6 +726,48 @@ HRESULT CLoader::Loading_For_Shop(LEVEL eLevelID)
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Map/Shop/Shop.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
+	/*For.Prototype_Component_Model_Coin*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Coin"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Coin/Coin.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_Potion*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Potion"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Potion/Potion.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_Berry*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Berry"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Berry/Berry.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_BlueBerry*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_BlueBerry"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Berry(MP)/Berry(MP).Model"), PreTransformMatrix))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_FireCracker*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_FireCracker"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Firecrackers/Firecracker.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_FireCrackers*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_FireCrackers"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Firecrackers/Firecrackers.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_Trinket_Coin*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Trinket_Coin"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Trinket_Coin/TrinketCoin.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
 	lstrcpy(m_szLoadingText, TEXT("네비게이션을(를) 로딩중입니다."));
 	/* Prototype_Component_Navigation */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Navigation"),
@@ -684,9 +788,29 @@ HRESULT CLoader::Loading_For_Shop(LEVEL eLevelID)
 		CShop::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_Item */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Item"),
-		CItem::Create(m_pDevice, m_pContext))))
+	/* For.Prototype_GameObject_Item_Berry */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Item_Berry"),
+		CItem_Berry::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Item_BlueBerry */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Item_BlueBerry"),
+		CItem_BlueBerry::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Item_CoinQuestion */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Item_CoinQuestion"),
+		CItem_CoinQuestion::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Item_Potion */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Item_Potion"),
+		CItem_Potion::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Item_FireCracker */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Item_FireCracker"),
+		CItem_FireCracker::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Coin */
@@ -796,18 +920,47 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 		CModel::Create(m_pDevice, m_pContext, MODEL::ANIM, TEXT("../Bin/Resources/Models/Anim/Environment_Objects/Chest/Chest.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
-	/*For.Prototype_Component_Model_Potion*/
-	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Potion"),
-		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Potion/Potion.Model"), PreTransformMatrix))))
-		return E_FAIL;
-
 	/*For.Prototype_Component_Model_Coin*/
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Coin"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Coin/Coin.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
+	/*For.Prototype_Component_Model_Potion*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Potion"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Potion/Potion.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_Berry*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Berry"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Berry/Berry.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_BlueBerry*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_BlueBerry"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Berry(MP)/Berry(MP).Model"), PreTransformMatrix))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_FireCracker*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_FireCracker"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Firecrackers/Firecracker.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_FireCrackers*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_FireCrackers"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Firecrackers/Firecrackers.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_Trinket_Coin*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Trinket_Coin"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Trinket_Coin/TrinketCoin.Model"), PreTransformMatrix))))
+		return E_FAIL;
 
 	/*For.Prototype_Component_Model_Blob*/
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
@@ -918,11 +1071,31 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 		CChest::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_Item */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Item"),
-		CItem::Create(m_pDevice, m_pContext))))
+	/* For.Prototype_GameObject_Item_Berry */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Item_Berry"),
+		CItem_Berry::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-	
+
+	/* For.Prototype_GameObject_Item_BlueBerry */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Item_BlueBerry"),
+		CItem_BlueBerry::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Item_CoinQuestion */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Item_CoinQuestion"),
+		CItem_CoinQuestion::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Item_Potion */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Item_Potion"),
+		CItem_Potion::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Item_FireCracker */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Item_FireCracker"),
+		CItem_FireCracker::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* For.Prototype_GameObject_Coin */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Coin"),
 		CItem_Coin::Create(m_pDevice, m_pContext))))
@@ -1001,8 +1174,6 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_UI2D_Reward"),
 		CUI2D_Reward::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-
-
 
 	/* For.Prototype_GameObject_Sky */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Sky"),

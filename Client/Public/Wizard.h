@@ -35,6 +35,10 @@ public:
 	void LookAt(_fvector vDir, _float fTimeDelta, _float fSpeed);
 
 protected:
+	virtual void On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDuration = 0.6f) override {};
+	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner) override;
+
+protected:
 	virtual HRESULT Ready_Components(void* pArg) override;
 
 public:

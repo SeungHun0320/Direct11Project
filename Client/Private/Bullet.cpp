@@ -22,6 +22,7 @@ HRESULT CBullet::Initialize(void* pArg)
 	DESC* pDesc = static_cast<DESC*>(pArg);
 
 	m_eLevelID = pDesc->eLevelID;
+	m_fTimeAcc = 0.f;
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -39,6 +40,15 @@ void CBullet::Priority_Update(_float fTimeDelta)
 
 LIFE CBullet::Update(_float fTimeDelta)
 {
+	m_fTimeAcc += fTimeDelta;
+
+	if (m_bDead)
+		return LIFE::DEAD;
+
+	if (m_fDeadTime <= m_fTimeAcc)
+		Set_Dead(true);
+
+
 	return LIFE::NONE;
 }
 
@@ -71,11 +81,22 @@ HRESULT CBullet::Render()
 	return S_OK;
 }
 
-HRESULT CBullet::Ready_Components(void* pArg)
+void CBullet::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
 {
+}
+
+HRESULT CBullet::Ready_Components(void* pArg)
+{	
+	DESC* pDesc = static_cast<DESC*>(pArg);
+	
 	/* For.Com_Shader */
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxMesh"),
 		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
+		return E_FAIL;
+
+	/* For.Com_Model */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), pDesc->strPrototypeModelTag,
+		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
 		return E_FAIL;
 
 	return S_OK;
@@ -115,7 +136,7 @@ void CBullet::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pModelCom);
-	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pColliderCom);
+	Safe_Release(m_pShaderCom);
+	Safe_Release(m_pModelCom);
 }

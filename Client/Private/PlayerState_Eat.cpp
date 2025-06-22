@@ -21,6 +21,8 @@ void CPlayerState_Eat::Enter(_float fTimeDelta)
 		m_pOwner->Set_MeshVisible(CPlayer::PART_BODY, i, true);
 	}
 
+	m_byEatType = m_pOwner->Get_EatType();
+
 	m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::EAT, false, 0.2f);
 }
 
@@ -30,6 +32,8 @@ void CPlayerState_Eat::Execute(_float fTimeDelta)
 
 	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta))
 	{
+		m_pOwner->Use_Berrys(m_byEatType);
+
 		if (m_pOwner->IsAnyMoveKeyPressed())
 		{
 			m_pOwner->Change_States(CPlayer::STATES::MOVE);
@@ -48,6 +52,7 @@ void CPlayerState_Eat::Exit()
 {
 	m_fDuration = 0.f;
 	m_fTimeAcc = 0.f;
+	m_byEatType = 0;
 }
 
 void CPlayerState_Eat::Free()

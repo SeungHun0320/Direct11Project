@@ -16,9 +16,12 @@
 #include "PlayerState.h"
 #include "Player_IAttackStrategy.h"
 
+
+#include "Bullet_FireCracker.h"
+
 /* 쩦, */
 #include "Monster.h"
-#include "Monster_Bullet.h"
+#include "Bullet_Monster.h"
 
 CPlayer::CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CBaseActor{pDevice, pContext}
@@ -119,7 +122,7 @@ HRESULT CPlayer::Initialize(void* pArg)
 	m_fStamina = m_fMaxStamina;
 	/* 마나 */
 	m_fMaxMana = 100.f;
-	m_fManaRecoveryPerSec = 5.f;
+	m_fManaRecoveryStat = 30.f;
 	m_fMana = m_fMaxMana;
 	/* 그로기 */
 	m_fStaggerGage = 100.f;
@@ -161,7 +164,6 @@ LIFE CPlayer::Update(_float fTimeDelta)
 
 	Key_Input(fTimeDelta);
 	Stamina_Recovery(fTimeDelta);
-	Mana_Recovery(fTimeDelta);
 
 	if (m_eCurState != m_ePreState)
 	{
@@ -407,21 +409,22 @@ void CPlayer::Use_QuickSlot(_uint eSlot)
 		Equip_Weapon(new CPlayer_DaggerAttack(1, WEAPON_TYPE::DAGGER));
 		break;
 	case ITEM_TYPE::BERRY:
-		Use_Berrys();
+		m_byEatType = 1; /* 베리 먹어요 */
+		Change_States(STATES::EAT);
 		break;
 	case ITEM_TYPE::BLUEBERRY:
-		Use_Berrys();
+		m_byEatType = 2; /* 블루베리 먹어요 */
+		Change_States(STATES::EAT);
 		break;
 	case ITEM_TYPE::COIN_QUESTION:
 		Use_Coin_Question();
 		break;
 	case ITEM_TYPE::FIRE_CRACKER:
-		Use_FireCracker();
+		Change_States(STATES::WIND_UP);
 		break;
 	default:
 		break;
 	}
-
 }
 
 void CPlayer::Equip_Weapon(CPlayer_IAttackStrategy* pStrategy)
@@ -431,9 +434,17 @@ void CPlayer::Equip_Weapon(CPlayer_IAttackStrategy* pStrategy)
 	Start_Attack();
 }
 
-void CPlayer::Use_Berrys()
+void CPlayer::Use_Berrys(_byte byEatType)
 {
-	Change_States(STATES::EAT);
+	switch (byEatType)
+	{
+	case 1:
+		m_fHp = clamp(m_fHp + (m_fHPRecorveryStat * 0.5f), 0.f, m_fMaxHp);
+		break;
+	case 2:
+		m_fMana = clamp(m_fMana + m_fManaRecoveryStat, 0.f, m_fMaxMana);
+		break;
+	}
 }
 
 void CPlayer::Use_Coin_Question()
@@ -443,7 +454,23 @@ void CPlayer::Use_Coin_Question()
 
 void CPlayer::Use_FireCracker()
 {
-	Change_States(STATES::WIND_UP);
+	CBullet_FireCracker::DESC tDesc{};
+	_float3 vPos{};
+
+	tDesc.eLevelID = m_eLevelID;
+	tDesc.fSpeedPerSec = 7.5f;
+	tDesc.strName = TEXT("FireCracker");
+	tDesc.strPrototypeModelTag = TEXT("Prototype_Component_Model_FireCracker");
+
+	XMStoreFloat3(&tDesc.vDir, XMVector3Normalize(m_pTransformCom->Get_State(STATE::LOOK)));
+	XMStoreFloat3(&vPos, m_pTransformCom->Get_State(STATE::POSITION));
+
+	tDesc.WorldMatrix = XMMatrixTranslation(vPos.x, vPos.y + 1.f, vPos.z);
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Bullet_") + tDesc.strName,
+		ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Bullet"), &tDesc)))
+		return;
+
 }
 
 void CPlayer::Go_Dir(_fvector vDir, _float fTimeDelta, _float fSpeed)
@@ -754,12 +781,6 @@ _bool CPlayer::Has_Shield() const
 	return m_pInventory->Get_isShield();
 }
 
-void CPlayer::Mana_Recovery(_float fTimeDelta)
-{
-	m_fMana += m_fManaRecoveryPerSec * fTimeDelta;
-	m_fMana = min(m_fMana, m_fMaxMana);
-}
-
 void CPlayer::Active_CheckPoint()
 {
 	XMStoreFloat3(&m_vSavePosition, m_pTransformCom->Get_State(STATE::POSITION));
@@ -805,23 +826,47 @@ void CPlayer::Key_Input(_float fTimeDelta)
 	/* 테스트용으로 냅둔겨 나중에 싹 쳐내소 */
 	if (KEY_DOWN(DIK_1))
 	{
-		Set_AttackStrategy(new CPlayer_StickAttack(2, WEAPON_TYPE::STICK));
-		m_fAttack = m_pAttackStrategy->Get_Attack();
+		m_pInventory->Acquire_Item(ITEM_TYPE::STICK);
 	}
 	if (KEY_DOWN(DIK_2))
 	{
-		Set_AttackStrategy(new CPlayer_SwordAttack(3, WEAPON_TYPE::SWORD));
-		m_fAttack = m_pAttackStrategy->Get_Attack();
+		m_pInventory->Acquire_Item(ITEM_TYPE::SWORD);
 	}
 	if (KEY_DOWN(DIK_3))
 	{
-		Set_AttackStrategy(new CPlayer_DaggerAttack(1, WEAPON_TYPE::DAGGER));
-		m_fAttack = m_pAttackStrategy->Get_Attack();
+		m_pInventory->Acquire_Item(ITEM_TYPE::DAGGER);
 	}
 	if (KEY_DOWN(DIK_4))
-		m_pInventory->Add_Potion();
+	{
+		m_pInventory->Acquire_Item(ITEM_TYPE::FIRE_CRACKER);
+	}
+	if (KEY_DOWN(DIK_5))
+	{
+		m_pInventory->Acquire_Item(ITEM_TYPE::COIN_QUESTION);
+	}
+	if (KEY_DOWN(DIK_6))
+	{
+		m_pInventory->Acquire_Item(ITEM_TYPE::BERRY);
+	}
 	if (KEY_DOWN(DIK_7))
+	{
+		m_pInventory->Acquire_Item(ITEM_TYPE::BLUEBERRY);
+	}
+	if (KEY_DOWN(DIK_8))
+	{
+		m_pInventory->Add_Potion();
+	}
+	if (KEY_DOWN(DIK_9))
+	{
 		Change_States(STATES::DIE);
+	}
+	if (KEY_DOWN(DIK_F1))
+	{
+		m_fHp -= 25.f;
+		m_fHp = max(m_fHp, 0);
+	}
+	if (KEY_DOWN(DIK_F2))
+		Use_Mana(25.f);
 
 	//if (KEY_DOWN(DIK_LCONTROL))
 	//	Change_States(STATES::LADDER);
@@ -885,9 +930,9 @@ void CPlayer::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObjec
 
 	if (CI_MONSTER_BULLET(eColliderID))
 	{
-		if (CMonster_Bullet* pMonsterBullet = dynamic_cast<CMonster_Bullet*>(pOwner))
+		if (CBullet* Bullet = dynamic_cast<CBullet*>(pOwner))
 		{
-			On_Hit(pMonsterBullet->Get_AttackValue(), pMonsterBullet->Get_StaggerValue(), fInvicibleDuration);
+			On_Hit(Bullet->Get_AttackValue(), Bullet->Get_StaggerValue(), fInvicibleDuration);
 		}
 	}
 
@@ -897,25 +942,7 @@ void CPlayer::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObjec
 	switch (eColliderID)
 	{
 	case COLLIDER_ID::BUSH:
-	{
-		CCollider* pCollider = Get_Collider(PART_BODY);
-		if (nullptr == pCollider)
-			break;
-
-		m_pTransformCom->Apply_Sliding(pCollider->Get_SlidingVector(), m_pNavigationCom);
-		m_isBlocked = true;
-	}
-		break;
 	case COLLIDER_ID::CHEST:
-	{
-		CCollider* pCollider = Get_Collider(PART_BODY);
-		if (nullptr == pCollider)
-			break;
-
-		m_pTransformCom->Apply_Sliding(pCollider->Get_SlidingVector(), m_pNavigationCom);
-		m_isBlocked = true;
-	}
-	break;
 	case COLLIDER_ID::CHECKPOINT:
 	{
 		CCollider* pCollider = Get_Collider(PART_BODY);
@@ -929,6 +956,13 @@ void CPlayer::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObjec
 	case COLLIDER_ID::COIN:
 		m_pInventory->Add_Coin(10);
 		break;
+	case COLLIDER_ID::BULLET_EXPLOSION:
+	{
+		if (CBullet* Bullet = dynamic_cast<CBullet*>(pOwner))
+		{
+			On_Hit(Bullet->Get_AttackValue(), Bullet->Get_StaggerValue(), fInvicibleDuration);
+		}
+	}
 	default:
 		break;
 	}
@@ -951,6 +985,8 @@ _float CPlayer::Compute_InvincibleTime(COLLIDER_ID eColliderID)
 	case COLLIDER_ID::SPIDERTANK_BOMB:
 		return 1.f;
 	case COLLIDER_ID::SPIDERTANK_LAGER:
+		return 1.f;
+	case COLLIDER_ID::BULLET_EXPLOSION:
 		return 1.f;
 	default:
 		return 0.6f;
@@ -1025,7 +1061,7 @@ HRESULT CPlayer::Ready_PartObjects()
 	ManaBarDesc.iNumPartObjects = CUI2D_PlayerMPBar::PART_END;
 	ManaBarDesc.pParentMana = &m_fMana;
 	ManaBarDesc.pParentMaxMana = &m_fMaxMana;
-	ManaBarDesc.pParentManaRecorveryStat = &m_fManaRecoveryPerSec;
+	ManaBarDesc.pParentManaRecorveryStat = &m_fManaRecoveryStat;
 
 	if (FAILED(__super::Add_PartObject(PART_MP, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerManaBar"), &ManaBarDesc)))
 		return E_FAIL;

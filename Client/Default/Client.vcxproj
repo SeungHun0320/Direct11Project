@@ -178,6 +178,7 @@
     <ClInclude Include="..\Public\Body_WizardSword.h" />
     <ClInclude Include="..\public\Boss.h" />
     <ClInclude Include="..\public\Bullet.h" />
+    <ClInclude Include="..\public\Bullet_FireCracker.h" />
     <ClInclude Include="..\public\Bush.h" />
     <ClInclude Include="..\public\Button.h" />
     <ClInclude Include="..\public\Camera_CutScene.h" />
@@ -198,7 +199,7 @@
     <ClInclude Include="..\public\Item_BlueBerry.h" />
     <ClInclude Include="..\public\Item_Coin.h" />
     <ClInclude Include="..\public\Item_CoinQuestion.h" />
-    <ClInclude Include="..\public\item_FireCracker.h" />
+    <ClInclude Include="..\public\Item_FireCracker.h" />
     <ClInclude Include="..\public\Item_Potion.h" />
     <ClInclude Include="..\public\Level_Arena.h" />
     <ClInclude Include="..\Public\Level_Courtyard.h" />
@@ -212,8 +213,8 @@
     <ClInclude Include="..\public\Map.h" />
     <ClInclude Include="..\public\MapTool.h" />
     <ClInclude Include="..\public\Monster.h" />
-    <ClInclude Include="..\public\Monster_Bullet.h" />
-    <ClInclude Include="..\public\Monster_Bullet_AOE.h" />
+    <ClInclude Include="..\public\Bullet_Monster.h" />
+    <ClInclude Include="..\public\Bullet_Monster_AOE.h" />
     <ClInclude Include="..\public\NavigationTool.h" />
     <ClInclude Include="..\public\Part_Player.h" />
     <ClInclude Include="..\Public\Part_WizardCandleabra.h" />
@@ -229,7 +230,7 @@
     <ClInclude Include="..\public\UI2D_PlayerItemSlots.h" />
     <ClInclude Include="..\public\UI2D_PlayerMPBar.h" />
     <ClInclude Include="..\public\UI2D_PlayerPotion.h" />
-    <ClInclude Include="..\public\SpiderTank_Lager.h" />
+    <ClInclude Include="..\public\Bullet_SpiderTankLager.h" />
     <ClInclude Include="..\public\UI.h" />
     <ClInclude Include="..\public\UI2D_PlayerHPBar.h" />
     <ClInclude Include="..\public\UI2D_PlayerSPBar.h" />
@@ -243,8 +244,8 @@
     <ClInclude Include="..\public\Sky.h" />
     <ClInclude Include="..\public\SpiderTank.h" />
     <ClInclude Include="..\Public\SpiderTankState.h" />
-    <ClInclude Include="..\public\SpiderTank_Bullet.h" />
-    <ClInclude Include="..\public\SpiderTank_Orb.h" />
+    <ClInclude Include="..\public\Bullet_SpiderTank.h" />
+    <ClInclude Include="..\public\Bullet_SpiderTankOrb.h" />
     <ClInclude Include="..\public\Terrain.h" />
     <ClInclude Include="..\public\Tool.h" />
     <ClInclude Include="..\Public\UIContainerPart.h" />
@@ -293,6 +294,7 @@
     <ClCompile Include="..\Private\Body_WizardSword.cpp" />
     <ClCompile Include="..\private\Boss.cpp" />
     <ClCompile Include="..\private\Bullet.cpp" />
+    <ClCompile Include="..\private\Bullet_FireCracker.cpp" />
     <ClCompile Include="..\private\Bush.cpp" />
     <ClCompile Include="..\private\Button.cpp" />
     <ClCompile Include="..\private\Camera_CutScene.cpp" />
@@ -309,7 +311,7 @@
     <ClCompile Include="..\private\Item_BlueBerry.cpp" />
     <ClCompile Include="..\private\Item_Coin.cpp" />
     <ClCompile Include="..\private\Item_CoinQuestion.cpp" />
-    <ClCompile Include="..\private\item_FireCracker.cpp" />
+    <ClCompile Include="..\private\Item_FireCracker.cpp" />
     <ClCompile Include="..\private\Item_Potion.cpp" />
     <ClCompile Include="..\private\Level_Arena.cpp" />
     <ClCompile Include="..\Private\Level_Courtyard.cpp" />
@@ -323,8 +325,8 @@
     <ClCompile Include="..\private\Map.cpp" />
     <ClCompile Include="..\private\MapTool.cpp" />
     <ClCompile Include="..\private\Monster.cpp" />
-    <ClCompile Include="..\private\Monster_Bullet.cpp" />
-    <ClCompile Include="..\Private\Monster_Bullet_AOE.cpp" />
+    <ClCompile Include="..\private\Bullet_Monster.cpp" />
+    <ClCompile Include="..\Private\Bullet_Monster_AOE.cpp" />
     <ClCompile Include="..\private\NavigationTool.cpp" />
     <ClCompile Include="..\private\Part_Player.cpp" />
     <ClCompile Include="..\Private\Part_WizardCandleabra.cpp" />
@@ -363,9 +365,9 @@
     <ClCompile Include="..\Private\SpiderTankState_Attack.cpp" />
     <ClCompile Include="..\Private\SpiderTankState_Move.cpp" />
     <ClCompile Include="..\Private\SpiderTankState_Idle.cpp" />
-    <ClCompile Include="..\private\SpiderTank_Bullet.cpp" />
-    <ClCompile Include="..\private\SpiderTank_Lager.cpp" />
-    <ClCompile Include="..\private\SpiderTank_Orb.cpp" />
+    <ClCompile Include="..\private\Bullet_SpiderTank.cpp" />
+    <ClCompile Include="..\private\Bullet_SpiderTankLager.cpp" />
+    <ClCompile Include="..\private\Bullet_SpiderTankOrb.cpp" />
     <ClCompile Include="..\private\Terrain.cpp" />
     <ClCompile Include="..\private\Tool.cpp" />
     <ClCompile Include="..\private\UI.cpp" />

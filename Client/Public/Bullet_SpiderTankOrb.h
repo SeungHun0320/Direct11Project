@@ -1,21 +1,21 @@
 #pragma once
 
-#include "Monster_Bullet.h"
+#include "Bullet_Monster.h"
 
 BEGIN(Client)
 
-class CSpiderTank_Bullet final : public CMonster_Bullet
+class CBullet_SpiderTankOrb final : public CBullet_Monster
 {
 public:
-	typedef struct tagSpiderBulletOrb : public CMonster_Bullet::DESC
+	typedef struct tagSpiderTankOrb : public CBullet_Monster::DESC
 	{
 
 	}DESC;
 
 private:
-	CSpiderTank_Bullet(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CSpiderTank_Bullet(const CSpiderTank_Bullet& Prototype);
-	virtual ~CSpiderTank_Bullet() = default;
+	CBullet_SpiderTankOrb(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CBullet_SpiderTankOrb(const CBullet_SpiderTankOrb& Prototype);
+	virtual ~CBullet_SpiderTankOrb() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -26,11 +26,17 @@ public:
 	virtual HRESULT Render() override;
 
 private:
+	_float3 m_vVelocity = {};
+	_bool  m_bGrounded = { false };
+
+private:
 	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner) override;
+
+private:
 	virtual HRESULT Ready_Components(void* pArg) override;
 
 public:
-	static CSpiderTank_Bullet* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CBullet_SpiderTankOrb* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 };

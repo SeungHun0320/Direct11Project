@@ -262,10 +262,11 @@ HRESULT CLevel_Arena::Load_Map(const _wstring& strMapFileTag)
 		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fSpeedPerSec), sizeof(_float));
 		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fRotationPerSec), sizeof(_float));
 		LoadFile.read(reinterpret_cast<_char*>(&tDesc.iNumPartObjects), sizeof(_uint));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.eItemType), sizeof(ITEM_TYPE));
 
 		tDesc.WorldMatrix = XMLoadFloat4x4(&WorldMatrix);
 
-		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + tDesc.strName,
+		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_Item_") + tDesc.strName,
 			ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Item"), &tDesc)))
 			return E_FAIL;
 	}
@@ -379,13 +380,20 @@ void CLevel_Arena::Check_Collision()
 #endif 
 	m_pGameInstance->Reset_SlidingVectors();
 
-	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::PAWN), ENUM_CLASS(COLLIDER_GROUP::MONSTER));
-	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::WEAPON), ENUM_CLASS(COLLIDER_GROUP::MONSTER));
+	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::PAWN), ENUM_CLASS(COLLIDER_GROUP::ENVIRONMENT));
+	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::PAWN), ENUM_CLASS(COLLIDER_GROUP::ITEM));
 
+	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::WEAPON), ENUM_CLASS(COLLIDER_GROUP::MONSTER));
+	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::WEAPON), ENUM_CLASS(COLLIDER_GROUP::ENVIRONMENT));
+
+	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::BULLET), ENUM_CLASS(COLLIDER_GROUP::PAWN));
+	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::BULLET), ENUM_CLASS(COLLIDER_GROUP::MONSTER));
+	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::BULLET), ENUM_CLASS(COLLIDER_GROUP::ENVIRONMENT));
+
+	/* ¸ó½ºÅÍ */
+	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::MONSTER), ENUM_CLASS(COLLIDER_GROUP::MONSTER));
 	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::MONSTER_ATTACK), ENUM_CLASS(COLLIDER_GROUP::PAWN));
 	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::MONSTER_BULLET), ENUM_CLASS(COLLIDER_GROUP::PAWN));
-
-	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::MONSTER), ENUM_CLASS(COLLIDER_GROUP::MONSTER));
 }
 
 

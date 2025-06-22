@@ -8,6 +8,7 @@
 #include "UI3D_LockOn.h"
 
 #include "Player.h"
+#include "Bullet.h"
 
 CBlob::CBlob(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CMonster{ pDevice, pContext }
@@ -190,14 +191,26 @@ void CBlob::On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDurati
 
 void CBlob::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
 {
+	COLLIDER_ID eColliderID = static_cast<COLLIDER_ID>(OtherColliderID);
+
 	__super::On_Collision(MyColliderID, OtherColliderID, pOwner);
 
-	if (CI_WEAPON(static_cast<COLLIDER_ID>(OtherColliderID)))
+	if (CI_WEAPON(eColliderID))
 	{
 		if (CPlayer* pPlayer = dynamic_cast<CPlayer*>(pOwner))
 		{
 			On_Hit(pPlayer->Get_AttackValue(), pPlayer->Compute_StaggerValue());
 		}
+	}
+
+	switch (eColliderID)
+	{
+	case COLLIDER_ID::BULLET_EXPLOSION:
+		if (CBullet* pBullet = dynamic_cast<CBullet*>(pOwner))
+		{
+			On_Hit(pBullet->Get_AttackValue(), pBullet->Get_StaggerValue());
+		}
+		break;
 	}
 
 }

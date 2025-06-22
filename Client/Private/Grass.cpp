@@ -57,7 +57,10 @@ void CGrass::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject
 	switch (eColliderID)
 	{
 	case COLLIDER_ID::SWORD:
-		m_bDead = true;
+		Set_Dead(true);
+		break;
+	case COLLIDER_ID::BULLET_EXPLOSION:
+		Set_Dead(true);
 		break;
 	}
 }

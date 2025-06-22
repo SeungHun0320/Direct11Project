@@ -1,5 +1,8 @@
 #include "Wizard.h"
 
+#include "Player.h"
+#include "Bullet.h"
+
 CWizard::CWizard(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CMonster{pDevice, pContext}
 {
@@ -76,6 +79,29 @@ void CWizard::Turn(_fvector vAxis, _float fTimeDelta)
 void CWizard::LookAt(_fvector vDir, _float fTimeDelta, _float fSpeed)
 {
 	m_pTransformCom->LookAtLerpEx(vDir, fTimeDelta, fSpeed);
+}
+
+void CWizard::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
+{
+	COLLIDER_ID eColliderID = static_cast<COLLIDER_ID>(OtherColliderID);
+
+	if (CI_WEAPON(eColliderID))
+	{
+		if (CPlayer* pPlayer = dynamic_cast<CPlayer*>(pOwner))
+		{
+			On_Hit(pPlayer->Get_AttackValue(), pPlayer->Compute_StaggerValue());
+		}
+	}
+
+	switch (eColliderID)
+	{
+	case COLLIDER_ID::BULLET_EXPLOSION:
+		if (CBullet* pBullet = dynamic_cast<CBullet*>(pOwner))
+		{
+			On_Hit(pBullet->Get_AttackValue(), pBullet->Get_StaggerValue());
+		}
+		break;
+	}
 }
 
 HRESULT CWizard::Ready_Components(void* pArg)

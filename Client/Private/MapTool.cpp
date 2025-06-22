@@ -88,8 +88,7 @@ void CMapTool::Add_ListBoxName()
 			if (Pair.first.find(KeyWord) != _wstring::npos)
 			{
 				m_ProtoItemNames.push_back(m_pGameInstance->WStringToString(Pair.first));
-				//if (Pair.first.find(L"Body") != _wstring::npos || Pair.first.find(L"Part") != _wstring::npos)
-				//	m_ProtoItemNames.pop_back();
+				break;
 			}
 		}
 
@@ -172,7 +171,7 @@ void CMapTool::Update(_float fTimeDelta)
 			tDesc.iNumPartObjects = CItem::PART_END;
 			tDesc.eItemType = m_eItemType;
 
-			if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_") + tDesc.strName,
+			if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_Item_") + tDesc.strName,
 				ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Item"), &tDesc)))
 				return;
 		}
@@ -587,8 +586,8 @@ HRESULT CMapTool::Item_ListBox()
 	// 리스트박스 출력 // 와 이거 프로토타입을 순서대로 만들어줘야되네?
 	// 그리고 얘는 아이템 객체 돌려쓸 생각인데, 방식을 바꿔야할듯
 	// 리스트박스 출력
-	ImGui::Text(u8"환경 프로토타입");
-	if (ImGui::BeginListBox("##ProtoEnv", ImVec2(300, 100)))
+	ImGui::Text(u8"아이템 프로토타입");
+	if (ImGui::BeginListBox("##ProtoItem", ImVec2(300, 100)))
 	{
 		for (_uint i = 0; i < m_ProtoItemNames.size(); ++i)
 		{
@@ -604,24 +603,29 @@ HRESULT CMapTool::Item_ListBox()
 	{
 	case POTION:
 		m_eItemType = ITEM_TYPE::POTION;
+		m_strName = TEXT("Potion");
 		break;
 	case BERRY:
 		m_eItemType = ITEM_TYPE::BERRY;
+		m_strName = TEXT("Berry");
 		break;
 	case BLUEBERRY:
 		m_eItemType = ITEM_TYPE::BLUEBERRY;
+		m_strName = TEXT("BlueBerry");
 		break;
 	case COIN_QUESTION:
 		m_eItemType = ITEM_TYPE::COIN_QUESTION;
+		m_strName = TEXT("CoinQuestion");
 		break;
 	case FIRE_CRACKER:
 		m_eItemType = ITEM_TYPE::FIRE_CRACKER;
+		m_strName = TEXT("FireCracker");
 		break;
 	default:
 		break;
 	}
 
-	m_strName = TEXT("Item");
+
 
 	return S_OK;
 }
@@ -1261,7 +1265,7 @@ HRESULT CMapTool::Load_Map(const _string& strMapPath)
 
 		tDesc.WorldMatrix = XMLoadFloat4x4(&WorldMatrix);
 
-		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_") + tDesc.strName,
+		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_Item_") + tDesc.strName,
 			ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Item"), &tDesc)))
 			return E_FAIL;
 	}

@@ -159,11 +159,17 @@ void CInventory::Add_WeaponSlot(ITEM_TYPE eType)
 {
     for (_uint i = SLOT_WEAPON0; i <= SLOT_WEAPON2; i++)
     {
+        if (m_InvenSlot[i].bHasItem && eType == m_InvenSlot[i].eType)
+            return;
+    }
+
+    for (_uint i = SLOT_WEAPON0; i <= SLOT_WEAPON2; i++)
+    {
         if (!m_InvenSlot[i].bHasItem)
         {
             m_InvenSlot[i].eType = eType;
             m_InvenSlot[i].bHasItem = true;
-            break;
+            return;
         }
     }
 }

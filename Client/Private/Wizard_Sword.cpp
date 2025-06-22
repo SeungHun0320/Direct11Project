@@ -9,8 +9,6 @@
 #include "UI3D_MobHPBar.h"
 #include "UI3D_LockOn.h"
 
-#include "Player.h"
-
 CWizard_Sword::CWizard_Sword(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CWizard{ pDevice, pContext }
 {
@@ -164,14 +162,6 @@ void CWizard_Sword::On_Hit(_float fDamage, _float fStaggerValue, _float fInvicib
 void CWizard_Sword::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
 {
 	__super::On_Collision(MyColliderID, OtherColliderID, pOwner);
-
-	if (CI_WEAPON(static_cast<COLLIDER_ID>(OtherColliderID)))
-	{
-		if (CPlayer* pPlayer = dynamic_cast<CPlayer*>(pOwner))
-		{
-			On_Hit(pPlayer->Get_AttackValue(), pPlayer->Compute_StaggerValue());
-		}
-	}
 }
 
 HRESULT CWizard_Sword::Ready_Components(void* pArg)

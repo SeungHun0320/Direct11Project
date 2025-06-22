@@ -176,20 +176,6 @@ void CWizard_Support::On_Hit(_float fDamage, _float fStaggerValue, _float fInvic
 void CWizard_Support::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
 {
 	__super::On_Collision(MyColliderID, OtherColliderID, pOwner);
-
-	if (CI_WEAPON(static_cast<COLLIDER_ID>(OtherColliderID)))
-	{
-		if (CPlayer* pPlayer = dynamic_cast<CPlayer*>(pOwner))
-		{
-			On_Hit(pPlayer->Get_AttackValue(), pPlayer->Compute_StaggerValue());
-		}
-	}
-
-	switch (static_cast<COLLIDER_ID>(OtherColliderID))
-	{
-	case COLLIDER_ID::CHECKPOINT:
-		break;
-	}
 }
 
 HRESULT CWizard_Support::Ready_Components(void* pArg)

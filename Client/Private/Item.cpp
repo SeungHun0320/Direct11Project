@@ -43,6 +43,9 @@ void CItem::Priority_Update(_float fTimeDelta)
 
 LIFE CItem::Update(_float fTimeDelta)
 {
+	if (m_bDead)
+		return LIFE::DEAD;
+
 	return 	__super::Update(fTimeDelta);
 }
 
@@ -63,33 +66,6 @@ void CItem::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject*
 HRESULT CItem::Ready_Components(void* pArg)
 {
 	return S_OK;
-}
-
-
-CItem* CItem::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-{
-	CItem* pInstance = new CItem(pDevice, pContext);
-
-	if (FAILED(pInstance->Initialize_Prototype()))
-	{
-		MSG_BOX("Failed to Created : CItem");
-		Safe_Release(pInstance);
-	}
-
-	return pInstance;
-}
-
-CGameObject* CItem::Clone(void* pArg)
-{
-	CItem* pInstance = new CItem(*this);
-
-	if (FAILED(pInstance->Initialize(pArg)))
-	{
-		MSG_BOX("Failed to Cloned : CItem");
-		Safe_Release(pInstance);
-	}
-
-	return pInstance;
 }
 
 void CItem::Free()

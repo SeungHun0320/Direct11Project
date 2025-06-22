@@ -128,7 +128,7 @@ public: /* 인벤토리 관련 */
 
 	void Use_QuickSlot(_uint eSlot);
 	void Equip_Weapon(class CPlayer_IAttackStrategy* pStrategy);
-	void Use_Berrys();
+	void Use_Berrys(_byte byEatType);
 	void Use_Coin_Question();
 	void Use_FireCracker();
 
@@ -156,6 +156,9 @@ public: /* 스테이트 갖고오기 */
 	/* 방패 관련 */
 	_bool Has_Shield() const;
 
+	/* 뭐 먹는중? */
+	_byte Get_EatType() const { return m_byEatType; }
+
     /* 타깃 관련 */
 	_bool Get_IsTarget() const { return m_isTarget; }
 	_float Get_FindDistance() const { return m_fFindDistance; }
@@ -182,8 +185,11 @@ private: /* 스태미나 */
 private: /* 마나 */
 	_float m_fMana = {};
 	_float m_fMaxMana = {};
-	_float m_fManaRecoveryPerSec = {};
+	_float m_fManaRecoveryStat = {};
 	_float m_fManaTimeAcc = {};
+
+private: /* 먹는 타입 */
+	_byte m_byEatType = {};
 
 private: /* 인벤 켰음? */
 	_bool  m_isOnInven = { false };
@@ -216,7 +222,6 @@ private: /* 매번 캐스팅 해주기 싫어서 따로 변수로 받아왔음 */
 private: /* 실제 플레이어 상태 관련 */
 	void Key_Input(_float fTimeDelta);
 	void Stamina_Recovery(_float fTimeDelta);
-	void Mana_Recovery(_float fTimeDelta);
 
 private:
 	virtual void On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDuration) override;

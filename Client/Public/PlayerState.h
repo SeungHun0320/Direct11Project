@@ -278,6 +278,9 @@ public: // CPlayerState을(를) 통해 상속됨
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
 
+private:
+	_bool m_isToss{ false };
+
 public:
 	virtual void Free() override;
 };
@@ -310,6 +313,9 @@ public: // CPlayerState을(를) 통해 상속됨
 	void Enter(_float fTimeDelta) override;
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
+
+private:
+	_byte m_byEatType = {};
 
 public:
 	virtual void Free() override;

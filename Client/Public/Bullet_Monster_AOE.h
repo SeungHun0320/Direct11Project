@@ -1,18 +1,18 @@
 #pragma once
 
-#include "Monster_Bullet.h"
+#include "Bullet_Monster.h"
 
-class CMonster_Bullet_AOE abstract : public CMonster_Bullet
+class CBullet_Monster_AOE abstract : public CBullet_Monster
 {
 public:
-	typedef struct tagMonsterBulletAOEDesc : public CMonster_Bullet::DESC
+	typedef struct tagMonsterBulletAOEDesc : public CBullet_Monster::DESC
 	{
 
 	}DESC;
 protected:
-	CMonster_Bullet_AOE(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CMonster_Bullet_AOE(const CMonster_Bullet_AOE& Prototype);
-	virtual ~CMonster_Bullet_AOE() = default;
+	CBullet_Monster_AOE(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CBullet_Monster_AOE(const CBullet_Monster_AOE& Prototype);
+	virtual ~CBullet_Monster_AOE() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
