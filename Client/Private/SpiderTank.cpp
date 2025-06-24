@@ -45,7 +45,7 @@ HRESULT CSpiderTank::Initialize(void* pArg)
 	m_fStaggerValue = 50.f;
 
 	/* ±×·Î±â */
-	m_fStaggerGage = 100.f;
+	m_fStaggerGage = 300.f;
 	m_fMaxStaggerGage = m_fStaggerGage;
 
 	if (FAILED(__super::Initialize(pArg)))
@@ -74,20 +74,13 @@ void CSpiderTank::Priority_Update(_float fTimeDelta)
 
 LIFE CSpiderTank::Update(_float fTimeDelta)
 {
-	if (m_bDead)
-		return LIFE::DEAD;
+	//if (m_bDead)
+	//	return LIFE::DEAD;
 
 	__super::Update(fTimeDelta);
 
 	Update_BoneWorldMatrices(m_pHeadBoneMatrix, &m_HeadBoneWolrdMatrix);
 	Update_BoneWorldMatrices(m_pPowerCellBoneMatrix, &m_PowerCellBoneWolrdMatrix);
-
-	if (KEY_DOWN(DIK_2))
-		Change_States(STATES::KNOCKBACK);
-	if (KEY_DOWN(DIK_3))
-		Change_States(STATES::PINCH);
-	if (KEY_DOWN(DIK_4))
-		Change_States(STATES::DEAD);
 
 	if (m_pCurState)
 	{
@@ -99,8 +92,6 @@ LIFE CSpiderTank::Update(_float fTimeDelta)
 
 		m_pCurState->Execute(fTimeDelta);
 	}
-
-
 
 	return LIFE::NONE;
 }
@@ -443,6 +434,7 @@ HRESULT CSpiderTank::Ready_PartObjects()
 	HpDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
 	HpDesc.pParentHP = &m_fHp;
 	HpDesc.pParentMaxHP = &m_fMaxHp;
+	HpDesc.pParentisInBattle = &m_isInBattle;
 
 	if (FAILED(__super::Add_PartObject(PART_HP, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_UI2D_BossHPBar"), &HpDesc)))
 		return E_FAIL;

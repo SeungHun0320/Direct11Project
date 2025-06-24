@@ -421,6 +421,30 @@
     <Filter Include="02.GameObjects\08.Bullet\FireCracker">
       <UniqueIdentifier>{6831186f-2c18-4420-9b45-339fab66a288}</UniqueIdentifier>
     </Filter>
+    <Filter Include="96.Tools\02. EffectTool">
+      <UniqueIdentifier>{5868739f-792b-4de4-ba1c-c316d319e6ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\09.Effect">
+      <UniqueIdentifier>{eee4e22f-c3c8-4afa-a8af-c8b06b6b04e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\09.Effect\Particle">
+      <UniqueIdentifier>{f97c2849-989f-4055-9612-388573b1f2ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\09.Effect\Sprite">
+      <UniqueIdentifier>{498bda6f-6527-4f5c-920c-a502860ec083}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\09.Effect\Particle\Object_Particle">
+      <UniqueIdentifier>{63e40982-b4c1-491c-997d-8dd3a222c3bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\09.Effect\Particle\Part_Particle">
+      <UniqueIdentifier>{17207b02-ad10-4d7a-aada-de00f4ff1512}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\09.Effect\Particle\Part_Particle\Explosion">
+      <UniqueIdentifier>{929ca258-30ea-41e0-8e48-d8dd8a3a30a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\09.Effect\Particle\Object_Particle\Snow">
+      <UniqueIdentifier>{07516fb8-2d7b-4934-bee5-22d40b293773}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -764,6 +788,18 @@
     </ClInclude>
     <ClInclude Include="..\public\Bullet_FireCracker.h">
       <Filter>02.GameObjects\08.Bullet\FireCracker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Snow.h">
+      <Filter>02.GameObjects\09.Effect\Particle\Object_Particle\Snow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Explosion.h">
+      <Filter>02.GameObjects\09.Effect\Particle\Part_Particle\Explosion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Obj_Particle.h">
+      <Filter>02.GameObjects\09.Effect\Particle\Object_Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Part_Particle.h">
+      <Filter>02.GameObjects\09.Effect\Particle\Part_Particle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1151,6 +1187,18 @@
     </ClCompile>
     <ClCompile Include="..\private\Bullet_FireCracker.cpp">
       <Filter>02.GameObjects\08.Bullet\FireCracker</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Snow.cpp">
+      <Filter>02.GameObjects\09.Effect\Particle\Object_Particle\Snow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Explosion.cpp">
+      <Filter>02.GameObjects\09.Effect\Particle\Part_Particle\Explosion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Obj_Particle.cpp">
+      <Filter>02.GameObjects\09.Effect\Particle\Object_Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Part_Particle.cpp">
+      <Filter>02.GameObjects\09.Effect\Particle\Part_Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

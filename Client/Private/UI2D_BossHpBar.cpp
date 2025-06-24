@@ -25,6 +25,7 @@ HRESULT CUI2D_BossHPBar::Initialize(void* pArg)
 
 	m_pParentHP = pDesc->pParentHP;
 	m_pParentMaxHP = pDesc->pParentMaxHP;
+	m_pParentisInBattle = pDesc->pParentisInBattle;
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -62,6 +63,9 @@ LIFE CUI2D_BossHPBar::Update(_float fTimeDelta)
 
 void CUI2D_BossHPBar::Late_Update(_float fTimeDelta)
 {
+	if (!(*m_pParentisInBattle))
+		return;
+
 	__super::Late_Update(fTimeDelta);
 
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_UI, this);

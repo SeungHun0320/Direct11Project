@@ -59,6 +59,8 @@ LIFE CUI2D_InventorySlot::Update(_float fTimeDelta)
     if (!(*m_pParentIsOnInven))
         return LIFE::NONE;
 
+    XMStoreFloat4x4(&m_CombinedWorldMatrix, m_pTransformCom->Get_WorldMatrix() * XMLoadFloat4x4(m_pParentMatrix));
+
     return 	__super::Update(fTimeDelta);
 }
 
@@ -78,10 +80,7 @@ HRESULT CUI2D_InventorySlot::Render()
         return E_FAIL;
 
     const wstring& strCount = to_wstring(m_iCount);
-
-    _float3 vPos{};
-    XMStoreFloat3(&vPos, m_pTransformCom->Get_State(STATE::POSITION));
-    _float2 vFontPos = _float2(fabs(vPos.x) + 230.f, fabs(vPos.y) + 370.f);
+    _float2 vFontPos = _float2(m_CombinedWorldMatrix._41 + 230.f, m_CombinedWorldMatrix._42 + 500.f);
 
     if(0 != m_iCount)
         m_pGameInstance->Draw_Font(TEXT("Font_Money"), strCount.c_str(), vFontPos, XMVectorSet(1.f, 1.f, 1.f, 1.f), 0.f, _float2(0.f, 0.f), 0.8f);
@@ -114,7 +113,7 @@ HRESULT CUI2D_InventorySlot::Ready_PartObjects()
     CUI::DESC BackingDesc{};
 
     BackingDesc.pParentLevelID = m_pLevelID;
-    BackingDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+    BackingDesc.pParentMatrix = &m_CombinedWorldMatrix;
     BackingDesc.fSizeX = 80.f;
     BackingDesc.fSizeY = 80.f;
     BackingDesc.fX = g_iWinSizeX * 0.17f;
@@ -127,7 +126,7 @@ HRESULT CUI2D_InventorySlot::Ready_PartObjects()
     CUI::DESC UIItemsDesc{};
 
     UIItemsDesc.pParentLevelID = m_pLevelID;
-    UIItemsDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+    UIItemsDesc.pParentMatrix = &m_CombinedWorldMatrix;
     UIItemsDesc.fSizeX = 60.f;
     UIItemsDesc.fSizeY = 60.f;
     UIItemsDesc.fX = g_iWinSizeX * 0.17f;
@@ -140,7 +139,7 @@ HRESULT CUI2D_InventorySlot::Ready_PartObjects()
     CUI::DESC UISelectorDesc{};
 
     UISelectorDesc.pParentLevelID = m_pLevelID;
-    UISelectorDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+    UISelectorDesc.pParentMatrix = &m_CombinedWorldMatrix;
     UISelectorDesc.fSizeX = 80.f;
     UISelectorDesc.fSizeY = 80.f;
     UISelectorDesc.fX = g_iWinSizeX * 0.17f;

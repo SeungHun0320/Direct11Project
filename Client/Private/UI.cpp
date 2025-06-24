@@ -146,16 +146,10 @@ _vector CUI::Get_State(STATE eState)
 	return m_pTransformCom->Get_State(eState);
 }
 
-_matrix CUI::Get_CombinedMatrix()
-{
-	return XMLoadFloat4x4(&m_CombinedWorldMatrix);
-}
-
 void CUI::Set_State(STATE eState, _fvector vState)
 {
 	m_pTransformCom->Set_State(eState, vState);
 }
-
 
 HRESULT CUI::Ready_Components(void* pArg)
 {

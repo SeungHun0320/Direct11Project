@@ -70,6 +70,9 @@
 #include "UI3D_Interaction.h"
 #include "UI2D_Reward.h"
 
+/* 파티클들 */
+#include "Obj_Particle.h"
+
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice { pDevice }
@@ -224,11 +227,11 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GameUI/SpaceKeyBoard.png")))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_Snow */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_Snow"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Snow/Snow.png")))))
+		return E_FAIL;
 
-	///* For.Prototype_Component_Texture_Explosion */
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Explosion"),
-	//	CTexture::Create(m_pGraphic_Device, CTexture::TYPE_2D, TEXT("../Bin/Resources/Textures/Explosion/Explosion%d.png"), 90))))
-	//	return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
 	/* For.Prototype_Component_VIBuffer_Terrain */
@@ -341,6 +344,12 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Berry(MP)/Berry(MP).Model"), PreTransformMatrix))))
 		return E_FAIL;
 
+	/*For.Prototype_Component_Model_FireCracker*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_FireCracker"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Firecrackers/Firecracker.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
 	/*For.Prototype_Component_Model_FireCrackers*/
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_FireCrackers"),
@@ -351,6 +360,20 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Trinket_Coin"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Trinket_Coin/TrinketCoin.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_Snow */
+	CVIBuffer_Point_Instance::DESC		SnowDesc{};
+	SnowDesc.iNumInstance = 5000;
+	SnowDesc.vCenter = _float3(0.f, 0.f, -100.f);
+	SnowDesc.vRange = _float3(100.f, 3.0f, 100.f);
+	SnowDesc.vSize = _float2(0.1f, 1.f);
+	SnowDesc.vLifeTime = _float2(5.f, 8.f);
+	SnowDesc.vSpeed = _float2(3.f, 5.f);
+	SnowDesc.isLoop = true;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_VIBuffer_Snow"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, &SnowDesc))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("네비게이션을(를) 로딩중입니다."));
@@ -438,12 +461,6 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 	/* For.Prototype_GameObject_Item_Potion */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Item_Potion"),
 		CItem_Potion::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-	/*For.Prototype_Component_Model_FireCracker*/
-	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_FireCracker"),
-		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Firecrackers/Firecracker.Model"), PreTransformMatrix))))
 		return E_FAIL;
 	
 	/* For.Prototype_GameObject_Item_FireCracker */
@@ -538,6 +555,11 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 	/* For.Prototype_GameObject_Sky */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Sky"),
 		CSky::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Snow */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Snow"),
+		CObj_Particle::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	///* For.Prototype_GameObject_Effect */

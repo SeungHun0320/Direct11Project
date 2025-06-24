@@ -26,9 +26,7 @@ HRESULT CBullet_Monster::Initialize(void* pArg)
 		Safe_AddRef(m_pTargetTransform);
 
 
-	/* 여기 나중에 수정하쇼,, */
-	m_fAttack = 5.f;
-	m_fStaggerValue = 10.f;
+
 
 	return S_OK;
 }

@@ -27,6 +27,8 @@ HRESULT CBullet_SpiderTank::Initialize(void* pArg)
 		return E_FAIL;
 
 	m_fDeadTime = 5.f;
+	m_fAttack = 2.5f;
+	m_fStaggerValue = 0.f;
 
 	m_pTransformCom->Scaling(0.5f, 0.5f, 0.5f);
 	m_pTransformCom->LookAt(XMVectorSetW(XMLoadFloat3(&m_vDir), 1.f));

@@ -24,6 +24,8 @@ HRESULT CWizard_Support_AOE::Initialize(void* pArg)
     m_pTransformCom->Set_State(STATE::POSITION, m_pTargetTransform->Get_State(STATE::POSITION));
 
     m_fDeadTime = 5.f;
+    m_fAttack = 10.f;
+    m_fStaggerValue = 10.f;
 
     return S_OK;
 }

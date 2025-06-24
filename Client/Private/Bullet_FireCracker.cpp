@@ -27,6 +27,8 @@ HRESULT CBullet_FireCracker::Initialize(void* pArg)
         return E_FAIL;
 
     m_fDeadTime = 1.f;
+    m_fAttack = 15.f;
+    m_fStaggerValue = 10.f;
 
     m_pTransformCom->Scaling(0.75f, 0.75f, 0.75f);
     m_pTransformCom->LookDir(XMVectorSetW(XMLoadFloat3(&m_vDir), 0.f));

@@ -84,10 +84,10 @@ HRESULT CUI2D_Reward::Ready_PartObjects()
 
     BackingDesc.pParentLevelID = &eLevelID;
     BackingDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
-    BackingDesc.fSizeX = 80.f;
-    BackingDesc.fSizeY = 80.f;
+    BackingDesc.fSizeX = 320.f;
+    BackingDesc.fSizeY = 320.f;
     BackingDesc.fX = g_iWinSizeX * 0.5f;
-    BackingDesc.fY = g_iWinSizeY * 0.5f;
+    BackingDesc.fY = g_iWinSizeY * 0.35f;
     BackingDesc.strPrototypeTag = TEXT("Prototype_Component_Texture_Item_Backing");
 
     if (FAILED(__super::Add_PartObject(PART_BACKING, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D"), &BackingDesc)))
@@ -97,10 +97,10 @@ HRESULT CUI2D_Reward::Ready_PartObjects()
 
     ItemSlotDesc.pParentLevelID = &eLevelID;
     ItemSlotDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
-    ItemSlotDesc.fSizeX = 50.f;
-    ItemSlotDesc.fSizeY = 50.f;
+    ItemSlotDesc.fSizeX = 200.f;
+    ItemSlotDesc.fSizeY = 200.f;
     ItemSlotDesc.fX = (g_iWinSizeX * 0.5f);
-    ItemSlotDesc.fY = g_iWinSizeY * 0.5f;
+    ItemSlotDesc.fY = g_iWinSizeY * 0.35f;
     ItemSlotDesc.strPrototypeTag = TEXT("Prototype_Component_Texture_UIItems");
     ItemSlotDesc.iTextureIndex = ENUM_CLASS((*m_pParentItemType));
 

@@ -29,6 +29,7 @@ public:
 
 private:
 	VTXRECT_PARTICLE_INSTANCE* m_pVertexInstances = { nullptr };
+	/* 스피드를 입자마다 따로 설정해주기 위해서 포인터로 담은뒤 동적할당해서 사용 */
 	_float*					   m_pSpeeds = { nullptr };
 	_bool					   m_isLoop = { false };
 

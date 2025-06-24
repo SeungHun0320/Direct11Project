@@ -232,6 +232,9 @@ void CInventory::Register_QuickSlot(_uint iQuickSlotIndex)
     if (QSLOT_END <= iQuickSlotIndex)
         return;
 
+    if (!m_InvenSlot[m_iSelectSlotIndex].bHasItem)
+        return;
+
     const ITEM_TYPE eType = m_InvenSlot[m_iSelectSlotIndex].eType;
 
     for (_uint i = 0; i < QSLOT_END; i++)

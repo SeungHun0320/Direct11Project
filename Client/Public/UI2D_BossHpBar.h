@@ -16,6 +16,7 @@ public:
 	{
 		_float* pParentHP{ nullptr };
 		_float* pParentMaxHP{ nullptr };
+		_bool*  pParentisInBattle{ nullptr };
 	}DESC;
 
 private:
@@ -34,6 +35,7 @@ public:
 private:
 	_float* m_pParentHP = { nullptr };
 	_float* m_pParentMaxHP = { nullptr };
+	_bool*  m_pParentisInBattle{ nullptr };
 
 private:
 	_float m_fHpRatio = {};

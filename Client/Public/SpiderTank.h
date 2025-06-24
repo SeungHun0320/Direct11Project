@@ -88,27 +88,15 @@ public: /* 상태로 넘겨줄 함수들 */
 	HRESULT Shot_Bomb();
 	HRESULT Shot_Lager();
 
-	void AttackCoolDownAcc(_float fTimeDelta) {
-		m_fAttackCoolDown += fTimeDelta;
-	};
-	_bool Is_AttackCoolDownReady(_float fAttackDelay) {
-		return m_fAttackCoolDown >= fAttackDelay;
-	};
-	void Reset_AttackCoolDown() {
-		m_fAttackCoolDown = 0.f;
-	};
+	void AttackCoolDownAcc(_float fTimeDelta) {	m_fAttackCoolDown += fTimeDelta; }
+	_bool Is_AttackCoolDownReady(_float fAttackDelay) {	return m_fAttackCoolDown >= fAttackDelay; }
+	void Reset_AttackCoolDown() { m_fAttackCoolDown = 0.f; }
 
-	_uint Get_Sequence() {
-		return m_iSequence;
-	}
+	_uint Get_Sequence() { return m_iSequence; }
+	void  Add_Sequence() { ++m_iSequence; }
+	void  Reset_Sequence() { m_iSequence = 0; }
 
-	void Add_Sequence() {
-		++m_iSequence;
-	}
-
-	void Reset_Sequence() {
-		m_iSequence = 0;
-	}
+	void Set_isInBattle(_bool isInBattle) { m_isInBattle = isInBattle; }
 
 private: /* 상태 패턴들 */
 	STATES m_eCurState{ STATES::STATES_END };
@@ -116,11 +104,14 @@ private: /* 상태 패턴들 */
 	class CSpiderTankState* m_pCurState = { nullptr };
 	class CSpiderTankState* m_pStates[ENUM_CLASS(STATES::STATES_END)] = { nullptr };
 
-private: /* 쿨타임 */
+private:
+	/* 쿨타임 */
 	_float m_fAttackCoolDown = {};
-
-private: /* 서순 */
+	/* 서순 */
 	_uint  m_iSequence = {};
+private:
+	_bool m_isInBattle = { false };
+	
 
 private: /* 필요해 */
 	const _float4x4* m_pHeadBoneMatrix = { nullptr };

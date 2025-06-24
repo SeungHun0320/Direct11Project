@@ -48,7 +48,6 @@ public:
 public:
 	void Set_PositionY(_float fY, _float fYOffset = 0.f);
 	_vector Get_State(STATE eState);
-	_matrix Get_CombinedMatrix();
 	void Set_State(STATE eState, _fvector vState);
 
 protected:

@@ -192,6 +192,7 @@
     <ClInclude Include="..\Public\Client_Struct.h" />
     <ClInclude Include="..\public\Courtyard.h" />
     <ClInclude Include="..\public\Environment_Object.h" />
+    <ClInclude Include="..\public\Explosion.h" />
     <ClInclude Include="..\public\Grass.h" />
     <ClInclude Include="..\public\Inventory.h" />
     <ClInclude Include="..\public\Item.h" />
@@ -216,6 +217,8 @@
     <ClInclude Include="..\public\Bullet_Monster.h" />
     <ClInclude Include="..\public\Bullet_Monster_AOE.h" />
     <ClInclude Include="..\public\NavigationTool.h" />
+    <ClInclude Include="..\public\Obj_Particle.h" />
+    <ClInclude Include="..\public\Part_Particle.h" />
     <ClInclude Include="..\public\Part_Player.h" />
     <ClInclude Include="..\Public\Part_WizardCandleabra.h" />
     <ClInclude Include="..\Public\Part_WizardStaff.h" />
@@ -224,6 +227,7 @@
     <ClInclude Include="..\public\Player.h" />
     <ClInclude Include="..\Public\PlayerState.h" />
     <ClInclude Include="..\Public\Player_IAttackStrategy.h" />
+    <ClInclude Include="..\public\Snow.h" />
     <ClInclude Include="..\public\UI2D_BossHpBar.h" />
     <ClInclude Include="..\public\UI2D_Inventory.h" />
     <ClInclude Include="..\public\UI2D_InventorySlot.h" />
@@ -304,6 +308,7 @@
     <ClCompile Include="..\private\Chest.cpp" />
     <ClCompile Include="..\private\Courtyard.cpp" />
     <ClCompile Include="..\private\Environment_Object.cpp" />
+    <ClCompile Include="..\private\Explosion.cpp" />
     <ClCompile Include="..\private\Grass.cpp" />
     <ClCompile Include="..\private\Inventory.cpp" />
     <ClCompile Include="..\private\Item.cpp" />
@@ -328,6 +333,8 @@
     <ClCompile Include="..\private\Bullet_Monster.cpp" />
     <ClCompile Include="..\Private\Bullet_Monster_AOE.cpp" />
     <ClCompile Include="..\private\NavigationTool.cpp" />
+    <ClCompile Include="..\private\Obj_Particle.cpp" />
+    <ClCompile Include="..\private\Part_Particle.cpp" />
     <ClCompile Include="..\private\Part_Player.cpp" />
     <ClCompile Include="..\Private\Part_WizardCandleabra.cpp" />
     <ClCompile Include="..\Private\Part_WizardStaff.cpp" />
@@ -352,6 +359,7 @@
     <ClCompile Include="..\Private\PlayerState_Move.cpp" />
     <ClCompile Include="..\Private\PlayerState_Sprint.cpp" />
     <ClCompile Include="..\Private\Player_IAttackStrategy.cpp" />
+    <ClCompile Include="..\private\Snow.cpp" />
     <ClCompile Include="..\private\UI2D_BossHpBar.cpp" />
     <ClCompile Include="..\private\UI2D_Inventory.cpp" />
     <ClCompile Include="..\private\UI2D_InventorySlot.cpp" />

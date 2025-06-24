@@ -39,7 +39,7 @@ public:
 protected:
 	/* 인스턴스용 버퍼 */
 	ID3D11Buffer*			m_pVBInstance = { nullptr };
-	/* 버퍼를 할당할때 필요한 정보들, 멤버변수로 들고있다가 이니셜라이즈에서 생성시켜줌 */
+	/* 인스턴스 버퍼를 할당할때 필요한 정보들, 멤버변수로 들고있다가 이니셜라이즈에서 생성시켜줌 */
 	/* 할당 두 번하는거 싫어서 */
 	D3D11_BUFFER_DESC		m_VBInstanceDesc = {};
 	D3D11_SUBRESOURCE_DATA  m_VBInstanceSubResourceData = {};

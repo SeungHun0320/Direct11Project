@@ -41,8 +41,6 @@ public:
 
 private:
 	class CInventory* m_pInventory = { nullptr };
-
-private:
 	_bool* m_pParentIsOnInven = { nullptr };
 
 private:
@@ -50,9 +48,19 @@ private:
 	vector<class CUI2D_InventorySlot*> m_InvenSlots;
 
 private:
+	_float  m_fTimeAcc = {};
+	_float  m_fDuration = {};
+	_float3 m_vLerpPos = {};
+	_float3 m_vOnInvenPos = {};
+	_float3 m_vOffInvenPos = {};
+
+private:
 	void Update_Slots();
 	void Update_Seletor();
 	void Update_Shield();
+
+private:
+	void SetPos_InvenSlots();
 
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;

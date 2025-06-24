@@ -95,6 +95,7 @@ void CSpiderTankState_Dead::Enter(_float fTimeDelta)
 	m_fTimeAcc = 0.f;
 
 	m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::DEAD_START, false, 0.2f);
+	m_pOwner->Set_Dead(true);
 }
 
 void CSpiderTankState_Dead::Execute(_float fTimeDelta)
@@ -106,8 +107,7 @@ void CSpiderTankState_Dead::Execute(_float fTimeDelta)
 	if (m_fDuration <= m_fTimeAcc)
 	{
 		m_pOwner->Change_Camera(CAM_MODE::TPS);
-		m_pOwner->Set_Dead(true);
-		m_pOwner->Change_States(CSpiderTank::STATES::IDLE);
+		m_pOwner->Set_isInBattle(false);
 	}
 		
 }
