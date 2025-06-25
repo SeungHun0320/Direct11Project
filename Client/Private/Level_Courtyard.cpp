@@ -17,7 +17,7 @@
 #include "Item.h"
 #include "Monster.h"
 
-#include "Obj_Particle.h"
+#include "Particle_Obj.h"
 
 #define CurLevel LEVEL::COURTYARD
 
@@ -212,12 +212,11 @@ HRESULT CLevel_Courtyard::Ready_Layer_BackGround(const _wstring& strLayerTag)
 
 HRESULT CLevel_Courtyard::Ready_Layer_Effect(const _wstring& strLayerTag)
 {
-	CObj_Particle::DESC SnowDesc{};
+	CParticle_Obj::DESC SnowDesc{};
 	SnowDesc.eLevelID = CurLevel;
 	SnowDesc.strName = TEXT("Particle_Snow");
 	SnowDesc.strParticleBufferTag = TEXT("Prototype_Component_VIBuffer_Snow");
 	SnowDesc.strParticleTextureTag = TEXT("Prototype_Component_Texture_Snow");
-
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_Snow"),
 		ENUM_CLASS(CurLevel), strLayerTag, &SnowDesc)))

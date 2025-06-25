@@ -19,6 +19,10 @@ public:
 	virtual void Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
+	_bool IsFocused() const {
+		return m_IsFocused;
+	}
+
 public:
 	virtual HRESULT Render_UI() { return S_OK; };
 	virtual HRESULT Render_ExtraUI() { return S_OK; };

@@ -9,19 +9,14 @@ END
 
 BEGIN(Client)
 
-class CNavigationTool : public CTool
+class CTool_Navigation final : public CTool
 {
 public:
 	enum MODE { CREATE, MODIFY, NORMAL, MODE_END };
 
-protected:
-	CNavigationTool(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	~CNavigationTool() = default;
-
-public:
-	_bool IsFocused() const {
-		return m_IsFocused;
-	}
+private:
+	CTool_Navigation(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	~CTool_Navigation() = default;
 
 public:
 	void Set_Map(class CMap* pMap);
@@ -35,10 +30,7 @@ public:
 public: 
 	virtual HRESULT Render_UI() override;
 
-
-public: /* 맵툴 연동 */
-
-private:
+private: /* 맵툴 연동 */
 	class CMap* m_pMap = { nullptr };
 
 private:  /* 편의성 */
@@ -77,7 +69,7 @@ private: /* 셀 저장 불러오기 */
 
 
 public:
-	static CNavigationTool* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CTool_Navigation* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual void Free();
 };
 

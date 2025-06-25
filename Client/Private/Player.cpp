@@ -2,22 +2,25 @@
 
 #include "GameInstance.h"
 
+/* ¸öÀÌ¶û ¹«±â */
 #include "Body_Player.h"
 #include "Weapon_Player.h"
-
+/* UI */
 #include "UI2D_PlayerHPBar.h"
 #include "UI2D_PlayerSPBar.h"
 #include "UI2D_PlayerMPBar.h"
 #include "UI2D_PlayerPotion.h"
 #include "UI2D_PlayerItemSlots.h"
 #include "UI2D_Inventory.h"
+/* ÀÎº¥Åä¸® */
 #include "Inventory.h"
-
+/* »óÅÂ, Àü·« */
 #include "PlayerState.h"
 #include "Player_IAttackStrategy.h"
-
-
+/* ÃÑ¾Ë */
 #include "Bullet_FireCracker.h"
+/* ÀÌÆåÆ®(ÆÄÆ¼Å¬) */
+#include "Particle_Part.h"
 
 /* ¥W, */
 #include "Monster.h"
@@ -1108,6 +1111,18 @@ HRESULT CPlayer::Ready_PartObjects()
 	UIInvenDesc.pInventory = m_pInventory;
 
 	if (FAILED(__super::Add_PartObject(PART_UIINVEN, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_Inventory"), &UIInvenDesc)))
+		return E_FAIL;
+
+
+	CParticle_Part::DESC ExplosionDesc{};
+
+	ExplosionDesc.pParentLevelID = &eLevelID;
+	ExplosionDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	ExplosionDesc.pSocketMatrix = dynamic_cast<CBody_Player*>(m_PartObjects[PART_BODY])->Get_SocketMatrix("sword1_trail");
+	ExplosionDesc.strParticleBufferTag = TEXT("Prototype_Component_VIBuffer_Explosion");
+	ExplosionDesc.strParticleTextureTag = TEXT("Prototype_Component_Texture_Snows");
+
+	if (FAILED(__super::Add_PartObject(PART_EFFECT, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Explosion"), &ExplosionDesc)))
 		return E_FAIL;
 
 	return S_OK;

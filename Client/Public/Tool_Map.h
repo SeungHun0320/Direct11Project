@@ -9,7 +9,7 @@ END
 
 BEGIN(Client)
 
-class CMapTool final : public CTool
+class CTool_Map final : public CTool
 {
 public:
 	enum MAP { COURTYARD, ARENA, SHOP, MAP_END };
@@ -19,15 +19,11 @@ public:
 	enum MODE { CREATE, MODIFY, NORMAL, MODE_END };
 	enum LIST { ENVIRONMENT, ITEM, CHEST, ENEMY, LIST_END };
 private:
-	CMapTool(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	~CMapTool() = default;
+	CTool_Map(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	~CTool_Map() = default;
 
 public:
 	class CMap* Get_Map();
-
-	_bool IsFocused() const {
-		return m_IsFocused;
-	}
 
 public:
 	virtual HRESULT Initialize() override;
@@ -125,7 +121,7 @@ private:
 	HRESULT Create_Sky(const _wstring& strLayerTag);
 
 public:
-	static CMapTool* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CTool_Map* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual void Free() override;
 
 };

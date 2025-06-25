@@ -1,4 +1,4 @@
-#include "MapTool.h"
+#include "Tool_Map.h"
 #include "GameInstance.h"
 
 #include "Camera_Free.h"
@@ -27,12 +27,12 @@
 #define MIN_ANGLE -180.f
 #define MAX_ANGLE 180.f
 
-CMapTool::CMapTool(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CTool_Map::CTool_Map(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CTool{pDevice, pContext}
 {
 }
 
-CMap* CMapTool::Get_Map()
+CMap* CTool_Map::Get_Map()
 {
 	if(nullptr != m_pMap)
 		return m_pMap;
@@ -40,7 +40,7 @@ CMap* CMapTool::Get_Map()
 	return nullptr;
 }
 
-HRESULT CMapTool::Initialize()
+HRESULT CTool_Map::Initialize()
 {
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
@@ -53,7 +53,7 @@ HRESULT CMapTool::Initialize()
 	return S_OK;
 }
 
-void CMapTool::Add_ListBoxName()
+void CTool_Map::Add_ListBoxName()
 {	
 	/* 이게 진짜 맞나요? */
 	vector<_wstring> EnvironmentFilters = {
@@ -104,7 +104,7 @@ void CMapTool::Add_ListBoxName()
 	}
 }
 
-void CMapTool::Update(_float fTimeDelta)
+void CTool_Map::Update(_float fTimeDelta)
 {
 	Key_Input();
 	if (nullptr == m_pMap || m_bMode[NORMAL])
@@ -213,19 +213,19 @@ void CMapTool::Update(_float fTimeDelta)
 	}
 }
 
-HRESULT CMapTool::Render()
+HRESULT CTool_Map::Render()
 {
 	Render_UI();
 	return S_OK;
 }
 
-HRESULT CMapTool::Render_ExtraUI()
+HRESULT CTool_Map::Render_ExtraUI()
 {
 	Created_Menu();
 	return S_OK;
 }
 
-void CMapTool::Key_Input()
+void CTool_Map::Key_Input()
 {
 	if (KEY_DOWN(DIK_V))
 	{
@@ -244,7 +244,7 @@ void CMapTool::Key_Input()
 	}
 }
 
-HRESULT CMapTool::Render_UI()
+HRESULT CTool_Map::Render_UI()
 {
 	ImGui::Begin(u8"맵 툴");
 	Check_SelectedTool();
@@ -300,7 +300,7 @@ HRESULT CMapTool::Render_UI()
 	return S_OK;
 }
 
-void CMapTool::Map_Menu()
+void CTool_Map::Map_Menu()
 {
 	const _char* szMaps[] = { "CourtYard", "Arena", "Shop"};
 
@@ -330,7 +330,7 @@ void CMapTool::Map_Menu()
 	}
 }
 
-void CMapTool::File_Menu()
+void CTool_Map::File_Menu()
 {
 	if (ImGui::BeginMenuBar())
 	{
@@ -364,7 +364,7 @@ void CMapTool::File_Menu()
 	}
 }
 
-HRESULT CMapTool::Craete_Map(MAP iMapIdx, const _wstring& strLayerTag)
+HRESULT CTool_Map::Craete_Map(MAP iMapIdx, const _wstring& strLayerTag)
 {
 	_wstring strName;
 
@@ -422,7 +422,7 @@ HRESULT CMapTool::Craete_Map(MAP iMapIdx, const _wstring& strLayerTag)
 	return S_OK;
 }
 
-HRESULT CMapTool::On_Modify_Object()
+HRESULT CTool_Map::On_Modify_Object()
 {
 	if (nullptr == m_pModifyObject)
 		return E_FAIL;
@@ -481,7 +481,7 @@ HRESULT CMapTool::On_Modify_Object()
 	return S_OK;
 }
 
-void CMapTool::Adj_Scale_Angle()
+void CTool_Map::Adj_Scale_Angle()
 {
 	if (ImGui::RadioButton(u8"전체 스케일 변경", !m_bAllScale))
 	{
@@ -533,7 +533,7 @@ void CMapTool::Adj_Scale_Angle()
 
 }
 
-void CMapTool::Seleted_List(LIST eList)
+void CTool_Map::Seleted_List(LIST eList)
 {
 	for (_uint i = 0; i < LIST_END; i++)
 		m_bLists[i] = false;
@@ -541,7 +541,7 @@ void CMapTool::Seleted_List(LIST eList)
 	m_bLists[eList] = true;
 }
 
-HRESULT CMapTool::Environment_ListBox()
+HRESULT CTool_Map::Environment_ListBox()
 {
 	static _int iCurrentObjIndex = { -1 }, iOldObjType = { -1 };
 
@@ -579,7 +579,7 @@ HRESULT CMapTool::Environment_ListBox()
 	return S_OK;
 }
 
-HRESULT CMapTool::Item_ListBox()
+HRESULT CTool_Map::Item_ListBox()
 {
 	static _int iCurrentObjIndex = { -1 }, iOldObjType = { -1 };
 
@@ -630,7 +630,7 @@ HRESULT CMapTool::Item_ListBox()
 	return S_OK;
 }
 
-HRESULT CMapTool::Chest_ListBox()
+HRESULT CTool_Map::Chest_ListBox()
 {
 	static _int iCurrentObjIndex = { -1 }, iOldObjType = { -1 };
 	const _char* szChests[] =
@@ -683,7 +683,7 @@ HRESULT CMapTool::Chest_ListBox()
 	return S_OK;
 }
 
-HRESULT CMapTool::Monster_ListBox()
+HRESULT CTool_Map::Monster_ListBox()
 {
 	static _int iCurrentObjIndex = { -1 }, iOldObjType = { -1 };
 
@@ -730,7 +730,7 @@ HRESULT CMapTool::Monster_ListBox()
 	return S_OK;
 }
 
-void CMapTool::Created_Menu()
+void CTool_Map::Created_Menu()
 {
 	if (ImGui::Begin(u8"하이~ 어 라키"))
 	{
@@ -760,14 +760,14 @@ void CMapTool::Created_Menu()
 	ImGui::End();
 }
 
-void CMapTool::Add_Modify_ListBox(vector<_string>& vecNames, const _wstring& strName)
+void CTool_Map::Add_Modify_ListBox(vector<_string>& vecNames, const _wstring& strName)
 {
 	_string strNumObjects = to_string(vecNames.size());
 	strNumObjects += "_";
 	vecNames.push_back(strNumObjects + m_pGameInstance->WStringToString(strName));
 }
 
-HRESULT CMapTool::Created_Chest_ListBox()
+HRESULT CTool_Map::Created_Chest_ListBox()
 {
 	static _int iCurrentObjIndex = { -1 }, iOldObjType = { -1 };
 
@@ -804,7 +804,7 @@ HRESULT CMapTool::Created_Chest_ListBox()
 
 }
 
-HRESULT CMapTool::Created_Monster_ListBox()
+HRESULT CTool_Map::Created_Monster_ListBox()
 {
 	static _int iCurrentObjIndex = { -1 }, iOldObjType = { -1 };
 
@@ -840,7 +840,7 @@ HRESULT CMapTool::Created_Monster_ListBox()
 	return S_OK;
 }
 
-HRESULT CMapTool::Created_Environment_ListBox()
+HRESULT CTool_Map::Created_Environment_ListBox()
 {
 	static _int iCurrentObjIndex = { -1 }, iOldObjType = { -1 };
 
@@ -875,7 +875,7 @@ HRESULT CMapTool::Created_Environment_ListBox()
 	return S_OK;
 }
 
-HRESULT CMapTool::Created_Delete(_uint _iCurrentObjIndex, vector<_string>& vecNames)
+HRESULT CTool_Map::Created_Delete(_uint _iCurrentObjIndex, vector<_string>& vecNames)
 {
 	if (nullptr == m_pModifyObject)
 		return E_FAIL;
@@ -892,7 +892,7 @@ HRESULT CMapTool::Created_Delete(_uint _iCurrentObjIndex, vector<_string>& vecNa
 	return S_OK;
 }
 
-void CMapTool::Change_Mode()
+void CTool_Map::Change_Mode()
 {
 	if (ImGui::RadioButton(u8"생성모드", m_bMode[CREATE]))
 	{
@@ -914,7 +914,7 @@ void CMapTool::Change_Mode()
 	ImGui::Text(u8"V : 생성/수정 || B : 잠금 ");
 }
 
-void CMapTool::Load_Map_Menu()
+void CTool_Map::Load_Map_Menu()
 {
 	if (ImGuiFileDialog::Instance()->Display("LoadFile"))
 	{
@@ -929,7 +929,7 @@ void CMapTool::Load_Map_Menu()
 	}
 }
 
-HRESULT CMapTool::Save_Map(const _string& strMapPath)
+HRESULT CTool_Map::Save_Map(const _string& strMapPath)
 {
 	ofstream OutFile(strMapPath, ios::binary);
 
@@ -1135,7 +1135,7 @@ HRESULT CMapTool::Save_Map(const _string& strMapPath)
 	return S_OK;
 }
 
-HRESULT CMapTool::Load_Map(const _string& strMapPath)
+HRESULT CTool_Map::Load_Map(const _string& strMapPath)
 {
 	m_EnvironmentNames.clear();
 	m_ChestNames.clear();
@@ -1333,7 +1333,7 @@ HRESULT CMapTool::Load_Map(const _string& strMapPath)
 	return S_OK;
 }
 
-HRESULT CMapTool::Craete_Camera(const _wstring& strLayerTag)
+HRESULT CTool_Map::Craete_Camera(const _wstring& strLayerTag)
 {
 	CCamera_Free::DESC tDesc = {};
 
@@ -1356,7 +1356,7 @@ HRESULT CMapTool::Craete_Camera(const _wstring& strLayerTag)
 	return S_OK;
 }
 
-HRESULT CMapTool::Create_Sky(const _wstring& strLayerTag)
+HRESULT CTool_Map::Create_Sky(const _wstring& strLayerTag)
 {
 	CSky::DESC tSkyDesc = {};
 	tSkyDesc.eLevelID = LEVEL::TOOLS;
@@ -1371,20 +1371,20 @@ HRESULT CMapTool::Create_Sky(const _wstring& strLayerTag)
 	return S_OK;
 }
 
-CMapTool* CMapTool::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CTool_Map* CTool_Map::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	CMapTool* pInstance = new CMapTool(pDevice, pContext);
+	CTool_Map* pInstance = new CTool_Map(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize()))
 	{
-		MSG_BOX("Failed to Created : CMapTool");
+		MSG_BOX("Failed to Created : CTool_Map");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CMapTool::Free()
+void CTool_Map::Free()
 {
 	__super::Free();
 

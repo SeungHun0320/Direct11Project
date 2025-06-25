@@ -71,7 +71,10 @@
 #include "UI2D_Reward.h"
 
 /* 파티클들 */
-#include "Obj_Particle.h"
+#include "Particle_Obj.h"
+
+/* 툴 용 */
+#include "Particl_Tool.h"
 
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -559,7 +562,7 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 
 	/* For.Prototype_GameObject_Snow */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Snow"),
-		CObj_Particle::Create(m_pDevice, m_pContext))))
+		CParticle_Obj::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	///* For.Prototype_GameObject_Effect */
@@ -1029,6 +1032,21 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 		return E_FAIL;
 
 
+	lstrcpy(m_szLoadingText, TEXT("버퍼을(를) 로딩중입니다."));
+	/* For.Prototype_Component_VIBuffer_Tool */
+	CVIBuffer_Point_Instance_Tool::DESC		ToolDesc{};
+	ToolDesc.iNumInstance = 5000;
+	ToolDesc.vCenter = _float3(0.f, 0.f, -100.f);
+	ToolDesc.vRange = _float3(100.f, 3.0f, 100.f);
+	ToolDesc.vSize = _float2(0.1f, 1.f);
+	ToolDesc.vLifeTime = _float2(5.f, 8.f);
+	ToolDesc.vSpeed = _float2(3.f, 5.f);
+	ToolDesc.isLoop = true;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_VIBuffer_Tool"),
+		CVIBuffer_Point_Instance_Tool::Create(m_pDevice, m_pContext, &ToolDesc))))
+		return E_FAIL;
+
 	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
@@ -1200,6 +1218,11 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 	/* For.Prototype_GameObject_Sky */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Sky"),
 		CSky::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Particle_Tool */
+	if(FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_Particle_Tool"),
+		CParticl_Tool::Craete(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 

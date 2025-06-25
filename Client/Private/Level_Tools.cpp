@@ -1,8 +1,9 @@
 #include "Level_Tools.h"
 #include "Level_Loading.h"
 
-#include "MapTool.h"
-#include "NavigationTool.h"
+#include "Tool_Map.h"
+#include "Tool_Effect.h"
+#include "Tool_Navigation.h"
 
 #include "Camera_Free.h"
 #include "Sky.h"
@@ -43,6 +44,9 @@ void CLevel_Tools::Update(_float fTimeDelta)
 	if (m_pNavigationTool->IsFocused())
 		m_eActiveType = TOOL_NAVIGATION;
 
+	if (m_pEffectTool->IsFocused())
+		m_eActiveType = TOOL_EFFECT;
+
 	switch (m_eActiveType)
 	{
 	case TOOL_MAP:
@@ -50,6 +54,9 @@ void CLevel_Tools::Update(_float fTimeDelta)
 		break;
 	case TOOL_NAVIGATION:
 		m_pNavigationTool->Update(fTimeDelta);
+		break;
+	case TOOL_EFFECT:
+		m_pEffectTool->Update(fTimeDelta);
 		break;
 	default:
 		break;
@@ -75,15 +82,10 @@ HRESULT CLevel_Tools::Render()
 	ImGui_RenderBegin();
 	Ready_DockSpace();
 
-	// UI는 항상 보여줌
+	// UI는 항상 보여줌 이것도 나중에는 바꿔야할수도?
 	m_pMapTool->Render();
 	m_pNavigationTool->Render();
-
-	if (m_pMapTool->IsFocused())
-		m_eActiveType = TOOL_MAP;
-
-	if (m_pNavigationTool->IsFocused())
-		m_eActiveType = TOOL_NAVIGATION;
+	m_pEffectTool->Render();
 
 	switch (m_eActiveType)
 	{
@@ -92,6 +94,9 @@ HRESULT CLevel_Tools::Render()
 		break;
 	case TOOL_NAVIGATION:
 		m_pNavigationTool->Render_ExtraUI();
+		break;
+	case TOOL_EFFECT:
+		m_pEffectTool->Render_ExtraUI();
 		break;
 	default:
 		break;
@@ -207,12 +212,16 @@ HRESULT CLevel_Tools::Ready_For_BackGround(const _wstring& strLayerTag)
 
 HRESULT CLevel_Tools::Ready_Tools()
 {
-	m_pMapTool = CMapTool::Create(m_pDevice, m_pContext);
+	m_pMapTool = CTool_Map::Create(m_pDevice, m_pContext);
 	if (nullptr == m_pMapTool)
 		return E_FAIL;
 
-	m_pNavigationTool = CNavigationTool::Create(m_pDevice, m_pContext);
+	m_pNavigationTool = CTool_Navigation::Create(m_pDevice, m_pContext);
 	if (nullptr == m_pNavigationTool)
+		return E_FAIL;
+
+	m_pEffectTool = CTool_Effect::Create(m_pDevice, m_pContext);
+	if (nullptr == m_pEffectTool)
 		return E_FAIL;
 
 	return S_OK;
@@ -259,6 +268,7 @@ void CLevel_Tools::Free()
 	Safe_Release(m_pMap);
 	Safe_Release(m_pMapTool);
 	Safe_Release(m_pNavigationTool);
+	Safe_Release(m_pEffectTool);
 }
 
 #endif // _IMGUI

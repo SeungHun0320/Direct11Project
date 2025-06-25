@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Part_Particle.h"
+#include "Particle_Part.h"
 
 BEGIN(Client)
 
-class CExplosion final : public CPart_Particle 
+class CExplosion final : public CParticle_Part 
 {
 };
 

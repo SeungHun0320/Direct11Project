@@ -164,6 +164,16 @@ public:
 
 #pragma endregion
 
+#pragma region TARGET_MANAGER
+	/* 매니저가 직접 렌더타겟을 만들고, 관리해준다. */
+	HRESULT Add_RenderTarget(const _wstring& strTargetTag, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, const _float4& vClearColor);
+	HRESULT Add_MRT(const _wstring& strMRTTag, const _wstring& strTargetTag);
+
+	/* 특정 타겟들을 장치에 동시에(최대 8개) 바인딩 해준다 */
+	HRESULT Begin_MRT(const _wstring& strMRTTag);
+	HRESULT End_MRT();
+#pragma endregion
+
 private:
 	class CGraphic_Device*		m_pGraphic_Device = { nullptr };
 	class CInput_Device*		m_pInputDevice = { nullptr };
@@ -180,6 +190,7 @@ private:
 	class CCamera_Manager*		m_pCamera_Manager = { nullptr };
 	class CCollider_Manager*	m_pCollider_Manager = { nullptr };
 	class CEvent_Manager*		m_pEvent_Manager = { nullptr };
+	class CTarget_Manager*      m_pTarget_Manager = { nullptr };
 
 public:
 	void Release_Engine();

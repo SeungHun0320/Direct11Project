@@ -1,16 +1,16 @@
-#include "NavigationTool.h"
+#include "Tool_Navigation.h"
 #include "GameInstance.h"
 
 #include "Map.h"
 
 #include "Cell.h"
 
-CNavigationTool::CNavigationTool(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CTool_Navigation::CTool_Navigation(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CTool{ pDevice, pContext }
 {
 }
 
-void CNavigationTool::Set_Map(CMap* pMap)
+void CTool_Navigation::Set_Map(CMap* pMap)
 {
 	if (nullptr == pMap)
 		return;
@@ -39,7 +39,7 @@ void CNavigationTool::Set_Map(CMap* pMap)
 	}
 }
 
-HRESULT CNavigationTool::Initialize()
+HRESULT CTool_Navigation::Initialize()
 {
 	m_pShader = CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_Cell.hlsl"), VTXPOS::Elements, VTXPOS::iNumElements);
 	if (nullptr == m_pShader)
@@ -52,7 +52,7 @@ HRESULT CNavigationTool::Initialize()
 	return S_OK;
 }
 
-void CNavigationTool::Update(_float fTimeDelta)
+void CTool_Navigation::Update(_float fTimeDelta)
 {
 	Key_Input();
 	if (nullptr == m_pMap || m_bMode[NORMAL])
@@ -74,7 +74,7 @@ void CNavigationTool::Update(_float fTimeDelta)
 
 }
 
-HRESULT CNavigationTool::Render()
+HRESULT CTool_Navigation::Render()
 {
 	Render_UI();
 
@@ -85,12 +85,12 @@ HRESULT CNavigationTool::Render()
 
 }
 
-HRESULT CNavigationTool::Render_ExtraUI()
+HRESULT CTool_Navigation::Render_ExtraUI()
 {
 	return S_OK;
 }
 
-void CNavigationTool::Key_Input()
+void CTool_Navigation::Key_Input()
 {
 	if (KEY_DOWN(DIK_V))
 	{
@@ -101,7 +101,7 @@ void CNavigationTool::Key_Input()
 		m_bMode[NORMAL] = !m_bMode[NORMAL];
 }
 
-void CNavigationTool::Change_Mode()
+void CTool_Navigation::Change_Mode()
 {
 	if (ImGui::RadioButton(u8"생성모드", m_bMode[CREATE]))
 	{
@@ -123,7 +123,7 @@ void CNavigationTool::Change_Mode()
 	ImGui::Text(u8"V : 생성/수정 || B : 잠금 ");
 }
 
-HRESULT CNavigationTool::Render_Cells()
+HRESULT CTool_Navigation::Render_Cells()
 {
 	if (nullptr == m_pMap)
 		return E_FAIL;
@@ -145,7 +145,7 @@ HRESULT CNavigationTool::Render_Cells()
 	return S_OK;
 }
 
-void CNavigationTool::Add_ClickedPoint(_float3 vWorldPos)
+void CTool_Navigation::Add_ClickedPoint(_float3 vWorldPos)
 {
 	if (3 <= m_ClickedPoints.size())
 		return;
@@ -166,7 +166,7 @@ void CNavigationTool::Add_ClickedPoint(_float3 vWorldPos)
 	}
 }
 
-HRESULT CNavigationTool::Create_Cell()
+HRESULT CTool_Navigation::Create_Cell()
 {
 	_float3 vPoints[3] = {
 		m_ClickedPoints[0],
@@ -186,7 +186,7 @@ HRESULT CNavigationTool::Create_Cell()
 	return S_OK;
 }
 
-CCell* CNavigationTool::Find_Cell(_fvector vPickedPos)
+CCell* CTool_Navigation::Find_Cell(_fvector vPickedPos)
 {
 	for (auto& pCell : m_Cells)
 	{
@@ -198,7 +198,7 @@ CCell* CNavigationTool::Find_Cell(_fvector vPickedPos)
 	return nullptr;
 }
 
-void CNavigationTool::Delete_Cell(_fvector vPickedPos)
+void CTool_Navigation::Delete_Cell(_fvector vPickedPos)
 {
 	for (auto iter = m_Cells.begin(); iter != m_Cells.end();)
 	{
@@ -214,7 +214,7 @@ void CNavigationTool::Delete_Cell(_fvector vPickedPos)
 	}
 }
 
-_float3 CNavigationTool::Snap_NearCellPoint(const _float3& vPickedPos)
+_float3 CTool_Navigation::Snap_NearCellPoint(const _float3& vPickedPos)
 {
 	if (m_Cells.empty())
 		return vPickedPos;
@@ -240,7 +240,7 @@ _float3 CNavigationTool::Snap_NearCellPoint(const _float3& vPickedPos)
 	return vSnappedPos;
 }
 
-void CNavigationTool::Sort_PointsCW(vector<_float3>& Points)
+void CTool_Navigation::Sort_PointsCW(vector<_float3>& Points)
 {
 	if (Points.size() != 3)
 		return;
@@ -262,7 +262,7 @@ void CNavigationTool::Sort_PointsCW(vector<_float3>& Points)
 	}
 }
 
-_bool CNavigationTool::Check_Cells(vector<_float3>& Points)
+_bool CTool_Navigation::Check_Cells(vector<_float3>& Points)
 {
 	if (m_Cells.empty())
 		return false;
@@ -292,7 +292,7 @@ _bool CNavigationTool::Check_Cells(vector<_float3>& Points)
 	return false;
 }
 
-void CNavigationTool::Save_Load_Menu()
+void CTool_Navigation::Save_Load_Menu()
 {
 	if (ImGui::Button(u8"저장"))
 	{
@@ -305,7 +305,7 @@ void CNavigationTool::Save_Load_Menu()
 	}
 }
 
-HRESULT CNavigationTool::Save_Navigation(const _string& strNaviFileTag)
+HRESULT CTool_Navigation::Save_Navigation(const _string& strNaviFileTag)
 {
 	ofstream OutFile(strNaviFileTag, std::ios::binary);
 
@@ -340,7 +340,7 @@ HRESULT CNavigationTool::Save_Navigation(const _string& strNaviFileTag)
 	return S_OK;
 }
 
-HRESULT CNavigationTool::Load_Navigation(const _string& strNaviFileTag)
+HRESULT CTool_Navigation::Load_Navigation(const _string& strNaviFileTag)
 {
 	std::ifstream InFile(strNaviFileTag, std::ios::binary);
 	if (!InFile.is_open())
@@ -378,7 +378,7 @@ HRESULT CNavigationTool::Load_Navigation(const _string& strNaviFileTag)
 	return S_OK;
 }
 
-HRESULT CNavigationTool::Render_UI()
+HRESULT CTool_Navigation::Render_UI()
 {
 	ImGui::Begin(u8"네비게이션 툴");
 	Check_SelectedTool();
@@ -391,25 +391,24 @@ HRESULT CNavigationTool::Render_UI()
 	Save_Load_Menu();
 
 
-
 	ImGui::End();
 	return S_OK;
 }
 
-CNavigationTool* CNavigationTool::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CTool_Navigation* CTool_Navigation::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	CNavigationTool* pInstance = new CNavigationTool(pDevice, pContext);
+	CTool_Navigation* pInstance = new CTool_Navigation(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize()))
 	{
-		MSG_BOX("Failed to Created : CNavigationTool");
+		MSG_BOX("Failed to Created : CTool_Navigation");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CNavigationTool::Free()
+void CTool_Navigation::Free()
 {
 	__super::Free();
 

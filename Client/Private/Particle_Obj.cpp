@@ -1,23 +1,23 @@
-#include "Obj_Particle.h"
+#include "Particle_Obj.h"
 
 #include "GameInstance.h"
 
-CObj_Particle::CObj_Particle(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CParticle_Obj::CParticle_Obj(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :CGameObject {pDevice, pContext}
 {
 }
 
-CObj_Particle::CObj_Particle(const CObj_Particle& Prototype)
+CParticle_Obj::CParticle_Obj(const CParticle_Obj& Prototype)
     :CGameObject(Prototype)
 {
 }
 
-HRESULT CObj_Particle::Initialize_Prototype()
+HRESULT CParticle_Obj::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT CObj_Particle::Initialize(void* pArg)
+HRESULT CParticle_Obj::Initialize(void* pArg)
 {
     DESC* pDesc = static_cast<DESC*>(pArg);
 
@@ -32,23 +32,23 @@ HRESULT CObj_Particle::Initialize(void* pArg)
     return S_OK;
 }
 
-void CObj_Particle::Priority_Update(_float fTimeDelta)
+void CParticle_Obj::Priority_Update(_float fTimeDelta)
 {
 }
 
-LIFE CObj_Particle::Update(_float fTimeDelta)
+LIFE CParticle_Obj::Update(_float fTimeDelta)
 {
     m_pVIBufferCom->Drop(fTimeDelta);
 
     return LIFE::NONE;
 }
 
-void CObj_Particle::Late_Update(_float fTimeDelta)
+void CParticle_Obj::Late_Update(_float fTimeDelta)
 {
     m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 }
 
-HRESULT CObj_Particle::Render()
+HRESULT CParticle_Obj::Render()
 {
     if (FAILED(Bind_ShaderResources()))
         return E_FAIL;
@@ -68,7 +68,7 @@ HRESULT CObj_Particle::Render()
     return S_OK;
 }
 
-HRESULT CObj_Particle::Ready_Components(void* pArg)
+HRESULT CParticle_Obj::Ready_Components(void* pArg)
 {
     DESC* pDesc = static_cast<DESC*>(pArg);
 
@@ -90,7 +90,7 @@ HRESULT CObj_Particle::Ready_Components(void* pArg)
     return S_OK;
 }
 
-HRESULT CObj_Particle::Bind_ShaderResources()
+HRESULT CParticle_Obj::Bind_ShaderResources()
 {
     if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
         return E_FAIL;
@@ -106,33 +106,33 @@ HRESULT CObj_Particle::Bind_ShaderResources()
     return S_OK;
 }
 
-CObj_Particle* CObj_Particle::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CParticle_Obj* CParticle_Obj::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-    CObj_Particle* pInstance = new CObj_Particle(pDevice, pContext);
+    CParticle_Obj* pInstance = new CParticle_Obj(pDevice, pContext);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CObj_Particle");
+        MSG_BOX("Failed to Created : CParticle_Obj");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-CGameObject* CObj_Particle::Clone(void* pArg)
+CGameObject* CParticle_Obj::Clone(void* pArg)
 {
-    CObj_Particle* pInstance = new CObj_Particle(*this);
+    CParticle_Obj* pInstance = new CParticle_Obj(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
-        MSG_BOX("Failed to Cloned : CObj_Particle");
+        MSG_BOX("Failed to Cloned : CParticle_Obj");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-void CObj_Particle::Free()
+void CParticle_Obj::Free()
 {
     __super::Free();
 

@@ -277,12 +277,6 @@
     <Filter Include="02.GameObjects\08.Bullet">
       <UniqueIdentifier>{11dec82b-3c18-4060-8509-a17eb0649034}</UniqueIdentifier>
     </Filter>
-    <Filter Include="96.Tools\01.NavigationTool">
-      <UniqueIdentifier>{d72c8380-6195-4931-b418-dde7fdc6e95a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="96.Tools\00.MapTool">
-      <UniqueIdentifier>{ae8c8b7d-fa3f-4ba0-b00a-d9b3ca93886a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\01.BackGround\00.BackGround">
       <UniqueIdentifier>{517eb494-a7a3-40c2-95e0-858f13d8d0a9}</UniqueIdentifier>
     </Filter>
@@ -421,9 +415,6 @@
     <Filter Include="02.GameObjects\08.Bullet\FireCracker">
       <UniqueIdentifier>{6831186f-2c18-4420-9b45-339fab66a288}</UniqueIdentifier>
     </Filter>
-    <Filter Include="96.Tools\02. EffectTool">
-      <UniqueIdentifier>{5868739f-792b-4de4-ba1c-c316d319e6ac}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\09.Effect">
       <UniqueIdentifier>{eee4e22f-c3c8-4afa-a8af-c8b06b6b04e1}</UniqueIdentifier>
     </Filter>
@@ -433,17 +424,29 @@
     <Filter Include="02.GameObjects\09.Effect\Sprite">
       <UniqueIdentifier>{498bda6f-6527-4f5c-920c-a502860ec083}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\09.Effect\Particle\Object_Particle">
-      <UniqueIdentifier>{63e40982-b4c1-491c-997d-8dd3a222c3bf}</UniqueIdentifier>
+    <Filter Include="96.Tools\02.Effect">
+      <UniqueIdentifier>{5868739f-792b-4de4-ba1c-c316d319e6ac}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\09.Effect\Particle\Part_Particle">
+    <Filter Include="96.Tools\01.Navigation">
+      <UniqueIdentifier>{d72c8380-6195-4931-b418-dde7fdc6e95a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96.Tools\00.Map">
+      <UniqueIdentifier>{ae8c8b7d-fa3f-4ba0-b00a-d9b3ca93886a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\09.Effect\Particle\Part">
       <UniqueIdentifier>{17207b02-ad10-4d7a-aada-de00f4ff1512}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\09.Effect\Particle\Part_Particle\Explosion">
+    <Filter Include="02.GameObjects\09.Effect\Particle\Part\Explosion">
       <UniqueIdentifier>{929ca258-30ea-41e0-8e48-d8dd8a3a30a1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\09.Effect\Particle\Object_Particle\Snow">
+    <Filter Include="02.GameObjects\09.Effect\Particle\Object">
+      <UniqueIdentifier>{63e40982-b4c1-491c-997d-8dd3a222c3bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\09.Effect\Particle\Object\Snow">
       <UniqueIdentifier>{07516fb8-2d7b-4934-bee5-22d40b293773}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\09.Effect\Particle\Tool">
+      <UniqueIdentifier>{8bef012a-9106-4f5d-ad48-51ead1f69cb5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -543,8 +546,8 @@
     <ClInclude Include="..\public\Tool.h">
       <Filter>96.Tools</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\MapTool.h">
-      <Filter>96.Tools\00.MapTool</Filter>
+    <ClInclude Include="..\public\Tool_Map.h">
+      <Filter>96.Tools\00.Map</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Arena.h">
       <Filter>02.GameObjects\04.Map\02.Arena</Filter>
@@ -711,8 +714,8 @@
     <ClInclude Include="..\public\BaseActor.h">
       <Filter>02.GameObjects\03.Actor</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\NavigationTool.h">
-      <Filter>96.Tools\01.NavigationTool</Filter>
+    <ClInclude Include="..\public\Tool_Navigation.h">
+      <Filter>96.Tools\01.Navigation</Filter>
     </ClInclude>
     <ClInclude Include="..\public\UI2D_PlayerHPBar.h">
       <Filter>02.GameObjects\00.UI\02.PlayerState\Bar\00. HpBar</Filter>
@@ -790,16 +793,22 @@
       <Filter>02.GameObjects\08.Bullet\FireCracker</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Snow.h">
-      <Filter>02.GameObjects\09.Effect\Particle\Object_Particle\Snow</Filter>
+      <Filter>02.GameObjects\09.Effect\Particle\Object\Snow</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Explosion.h">
-      <Filter>02.GameObjects\09.Effect\Particle\Part_Particle\Explosion</Filter>
+      <Filter>02.GameObjects\09.Effect\Particle\Part\Explosion</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Obj_Particle.h">
-      <Filter>02.GameObjects\09.Effect\Particle\Object_Particle</Filter>
+    <ClInclude Include="..\public\Particle_Obj.h">
+      <Filter>02.GameObjects\09.Effect\Particle\Object</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Part_Particle.h">
-      <Filter>02.GameObjects\09.Effect\Particle\Part_Particle</Filter>
+    <ClInclude Include="..\public\Particle_Part.h">
+      <Filter>02.GameObjects\09.Effect\Particle\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Tool_Effect.h">
+      <Filter>96.Tools\02.Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Particl_Tool.h">
+      <Filter>02.GameObjects\09.Effect\Particle\Tool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -888,8 +897,8 @@
     <ClCompile Include="..\private\Tool.cpp">
       <Filter>96.Tools</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\MapTool.cpp">
-      <Filter>96.Tools\00.MapTool</Filter>
+    <ClCompile Include="..\private\Tool_Map.cpp">
+      <Filter>96.Tools\00.Map</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Arena.cpp">
       <Filter>02.GameObjects\04.Map\02.Arena</Filter>
@@ -1113,8 +1122,8 @@
     <ClCompile Include="..\private\BaseActor.cpp">
       <Filter>02.GameObjects\03.Actor</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\NavigationTool.cpp">
-      <Filter>96.Tools\01.NavigationTool</Filter>
+    <ClCompile Include="..\private\Tool_Navigation.cpp">
+      <Filter>96.Tools\01.Navigation</Filter>
     </ClCompile>
     <ClCompile Include="..\private\UI2D_PlayerHPBar.cpp">
       <Filter>02.GameObjects\00.UI\02.PlayerState\Bar\00. HpBar</Filter>
@@ -1189,16 +1198,22 @@
       <Filter>02.GameObjects\08.Bullet\FireCracker</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Snow.cpp">
-      <Filter>02.GameObjects\09.Effect\Particle\Object_Particle\Snow</Filter>
+      <Filter>02.GameObjects\09.Effect\Particle\Object\Snow</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Explosion.cpp">
-      <Filter>02.GameObjects\09.Effect\Particle\Part_Particle\Explosion</Filter>
+      <Filter>02.GameObjects\09.Effect\Particle\Part\Explosion</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Obj_Particle.cpp">
-      <Filter>02.GameObjects\09.Effect\Particle\Object_Particle</Filter>
+    <ClCompile Include="..\private\Particle_Obj.cpp">
+      <Filter>02.GameObjects\09.Effect\Particle\Object</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Part_Particle.cpp">
-      <Filter>02.GameObjects\09.Effect\Particle\Part_Particle</Filter>
+    <ClCompile Include="..\private\Particle_Part.cpp">
+      <Filter>02.GameObjects\09.Effect\Particle\Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Tool_Effect.cpp">
+      <Filter>96.Tools\02.Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Particl_Tool.cpp">
+      <Filter>02.GameObjects\09.Effect\Particle\Tool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

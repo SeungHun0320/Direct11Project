@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "GameObject.h"
+#include "PartObject.h"
 
 BEGIN(Engine)
 class CShader;
@@ -11,21 +11,22 @@ END
 
 BEGIN(Client)
 
-class CObj_Particle : public CGameObject
+class CParticle_Part : public CPartObject
 {
 public:
-	typedef struct tagObjParticleDesc : public CGameObject::DESC
+	typedef struct tagParticlePartDesc : public CPartObject::DESC
 	{
-		LEVEL eLevelID = { LEVEL::LEVEL_END };
 		_wstring strParticleBufferTag{};
 		_wstring strParticleTextureTag{};
+		const _float4x4* pSocketMatrix = { nullptr };
+		LEVEL* pParentLevelID = { nullptr };
 
 	}DESC;
 
 private:
-	CObj_Particle(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CObj_Particle(const CObj_Particle& Prototype);
-	virtual ~CObj_Particle() = default;
+	CParticle_Part(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CParticle_Part(const CParticle_Part& Prototype);
+	virtual ~CParticle_Part() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -36,19 +37,24 @@ public:
 	virtual HRESULT Render();
 
 private:
-	LEVEL   m_eLevelID = { LEVEL::LEVEL_END };
+	CShader* m_pShaderCom = { nullptr };
+	CTexture* m_pTextureCom = { nullptr };
+	CVIBuffer_Point_Instance* m_pVIBufferCom = { nullptr };
 
 private:
-	CShader*				  m_pShaderCom = { nullptr };
-	CTexture*				  m_pTextureCom = { nullptr };
-	CVIBuffer_Point_Instance* m_pVIBufferCom = { nullptr };
+	const _float4x4* m_pSocketMatrix = { nullptr };
+
+private:
+	LEVEL*  m_pParentLevelID = { nullptr };
+
+
 
 private:
 	virtual HRESULT Ready_Components(void* pArg);
 	HRESULT Bind_ShaderResources();
 
 public:
-	static CObj_Particle* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CParticle_Part* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 };

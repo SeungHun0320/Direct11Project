@@ -12,6 +12,7 @@
 #include "Graphic_Device.h"
 #include "Object_Manager.h"
 #include "Camera_Manager.h"
+#include "Target_Manager.h"
 #include "Collider_Manager.h"
 #include "Prototype_Manager.h"
 
@@ -52,6 +53,11 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ ID
 
 	m_pObject_Manager = CObject_Manager::Create(EngineDesc.iNumLevels);
 	if (nullptr == m_pObject_Manager)
+		return E_FAIL;
+
+	/* 렌더러보다 먼저 만들어져야 함 */
+	m_pTarget_Manager = CTarget_Manager::Create(*ppDeviceOut, *ppContextOut);
+	if (nullptr == m_pTarget_Manager)
 		return E_FAIL;
 
 	m_pRenderer = CRenderer::Create(*ppDeviceOut, *ppContextOut);
@@ -505,6 +511,26 @@ void CGameInstance::Intersect(_uint iColliderGroupID1, _uint iColliderGroupID2)
 }
 #pragma endregion
 
+#pragma region TARGET_MANAGER
+
+HRESULT CGameInstance::Add_RenderTarget(const _wstring& strTargetTag, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, const _float4& vClearColor)
+{
+	return m_pTarget_Manager->Add_RenderTarget(strTargetTag, iWidth, iHeight, ePixelFormat, vClearColor);
+}
+HRESULT CGameInstance::Add_MRT(const _wstring& strMRTTag, const _wstring& strTargetTag)
+{
+	return m_pTarget_Manager->Add_MRT(strMRTTag, strTargetTag);
+}
+HRESULT CGameInstance::Begin_MRT(const _wstring& strMRTTag)
+{
+	return m_pTarget_Manager->Begin_MRT(strMRTTag);
+}
+HRESULT CGameInstance::End_MRT()
+{
+	return m_pTarget_Manager->End_MRT();
+}
+#pragma endregion
+
 
 void CGameInstance::Release_Engine()
 {
@@ -515,6 +541,8 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pPicking);
 
 	Safe_Release(m_pTimer_Manager);
+
+	Safe_Release(m_pTarget_Manager);
 
 	Safe_Release(m_pRenderer);
 

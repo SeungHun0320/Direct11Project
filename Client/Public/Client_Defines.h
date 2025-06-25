@@ -18,6 +18,7 @@
 
 #define _IMGUI
 #define _CONSOL
+#define _TOOL
 
 namespace Client
 {

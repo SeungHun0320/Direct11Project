@@ -17,6 +17,8 @@
 #include "UI2D_Inventory.h"
 #include "UI2D_InventorySlot.h"
 
+#include "Particle_Part.h"
+
 #include "UI.h"
 #include "UI_Animation.h"
 
@@ -245,6 +247,28 @@ HRESULT CMainApp::Ready_Prototype_Texture()
 
 HRESULT CMainApp::Ready_Prototype_Component()
 {
+	/* For.Prototype_Component_VIBuffer_Explosion*/
+	CVIBuffer_Point_Instance::DESC		ExploDesc{};
+	ExploDesc.iNumInstance = 500;
+	ExploDesc.vCenter = _float3(0.f, -0.5f, 0.0f);
+	ExploDesc.vRange = _float3(0.2f, 0.2f, 0.2f);
+	ExploDesc.vSize = _float2(0.05f, 0.1f);
+	ExploDesc.vLifeTime = _float2(0.5f, 1.f);
+	ExploDesc.vSpeed = _float2(1.f, 2.f);
+	ExploDesc.vPivot = _float3(0.f, -2.f, 0.f);
+	ExploDesc.isLoop = true;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_Explosion"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, &ExploDesc))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Snow */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Snows"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Snow/Snow.png")))))
+		return E_FAIL;
+
+	/* -----------------------------------------------테스트용-------------------------------------------------*/
+
 	/* For.Prototype_Component_Collider_AABB */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_AABB"),
 		CCollider::Create(m_pDevice, m_pContext, COLLIDER::AABB))))
@@ -399,6 +423,13 @@ HRESULT CMainApp::Ready_Prototype_Object()
 	/*For.Prototype_GameObject_Bullet_FireCracker */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Bullet_FireCracker"),
 		CBullet_FireCracker::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/*---------------------------------------------이펙트(파티클)----------------------------------------------------*/
+
+		/* For.Prototype_GameObject_Explosion */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Explosion"),
+		CParticle_Part::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 
