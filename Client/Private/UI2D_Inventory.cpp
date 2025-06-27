@@ -44,7 +44,7 @@ HRESULT CUI2D_Inventory::Initialize(void* pArg)
 
 	SetPos_InvenSlots();
 
-	XMStoreFloat3(&m_vOffInvenPos, XMVectorSet(-700.f, 0.f, 0.f, 1.f));
+	XMStoreFloat3(&m_vOffInvenPos, XMVectorSet(-900.f, 0.f, 0.f, 1.f));
 	XMStoreFloat3(&m_vOnInvenPos, XMVectorSet(0.f, 0.f, 0.f, 1.f));
 	m_fDuration = 0.35f;
 

@@ -328,9 +328,6 @@
     <Filter Include="02.GameObjects\00.UI\Container\Part\UI">
       <UniqueIdentifier>{b30e92f1-66cb-41ef-a7b4-cbaeb4b3269c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.UI\Container\Part\UI_Animation">
-      <UniqueIdentifier>{0bdab430-8299-40cb-933c-9e326aa6dd1d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\03.Actor\Player\Inventory">
       <UniqueIdentifier>{d7cc1ef6-da75-4b20-a87f-170e1e67ab63}</UniqueIdentifier>
     </Filter>
@@ -447,6 +444,15 @@
     </Filter>
     <Filter Include="02.GameObjects\09.Effect\Particle\Tool">
       <UniqueIdentifier>{8bef012a-9106-4f5d-ad48-51ead1f69cb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\02.PlayerState\Sweat">
+      <UniqueIdentifier>{189dbc8b-01f7-47a6-9865-410f55666f1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\Container\Part\UI\UI_Sprite">
+      <UniqueIdentifier>{9db50aca-fc80-4f16-bebd-02a79f3c7c80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\Container\Part\UI\UI_Animation">
+      <UniqueIdentifier>{0bdab430-8299-40cb-933c-9e326aa6dd1d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -720,14 +726,11 @@
     <ClInclude Include="..\public\UI2D_PlayerHPBar.h">
       <Filter>02.GameObjects\00.UI\02.PlayerState\Bar\00. HpBar</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\UI.h">
-      <Filter>02.GameObjects\00.UI\Container\Part\UI</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\UI2D_PlayerPotion.h">
       <Filter>02.GameObjects\00.UI\02.PlayerState\Potion</Filter>
     </ClInclude>
     <ClInclude Include="..\public\UI_Animation.h">
-      <Filter>02.GameObjects\00.UI\Container\Part\UI_Animation</Filter>
+      <Filter>02.GameObjects\00.UI\Container\Part\UI\UI_Animation</Filter>
     </ClInclude>
     <ClInclude Include="..\public\UI2D_PlayerSPBar.h">
       <Filter>02.GameObjects\00.UI\02.PlayerState\Bar\01. SPBar</Filter>
@@ -807,8 +810,17 @@
     <ClInclude Include="..\public\Tool_Effect.h">
       <Filter>96.Tools\02.Effect</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Particl_Tool.h">
+    <ClInclude Include="..\public\Particle_Tool.h">
       <Filter>02.GameObjects\09.Effect\Particle\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UI.h">
+      <Filter>02.GameObjects\00.UI\Container\Part\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UI_Sprite.h">
+      <Filter>02.GameObjects\00.UI\Container\Part\UI\UI_Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UI3D_PlayerSweat.h">
+      <Filter>02.GameObjects\00.UI\02.PlayerState\Sweat</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1128,14 +1140,11 @@
     <ClCompile Include="..\private\UI2D_PlayerHPBar.cpp">
       <Filter>02.GameObjects\00.UI\02.PlayerState\Bar\00. HpBar</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\UI.cpp">
-      <Filter>02.GameObjects\00.UI\Container\Part\UI</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\UI2D_PlayerPotion.cpp">
       <Filter>02.GameObjects\00.UI\02.PlayerState\Potion</Filter>
     </ClCompile>
     <ClCompile Include="..\private\UI_Animation.cpp">
-      <Filter>02.GameObjects\00.UI\Container\Part\UI_Animation</Filter>
+      <Filter>02.GameObjects\00.UI\Container\Part\UI\UI_Animation</Filter>
     </ClCompile>
     <ClCompile Include="..\private\UI2D_PlayerSPBar.cpp">
       <Filter>02.GameObjects\00.UI\02.PlayerState\Bar\01. SPBar</Filter>
@@ -1212,8 +1221,17 @@
     <ClCompile Include="..\private\Tool_Effect.cpp">
       <Filter>96.Tools\02.Effect</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Particl_Tool.cpp">
+    <ClCompile Include="..\private\Particle_Tool.cpp">
       <Filter>02.GameObjects\09.Effect\Particle\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI.cpp">
+      <Filter>02.GameObjects\00.UI\Container\Part\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI_Sprite.cpp">
+      <Filter>02.GameObjects\00.UI\Container\Part\UI\UI_Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI3D_PlayerSweat.cpp">
+      <Filter>02.GameObjects\00.UI\02.PlayerState\Sweat</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

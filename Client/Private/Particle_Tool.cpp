@@ -1,22 +1,22 @@
-#include "Particl_Tool.h"
+#include "Particle_Tool.h"
 #include "GameInstance.h"
 
-CParticl_Tool::CParticl_Tool(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CParticle_Tool::CParticle_Tool(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CGameObject{ pDevice, pContext }
 {
 }
 
-CParticl_Tool::CParticl_Tool(const CParticl_Tool& Prototype)
+CParticle_Tool::CParticle_Tool(const CParticle_Tool& Prototype)
 	:CGameObject(Prototype)
 {
 }
 
-HRESULT CParticl_Tool::Initialize_Prototype()
+HRESULT CParticle_Tool::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CParticl_Tool::Initialize(void* pArg)
+HRESULT CParticle_Tool::Initialize(void* pArg)
 {
 	DESC* pDesc = static_cast<DESC*>(pArg);
 
@@ -30,21 +30,23 @@ HRESULT CParticl_Tool::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CParticl_Tool::Priority_Update(_float fTimeDelta)
+void CParticle_Tool::Priority_Update(_float fTimeDelta)
 {
 }
 
-LIFE CParticl_Tool::Update(_float fTimeDelta)
+LIFE CParticle_Tool::Update(_float fTimeDelta)
 {
+	m_pVIBufferCom->Spread(fTimeDelta);
+
 	return LIFE::NONE;
 }
 
-void CParticl_Tool::Late_Update(_float fTimeDelta)
+void CParticle_Tool::Late_Update(_float fTimeDelta)
 {
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 }
 
-HRESULT CParticl_Tool::Render()
+HRESULT CParticle_Tool::Render()
 {
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
@@ -64,7 +66,7 @@ HRESULT CParticl_Tool::Render()
 	return S_OK;
 }
 
-HRESULT CParticl_Tool::Ready_Components(void* pArg)
+HRESULT CParticle_Tool::Ready_Components(void* pArg)
 {
 	DESC* pDesc = static_cast<DESC*>(pArg);
 
@@ -79,14 +81,14 @@ HRESULT CParticl_Tool::Ready_Components(void* pArg)
 		return E_FAIL;
 
 	/* For.Com_Texture */
-	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::TOOLS), pDesc->strParticleTextureTag,
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_Component_Texture_SpikeParticle"),
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
 
 	return S_OK;
 }
 
-HRESULT CParticl_Tool::Bind_ShaderResources()
+HRESULT CParticle_Tool::Bind_ShaderResources()
 {
 	if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
@@ -102,11 +104,37 @@ HRESULT CParticl_Tool::Bind_ShaderResources()
 	return S_OK;
 }
 
-CParticl_Tool* CParticl_Tool::Craete(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CParticle_Tool* CParticle_Tool::Craete(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	return nullptr;
+	CParticle_Tool* pInstance = new CParticle_Tool(pDevice, pContext);
+
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		MSG_BOX("Failed to Created : CParticle_Tool");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
 }
 
-void CParticl_Tool::Free()
+CGameObject* CParticle_Tool::Clone(void* pArg)
 {
+	CParticle_Tool* pInstance = new CParticle_Tool(*this);
+
+	if (FAILED(pInstance->Initialize(pArg)))
+	{
+		MSG_BOX("Failed to Cloned : CParticle_Tool");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
+void CParticle_Tool::Free()
+{
+	__super::Free();
+
+	Safe_Release(m_pTextureCom);
+	Safe_Release(m_pShaderCom);
+	Safe_Release(m_pVIBufferCom);
 }

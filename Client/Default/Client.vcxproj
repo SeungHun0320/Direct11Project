@@ -191,7 +191,7 @@
     <ClInclude Include="..\Public\Client_Macro.h" />
     <ClInclude Include="..\Public\Client_Struct.h" />
     <ClInclude Include="..\public\Courtyard.h" />
-    <ClInclude Include="..\public\Particl_Tool.h" />
+    <ClInclude Include="..\public\Particle_Tool.h" />
     <ClInclude Include="..\public\Tool_Effect.h" />
     <ClInclude Include="..\public\Environment_Object.h" />
     <ClInclude Include="..\public\Explosion.h" />
@@ -244,7 +244,9 @@
     <ClInclude Include="..\public\UI3D_Interaction.h" />
     <ClInclude Include="..\public\UI3D_LockOn.h" />
     <ClInclude Include="..\public\UI3D_MobHPBar.h" />
+    <ClInclude Include="..\public\UI3D_PlayerSweat.h" />
     <ClInclude Include="..\public\UI_Animation.h" />
+    <ClInclude Include="..\public\UI_Sprite.h" />
     <ClInclude Include="..\public\Weapon_Player.h" />
     <ClInclude Include="..\public\Shop.h" />
     <ClInclude Include="..\public\Sky.h" />
@@ -309,7 +311,7 @@
     <ClCompile Include="..\private\CheckPoint.cpp" />
     <ClCompile Include="..\private\Chest.cpp" />
     <ClCompile Include="..\private\Courtyard.cpp" />
-    <ClCompile Include="..\private\Particl_Tool.cpp" />
+    <ClCompile Include="..\private\Particle_Tool.cpp" />
     <ClCompile Include="..\private\Tool_Effect.cpp" />
     <ClCompile Include="..\private\Environment_Object.cpp" />
     <ClCompile Include="..\private\Explosion.cpp" />
@@ -385,12 +387,14 @@
     <ClCompile Include="..\private\UI.cpp" />
     <ClCompile Include="..\private\UI2D_Reward.cpp" />
     <ClCompile Include="..\private\UI3D_Interaction.cpp" />
+    <ClCompile Include="..\private\UI3D_PlayerSweat.cpp" />
     <ClCompile Include="..\private\UIContainerPart.cpp" />
     <ClCompile Include="..\private\UI2D_PlayerHPBar.cpp" />
     <ClCompile Include="..\private\UI2D_PlayerSPBar.cpp" />
     <ClCompile Include="..\private\UI3D_LockOn.cpp" />
     <ClCompile Include="..\private\UI3D_MobHPBar.cpp" />
     <ClCompile Include="..\private\UI_Animation.cpp" />
+    <ClCompile Include="..\private\UI_Sprite.cpp" />
     <ClCompile Include="..\Private\Weapon_Player.cpp" />
     <ClCompile Include="..\private\Wizard.cpp" />
     <ClCompile Include="..\private\Wizard_Candleabra.cpp" />

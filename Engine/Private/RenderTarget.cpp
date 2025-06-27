@@ -1,4 +1,5 @@
 #include "RenderTarget.h"
+#include "GameInstance.h"
 
 CRenderTarget::CRenderTarget(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice  { pDevice }
@@ -44,10 +45,54 @@ HRESULT CRenderTarget::Initialize(_uint iWidth, _uint iHeight, DXGI_FORMAT ePixe
 	return S_OK;
 }
 
+HRESULT CRenderTarget::Bind_ShaderResource(const _char* pContantName, CShader* pShader)
+{
+	return pShader->Bind_SRV(pContantName, m_pSRV);
+}
+
 void CRenderTarget::Clear()
 {
 	/* 생성할때 지정해준 클리어컬러로 렌더타겟을 클리어해준다 */
 	m_pContext->ClearRenderTargetView(m_pRTV, reinterpret_cast<const _float*>(&m_vClearColor));
+}
+
+HRESULT CRenderTarget::Ready_Debug(_float fX, _float fY, _float fSizeX, _float fSizeY)
+{
+	_uint				iNumViewports = { 1 };
+	D3D11_VIEWPORT		ViewPortDesc{};
+
+	m_pContext->RSGetViewports(&iNumViewports, &ViewPortDesc);
+
+	XMStoreFloat4x4(&m_WorldMatrix, XMMatrixIdentity());
+
+	m_WorldMatrix._11 = fSizeX;
+	m_WorldMatrix._22 = fSizeY;
+	m_WorldMatrix._41 = fX - ViewPortDesc.Width * 0.5f;
+	m_WorldMatrix._42 = -fY + ViewPortDesc.Height * 0.5f; 
+
+	return S_OK;
+}
+
+HRESULT CRenderTarget::Render(CShader* pShader, CVIBuffer_Rect* pVIBuffer)
+{
+	/* 본인이 들고있는 월드행렬을 던져줌 (스케일, 위치) */
+	if (FAILED(pShader->Bind_Matrix("g_WorldMatrix", &m_WorldMatrix)))
+		return E_FAIL;
+
+	if (FAILED(pShader->Bind_SRV("g_RenderTargetTexture", m_pSRV)))
+		return E_FAIL;
+
+	/* 디버그용은 0번 패스*/
+	if (FAILED(pShader->Begin(0)))
+		return E_FAIL;
+
+	if (FAILED(pVIBuffer->Bind_Buffers()))
+		return E_FAIL;
+
+	if (FAILED(pVIBuffer->Render()))
+		return E_FAIL;
+
+	return S_OK;
 }
 
 CRenderTarget* CRenderTarget::Craete(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, const _float4& vClearColor)

@@ -21,6 +21,8 @@
 
 #include "UI.h"
 #include "UI_Animation.h"
+#include "UI_Sprite.h"
+#include "UI3D_PlayerSweat.h"
 
 CMainApp::CMainApp()
 	: m_pGameInstance { CGameInstance::Get_Instance() }
@@ -168,6 +170,11 @@ HRESULT CMainApp::Ready_Prototype_Texture()
 	/* For.Prototype_Component_Texture_PlayerManaCap*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_PlayerManaCap"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/Mana/ManaCap.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Sweat*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Sweat"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/Player/sweat.png")))))
 		return E_FAIL;
 
 	/* ----------------------------------------------ÀÎº¥Åä¸® °ü·Ã------------------------------------------------------- */
@@ -416,6 +423,11 @@ HRESULT CMainApp::Ready_Prototype_Object()
 	/*For.Prototype_GameObject_UI3D_Animation */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI3D_Animation"),
 		CUI_Animation::Create(m_pDevice, m_pContext, UI_TYPE::UI3D))))
+		return E_FAIL;
+
+	/*For.Prototype_GameObject_UI3D_PlayerSweat */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI3D_PlayerSweat"),
+		CUI3D_PlayerSweat::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/*--------------------------------------------ÆøÅº(ÃÑ¾Ë)--------------------------------------------------*/

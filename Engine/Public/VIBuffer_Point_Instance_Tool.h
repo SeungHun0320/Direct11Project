@@ -20,6 +20,14 @@ private:
 	CVIBuffer_Point_Instance_Tool(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CVIBuffer_Point_Instance_Tool(const CVIBuffer_Point_Instance_Tool& Prototype);
 	virtual ~CVIBuffer_Point_Instance_Tool() = default;
+public:
+	void Set_NumInstnace(_uint iNumInstance);
+	void Set_Size(_float2 vSize);
+	void Set_Pivot(_float3 vPivot);
+	void Set_Translation(_float3 vCenter, _float3 vRange);
+	void Set_LifeTime(_float2 vLifeTime);
+	void Set_Speed(_float2 vSpeed);
+	void Set_isLoop(_bool isLoop);
 
 public:
 	virtual HRESULT Initialize_Prototype(const DESC* pArg);
@@ -27,7 +35,6 @@ public:
 
 	virtual void Drop(_float fTimeDelta)override;
 	virtual void Spread(_float fTimeDelta)override;
-
 
 private:
 	VTXPOINT_PARTICLE_INSTANCE* m_pVertexInstances = { nullptr };

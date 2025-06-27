@@ -12,6 +12,7 @@
 #include "UI2D_PlayerPotion.h"
 #include "UI2D_PlayerItemSlots.h"
 #include "UI2D_Inventory.h"
+#include "UI3D_PlayerSweat.h"
 /* 인벤토리 */
 #include "Inventory.h"
 /* 상태, 전략 */
@@ -754,11 +755,19 @@ _float CPlayer::Compute_StaggerValue() const
 void CPlayer::Use_Stamina(_float fStamina)
 {
 	m_fStamina -= fStamina;
-	m_fStamina = max(m_fStamina, 0);
-
 	m_isUseStamina = true;
 	m_fStaminaDelayTimeAcc = 0.f;
-	m_fStamina <= 0.f ? m_fStaminaDelayTime = 3.f : m_fStaminaDelayTime = 1.5f;
+
+	if (0 >= m_fStamina)
+	{
+		m_fStamina = 0.f;
+		m_fStaminaDelayTime = 3.f;
+		m_isNoStamina = true;
+	}
+	else
+	{
+		m_fStaminaDelayTime = 1.5f;
+	}
 }
 
 void CPlayer::Stamina_Recovery(_float fTimeDelta)
@@ -771,6 +780,9 @@ void CPlayer::Stamina_Recovery(_float fTimeDelta)
 		m_fStamina = min(m_fStamina, m_fMaxStamina);
 		m_isUseStamina = false;
 	}
+
+	if (60.f <= m_fStamina)
+		m_isNoStamina = false;
 }
 
 void CPlayer::Use_Mana(_float fMana)
@@ -1113,6 +1125,21 @@ HRESULT CPlayer::Ready_PartObjects()
 	if (FAILED(__super::Add_PartObject(PART_UIINVEN, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_Inventory"), &UIInvenDesc)))
 		return E_FAIL;
 
+	CUI3D_PlayerSweat::DESC SweatDesc{};
+
+	SweatDesc.pParentLevelID = &eLevelID;
+	SweatDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	SweatDesc.fSizeX = 128.5f;
+	SweatDesc.fSizeY = 128.5f;
+	SweatDesc.fOffset = 2.f;
+	SweatDesc.fMaxFrame = 8.f;
+	SweatDesc.iColumns = 8;
+	SweatDesc.pParentisNoStamina = &m_isNoStamina;
+	SweatDesc.strPrototypeTag = TEXT("Prototype_Component_Texture_Sweat");
+	SweatDesc.eUIPass = CUI::PASS_SPRITE;
+
+	if (FAILED(__super::Add_PartObject(PART_SWEAT, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI3D_PlayerSweat"), &SweatDesc)))
+		return E_FAIL;
 
 	CParticle_Part::DESC ExplosionDesc{};
 

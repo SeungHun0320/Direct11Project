@@ -21,6 +21,12 @@ public:
 	/* 특정 타겟들을 장치에 동시에(최대 8개) 바인딩 해준다 */
 	HRESULT Begin_MRT(const _wstring& strMRTTag);
 	HRESULT End_MRT();
+	HRESULT Bind_ShaderResource(const _wstring& strTargetTag, const _char* pContantName, class CShader* pShader);
+
+#ifdef _DEBUG
+	HRESULT Ready_Debug(const _wstring& strTargetTag, _float fX, _float fY, _float fSizeX, _float fSizeY);
+	HRESULT Render_Debug(const _wstring strMRTTag, class CShader* pShader, class CVIBuffer_Rect* pVIBuffer);
+#endif
 
 private: /* 렌더타겟을 생성 할 때 보내주기 위한 장치들 */
 	ID3D11Device*			m_pDevice = { nullptr };

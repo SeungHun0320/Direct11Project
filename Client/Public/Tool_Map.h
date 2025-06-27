@@ -116,10 +116,6 @@ private: /* 저장 불러오기, 오브젝트 배치 수정 완 */
 	HRESULT Save_Map(const _string& strMapTag);
 	HRESULT Load_Map(const _string& strMapTag);
 
-private:
-	HRESULT Craete_Camera(const _wstring& strLayerTag);
-	HRESULT Create_Sky(const _wstring& strLayerTag);
-
 public:
 	static CTool_Map* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual void Free() override;

@@ -440,6 +440,10 @@ HRESULT CGameInstance::Add_Light(const LIGHT_DESC& LightDesc)
 {
 	return m_pLight_Manager->Add_Light(LightDesc);
 }
+HRESULT CGameInstance::Render_Lights(CShader* pShader, CVIBuffer_Rect* pVIBuffer)
+{
+	return m_pLight_Manager->Render_Lights(pShader, pVIBuffer);
+}
 #pragma endregion
 
 
@@ -521,6 +525,10 @@ HRESULT CGameInstance::Add_MRT(const _wstring& strMRTTag, const _wstring& strTar
 {
 	return m_pTarget_Manager->Add_MRT(strMRTTag, strTargetTag);
 }
+HRESULT CGameInstance::Bind_RT_ShaderResource(const _wstring& strTargetTag, const _char* pConstantName, CShader* pShader)
+{
+	return m_pTarget_Manager->Bind_ShaderResource(strTargetTag, pConstantName, pShader);
+}
 HRESULT CGameInstance::Begin_MRT(const _wstring& strMRTTag)
 {
 	return m_pTarget_Manager->Begin_MRT(strMRTTag);
@@ -528,6 +536,14 @@ HRESULT CGameInstance::Begin_MRT(const _wstring& strMRTTag)
 HRESULT CGameInstance::End_MRT()
 {
 	return m_pTarget_Manager->End_MRT();
+}
+HRESULT CGameInstance::Ready_RT_Debug(const _wstring& strTargetTag, _float fX, _float fY, _float fSizeX, _float fSizeY)
+{
+	return m_pTarget_Manager->Ready_Debug(strTargetTag, fX, fY, fSizeX, fSizeY);
+}
+HRESULT CGameInstance::Render_MRT_Debug(const _wstring& strMRTTag, CShader* pShader, CVIBuffer_Rect* pVIBuffer)
+{
+	return m_pTarget_Manager->Render_Debug(strMRTTag, pShader, pVIBuffer);
 }
 #pragma endregion
 

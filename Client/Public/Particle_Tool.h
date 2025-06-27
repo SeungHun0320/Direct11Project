@@ -11,7 +11,7 @@ END
 
 BEGIN(Client)
 
-class CParticl_Tool final : public CGameObject
+class CParticle_Tool final : public CGameObject
 {
 public:
 	typedef struct tagParticleObjDesc : public CGameObject::DESC
@@ -20,9 +20,9 @@ public:
 	}DESC;
 	
 private:
-	CParticl_Tool(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CParticl_Tool(const CParticl_Tool& Prototype);
-	virtual ~CParticl_Tool() = default;
+	CParticle_Tool(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CParticle_Tool(const CParticle_Tool& Prototype);
+	virtual ~CParticle_Tool() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -33,8 +33,8 @@ public:
 	virtual HRESULT Render();
 
 private:
-	CShader*						m_pShaderCom = { nullptr };
 	CTexture*						m_pTextureCom = { nullptr };
+	CShader*						m_pShaderCom = { nullptr };
 	CVIBuffer_Point_Instance_Tool*  m_pVIBufferCom = { nullptr };
 
 private:
@@ -42,7 +42,8 @@ private:
 	HRESULT Bind_ShaderResources();
 
 public:
-	static CParticl_Tool* Craete(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static  CParticle_Tool* Craete(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 };
 

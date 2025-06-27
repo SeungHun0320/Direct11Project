@@ -74,7 +74,7 @@
 #include "Particle_Obj.h"
 
 /* 툴 용 */
-#include "Particl_Tool.h"
+#include "Particle_Tool.h"
 
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -899,6 +899,11 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GameUI/SpaceKeyBoard.png")))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_SpikeParticle*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_SpikeParticle"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/Player/fire mask.png")))))
+		return E_FAIL;
+
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
 	_matrix		PreTransformMatrix = XMMatrixIdentity();
@@ -1035,7 +1040,7 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 	lstrcpy(m_szLoadingText, TEXT("버퍼을(를) 로딩중입니다."));
 	/* For.Prototype_Component_VIBuffer_Tool */
 	CVIBuffer_Point_Instance_Tool::DESC		ToolDesc{};
-	ToolDesc.iNumInstance = 5000;
+	ToolDesc.iNumInstance = 10000;
 	ToolDesc.vCenter = _float3(0.f, 0.f, -100.f);
 	ToolDesc.vRange = _float3(100.f, 3.0f, 100.f);
 	ToolDesc.vSize = _float2(0.1f, 1.f);
@@ -1222,7 +1227,7 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 
 	/* For.Prototype_GameObject_Particle_Tool */
 	if(FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_Particle_Tool"),
-		CParticl_Tool::Craete(m_pDevice, m_pContext))))
+		CParticle_Tool::Craete(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 

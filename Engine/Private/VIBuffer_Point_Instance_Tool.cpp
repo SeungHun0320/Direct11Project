@@ -15,6 +15,93 @@ CVIBuffer_Point_Instance_Tool::CVIBuffer_Point_Instance_Tool(const CVIBuffer_Poi
 {
 }
 
+void CVIBuffer_Point_Instance_Tool::Set_NumInstnace(_uint iNumInstance)
+{
+	m_iNumInstance = iNumInstance;
+}
+
+void CVIBuffer_Point_Instance_Tool::Set_Size(_float2 vSize)
+{
+	D3D11_MAPPED_SUBRESOURCE SubResorce{};
+	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_DISCARD, 0, &SubResorce);
+	VTXPOINT_PARTICLE_INSTANCE* pVertices = static_cast<VTXPOINT_PARTICLE_INSTANCE*>(SubResorce.pData);
+
+	_float	fSize = m_pGameInstance->Compute_Random(vSize.x, vSize.y);
+
+	for (_uint i = 0; i < m_iNumInstance; i++)
+	{
+		m_pVertexInstances[i].vRight = _float4(fSize, 0.f, 0.f, 0.f);
+		m_pVertexInstances[i].vUp = _float4(0.f, fSize, 0.f, 0.f);
+		m_pVertexInstances[i].vLook = _float4(0.f, 0.f, fSize, 0.f);
+
+		pVertices[i].vRight = m_pVertexInstances[i].vRight;
+		pVertices[i].vUp = m_pVertexInstances[i].vUp;
+		pVertices[i].vLook = m_pVertexInstances[i].vLook;
+	}
+
+
+	m_pContext->Unmap(m_pVBInstance, 0);
+}
+
+void CVIBuffer_Point_Instance_Tool::Set_Pivot(_float3 vPivot)
+{
+	m_vPivot = vPivot;
+}
+
+void CVIBuffer_Point_Instance_Tool::Set_Translation(_float3 vCenter, _float3 vRange)
+{
+	D3D11_MAPPED_SUBRESOURCE SubResorce{};
+	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_DISCARD, 0, &SubResorce);
+	VTXPOINT_PARTICLE_INSTANCE* pVertices = static_cast<VTXPOINT_PARTICLE_INSTANCE*>(SubResorce.pData);
+
+	for (_uint i = 0; i < m_iNumInstance; i++)
+	{
+		m_pVertexInstances[i].vTranslation = _float4(
+			m_pGameInstance->Compute_Random(vCenter.x - vRange.x * 0.5f, vCenter.x + vRange.x * 0.5f),
+			m_pGameInstance->Compute_Random(vCenter.y - vRange.y * 0.5f, vCenter.y + vRange.y * 0.5f),
+			m_pGameInstance->Compute_Random(vCenter.z - vRange.z * 0.5f, vCenter.z + vRange.z * 0.5f),
+			1.f
+		);
+
+		pVertices[i].vTranslation = m_pVertexInstances[i].vTranslation;
+	}
+
+
+	m_pContext->Unmap(m_pVBInstance, 0);
+}
+
+void CVIBuffer_Point_Instance_Tool::Set_LifeTime(_float2 vLifeTime)
+{
+	D3D11_MAPPED_SUBRESOURCE SubResorce{};
+	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_DISCARD, 0, &SubResorce);
+	VTXPOINT_PARTICLE_INSTANCE* pVertices = static_cast<VTXPOINT_PARTICLE_INSTANCE*>(SubResorce.pData);
+
+	for (_uint i = 0; i < m_iNumInstance; i++)
+	{
+		m_pVertexInstances[i].vLifeTime = _float2(
+			m_pGameInstance->Compute_Random(vLifeTime.x, vLifeTime.y),
+			0.f);
+
+		pVertices[i].vLifeTime = m_pVertexInstances[i].vLifeTime;
+	}
+
+
+	m_pContext->Unmap(m_pVBInstance, 0);
+}
+
+void CVIBuffer_Point_Instance_Tool::Set_Speed(_float2 vSpeed)
+{
+	for (_uint i = 0; i < m_iNumInstance; i++)
+	{
+		m_pSpeeds[i] = m_pGameInstance->Compute_Random(vSpeed.x, vSpeed.y);
+	}
+}
+
+void CVIBuffer_Point_Instance_Tool::Set_isLoop(_bool isLoop)
+{
+	m_isLoop = isLoop;
+}
+
 HRESULT CVIBuffer_Point_Instance_Tool::Initialize_Prototype(const DESC* pArg)
 {
 	const DESC* pDesc = static_cast<const DESC*>(pArg);

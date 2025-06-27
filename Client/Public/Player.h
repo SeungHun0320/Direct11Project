@@ -12,7 +12,7 @@ public:
 
 public:
 	enum PART { PART_BODY, PART_WEAPON,
-		PART_HP, PART_STAMINA, PART_MP, PART_INVEN, PART_ITEMSLOTS, PART_POTION, PART_UIINVEN,
+		PART_HP, PART_STAMINA, PART_MP, PART_INVEN, PART_ITEMSLOTS, PART_POTION, PART_UIINVEN, PART_SWEAT,
 		PART_EFFECT, PART_END };
 
 	enum MESHES	{
@@ -179,6 +179,7 @@ private: /* 스태미나 */
 	_float m_fStaminaRecoveryPerSec = {};
 	_float m_fStaminaTimeAcc = {};
 	_bool  m_isUseStamina = { false };
+	_bool  m_isNoStamina = { false };
 	_float m_fStaminaDelayTimeAcc = {};
 	_float m_fStaminaDelayTime = {};
 

@@ -106,7 +106,7 @@ HRESULT CUI3D_MobHPBar::Ready_PartObjects()
 	HpBarDesc.fOffset = -1.5f;
 	HpBarDesc.strPrototypeTag = TEXT("Prototype_Component_Texture_Enemy_HPBar");
 	HpBarDesc.pRatio = &m_fHpRatio;
-	HpBarDesc.eUIPass = CUI_Animation::PASS_HORIZONTAL_R2L;
+	HpBarDesc.eUIPass = CUI::PASS_HORIZONTAL_R2L;
 
 	if (FAILED(__super::Add_PartObject(PART_HPBAR, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI3D_Animation"), &HpBarDesc)))
 		return E_FAIL;

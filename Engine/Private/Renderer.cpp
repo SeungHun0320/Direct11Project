@@ -24,10 +24,44 @@ HRESULT CRenderer::Initialize()
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Diffuse"),
 		static_cast<_uint>(ViewPortDesc.Width), static_cast<_uint>(ViewPortDesc.Height), DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
+	/* DXGI_FORMAT_R16G16B16A16_UNORM :  0 ~ 65535의 값을 0.f ~ 1.f로 바꿔서 사용함 나중에 노말 계산할 때 잘 알아두기 */
+	/* 노말은 -1.f ~ 1.f까지인데, UNORM으로 받아왔기 때문에 -1.f이 자동으로 0.f로 바뀌어서 저장되기 때문에 셰이더에서 0.f ~ 1.f로 치환한뒤에 Out에 저장해줘야 함*/
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Normal"),
+		static_cast<_uint>(ViewPortDesc.Width), static_cast<_uint>(ViewPortDesc.Height), DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.0f, 0.f, 0.f, 0.f))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Shade"),
+		static_cast<_uint>(ViewPortDesc.Width), static_cast<_uint>(ViewPortDesc.Height), DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.0f, 0.f, 0.f, 0.f))))
+		return E_FAIL;
+
 
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_GameObjects"), TEXT("Target_Diffuse"))))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_GameObjects"), TEXT("Target_Normal"))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Lights"), TEXT("Target_Shade"))))
+		return E_FAIL;
 
+	if (FAILED(Ready_Resources()))
+		return E_FAIL;
+
+	/* 화면에 꽉 채워서 그려야 하기때문에 뷰포트사이즈를 통해 크기를 맞춰줌 */
+	XMStoreFloat4x4(&m_WorldMatrix, XMMatrixScaling(ViewPortDesc.Width, ViewPortDesc.Height, 1.f));
+	/* 직교 투영용 행렬을 만들어줌 */
+	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
+	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(ViewPortDesc.Width, ViewPortDesc.Height, 0.0f, 1.f));
+
+#ifdef _DEBUG
+	_float fRTWidth = ViewPortDesc.Width * 0.25f;
+	_float fRTHeight = ViewPortDesc.Height * 0.25f;
+	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Diffuse"), fRTWidth * 0.5f, fRTHeight * 0.5f, fRTWidth, fRTHeight)))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Normal"), fRTWidth * 0.5f, fRTHeight * 1.5f, fRTWidth, fRTHeight)))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Shade"), fRTWidth * 1.5f, fRTHeight * 0.5f, fRTWidth, fRTHeight)))
+		return E_FAIL;
+
+#endif
 
 	return S_OK;
 }
@@ -52,11 +86,22 @@ HRESULT CRenderer::Draw()
 		return E_FAIL;
 	if (FAILED(Render_NonBlend()))
 		return E_FAIL;
+	
+	/* 빛연산은 객체들의 노말을 갖고와서 해야하기 때문에, 
+	   객체들이 다 그려지고 나서 연산을 한다 */
+
+	//if (FAILED(Render_Lights()))
+	//	return E_FAIL;
+
 	if (FAILED(Render_Blend()))
 		return E_FAIL;
 	if (FAILED(Render_UI()))
 		return E_FAIL;
 	
+#ifdef _DEBUG
+	//if (FAILED(Render_Debug()))
+	//	return E_FAIL;
+#endif
 
 	return S_OK;
 }
@@ -77,6 +122,7 @@ HRESULT CRenderer::Render_Priority()
 
 HRESULT CRenderer::Render_NonBlend()
 {
+	/* Diffuse + Normal */
 	//if (FAILED(m_pGameInstance->Begin_MRT(TEXT("MRT_GameObjects"))))
 	//	return E_FAIL;
 
@@ -89,7 +135,8 @@ HRESULT CRenderer::Render_NonBlend()
 	}
 	m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_NONBLEND)].clear();
 
-	//m_pGameInstance->End_MRT();
+	//if (FAILED(m_pGameInstance->End_MRT()))
+	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -133,6 +180,65 @@ HRESULT CRenderer::Render_UI()
 	return S_OK;
 }
 
+HRESULT CRenderer::Render_Lights()
+{
+	/* Shade */
+	if (FAILED(m_pGameInstance->Begin_MRT(TEXT("MRT_Lights"))))
+		return E_FAIL;
+
+	/* 미리 계산해 놓은 노말을 라이트를 그릴때 갖고옴 */
+	if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(TEXT("Target_Normal"), "g_NormalTexture", m_pShader)))
+		return E_FAIL;
+
+	/* 이제 실제로 버퍼에 조명을 그려줘야 함 */
+	if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", &m_WorldMatrix)))
+		return E_FAIL;
+	if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
+		return E_FAIL;
+	if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+		return E_FAIL;
+
+	/* 셰이더와 버퍼를 넘겨서 빛들이 직접 본인들의 정보를 넘겨서 그릴수 있도록 함 */
+	if (FAILED(m_pGameInstance->Render_Lights(m_pShader, m_pVIBuffer)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->End_MRT()))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+#ifdef _DEBUG
+HRESULT CRenderer::Render_Debug()
+{
+	/* 직교투영용 행렬을 셰이더에 던진다..
+	월드를 안던지는 이유?? 렌더타겟마다 다른 위치에 그려져야 하기 때문에
+	셰이더와 버퍼를 렌더타겟까지 끌고가서 렌더타겟의 월드행렬을 셰이더에 던지고 그려준다 */
+	m_pShader->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix);
+	m_pShader->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix);
+
+	m_pGameInstance->Render_MRT_Debug(TEXT("MRT_GameObjects"), m_pShader, m_pVIBuffer);
+	m_pGameInstance->Render_MRT_Debug(TEXT("MRT_Lights"), m_pShader, m_pVIBuffer);
+
+	return S_OK;
+}
+#endif
+
+HRESULT CRenderer::Ready_Resources()
+{
+	/* 버퍼 생성, 렌더타겟을 나눠서 그릴 때 백그라운드를 하나 만들어서 거기에 그림 */
+	m_pVIBuffer = CVIBuffer_Rect::Create(m_pDevice, m_pContext);
+	if (nullptr == m_pVIBuffer)
+		return E_FAIL;
+
+	/* 당연히 셰이더도 있어야겠지요,, */
+	m_pShader = CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_Deferred.hlsl"), VTXPOSTEX::Elements, VTXPOSTEX::iNumElements);
+	if (nullptr == m_pShader)
+		return E_FAIL;
+
+	return S_OK;
+}
+
 CRenderer* CRenderer::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CRenderer* pInstance = new CRenderer(pDevice, pContext);
@@ -149,6 +255,9 @@ CRenderer* CRenderer::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContex
 void CRenderer::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_pVIBuffer);
+	Safe_Release(m_pShader);
 
 	Safe_Release(m_pGameInstance);
 	Safe_Release(m_pDevice);

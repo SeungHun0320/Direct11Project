@@ -27,6 +27,15 @@ HRESULT CLight_Manager::Add_Light(const LIGHT_DESC& LightDesc)
 	return S_OK;
 }
 
+HRESULT CLight_Manager::Render_Lights(CShader* pShader, CVIBuffer_Rect* pVIBuffer)
+{
+	/* 라이트 매니저가 보관하고 있는 빛들을 전부 그려줌 */
+	for (auto& pLight : m_Lights)
+		pLight->Render(pShader, pVIBuffer);
+
+	return S_OK;
+}
+
 CLight_Manager* CLight_Manager::Create()
 {
 	return new CLight_Manager();

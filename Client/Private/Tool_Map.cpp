@@ -392,12 +392,11 @@ HRESULT CTool_Map::Craete_Map(MAP iMapIdx, const _wstring& strLayerTag)
 	if (nullptr != pMap)
 	{
 		Safe_Release(m_pMap);
-		m_pGameInstance->Object_Clear(ENUM_CLASS(LEVEL::TOOLS));
-		if (FAILED(Craete_Camera(TEXT("Layer_Camera"))))
-		{
-			MSG_BOX("저는 카메라도 어쩌구,,,");
-			return E_FAIL;
-		}
+		m_pGameInstance->Layer_Clear(ENUM_CLASS(LEVEL::TOOLS), TEXT("Layer_Map"));
+		m_pGameInstance->Layer_Clear(ENUM_CLASS(LEVEL::TOOLS), TEXT("Layer_Item"));
+		m_pGameInstance->Layer_Clear(ENUM_CLASS(LEVEL::TOOLS), TEXT("Layer_Chest"));
+		m_pGameInstance->Layer_Clear(ENUM_CLASS(LEVEL::TOOLS), TEXT("Layer_Monster"));
+		m_pGameInstance->Layer_Clear(ENUM_CLASS(LEVEL::TOOLS), TEXT("Layer_Environment_Object"));
 		pMap->Set_Dead(true);
 	}
 		
@@ -1141,21 +1140,14 @@ HRESULT CTool_Map::Load_Map(const _string& strMapPath)
 	m_ChestNames.clear();
 	m_MonsterNames.clear();
 
-	m_pGameInstance->Object_Clear(ENUM_CLASS(LEVEL::TOOLS));
+	m_pGameInstance->Layer_Clear(ENUM_CLASS(LEVEL::TOOLS), TEXT("Layer_Map"));
+	m_pGameInstance->Layer_Clear(ENUM_CLASS(LEVEL::TOOLS), TEXT("Layer_Item"));
+	m_pGameInstance->Layer_Clear(ENUM_CLASS(LEVEL::TOOLS), TEXT("Layer_Chest"));
+	m_pGameInstance->Layer_Clear(ENUM_CLASS(LEVEL::TOOLS), TEXT("Layer_Monster"));
+	m_pGameInstance->Layer_Clear(ENUM_CLASS(LEVEL::TOOLS), TEXT("Layer_Environment_Object"));
+
 	Safe_Release(m_pModifyObject);
 	Safe_Release(m_pMap);
-
-	if (FAILED(Craete_Camera(TEXT("Layer_Camera"))))
-	{
-		MSG_BOX("저는 카메라도 어쩌구,,,");
-		return E_FAIL;
-	}
-
-	if (FAILED(Create_Sky(TEXT("Layer_Sky"))))
-	{
-		MSG_BOX("저는 뭐 어쩌구");
-		return E_FAIL;
-	}
 
 	ifstream LoadFile(strMapPath, ios::binary);
 
@@ -1333,43 +1325,43 @@ HRESULT CTool_Map::Load_Map(const _string& strMapPath)
 	return S_OK;
 }
 
-HRESULT CTool_Map::Craete_Camera(const _wstring& strLayerTag)
-{
-	CCamera_Free::DESC tDesc = {};
-
-	tDesc.eLevelID = LEVEL::TOOLS;
-	tDesc.fSensor = 0.1f;
-
-	tDesc.vEye = _float3(0.f, 20.f, -15.f);
-	tDesc.vAt = _float3(0.f, 0.f, 0.f);
-	tDesc.fFov = XMConvertToRadians(60.f);
-	tDesc.fNear = 0.1f;
-	tDesc.fFar = 3000.f;
-	tDesc.fSpeedPerSec = 30.f;
-	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
-	tDesc.strName = TEXT("Camera_Free");
-
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_") + tDesc.strName,
-		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
-		return E_FAIL;
-
-	return S_OK;
-}
-
-HRESULT CTool_Map::Create_Sky(const _wstring& strLayerTag)
-{
-	CSky::DESC tSkyDesc = {};
-	tSkyDesc.eLevelID = LEVEL::TOOLS;
-	tSkyDesc.fSpeedPerSec = 0.f;
-	tSkyDesc.fRotationPerSec = 0.f;
-	tSkyDesc.strName = TEXT("Sky");
-
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_") + tSkyDesc.strName,
-		ENUM_CLASS(tSkyDesc.eLevelID), strLayerTag, &tSkyDesc)))
-		return E_FAIL;
-
-	return S_OK;
-}
+//HRESULT CTool_Map::Craete_Camera(const _wstring& strLayerTag)
+//{
+//	CCamera_Free::DESC tDesc = {};
+//
+//	tDesc.eLevelID = LEVEL::TOOLS;
+//	tDesc.fSensor = 0.1f;
+//
+//	tDesc.vEye = _float3(0.f, 20.f, -15.f);
+//	tDesc.vAt = _float3(0.f, 0.f, 0.f);
+//	tDesc.fFov = XMConvertToRadians(60.f);
+//	tDesc.fNear = 0.1f;
+//	tDesc.fFar = 3000.f;
+//	tDesc.fSpeedPerSec = 30.f;
+//	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
+//	tDesc.strName = TEXT("Camera_Free");
+//
+//	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_") + tDesc.strName,
+//		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
+//		return E_FAIL;
+//
+//	return S_OK;
+//}
+//
+//HRESULT CTool_Map::Create_Sky(const _wstring& strLayerTag)
+//{
+//	CSky::DESC tSkyDesc = {};
+//	tSkyDesc.eLevelID = LEVEL::TOOLS;
+//	tSkyDesc.fSpeedPerSec = 0.f;
+//	tSkyDesc.fRotationPerSec = 0.f;
+//	tSkyDesc.strName = TEXT("Sky");
+//
+//	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_") + tSkyDesc.strName,
+//		ENUM_CLASS(tSkyDesc.eLevelID), strLayerTag, &tSkyDesc)))
+//		return E_FAIL;
+//
+//	return S_OK;
+//}
 
 CTool_Map* CTool_Map::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
