@@ -41,11 +41,11 @@ public:
 	}
 
 	_bool Get_MeshVisible() const {
-		return m_IsVisible;
+		return m_isVisible;
 	}
 
 	void Set_MeshVisible(_bool IsVisible) {
-		m_IsVisible = IsVisible;
+		m_isVisible = IsVisible;
 	}
 
 
@@ -66,7 +66,7 @@ private:
 
 	vector<_float4x4>		m_OffsetMatrices;
 
-	_bool					m_IsVisible = { false };
+	_bool					m_isVisible = { false };
 
 private:
 	HRESULT Ready_NonAnim_Mesh(const COMMON* pDesc, _fmatrix PreTransformMatrix);

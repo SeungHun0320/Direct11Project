@@ -25,6 +25,12 @@ HRESULT CVIBuffer_Instance::Initialize_Prototype()
 
 HRESULT CVIBuffer_Instance::Initialize(void* pArg)
 {
+	if (nullptr != m_pVBInstance)
+		return S_OK;
+
+	if (FAILED(m_pDevice->CreateBuffer(&m_VBInstanceDesc, &m_VBInstanceSubResourceData, &m_pVBInstance)))
+		return E_FAIL;
+
     return S_OK;
 }
 

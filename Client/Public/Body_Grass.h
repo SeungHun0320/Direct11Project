@@ -3,6 +3,11 @@
 #include "Client_Defines.h"
 #include "Body_Environment_Object.h"
 
+BEGIN(Engine)
+class CModel_Instance;
+END
+
+
 BEGIN(Client)
 
 class CBody_Grass final : public CBody_Environment_Object
@@ -24,6 +29,9 @@ public:
 	virtual LIFE Update(_float fTimeDelta) override;
 	virtual void Late_Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
+
+private:
+	CModel_Instance* m_pModelInstanceCom = { nullptr };
 
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;

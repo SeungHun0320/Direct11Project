@@ -132,7 +132,7 @@ HRESULT CVIBuffer_Point_Instance::Initialize_Prototype(const DESC* pArg)
 
 HRESULT CVIBuffer_Point_Instance::Initialize(void* pArg)
 {
-	if (FAILED(m_pDevice->CreateBuffer(&m_VBInstanceDesc, &m_VBInstanceSubResourceData, &m_pVBInstance)))
+	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
 	return S_OK;

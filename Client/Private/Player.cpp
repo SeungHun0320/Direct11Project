@@ -1132,8 +1132,9 @@ HRESULT CPlayer::Ready_PartObjects()
 	SweatDesc.fSizeX = 128.5f;
 	SweatDesc.fSizeY = 128.5f;
 	SweatDesc.fOffset = 2.f;
-	SweatDesc.fMaxFrame = 8.f;
-	SweatDesc.iColumns = 8;
+	SweatDesc.fMaxFrame = 6.f;
+	SweatDesc.iColumns = 6;
+	SweatDesc.fSpeed = 6.f;
 	SweatDesc.pParentisNoStamina = &m_isNoStamina;
 	SweatDesc.strPrototypeTag = TEXT("Prototype_Component_Texture_Sweat");
 	SweatDesc.eUIPass = CUI::PASS_SPRITE;

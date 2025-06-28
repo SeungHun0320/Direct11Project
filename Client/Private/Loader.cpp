@@ -267,6 +267,17 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Environment_Objects/Grass/grass base.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Model_Instance_Grass */
+	CVIBuffer_Mesh_Instance::DESC		GrassDesc{};
+	GrassDesc.iNumInstance = 50;
+	GrassDesc.vCenter = _float3(0.f, 0.f, 0.f);
+	GrassDesc.vRange = _float3(10.f, 0.f, 10.f);
+	GrassDesc.vSize = _float2(1.f, 1.f);
+
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Instance_Grass"),
+		CModel_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Models/NonAnim/Environment_Objects/Grass/grass base.Model"), &GrassDesc, PreTransformMatrix))))
+		return E_FAIL;
+
 	/*For.Prototype_Component_Model_CheckPoint*/
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_CheckPoint"),
@@ -642,6 +653,17 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/Anim/Monster/Spidertank/Orb/Spidertank_Orb.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Model_Instance_Grass */
+	CVIBuffer_Mesh_Instance::DESC		GrassDesc{};
+	GrassDesc.iNumInstance = 50;
+	GrassDesc.vCenter = _float3(0.f, 0.f, 0.f);
+	GrassDesc.vRange = _float3(10.f, 0.f, 10.f);
+	GrassDesc.vSize = _float2(1.f, 1.f);
+
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Instance_Grass"),
+		CModel_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Models/NonAnim/Environment_Objects/Grass/grass base.Model"), &GrassDesc, PreTransformMatrix))))
+		return E_FAIL;
+
 	/*For.Prototype_Component_Model_FireCracker*/
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_FireCracker"),
@@ -692,6 +714,15 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 		CBullet_SpiderTankLager::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_Body_Grass */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Body_Grass"),
+		CBody_Grass::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	/* For.Prototype_GameObject_Grass */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Grass"),
+		CGrass::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/*For.Prototype_GameObject_UI2D_BossHPBar */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_UI2D_BossHPBar"),
 		CUI2D_BossHPBar::Create(m_pDevice, m_pContext))))
@@ -716,8 +747,6 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Coin"),
 		CItem_Coin::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-
-
 
 	/* For.Prototype_GameObject_Sky */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Sky"),
@@ -901,7 +930,12 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 
 	/* For.Prototype_Component_Texture_SpikeParticle*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_SpikeParticle"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/Player/fire mask.png")))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/Player/spike_particle.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_SpinningDiamond*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_SpinningDiamond"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/Player/spinning diamond.png")))))
 		return E_FAIL;
 
 
@@ -936,6 +970,17 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Grass"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Environment_Objects/Grass/grass base.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_Instance_Grass */
+	CVIBuffer_Mesh_Instance::DESC		GrassDesc{};
+	GrassDesc.iNumInstance = 50;
+	GrassDesc.vCenter = _float3(0.f, 0.f, 0.f);
+	GrassDesc.vRange = _float3(10.f, 10.f, 10.f);
+	GrassDesc.vSize = _float2(1.f, 1.f);
+
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Instance_Grass"),
+		CModel_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Models/NonAnim/Environment_Objects/Grass/grass base.Model"), &GrassDesc, PreTransformMatrix))))
 		return E_FAIL;
 
 	/*For.Prototype_Component_Model_CheckPoint*/
@@ -1041,8 +1086,8 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 	/* For.Prototype_Component_VIBuffer_Tool */
 	CVIBuffer_Point_Instance_Tool::DESC		ToolDesc{};
 	ToolDesc.iNumInstance = 10000;
-	ToolDesc.vCenter = _float3(0.f, 0.f, -100.f);
-	ToolDesc.vRange = _float3(100.f, 3.0f, 100.f);
+	ToolDesc.vCenter = _float3(0.f, 0.f, 0.f);
+	ToolDesc.vRange = _float3(6.f, 6.f, 6.f);
 	ToolDesc.vSize = _float2(0.1f, 1.f);
 	ToolDesc.vLifeTime = _float2(5.f, 8.f);
 	ToolDesc.vSpeed = _float2(3.f, 5.f);

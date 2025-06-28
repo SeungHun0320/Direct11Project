@@ -26,10 +26,10 @@ void CVIBuffer_Point_Instance_Tool::Set_Size(_float2 vSize)
 	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_DISCARD, 0, &SubResorce);
 	VTXPOINT_PARTICLE_INSTANCE* pVertices = static_cast<VTXPOINT_PARTICLE_INSTANCE*>(SubResorce.pData);
 
-	_float	fSize = m_pGameInstance->Compute_Random(vSize.x, vSize.y);
-
 	for (_uint i = 0; i < m_iNumInstance; i++)
 	{
+		_float	fSize = m_pGameInstance->Compute_Random(vSize.x, vSize.y);
+
 		m_pVertexInstances[i].vRight = _float4(fSize, 0.f, 0.f, 0.f);
 		m_pVertexInstances[i].vUp = _float4(0.f, fSize, 0.f, 0.f);
 		m_pVertexInstances[i].vLook = _float4(0.f, 0.f, fSize, 0.f);
@@ -219,7 +219,7 @@ HRESULT CVIBuffer_Point_Instance_Tool::Initialize_Prototype(const DESC* pArg)
 
 HRESULT CVIBuffer_Point_Instance_Tool::Initialize(void* pArg)
 {
-	if (FAILED(m_pDevice->CreateBuffer(&m_VBInstanceDesc, &m_VBInstanceSubResourceData, &m_pVBInstance)))
+	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
 	return S_OK;

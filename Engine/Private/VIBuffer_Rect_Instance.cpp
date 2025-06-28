@@ -151,10 +151,10 @@ HRESULT CVIBuffer_Rect_Instance::Initialize_Prototype(const DESC* pArg)
 
 HRESULT CVIBuffer_Rect_Instance::Initialize(void* pArg)
 {
-	if (FAILED(m_pDevice->CreateBuffer(&m_VBInstanceDesc, &m_VBInstanceSubResourceData, &m_pVBInstance)))
+	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
-    return S_OK;
+	return S_OK;
 }
 
 void CVIBuffer_Rect_Instance::Drop(_float fTimeDelta)

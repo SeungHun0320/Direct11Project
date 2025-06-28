@@ -24,6 +24,7 @@ HRESULT CUI_Sprite::Initialize(void* pArg)
 
     m_fMaxFrame = pDesc->fMaxFrame;
     m_iColumns = pDesc->iColumns;
+    m_fSpeed = pDesc->fSpeed;
 
     if (FAILED(__super::Initialize(pArg)))
         return E_FAIL;
@@ -79,7 +80,7 @@ HRESULT CUI_Sprite::Render()
 
 void CUI_Sprite::Move_Frame(_float fTimeDelta)
 {
-    m_fCurFrame += m_fMaxFrame * 5.f * fTimeDelta;
+    m_fCurFrame += m_fMaxFrame * m_fSpeed * fTimeDelta;
     if (m_fCurFrame >= m_fMaxFrame)
         m_fCurFrame = 0.f;
 }

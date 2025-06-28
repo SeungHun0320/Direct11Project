@@ -10,7 +10,8 @@ public:
 	typedef struct tagUISpriteDesc : CUI::DESC
 	{
 		_float fMaxFrame{};
-		_int  iColumns{};
+		_int   iColumns{};
+		_float fSpeed{};
 
 	}DESC;
 
@@ -32,6 +33,8 @@ protected:
 	_float  m_fMaxFrame = {};
 	/* 얼마단위로 행 끊을건지 */
 	_int   m_iColumns = {};
+
+	_float m_fSpeed = {};
 
 protected:
 	void  Move_Frame(_float fTimeDelta);

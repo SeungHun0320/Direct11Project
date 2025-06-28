@@ -17,8 +17,8 @@ public:
 	typedef struct tagParticleToolDesc
 	{
 		_uint		iNumInstance{500};
-		_float2		vSize{10.f, 20.f};
-		_float3		vRange{100.f, 100.f, 100.f};
+		_float2		vSize{1.f, 2.f};
+		_float3		vRange{5.f, 5.f, 5.f};
 		_float3		vCenter{0.f, 0.f, 0.f};
 		_float3		vPivot{0.f, 0.f, 0.f};
 		_float2		vLifeTime{1.f, 2.f};

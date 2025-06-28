@@ -196,6 +196,12 @@
     <ClInclude Include="..\public\VIBuffer_Point_Instance_Tool.h">
       <Filter>01.Utility\04.Components\VIBuffer\Instance\Tool</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Mesh_Instance.h">
+      <Filter>01.Utility\04.Components\VIBuffer\Instance\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Model_Instance.h">
+      <Filter>01.Utility\04.Components\Model\Model_Instance</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Timer.cpp">
@@ -374,6 +380,12 @@
     </ClCompile>
     <ClCompile Include="..\private\VIBuffer_Point_Instance_Tool.cpp">
       <Filter>01.Utility\04.Components\VIBuffer\Instance\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Mesh_Instance.cpp">
+      <Filter>01.Utility\04.Components\VIBuffer\Instance\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Model_Instance.cpp">
+      <Filter>01.Utility\04.Components\Model\Model_Instance</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -580,6 +592,15 @@
     </Filter>
     <Filter Include="01.Utility\04.Components\VIBuffer\Instance\Tool">
       <UniqueIdentifier>{e31d02b6-8f4d-4735-868b-49917879a80f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\VIBuffer\Instance\Mesh">
+      <UniqueIdentifier>{b26a3c1e-9705-4931-8890-96623a043855}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\Model\Model_Instance">
+      <UniqueIdentifier>{f393a849-cfe0-42f0-9eb8-c2fc286f1783}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\Model\Model_Particle_Instance">
+      <UniqueIdentifier>{541adb34-ca4f-4b60-9b8e-5e7645161c66}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

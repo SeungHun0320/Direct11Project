@@ -454,6 +454,9 @@
     <Filter Include="02.GameObjects\00.UI\Container\Part\UI\UI_Animation">
       <UniqueIdentifier>{0bdab430-8299-40cb-933c-9e326aa6dd1d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\05.Environment_Objects\05.Grass">
+      <UniqueIdentifier>{77e06d2b-41fb-4d46-ae7e-bd4bce1cc97c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1254,6 +1257,9 @@
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxRectInstance.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMeshInstance.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

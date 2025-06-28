@@ -81,7 +81,7 @@ HRESULT CParticle_Tool::Ready_Components(void* pArg)
 		return E_FAIL;
 
 	/* For.Com_Texture */
-	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_Component_Texture_SpikeParticle"),
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_Component_Texture_SpinningDiamond"),
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
 
