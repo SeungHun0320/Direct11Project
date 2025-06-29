@@ -18,6 +18,7 @@
 #include "UI2D_InventorySlot.h"
 
 #include "Particle_Part.h"
+#include "Particle_Mesh.h"
 
 #include "UI.h"
 #include "UI_Animation.h"
@@ -254,24 +255,22 @@ HRESULT CMainApp::Ready_Prototype_Texture()
 
 HRESULT CMainApp::Ready_Prototype_Component()
 {
-	/* For.Prototype_Component_VIBuffer_Explosion*/
-	CVIBuffer_Point_Instance::DESC		ExploDesc{};
-	ExploDesc.iNumInstance = 500;
-	ExploDesc.vCenter = _float3(0.f, -0.5f, 0.0f);
-	ExploDesc.vRange = _float3(0.2f, 0.2f, 0.2f);
-	ExploDesc.vSize = _float2(0.05f, 0.1f);
-	ExploDesc.vLifeTime = _float2(0.5f, 1.f);
-	ExploDesc.vSpeed = _float2(1.f, 2.f);
-	ExploDesc.vPivot = _float3(0.f, -2.f, 0.f);
-	ExploDesc.isLoop = true;
+	_matrix		PreTransformMatrix = XMMatrixIdentity();
 
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_Explosion"),
-		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, &ExploDesc))))
-		return E_FAIL;
+	/* For.Prototype_Component_Model_Particle_Instance_Dash*/
+	CVIBuffer_Mesh_Particle_Instance::DESC DashDesc{};
+	DashDesc.iNumInstance = 15;
+	DashDesc.isLoop = true;
+	DashDesc.vCenter = _float3(0.f, 1.f, -1.5f);
+	DashDesc.vPivot = _float3(0.f, 0.f, 2.f);
+	DashDesc.vRange = _float3(1.f, 1.f, 1.f);
+	DashDesc.vSize = _float2(0.8f, 1.2f);
+	DashDesc.vLifeTime = _float2(1.f, 2.f);
+	DashDesc.vSpeed = _float2(0.5f, 1.f);
 
-	/* For.Prototype_Component_Texture_Snow */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Snows"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Snow/Snow.png")))))
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Particle_Instance_Dash"),
+		CModel_Particle_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Models/NonAnim/Effect/Dash/Dash.Model"), &DashDesc, PreTransformMatrix))))
 		return E_FAIL;
 
 	/* -----------------------------------------------테스트용-------------------------------------------------*/
@@ -316,9 +315,14 @@ HRESULT CMainApp::Ready_Prototype_Component()
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxMesh.hlsl"), VTXMESH::Elements, VTXMESH::iNumElements))))
 		return E_FAIL;
 
-		/* For.Prototype_Component_Shader_VtxMeshInstance */
+	/* For.Prototype_Component_Shader_VtxMeshInstance */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxMeshInstance"),
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxMeshInstance.hlsl"), VTXMESH_INSTANCE::Elements, VTXMESH_INSTANCE::iNumElements))))
+		return E_FAIL;
+	
+	/* For.Prototype_Component_Shader_VtxMeshParticleInstance */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxMeshParticleInstance"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxMeshParticleInstance.hlsl"), VTXMESH_PARTICLE_INSTANCE::Elements, VTXMESH_PARTICLE_INSTANCE::iNumElements))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Shader_VtxAnimMesh */
@@ -444,9 +448,9 @@ HRESULT CMainApp::Ready_Prototype_Object()
 
 	/*---------------------------------------------이펙트(파티클)----------------------------------------------------*/
 
-		/* For.Prototype_GameObject_Explosion */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Explosion"),
-		CParticle_Part::Create(m_pDevice, m_pContext))))
+		/* For.Prototype_GameObject_Dash */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Dash"),
+		CParticle_Mesh::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 

@@ -22,6 +22,7 @@
 #include "Bullet_FireCracker.h"
 /* 이펙트(파티클) */
 #include "Particle_Part.h"
+#include "Particle_Mesh.h"
 
 /* 쩦, */
 #include "Monster.h"
@@ -1142,15 +1143,14 @@ HRESULT CPlayer::Ready_PartObjects()
 	if (FAILED(__super::Add_PartObject(PART_SWEAT, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI3D_PlayerSweat"), &SweatDesc)))
 		return E_FAIL;
 
-	CParticle_Part::DESC ExplosionDesc{};
+	CParticle_Mesh::DESC DashDesc{};
 
-	ExplosionDesc.pParentLevelID = &eLevelID;
-	ExplosionDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
-	ExplosionDesc.pSocketMatrix = dynamic_cast<CBody_Player*>(m_PartObjects[PART_BODY])->Get_SocketMatrix("sword1_trail");
-	ExplosionDesc.strParticleBufferTag = TEXT("Prototype_Component_VIBuffer_Explosion");
-	ExplosionDesc.strParticleTextureTag = TEXT("Prototype_Component_Texture_Snows");
+	DashDesc.pParentLevelID = &eLevelID;
+	DashDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	//DashDesc.strParticleBufferTag = TEXT("Prototype_Component_VIBuffer_Explosion");
+	//DashDesc.strParticleTextureTag = TEXT("Prototype_Component_Texture_Snows");
 
-	if (FAILED(__super::Add_PartObject(PART_EFFECT, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Explosion"), &ExplosionDesc)))
+	if (FAILED(__super::Add_PartObject(PART_EFFECT, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Dash"), &DashDesc)))
 		return E_FAIL;
 
 	return S_OK;

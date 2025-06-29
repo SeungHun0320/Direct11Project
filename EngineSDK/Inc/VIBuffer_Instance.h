@@ -35,6 +35,7 @@ public:
 	/* 가상함수로 둬서 캐스팅 안하고 쓸 수 있도록 했음 */
 	virtual void Drop(_float fTimeDelta) {};
 	virtual void Spread(_float fTimeDelta) {};
+	virtual void Shrink(_float fTimeDelta) {};
 
 protected:
 	/* 인스턴스용 버퍼 */

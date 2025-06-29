@@ -2,6 +2,7 @@
 
 #include "VIBuffer_Point_Instance_Tool.h"
 #include "VIBuffer_Point_Instance.h"
+#include "Model_Particle_Instance.h"
 #include "VIBuffer_Terrain.h"
 #include "Model_Instance.h"
 #include "VIBuffer_Cube.h"

@@ -191,6 +191,7 @@
     <ClInclude Include="..\Public\Client_Macro.h" />
     <ClInclude Include="..\Public\Client_Struct.h" />
     <ClInclude Include="..\public\Courtyard.h" />
+    <ClInclude Include="..\public\Particle_Mesh.h" />
     <ClInclude Include="..\public\Particle_Tool.h" />
     <ClInclude Include="..\public\Tool_Effect.h" />
     <ClInclude Include="..\public\Environment_Object.h" />
@@ -311,6 +312,7 @@
     <ClCompile Include="..\private\CheckPoint.cpp" />
     <ClCompile Include="..\private\Chest.cpp" />
     <ClCompile Include="..\private\Courtyard.cpp" />
+    <ClCompile Include="..\private\Particle_Mesh.cpp" />
     <ClCompile Include="..\private\Particle_Tool.cpp" />
     <ClCompile Include="..\private\Tool_Effect.cpp" />
     <ClCompile Include="..\private\Environment_Object.cpp" />
@@ -428,6 +430,7 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCube.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMeshInstance.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMeshParticleInstance.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPointInstance.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl" />

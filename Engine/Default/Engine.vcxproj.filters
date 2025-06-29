@@ -202,6 +202,12 @@
     <ClInclude Include="..\public\Model_Instance.h">
       <Filter>01.Utility\04.Components\Model\Model_Instance</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Model_Particle_Instance.h">
+      <Filter>01.Utility\04.Components\Model\Model_Particle_Instance</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Mesh_Particle_Instance.h">
+      <Filter>01.Utility\04.Components\VIBuffer\Instance\MeshParticle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Timer.cpp">
@@ -386,6 +392,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Model_Instance.cpp">
       <Filter>01.Utility\04.Components\Model\Model_Instance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Model_Particle_Instance.cpp">
+      <Filter>01.Utility\04.Components\Model\Model_Particle_Instance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Mesh_Particle_Instance.cpp">
+      <Filter>01.Utility\04.Components\VIBuffer\Instance\MeshParticle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -601,6 +613,9 @@
     </Filter>
     <Filter Include="01.Utility\04.Components\Model\Model_Particle_Instance">
       <UniqueIdentifier>{541adb34-ca4f-4b60-9b8e-5e7645161c66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\VIBuffer\Instance\MeshParticle">
+      <UniqueIdentifier>{4a61a20b-0288-4332-b522-d4f6cfa18fce}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

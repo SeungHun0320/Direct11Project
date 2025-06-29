@@ -376,6 +376,13 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Trinket_Coin/TrinketCoin.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
+	
+	/*For.Prototype_Component_Model_AlertEffect*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_AlertEffect"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Effect/Alert_Effect/Alert_Effect.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
 	/* For.Prototype_Component_VIBuffer_Snow */
 	CVIBuffer_Point_Instance::DESC		SnowDesc{};
 	SnowDesc.iNumInstance = 5000;
@@ -976,9 +983,10 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 	CVIBuffer_Mesh_Instance::DESC		GrassDesc{};
 	GrassDesc.iNumInstance = 50;
 	GrassDesc.vCenter = _float3(0.f, 0.f, 0.f);
-	GrassDesc.vRange = _float3(10.f, 10.f, 10.f);
+	GrassDesc.vRange = _float3(10.f, 0.f, 10.f);
 	GrassDesc.vSize = _float2(1.f, 1.f);
 
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Instance_Grass"),
 		CModel_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Models/NonAnim/Environment_Objects/Grass/grass base.Model"), &GrassDesc, PreTransformMatrix))))
 		return E_FAIL;

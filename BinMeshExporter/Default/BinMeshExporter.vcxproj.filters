@@ -28,6 +28,9 @@
     <Filter Include="02.Model %28추후 삭제%29\01. Material">
       <UniqueIdentifier>{fdc2efb0-2ad1-46df-8192-1532461c26f2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="97.ShaderFiles">
+      <UniqueIdentifier>{f5f9fa21-a25a-4614-aad2-92d4b45522ee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BinMeshExporter.h">
@@ -159,5 +162,18 @@
     <ClCompile Include="..\Private\TestMaterial.cpp">
       <Filter>02.Model %28추후 삭제%29\01. Material</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Bin\ShaderFiles\Engine_Shader_Defines.hlsli">
+      <Filter>97.ShaderFiles</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Cell.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Deferred.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

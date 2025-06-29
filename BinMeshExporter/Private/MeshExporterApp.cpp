@@ -33,7 +33,6 @@ HRESULT CMeshExporterApp::Initialize()
 	EngineDesc.isWindowed = true;
 	EngineDesc.iNumLevels = static_cast<_uint>(LEVEL::LEVEL_END);
 
-
 	if (FAILED(m_pGameInstance->Initialize_Engine(EngineDesc, &m_pDevice, &m_pContext)))
 		return E_FAIL;
 

@@ -1,28 +1,31 @@
-#include "VIBuffer_Mesh_Instance.h"
+#include "VIBuffer_Mesh_Particle_Instance.h"
 
 #include "GameInstance.h"
 
-CVIBuffer_Mesh_Instance::CVIBuffer_Mesh_Instance(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CVIBuffer_Mesh_Particle_Instance::CVIBuffer_Mesh_Particle_Instance(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CVIBuffer_Instance{ pDevice, pContext }
 {
 }
 
-CVIBuffer_Mesh_Instance::CVIBuffer_Mesh_Instance(const CVIBuffer_Mesh_Instance& Prototype)
-	: CVIBuffer_Instance( Prototype )
-	, m_pVertexInstances { Prototype.m_pVertexInstances }
+CVIBuffer_Mesh_Particle_Instance::CVIBuffer_Mesh_Particle_Instance(const CVIBuffer_Mesh_Particle_Instance& Prototype)
+	: CVIBuffer_Instance(Prototype)
+	, m_pVertexInstances{ Prototype.m_pVertexInstances }
 	, m_iMaterialIndex{ Prototype.m_iMaterialIndex }
 {
-	
+
 }
 
-HRESULT CVIBuffer_Mesh_Instance::Initialize_Prototype(const MESH_DESC* pMeshDesc, const DESC* pArg, _fmatrix PreTransformMatrix)
+HRESULT CVIBuffer_Mesh_Particle_Instance::Initialize_Prototype(const MESH_DESC* pMeshDesc, const DESC* pArg, _fmatrix PreTransformMatrix)
 {
 	const DESC* pDesc = static_cast<const DESC*>(pArg);
 
 	m_iMaterialIndex = pMeshDesc->iMaterialIndex;
 
+	m_vPivot = pDesc->vPivot;
+	m_isLoop = pDesc->isLoop;
+
 	m_iNumIndexPerInstance = pMeshDesc->iNumIndices;
-	m_iVertexInstanceStride = sizeof(VTXMESH_INSTANCE);
+	m_iVertexInstanceStride = sizeof(VTXMESH_PARTICLE_INSTANCE);
 	m_iNumInstance = pDesc->iNumInstance;
 
 	m_iNumVertexBuffers = 2;
@@ -113,11 +116,15 @@ HRESULT CVIBuffer_Mesh_Instance::Initialize_Prototype(const MESH_DESC* pMeshDesc
 	m_VBInstanceDesc.StructureByteStride = m_iVertexInstanceStride;
 	m_VBInstanceDesc.MiscFlags = 0;
 
-	m_pVertexInstances = new VTXMESH_INSTANCE[m_iNumInstance];
-	ZeroMemory(m_pVertexInstances, sizeof(VTXMESH_INSTANCE) * m_iNumInstance);
+	m_pVertexInstances = new VTXMESH_PARTICLE_INSTANCE[m_iNumInstance];
+	ZeroMemory(m_pVertexInstances, sizeof(VTXMESH_PARTICLE_INSTANCE) * m_iNumInstance);
+
+	m_pSpeeds = new _float[m_iNumInstance];
+	ZeroMemory(m_pSpeeds, sizeof(_float) * m_iNumInstance);
 
 	for (size_t i = 0; i < m_iNumInstance; i++)
 	{
+		m_pSpeeds[i] = m_pGameInstance->Compute_Random(pDesc->vSpeed.x, pDesc->vSpeed.y);
 		_float	fSize = m_pGameInstance->Compute_Random(pDesc->vSize.x, pDesc->vSize.y);
 
 		m_pVertexInstances[i].vRight = _float4(fSize, 0.f, 0.f, 0.f);
@@ -130,8 +137,13 @@ HRESULT CVIBuffer_Mesh_Instance::Initialize_Prototype(const MESH_DESC* pMeshDesc
 			m_pGameInstance->Compute_Random(pDesc->vCenter.z - pDesc->vRange.z * 0.5f, pDesc->vCenter.z + pDesc->vRange.z * 0.5f),
 			1.f
 		);
+
+		m_pVertexInstances[i].vLifeTime = _float2(
+			m_pGameInstance->Compute_Random(pDesc->vLifeTime.x, pDesc->vLifeTime.y),
+			0.f
+		);
 	}
-	
+
 	m_VBInstanceSubResourceData.pSysMem = m_pVertexInstances;
 
 #pragma endregion 
@@ -139,7 +151,7 @@ HRESULT CVIBuffer_Mesh_Instance::Initialize_Prototype(const MESH_DESC* pMeshDesc
 	return S_OK;
 }
 
-HRESULT CVIBuffer_Mesh_Instance::Initialize(void* pArg)
+HRESULT CVIBuffer_Mesh_Particle_Instance::Initialize(void* pArg)
 {
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -147,38 +159,128 @@ HRESULT CVIBuffer_Mesh_Instance::Initialize(void* pArg)
 	return S_OK;
 }
 
-
-
-CVIBuffer_Mesh_Instance* CVIBuffer_Mesh_Instance::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const MESH_DESC* pMeshArg, const DESC* pArg, _fmatrix PreTransformMatrix)
+void CVIBuffer_Mesh_Particle_Instance::Drop(_float fTimeDelta)
 {
-	CVIBuffer_Mesh_Instance* pInstance = new CVIBuffer_Mesh_Instance(pDevice, pContext);
+	D3D11_MAPPED_SUBRESOURCE SubResorce{};
+
+	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResorce);
+
+	VTXMESH_PARTICLE_INSTANCE* pVertices = static_cast<VTXMESH_PARTICLE_INSTANCE*>(SubResorce.pData);
+
+	for (_uint i = 0; i < m_iNumInstance; i++)
+	{
+		pVertices[i].vLifeTime.y += fTimeDelta;
+		pVertices[i].vTranslation.y -= m_pSpeeds[i] * fTimeDelta;
+
+		if (true == m_isLoop &&
+			pVertices[i].vLifeTime.y >= pVertices[i].vLifeTime.x)
+		{
+			pVertices[i].vLifeTime.y = 0.f;
+			pVertices[i].vTranslation.y = m_pVertexInstances[i].vTranslation.y;
+		}
+	}
+
+	m_pContext->Unmap(m_pVBInstance, 0);
+}
+
+void CVIBuffer_Mesh_Particle_Instance::Spread(_float fTimeDelta)
+{
+	D3D11_MAPPED_SUBRESOURCE SubResorce{};
+
+	/* 이 옵션을 줘야 덮어쓰기를 안함 */
+	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResorce);
+
+	VTXMESH_PARTICLE_INSTANCE* pVertices = static_cast<VTXMESH_PARTICLE_INSTANCE*>(SubResorce.pData);
+
+	_vector vDir = {};
+
+	for (_uint i = 0; i < m_iNumInstance; i++)
+	{
+		pVertices[i].vLifeTime.y += fTimeDelta;
+
+		vDir = XMVectorSetW(XMVector3Normalize(XMLoadFloat4(&m_pVertexInstances[i].vTranslation)) - XMLoadFloat3(&m_vPivot), 0.f);
+
+		XMStoreFloat4(&pVertices[i].vTranslation,
+			XMLoadFloat4(&pVertices[i].vTranslation) + (vDir * m_pSpeeds[i] * fTimeDelta));
+
+		if (true == m_isLoop &&
+			pVertices[i].vLifeTime.y >= pVertices[i].vLifeTime.x)
+		{
+			pVertices[i].vLifeTime.y = 0.f;
+			/* 원래 위치로 이동 */
+			pVertices[i].vTranslation = m_pVertexInstances[i].vTranslation;
+		}
+	}
+
+	m_pContext->Unmap(m_pVBInstance, 0);
+}
+
+void CVIBuffer_Mesh_Particle_Instance::Shrink(_float fTimeDelta)
+{
+	D3D11_MAPPED_SUBRESOURCE SubResorce{};
+
+	/* 이 옵션을 줘야 덮어쓰기를 안함 */
+	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResorce);
+
+	VTXMESH_PARTICLE_INSTANCE* pVertices = static_cast<VTXMESH_PARTICLE_INSTANCE*>(SubResorce.pData);
+
+	_vector vDir = {};
+
+	for (_uint i = 0; i < m_iNumInstance; i++)
+	{
+		pVertices[i].vLifeTime.y += fTimeDelta;
+
+		//vDir = XMVectorSetW(XMVector3Normalize(XMLoadFloat4(&m_pVertexInstances[i].vTranslation)) - XMLoadFloat3(&m_vPivot), 0.f);
+
+		//XMStoreFloat4(&pVertices[i].vTranslation,
+		//	XMLoadFloat4(&pVertices[i].vTranslation) + (vDir * m_pSpeeds[i] * fTimeDelta));
+
+		if (true == m_isLoop &&
+			pVertices[i].vLifeTime.y >= pVertices[i].vLifeTime.x)
+		{
+			pVertices[i].vLifeTime.y = 0.f;
+			/* 원래 위치로 이동 */
+			//pVertices[i].vTranslation = m_pVertexInstances[i].vTranslation;
+		}
+	}
+
+	m_pContext->Unmap(m_pVBInstance, 0);
+}
+
+CVIBuffer_Mesh_Particle_Instance* CVIBuffer_Mesh_Particle_Instance::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const MESH_DESC* pMeshArg, const DESC* pArg, _fmatrix PreTransformMatrix)
+{
+	CVIBuffer_Mesh_Particle_Instance* pInstance = new CVIBuffer_Mesh_Particle_Instance(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype(pMeshArg, pArg, PreTransformMatrix)))
 	{
-		MSG_BOX("Failed to Created : CVIBuffer_Mesh_Instance");
+		MSG_BOX("Failed to Created : CVIBuffer_Mesh_Particle_Instance");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-CComponent* CVIBuffer_Mesh_Instance::Clone(void* pArg)
+CComponent* CVIBuffer_Mesh_Particle_Instance::Clone(void* pArg)
 {
-	CVIBuffer_Mesh_Instance* pInstance = new CVIBuffer_Mesh_Instance(*this);
+	CVIBuffer_Mesh_Particle_Instance* pInstance = new CVIBuffer_Mesh_Particle_Instance(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Cloned : CVIBuffer_Mesh_Instance");
+		MSG_BOX("Failed to Cloned : CVIBuffer_Mesh_Particle_Instance");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CVIBuffer_Mesh_Instance::Free()
+void CVIBuffer_Mesh_Particle_Instance::Free()
 {
 	__super::Free();
 
-	if(false == m_isCloned)
+	if (false == m_isCloned)
+	{
 		Safe_Delete_Array(m_pVertexInstances);
+		Safe_Delete_Array(m_pSpeeds);
+	}
+
 }

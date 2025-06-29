@@ -13,7 +13,6 @@ public:
 		_float2 vLifeTime{};
 		_float2 vSpeed{};
 		_bool   isLoop{};
-
 	}DESC;
 
 private:

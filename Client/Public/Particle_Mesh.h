@@ -1,31 +1,29 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "GameObject.h"
+#include "PartObject.h"
 
 BEGIN(Engine)
 class CShader;
-class CTexture;
-class CVIBuffer_Point_Instance;
+class CModel_Particle_Instance;
 END
 
 BEGIN(Client)
 
-class CParticle_Obj : public CGameObject
+class CParticle_Mesh final : public CPartObject
 {
 public:
-	typedef struct tagParticleObjDesc : public CGameObject::DESC
+	typedef struct tagParticleMeshDesc : public CPartObject::DESC
 	{
-		LEVEL eLevelID = { LEVEL::LEVEL_END };
 		_wstring strParticleBufferTag{};
 		_wstring strParticleTextureTag{};
-
+		LEVEL* pParentLevelID = { nullptr };
 	}DESC;
 
 private:
-	CParticle_Obj(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CParticle_Obj(const CParticle_Obj& Prototype);
-	virtual ~CParticle_Obj() = default;
+	CParticle_Mesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CParticle_Mesh(const CParticle_Mesh& Prototype);
+	virtual ~CParticle_Mesh() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -36,19 +34,19 @@ public:
 	virtual HRESULT Render() override;
 
 private:
-	LEVEL   m_eLevelID = { LEVEL::LEVEL_END };
+	CShader*						  m_pShaderCom = { nullptr };
+	CModel_Particle_Instance*         m_pModelCom = { nullptr };
 
 private:
-	CShader*				  m_pShaderCom = { nullptr };
-	CTexture*				  m_pTextureCom = { nullptr };
-	CVIBuffer_Point_Instance* m_pVIBufferCom = { nullptr };
+	LEVEL* m_pParentLevelID = { nullptr };
+
 
 private:
 	virtual HRESULT Ready_Components(void* pArg);
 	HRESULT Bind_ShaderResources();
 
 public:
-	static CParticle_Obj* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CParticle_Mesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 };
