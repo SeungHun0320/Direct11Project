@@ -17,12 +17,14 @@ public:
 	typedef struct tagParticleToolDesc
 	{
 		_uint		iNumInstance{500};
-		_float2		vSize{1.f, 2.f};
+		_float2		vSize{0.5f, 1.f};
 		_float3		vRange{5.f, 5.f, 5.f};
 		_float3		vCenter{0.f, 0.f, 0.f};
 		_float3		vPivot{0.f, 0.f, 0.f};
 		_float2		vLifeTime{1.f, 2.f};
 		_float2		vSpeed{1.f, 2.f};
+		_float2     vFrameXY{};
+		_float2     vFrameSpeed{};
 		_bool		isLoop{true};
 	}DESC;
 private:
@@ -42,15 +44,24 @@ private: /* ÆÄÆ¼Å¬ Desc */
 	CVIBuffer_Point_Instance_Tool* m_pVIBufferTool = { nullptr };
 
 private:
-	const _float m_fMinSize{ 0.01f },     m_fMaxSize{ 5.f };
-	const _float m_fMinRange{ 0.f },    m_fMaxRange{ 1000.f };
-	const _float m_fMinCenter{ -500.f },   m_fMaxCenter{ 500.f };
-	const _float m_fMinPivot{ -500.f },    m_fMaxPivot{ 500.f };
-	const _float m_fMinLifeTime{ 0.f }, m_fMaxLifeTime{ 10.f };
-	const _float m_fMinSpeed{ 0.f },    m_fMaxSpeed{ 100.f };
+	const _float m_fMinSize{ 0.01f };
+	const _float m_fMinRange{ 0.5f };
+	const _float m_fMinCenter{ 0.1f };
+	const _float m_fMinPivot{ 0.1f };
+	const _float m_fMinLifeTime{ 0.05f };
+	const _float m_fMinSpeed{ 0.1f };
+
+private:
+	_float4 m_vColor{0.1f, 0.1f, 0.1f, 1.f};
+	_bool   m_isSprite = { false };
+	vector<_string> m_ProtoTextureNames;
+
+private:
+	void Add_ListBoxName();
 
 private:
 	void Adjust_ParticleDesc();
+	void Adjust_ParticeSpriteDesc();
 	void Change_TextureListBox();
 
 private:

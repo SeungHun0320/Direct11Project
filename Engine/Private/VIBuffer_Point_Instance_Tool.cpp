@@ -102,6 +102,41 @@ void CVIBuffer_Point_Instance_Tool::Set_isLoop(_bool isLoop)
 	m_isLoop = isLoop;
 }
 
+void CVIBuffer_Point_Instance_Tool::Set_SpriteSpeed(_float2 vSpeed)
+{
+	D3D11_MAPPED_SUBRESOURCE SubResorce{};
+	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_DISCARD, 0, &SubResorce);
+	VTXPOINT_PARTICLE_INSTANCE* pVertices = static_cast<VTXPOINT_PARTICLE_INSTANCE*>(SubResorce.pData);
+
+	for (_uint i = 0; i < m_iNumInstance; i++)
+	{
+		m_pVertexInstances[i].fFrameSpeed = m_pGameInstance->Compute_Random(vSpeed.x, vSpeed.y);
+		pVertices[i].fFrameSpeed = m_pVertexInstances[i].fFrameSpeed;
+	}
+
+
+	m_pContext->Unmap(m_pVBInstance, 0);
+}
+
+void CVIBuffer_Point_Instance_Tool::Set_FrameXY(_float2 vFrameXY)
+{
+	D3D11_MAPPED_SUBRESOURCE SubResorce{};
+	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_DISCARD, 0, &SubResorce);
+	VTXPOINT_PARTICLE_INSTANCE* pVertices = static_cast<VTXPOINT_PARTICLE_INSTANCE*>(SubResorce.pData);
+
+	for (_uint i = 0; i < m_iNumInstance; i++)
+	{
+		m_pVertexInstances[i].vFrameXY = vFrameXY;
+		m_pVertexInstances[i].fMaxFrame = vFrameXY.x * vFrameXY.y;
+
+		pVertices[i].vFrameXY = m_pVertexInstances[i].vFrameXY;
+		pVertices[i].fMaxFrame = m_pVertexInstances[i].fMaxFrame;
+	}
+
+
+	m_pContext->Unmap(m_pVBInstance, 0);
+}
+
 HRESULT CVIBuffer_Point_Instance_Tool::Initialize_Prototype(const DESC* pArg)
 {
 	const DESC* pDesc = static_cast<const DESC*>(pArg);
@@ -207,6 +242,9 @@ HRESULT CVIBuffer_Point_Instance_Tool::Initialize_Prototype(const DESC* pArg)
 			0.f
 		);
 
+		m_pVertexInstances[i].fMaxFrame = pDesc->vFrameXY.x * pDesc->vFrameXY.y;
+		m_pVertexInstances[i].vFrameXY = pDesc->vFrameXY;
+		m_pVertexInstances[i].fFrameSpeed = m_pGameInstance->Compute_Random(pDesc->vFrameSpeed.x, pDesc->vFrameSpeed.y);
 	}
 
 	m_VBInstanceSubResourceData.pSysMem = m_pVertexInstances;

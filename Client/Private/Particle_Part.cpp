@@ -40,15 +40,23 @@ LIFE CParticle_Part::Update(_float fTimeDelta)
 {
 	m_pVIBufferCom->Spread(fTimeDelta);
 
-	_matrix		BoneMatrix = XMLoadFloat4x4(m_pSocketMatrix);
+	if (nullptr != m_pSocketMatrix)
+	{
+		_matrix		BoneMatrix = XMLoadFloat4x4(m_pSocketMatrix);
 
-	for (size_t i = 0; i < 3; i++)
-		BoneMatrix.r[i] = XMVector3Normalize(BoneMatrix.r[i]);
+		for (size_t i = 0; i < 3; i++)
+			BoneMatrix.r[i] = XMVector3Normalize(BoneMatrix.r[i]);
 
 
-	XMStoreFloat4x4(&m_CombinedWorldMatrix,
-		XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Float4x4()) * BoneMatrix * XMLoadFloat4x4(m_pParentMatrix)
-	);
+		XMStoreFloat4x4(&m_CombinedWorldMatrix,
+			XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Float4x4()) * BoneMatrix * XMLoadFloat4x4(m_pParentMatrix));
+	}
+	else
+	{
+		XMStoreFloat4x4(&m_CombinedWorldMatrix,
+			XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Float4x4()) * XMLoadFloat4x4(m_pParentMatrix));
+	}
+
 
 	return LIFE::NONE;
 }

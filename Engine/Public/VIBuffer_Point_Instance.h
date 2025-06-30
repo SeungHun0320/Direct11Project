@@ -12,6 +12,9 @@ public:
 		_float3 vPivot{};
 		_float2 vLifeTime{};
 		_float2 vSpeed{};
+
+		_float2 vFrameXY{};
+		_float2 vFrameSpeed{};
 		_bool   isLoop{};
 	}DESC;
 
@@ -24,8 +27,8 @@ public:
 	virtual HRESULT Initialize_Prototype(const DESC* pArg);
 	virtual HRESULT Initialize(void* pArg);
 
-	virtual void Drop(_float fTimeDelta)override;
-	virtual void Spread(_float fTimeDelta)override;
+	virtual void Drop(_float fTimeDelta) override;
+	virtual void Spread(_float fTimeDelta) override;
 
 
 private:

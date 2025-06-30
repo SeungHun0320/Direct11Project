@@ -14,6 +14,8 @@ public:
 		_float2 vSpeed{};
 		_bool   isLoop{};
 
+		_float2 vFrameXY{};
+		_float2 vFrameSpeed{};
 	}DESC;
 
 private:
@@ -28,6 +30,8 @@ public:
 	void Set_LifeTime(_float2 vLifeTime);
 	void Set_Speed(_float2 vSpeed);
 	void Set_isLoop(_bool isLoop);
+	void Set_SpriteSpeed(_float2 vSpeed);
+	void Set_FrameXY(_float2 vFrameXY);
 
 public:
 	virtual HRESULT Initialize_Prototype(const DESC* pArg);

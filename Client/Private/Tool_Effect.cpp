@@ -13,6 +13,8 @@ HRESULT CTool_Effect::Initialize()
 	if (FAILED(Ready_Tool_Particle(TEXT("Layer_Particle_Tool"))))
 		return E_FAIL;
 
+	Add_ListBoxName();
+
 	return S_OK;
 }
 
@@ -37,6 +39,27 @@ HRESULT CTool_Effect::Render_ExtraUI()
 	return S_OK;
 }
 
+void CTool_Effect::Add_ListBoxName()
+{
+	vector<_wstring> EffectFilters = {
+		L"Particle", L"Effect",
+	};
+
+	for (const auto& Pair : *m_pGameInstance->Get_Prototypes(ENUM_CLASS(LEVEL::TOOLS)))
+	{
+		if (Pair.first.find(TEXT("Prototype_Component_Texture_")) == std::wstring::npos)
+			continue;
+
+		for (const auto& KeyWord : EffectFilters)
+		{
+			if (Pair.first.find(KeyWord) != _wstring::npos)
+			{
+				m_ProtoTextureNames.push_back(m_pGameInstance->WStringToString(Pair.first));
+			}
+		}
+	}
+}
+
 void CTool_Effect::Adjust_ParticleDesc()
 {
 	_uint iMinNumInstance{1}, iMaxNumInstance{10000};
@@ -45,31 +68,43 @@ void CTool_Effect::Adjust_ParticleDesc()
 	ImGui::InputScalar("##NumInstance", ImGuiDataType_U32, &m_ParticleDesc.iNumInstance, &iMinNumInstance, &iMaxNumInstance);
 
 	ImGui::Separator();
-	ImGui::SliderFloat2(u8"사이즈", reinterpret_cast<_float*>(&m_ParticleDesc.vSize), m_fMinSize, m_fMaxSize);
+	ImGui::DragFloat2(u8"사이즈", reinterpret_cast<_float*>(&m_ParticleDesc.vSize), m_fMinSize);
 	ImGui::InputFloat2("##Size", reinterpret_cast<_float*>(&m_ParticleDesc.vSize));
 	
 	ImGui::Separator();
-	ImGui::SliderFloat3(u8"거리", reinterpret_cast<_float*>(&m_ParticleDesc.vRange), m_fMinRange, m_fMaxRange);
+	ImGui::DragFloat3(u8"거리", reinterpret_cast<_float*>(&m_ParticleDesc.vRange), m_fMinRange);
 	ImGui::InputFloat3("##Range", reinterpret_cast<_float*>(&m_ParticleDesc.vRange));
 	
 	ImGui::Separator();
-	ImGui::SliderFloat3(u8"센터", reinterpret_cast<_float*>(&m_ParticleDesc.vCenter), m_fMinCenter, m_fMaxCenter);
+	ImGui::DragFloat3(u8"센터", reinterpret_cast<_float*>(&m_ParticleDesc.vCenter), m_fMinCenter);
 	ImGui::InputFloat3("##Center", reinterpret_cast<_float*>(&m_ParticleDesc.vCenter));
 	
 	ImGui::Separator();
-	ImGui::SliderFloat3(u8"피벗", reinterpret_cast<_float*>(&m_ParticleDesc.vPivot), m_fMinPivot, m_fMaxPivot);
+	ImGui::DragFloat3(u8"피벗", reinterpret_cast<_float*>(&m_ParticleDesc.vPivot), m_fMinPivot);
 	ImGui::InputFloat3("##Pivot", reinterpret_cast<_float*>(&m_ParticleDesc.vPivot));
 	
 	ImGui::Separator();
-	ImGui::SliderFloat2(u8"라이프타임", reinterpret_cast<_float*>(&m_ParticleDesc.vLifeTime), m_fMinLifeTime, m_fMaxLifeTime);
+	ImGui::DragFloat2(u8"라이프타임", reinterpret_cast<_float*>(&m_ParticleDesc.vLifeTime), m_fMinLifeTime);
 	ImGui::InputFloat2("##LifeTime", reinterpret_cast<_float*>(&m_ParticleDesc.vLifeTime));
 	
 	ImGui::Separator();
-	ImGui::SliderFloat2(u8"속도", reinterpret_cast<_float*>(&m_ParticleDesc.vSpeed), m_fMinSpeed, m_fMaxSpeed);
+	ImGui::DragFloat2(u8"속도", reinterpret_cast<_float*>(&m_ParticleDesc.vSpeed), m_fMinSpeed);
 	ImGui::InputFloat2("##Speed", reinterpret_cast<_float*>(&m_ParticleDesc.vSpeed));
 	
 	ImGui::Checkbox(u8"루프", reinterpret_cast<_bool*>(&m_ParticleDesc.isLoop));
-	
+
+	static CParticle_Tool::MOVEMENT eType{};
+	_int iType = static_cast<_int>(eType);
+	if (ImGui::RadioButton(u8"드롭", iType == static_cast<_int>(CParticle_Tool::DROP)))
+		eType = CParticle_Tool::DROP;
+	ImGui::SameLine();
+	if (ImGui::RadioButton(u8"스프레드", iType == static_cast<_int>(CParticle_Tool::SPREAD)))
+		eType = CParticle_Tool::SPREAD;
+
+	m_pParticleTool->Change_Move(eType);
+
+
+	Adjust_ParticeSpriteDesc();
 
 	if (ImGui::Button(u8"적용"))
 	{
@@ -80,7 +115,66 @@ void CTool_Effect::Adjust_ParticleDesc()
 		m_pVIBufferTool->Set_Speed(m_ParticleDesc.vSpeed);
 		m_pVIBufferTool->Set_Translation(m_ParticleDesc.vCenter, m_ParticleDesc.vRange);
 		m_pVIBufferTool->Set_LifeTime(m_ParticleDesc.vLifeTime);
+		m_pVIBufferTool->Set_FrameXY(m_ParticleDesc.vFrameXY);
+		m_pVIBufferTool->Set_SpriteSpeed(m_ParticleDesc.vFrameSpeed);
+	}
 
+	if (ImGui::RadioButton(u8"스프라이트", m_isSprite))
+	{
+		m_isSprite = !m_isSprite;
+
+		m_isSprite == true ? m_pParticleTool->Change_Pass(CParticle_Tool::SPRITE) : m_pParticleTool->Change_Pass(CParticle_Tool::TOOL);
+	}
+		
+
+	if (ImGui::TreeNode(u8"색깔"))
+	{
+		ImGui::ColorEdit4("RGBA Color", reinterpret_cast<_float*>(&m_vColor));
+		m_pParticleTool->Change_Color(m_vColor);
+
+		ImGui::TreePop();
+	}
+
+	Change_TextureListBox();
+}
+
+void CTool_Effect::Adjust_ParticeSpriteDesc()
+{
+	if (!m_isSprite)
+		return;
+
+	ImGui::Separator();
+	ImGui::InputFloat2(u8"텍스쳐 행, 열", reinterpret_cast<_float*>(&m_ParticleDesc.vFrameXY));
+
+	ImGui::Separator();
+	ImGui::DragFloat2(u8"스프라이트 속도", reinterpret_cast<_float*>(&m_ParticleDesc.vFrameSpeed), m_fMinSpeed);
+	ImGui::InputFloat2("##SpriteSpeed", reinterpret_cast<_float*>(&m_ParticleDesc.vFrameSpeed));
+
+}
+
+void CTool_Effect::Change_TextureListBox()
+{
+	static _int iCurrentTextureIndex = { -1 }, iOldTextureIndex = { -1 };
+
+	// 리스트박스 출력
+	ImGui::Text(u8"택스쳐 프로토타입");
+	if (ImGui::BeginListBox("##ProtoTexture", ImVec2(300, 100)))
+	{
+		for (_uint i = 0; i < m_ProtoTextureNames.size(); ++i)
+		{
+			_bool bSelected = (iCurrentTextureIndex == i);
+			if (ImGui::Selectable(m_ProtoTextureNames[i].c_str(), bSelected))
+				iCurrentTextureIndex = i;
+		}
+		ImGui::EndListBox();
+	}
+
+	if (iCurrentTextureIndex != iOldTextureIndex &&
+		0 <= iCurrentTextureIndex &&
+		m_ProtoTextureNames.size() >= iCurrentTextureIndex)
+	{
+		m_pParticleTool->Change_TextureCom(m_pGameInstance->StringToWString(m_ProtoTextureNames[iCurrentTextureIndex]));
+		iOldTextureIndex = iCurrentTextureIndex;
 	}
 }
 

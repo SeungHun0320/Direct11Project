@@ -941,7 +941,7 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_SpinningDiamond*/
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_SpinningDiamond"),
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_SpinningDiamondParticle"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/Player/spinning diamond.png")))))
 		return E_FAIL;
 
@@ -1100,6 +1100,8 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 	ToolDesc.vLifeTime = _float2(5.f, 8.f);
 	ToolDesc.vSpeed = _float2(3.f, 5.f);
 	ToolDesc.isLoop = true;
+	ToolDesc.vFrameXY = _float2(4.f, 2.f);
+	ToolDesc.vFrameSpeed = _float2(10.f, 15.f);
 
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_VIBuffer_Tool"),
 		CVIBuffer_Point_Instance_Tool::Create(m_pDevice, m_pContext, &ToolDesc))))

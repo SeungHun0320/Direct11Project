@@ -6,6 +6,8 @@
 인스턴싱이 필요한 모든 모델들의 부모가 된다.
 */
 
+
+
 BEGIN(Engine)
 
 class ENGINE_DLL CVIBuffer_Instance abstract : public CVIBuffer
@@ -19,7 +21,7 @@ public:
 		_float3		vCenter;
 	
     }DESC;
-
+	
 protected:
 	CVIBuffer_Instance(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CVIBuffer_Instance(const CVIBuffer_Instance& Prototype);
@@ -35,6 +37,7 @@ public:
 	/* 가상함수로 둬서 캐스팅 안하고 쓸 수 있도록 했음 */
 	virtual void Drop(_float fTimeDelta) {};
 	virtual void Spread(_float fTimeDelta) {};
+	virtual void Sprite(_float fTimeDelta) {};
 	virtual void Shrink(_float fTimeDelta) {};
 
 protected:

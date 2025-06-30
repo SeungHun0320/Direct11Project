@@ -149,7 +149,11 @@ namespace Engine
 		XMFLOAT4		vTranslation;
 		XMFLOAT2		vLifeTime;
 
-		static const unsigned int					iNumElements = { 6 };
+		XMFLOAT2        vFrameXY;
+		float		    fMaxFrame;
+		float           fFrameSpeed;
+
+		static const unsigned int					iNumElements = { 9 };
 		static const D3D11_INPUT_ELEMENT_DESC		Elements[iNumElements];
 	}VTXPOINT_PARTICLE_INSTANCE;
 }

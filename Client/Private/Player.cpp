@@ -22,7 +22,7 @@
 #include "Bullet_FireCracker.h"
 /* 이펙트(파티클) */
 #include "Particle_Part.h"
-#include "Particle_Mesh.h"
+#include "Particle_Mesh_Dash.h"
 
 /* 쩦, */
 #include "Monster.h"
@@ -1143,12 +1143,13 @@ HRESULT CPlayer::Ready_PartObjects()
 	if (FAILED(__super::Add_PartObject(PART_SWEAT, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI3D_PlayerSweat"), &SweatDesc)))
 		return E_FAIL;
 
-	CParticle_Mesh::DESC DashDesc{};
+	CParticle_Mesh_Dash::DESC DashDesc{};
 
 	DashDesc.pParentLevelID = &eLevelID;
 	DashDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
-	//DashDesc.strParticleBufferTag = TEXT("Prototype_Component_VIBuffer_Explosion");
-	//DashDesc.strParticleTextureTag = TEXT("Prototype_Component_Texture_Snows");
+	DashDesc.strParticleModelTag = TEXT("Prototype_Component_Model_Particle_Instance_Dash");
+	DashDesc.pParentisNoStamina = &m_isNoStamina;
+	DashDesc.pParentisUseStamina = &m_isUseStamina;
 
 	if (FAILED(__super::Add_PartObject(PART_EFFECT, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Dash"), &DashDesc)))
 		return E_FAIL;

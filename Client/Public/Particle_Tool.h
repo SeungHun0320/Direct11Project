@@ -14,6 +14,9 @@ BEGIN(Client)
 class CParticle_Tool final : public CGameObject
 {
 public:
+	enum MOVEMENT { DROP, SPREAD, MOVEMENT_END };
+	enum PASS { DEFAULT, TOOL, SPRITE, PASS_END };
+public:
 	typedef struct tagParticleObjDesc : public CGameObject::DESC
 	{
 		_wstring strParticleTextureTag{};
@@ -25,6 +28,19 @@ private:
 	virtual ~CParticle_Tool() = default;
 
 public:
+	void Change_Color(_float4 vColor) {
+		m_vColor = vColor;
+	};
+
+	void Change_Move(MOVEMENT eType) {
+		m_eType = eType;
+	}
+
+	void Change_Pass(PASS ePass) {
+		m_ePass = ePass;
+	}
+
+public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
 	virtual void Priority_Update(_float fTimeDelta) override;
@@ -32,7 +48,14 @@ public:
 	virtual void Late_Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
+public:
+	HRESULT Change_TextureCom(const _wstring& strTextureTag);
+
 private:
+	_float4							m_vColor{1.f, 1.f, 1.f, 255.f};
+	MOVEMENT						m_eType{ MOVEMENT_END };
+	PASS							m_ePass{ DEFAULT };
+
 	CTexture*						m_pTextureCom = { nullptr };
 	CShader*						m_pShaderCom = { nullptr };
 	CVIBuffer_Point_Instance_Tool*  m_pVIBufferCom = { nullptr };

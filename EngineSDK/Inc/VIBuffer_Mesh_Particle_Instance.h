@@ -46,9 +46,10 @@ protected:
 	VTXMESH_PARTICLE_INSTANCE*  m_pVertexInstances = { nullptr };
 
 protected:
-	_float3 m_vPivot = {};
-	_float* m_pSpeeds = { nullptr };
-	_bool   m_isLoop = { false };
+	_float3  m_vPivot = {};
+	_float*  m_pSpeeds = { nullptr };
+	_bool    m_isLoop = { false };
+	_uint    m_iNextEmitIndex = {};
 
 public:
 	static CVIBuffer_Mesh_Particle_Instance* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const MESH_DESC* pMeshArg, const DESC* pArg, _fmatrix PreTransformMatrix = XMMatrixIdentity());

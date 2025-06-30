@@ -23,7 +23,7 @@ public:
 
 	}DESC;
 
-private:
+protected:
 	CParticle_Part(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CParticle_Part(const CParticle_Part& Prototype);
 	virtual ~CParticle_Part() = default;
@@ -36,20 +36,18 @@ public:
 	virtual void Late_Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
-private:
+protected:
 	CShader* m_pShaderCom = { nullptr };
 	CTexture* m_pTextureCom = { nullptr };
 	CVIBuffer_Point_Instance* m_pVIBufferCom = { nullptr };
 
-private:
+protected:
 	const _float4x4* m_pSocketMatrix = { nullptr };
 
-private:
+protected:
 	LEVEL*  m_pParentLevelID = { nullptr };
 
-
-
-private:
+protected:
 	virtual HRESULT Ready_Components(void* pArg);
 	HRESULT Bind_ShaderResources();
 

@@ -18,7 +18,7 @@
 #include "UI2D_InventorySlot.h"
 
 #include "Particle_Part.h"
-#include "Particle_Mesh.h"
+#include "Particle_Mesh_Dash.h"
 
 #include "UI.h"
 #include "UI_Animation.h"
@@ -261,11 +261,11 @@ HRESULT CMainApp::Ready_Prototype_Component()
 	CVIBuffer_Mesh_Particle_Instance::DESC DashDesc{};
 	DashDesc.iNumInstance = 15;
 	DashDesc.isLoop = true;
-	DashDesc.vCenter = _float3(0.f, 1.f, -1.5f);
+	DashDesc.vCenter = _float3(0.f, 0.5f, -1.5f);
 	DashDesc.vPivot = _float3(0.f, 0.f, 2.f);
-	DashDesc.vRange = _float3(1.f, 1.f, 1.f);
+	DashDesc.vRange = _float3(1.f, 1.f, 2.5f);
 	DashDesc.vSize = _float2(0.8f, 1.2f);
-	DashDesc.vLifeTime = _float2(1.f, 2.f);
+	DashDesc.vLifeTime = _float2(0.8f, 1.2f);
 	DashDesc.vSpeed = _float2(0.5f, 1.f);
 
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
@@ -450,7 +450,7 @@ HRESULT CMainApp::Ready_Prototype_Object()
 
 		/* For.Prototype_GameObject_Dash */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Dash"),
-		CParticle_Mesh::Create(m_pDevice, m_pContext))))
+		CParticle_Mesh_Dash::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 

@@ -224,23 +224,14 @@ void CVIBuffer_Mesh_Particle_Instance::Shrink(_float fTimeDelta)
 
 	VTXMESH_PARTICLE_INSTANCE* pVertices = static_cast<VTXMESH_PARTICLE_INSTANCE*>(SubResorce.pData);
 
-	_vector vDir = {};
-
 	for (_uint i = 0; i < m_iNumInstance; i++)
 	{
 		pVertices[i].vLifeTime.y += fTimeDelta;
-
-		//vDir = XMVectorSetW(XMVector3Normalize(XMLoadFloat4(&m_pVertexInstances[i].vTranslation)) - XMLoadFloat3(&m_vPivot), 0.f);
-
-		//XMStoreFloat4(&pVertices[i].vTranslation,
-		//	XMLoadFloat4(&pVertices[i].vTranslation) + (vDir * m_pSpeeds[i] * fTimeDelta));
 
 		if (true == m_isLoop &&
 			pVertices[i].vLifeTime.y >= pVertices[i].vLifeTime.x)
 		{
 			pVertices[i].vLifeTime.y = 0.f;
-			/* 원래 위치로 이동 */
-			//pVertices[i].vTranslation = m_pVertexInstances[i].vTranslation;
 		}
 	}
 

@@ -120,6 +120,10 @@ HRESULT CVIBuffer_Point_Instance::Initialize_Prototype(const DESC* pArg)
 			0.f
 		);
 
+		m_pVertexInstances[i].fMaxFrame = pDesc->vFrameXY.x * pDesc->vFrameXY.y;
+		m_pVertexInstances[i].vFrameXY = pDesc->vFrameXY;
+		m_pVertexInstances[i].fFrameSpeed = m_pGameInstance->Compute_Random(pDesc->vFrameSpeed.x, pDesc->vFrameSpeed.y);
+
 	}
 
 	m_VBInstanceSubResourceData.pSysMem = m_pVertexInstances;

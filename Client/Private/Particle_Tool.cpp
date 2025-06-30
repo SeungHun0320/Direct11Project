@@ -36,7 +36,15 @@ void CParticle_Tool::Priority_Update(_float fTimeDelta)
 
 LIFE CParticle_Tool::Update(_float fTimeDelta)
 {
-	m_pVIBufferCom->Spread(fTimeDelta);
+	switch (m_eType)
+	{
+	case DROP:
+		m_pVIBufferCom->Drop(fTimeDelta);
+		break;
+	case SPREAD:
+		m_pVIBufferCom->Spread(fTimeDelta);
+		break;
+	}
 
 	return LIFE::NONE;
 }
@@ -54,7 +62,7 @@ HRESULT CParticle_Tool::Render()
 	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Begin(0)))
+	if (FAILED(m_pShaderCom->Begin(m_ePass)))
 		return E_FAIL;
 
 	if (FAILED(m_pVIBufferCom->Bind_Buffers()))
@@ -64,6 +72,18 @@ HRESULT CParticle_Tool::Render()
 		return E_FAIL;
 
 	return S_OK;
+}
+
+HRESULT CParticle_Tool::Change_TextureCom(const _wstring& strTextureTag)
+{
+	Safe_Release(m_pTextureCom);
+
+	/* For.Com_Texture */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::TOOLS), strTextureTag,
+		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+		return E_FAIL;
+
+	return E_NOTIMPL;
 }
 
 HRESULT CParticle_Tool::Ready_Components(void* pArg)
@@ -81,7 +101,7 @@ HRESULT CParticle_Tool::Ready_Components(void* pArg)
 		return E_FAIL;
 
 	/* For.Com_Texture */
-	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_Component_Texture_SpinningDiamond"),
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_Component_Texture_SpinningDiamondParticle"),
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
 
@@ -99,6 +119,9 @@ HRESULT CParticle_Tool::Bind_ShaderResources()
 		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4))))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_vColor", &m_vColor, sizeof(_float4))))
 		return E_FAIL;
 
 	return S_OK;
