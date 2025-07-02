@@ -48,17 +48,17 @@ LIFE CWeapon_Player::Update(_float fTimeDelta)
 void CWeapon_Player::Late_Update(_float fTimeDelta)
 {
 	__super::Late_Update(fTimeDelta);
+
+#ifdef _DEBUG
+
+	for (auto& pCollider : m_pColliders)
+		m_pGameInstance->Add_DebugComponent(pCollider);
+
+#endif
 }
 
 HRESULT CWeapon_Player::Render()
 {
-#ifdef _DEBUG
-
-	for (auto& pCollider : m_pColliders)
-		pCollider->Render();
-
-#endif // _DEBUG
-
 	return S_OK;
 }
 

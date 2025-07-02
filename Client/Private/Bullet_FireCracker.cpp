@@ -112,16 +112,14 @@ LIFE CBullet_FireCracker::Update(_float fTimeDelta)
 void CBullet_FireCracker::Late_Update(_float fTimeDelta)
 {
     __super::Late_Update(fTimeDelta);
+#ifdef _DEBUG
+    if (nullptr != m_pExplosionCollider)
+        m_pGameInstance->Add_DebugComponent(m_pExplosionCollider);
+#endif
 }
 
 HRESULT CBullet_FireCracker::Render()
 {
-#ifdef _DEBUG
-    m_pColliderCom->Render();
-    if(nullptr != m_pExplosionCollider)
-        m_pExplosionCollider->Render();
-#endif
-
     return __super::Render();
 }
 

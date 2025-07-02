@@ -39,7 +39,9 @@ public:
 
 	virtual void Drop(_float fTimeDelta) override;
 	virtual void Spread(_float fTimeDelta) override;
+	virtual void MoveTrail(_fvector vWorldPos, _float fTimeDelta) override;
 	virtual void Shrink(_float fTimeDelta) override;
+	virtual void Reset() override;
 
 protected:
 	_uint						m_iMaterialIndex = {};
@@ -49,7 +51,7 @@ protected:
 	_float3  m_vPivot = {};
 	_float*  m_pSpeeds = { nullptr };
 	_bool    m_isLoop = { false };
-	_uint    m_iNextEmitIndex = {};
+	_uint    m_iEmitIndex = {};
 
 public:
 	static CVIBuffer_Mesh_Particle_Instance* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const MESH_DESC* pMeshArg, const DESC* pArg, _fmatrix PreTransformMatrix = XMMatrixIdentity());

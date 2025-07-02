@@ -50,9 +50,6 @@ void CBullet_Monster::Late_Update(_float fTimeDelta)
 
 HRESULT CBullet_Monster::Render()
 {
-#ifdef _DEBUG
-	m_pColliderCom->Render();
-#endif
 	return  __super::Render();
 }
 

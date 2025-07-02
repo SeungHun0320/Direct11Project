@@ -19,14 +19,15 @@ void CPlayerState_Dodge::Enter(_float fTimeDelta)
 	}
 	else
 	{
+		m_pOwner->Set_isNoStamina(true);
 		m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::FAIL_DODGE, false, 0.1f);
-		m_fDuration = 0.75f;
+		m_fDuration = 0.75f;  
 	}
 
 	m_fTimeAcc = 0.f;
 
 	m_pOwner->Use_Stamina(25.f);
-
+	m_pOwner->Set_isRoll(true);
 	XMStoreFloat3(&m_vInputDir, m_pOwner->Get_InputDirectionEx());
 }
 
@@ -80,6 +81,7 @@ void CPlayerState_Dodge::Exit()
 	m_fTimeAcc = 0.f;
 	m_fDuration = 0.f;
 	XMStoreFloat3(&m_vInputDir, XMVectorZero());
+	m_pOwner->Set_isRoll(false);
 }
 
 void CPlayerState_Dodge::Free()

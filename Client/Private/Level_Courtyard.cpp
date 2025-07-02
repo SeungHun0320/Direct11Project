@@ -385,9 +385,19 @@ HRESULT CLevel_Courtyard::Ready_Lights()
 
 	LightDesc.eType = LIGHT_DESC::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vDiffuse = _float4(0.9f, 0.9f, 0.9f, 1.f);
+	LightDesc.fAmbient = 0.4f;
+	LightDesc.vSpecular = _float4(0.3f, 0.3f, 0.3f, 1.f);
+
+	if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
+		return E_FAIL;
+
+	LightDesc.eType = LIGHT_DESC::TYPE_POINT;
+	LightDesc.vPosition = _float4(10.f, 5.0f, -105.f, 1.f);
+	LightDesc.fRange = 15.f;
+	LightDesc.vDiffuse = _float4(1.f, 0.6f, 0.1f, 1.f);
+	LightDesc.fAmbient = 0.6f;
+	LightDesc.vSpecular = _float4(0.7f, 0.7f, 0.7f, 1.f);
 
 	if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
 		return E_FAIL;

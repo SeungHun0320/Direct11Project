@@ -259,13 +259,13 @@ HRESULT CMainApp::Ready_Prototype_Component()
 
 	/* For.Prototype_Component_Model_Particle_Instance_Dash*/
 	CVIBuffer_Mesh_Particle_Instance::DESC DashDesc{};
-	DashDesc.iNumInstance = 15;
-	DashDesc.isLoop = true;
-	DashDesc.vCenter = _float3(0.f, 0.5f, -1.5f);
-	DashDesc.vPivot = _float3(0.f, 0.f, 2.f);
-	DashDesc.vRange = _float3(1.f, 1.f, 2.5f);
-	DashDesc.vSize = _float2(0.8f, 1.2f);
-	DashDesc.vLifeTime = _float2(0.8f, 1.2f);
+	DashDesc.iNumInstance = 30;
+	DashDesc.isLoop = false;
+	DashDesc.vCenter = _float3(0.f, 0.25f, 0.f);
+	DashDesc.vPivot = _float3(0.f, 0.f, 0.f);
+	DashDesc.vRange = _float3(1.f, 1.f, 1.f);
+	DashDesc.vSize = _float2(1.3f, 2.f);
+	DashDesc.vLifeTime = _float2(0.8f, 1.f);
 	DashDesc.vSpeed = _float2(0.5f, 1.f);
 
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);

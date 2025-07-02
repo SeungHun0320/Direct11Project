@@ -55,6 +55,11 @@ LIFE CBody_SpiderTank::Update(_float fTimeDelta)
 void CBody_SpiderTank::Late_Update(_float fTimeDelta)
 {
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+
+#ifdef _DEBUG
+	for (auto& pCollider : m_pColliderCom)
+		m_pGameInstance->Add_DebugComponent(pCollider);
+#endif
 }
 
 HRESULT CBody_SpiderTank::Render()
@@ -79,13 +84,6 @@ HRESULT CBody_SpiderTank::Render()
 		if (FAILED(m_pModelCom->Render(i)))
 			return E_FAIL;
 	}
-
-#ifdef _DEBUG
-
-	for (auto& pCollider : m_pColliderCom)
-		pCollider->Render();
-
-#endif
 
 	return S_OK;
 }
@@ -188,6 +186,8 @@ HRESULT CBody_SpiderTank::Bind_ShaderResources()
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::VIEW))))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::PROJ))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_fFar", m_pGameInstance->Get_Far_Ptr(), sizeof(_float))))
 		return E_FAIL;
 
 	return S_OK;

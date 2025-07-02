@@ -63,7 +63,7 @@ LIFE CParticle_Part::Update(_float fTimeDelta)
 
 void CParticle_Part::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONLIGHT, this);
 }
 
 HRESULT CParticle_Part::Render()

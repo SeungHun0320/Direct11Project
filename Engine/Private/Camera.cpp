@@ -110,6 +110,8 @@ void CCamera::Update_Camera_Shake(_float fTimedelta)
 
 void CCamera::Bind_Matrices()
 {
+	m_pGameInstance->Set_Far(m_fFar);
+	m_pGameInstance->Set_Near(m_fNear);
     m_pGameInstance->Set_Transform(D3DTS::VIEW, m_pTransformCom->Get_WorldMatrix_Inverse());
     m_pGameInstance->Set_Transform(D3DTS::PROJ, XMMatrixPerspectiveFovLH(m_fFov, m_fAspect, m_fNear, m_fFar));
 }

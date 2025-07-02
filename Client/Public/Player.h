@@ -150,6 +150,11 @@ public: /* 스테이트 갖고오기 */
 	_float Get_Stamina() const { return m_fStamina; }
 	void Use_Stamina(_float fStamina);
 
+	void Set_isNoStamina(_bool isStamina) { m_isNoStamina = true; }
+
+	_bool Get_isRoll() const { return m_isRoll; }
+	void Set_isRoll(_bool isRoll) { m_isRoll = isRoll; }
+
 	/* 마나 */
 	void Use_Mana(_float fMana);
 
@@ -180,6 +185,7 @@ private: /* 스태미나 */
 	_float m_fStaminaTimeAcc = {};
 	_bool  m_isUseStamina = { false };
 	_bool  m_isNoStamina = { false };
+	_bool  m_isRoll = { true };
 	_float m_fStaminaDelayTimeAcc = {};
 	_float m_fStaminaDelayTime = {};
 

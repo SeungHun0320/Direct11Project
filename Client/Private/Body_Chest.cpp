@@ -79,13 +79,6 @@ HRESULT CBody_Chest::Render()
         if (FAILED(m_pModelCom->Render(i)))
             return E_FAIL;
     }
-
-#ifdef _DEBUG
-
-    m_pColliderCom->Render();
-
-#endif
-
     return S_OK;
 }
 

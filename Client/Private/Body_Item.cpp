@@ -48,6 +48,10 @@ LIFE CBody_Item::Update(_float fTimeDelta)
 void CBody_Item::Late_Update(_float fTimeDelta)
 {
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+
+#ifdef _DEBUG
+	m_pGameInstance->Add_DebugComponent(m_pColliderCom);
+#endif
 }
 
 HRESULT CBody_Item::Render()
@@ -70,12 +74,6 @@ HRESULT CBody_Item::Render()
 		if (FAILED(m_pModelCom->Render(i)))
 			return E_FAIL;
 	}
-
-#ifdef _DEBUG
-
-	m_pColliderCom->Render();
-
-#endif
 
 	return S_OK;
 }
@@ -116,6 +114,8 @@ HRESULT CBody_Item::Bind_ShaderResources()
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::VIEW))))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::PROJ))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_fFar", m_pGameInstance->Get_Far_Ptr(), sizeof(_float))))
 		return E_FAIL;
 
 	return S_OK;

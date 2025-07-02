@@ -38,7 +38,9 @@ public:
 	virtual void Drop(_float fTimeDelta) {};
 	virtual void Spread(_float fTimeDelta) {};
 	virtual void Sprite(_float fTimeDelta) {};
+	virtual void MoveTrail(_fvector vWorldPos, _float fTimeDelta) {};
 	virtual void Shrink(_float fTimeDelta) {};
+	virtual void Reset() {};
 
 protected:
 	/* 인스턴스용 버퍼 */

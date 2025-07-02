@@ -60,13 +60,6 @@ HRESULT CBody_Grass::Render()
         if (FAILED(m_pModelInstanceCom->Render(i)))
             return E_FAIL;
     }
-
-#ifdef _DEBUG
-
-    m_pColliderCom->Render();
-
-#endif
-
     return S_OK;
 
 }

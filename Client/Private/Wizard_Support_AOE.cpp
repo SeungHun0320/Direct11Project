@@ -47,9 +47,6 @@ void CWizard_Support_AOE::Late_Update(_float fTimeDelta)
 
 HRESULT CWizard_Support_AOE::Render()
 {
-#ifdef _DEBUG
-    m_pColliderCom->Render();
-#endif
     return S_OK;
 }
 

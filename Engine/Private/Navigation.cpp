@@ -187,7 +187,6 @@ HRESULT CNavigation::Render()
 		m_Cells[m_iIndex]->Render();
 	}
 
-
 	return S_OK;
 }
 #endif

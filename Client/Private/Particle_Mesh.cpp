@@ -40,7 +40,7 @@ LIFE CParticle_Mesh::Update(_float fTimeDelta)
 	_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
 
 	for (_uint i = 0; i < iNumMesh; i++)
-		m_pModelCom->Shrink(i, fTimeDelta);
+		m_pModelCom->Spread(i, fTimeDelta);
 
 	_matrix ParentMatrix = XMLoadFloat4x4(m_pParentMatrix);
 	_vector ParentPos = ParentMatrix.r[3];
@@ -107,6 +107,8 @@ HRESULT CParticle_Mesh::Bind_ShaderResources()
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::VIEW))))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::PROJ))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_fFar", m_pGameInstance->Get_Far_Ptr(), sizeof(_float))))
 		return E_FAIL;
 
 	return S_OK;

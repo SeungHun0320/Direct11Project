@@ -15,6 +15,11 @@ public:
 	HRESULT Add_RenderGroup(RENDERGROUP eRenderGroup, class CGameObject* pRenderObject);
 	HRESULT Draw();
 
+#ifdef _DEBUG
+public: /* 디버그용 컴포넌트를 디버그용 렌더러쪽에 넣어준다. */
+	HRESULT Add_DebugComponent(class CComponent* pDebugCom);
+#endif
+
 private:
 	ID3D11Device*				m_pDevice = { nullptr };
 	ID3D11DeviceContext*		m_pContext = { nullptr };
@@ -30,6 +35,11 @@ private: /* 렌더 타겟을 나눴을때 그려주기 위한 직교투영 백그라운드 */
 private:
 	list<class CGameObject*>	m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_END)];
 
+#ifdef _DEBUG
+private:
+	list<class CComponent*>     m_DebugComponents;
+#endif
+
 private:
 	HRESULT Render_Priority();
 	HRESULT Render_NonBlend();
@@ -37,6 +47,8 @@ private:
 	HRESULT Render_UI();
 
 	HRESULT Render_Lights();
+	HRESULT Render_BackBuffer();
+	HRESULT Render_NonLight();
 
 #ifdef _DEBUG
 private:

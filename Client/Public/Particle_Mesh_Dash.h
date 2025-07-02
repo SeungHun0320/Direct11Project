@@ -11,6 +11,7 @@ public:
 	{
 		const _bool* pParentisUseStamina{ nullptr };
 		const _bool* pParentisNoStamina{ nullptr };
+		const _bool* pParentisRoll{ nullptr };
 	}DESC;
 
 private:
@@ -29,6 +30,10 @@ public:
 private:
 	const _bool* m_pParentisUseStamina = { nullptr };
 	const _bool* m_pParentisNoStamina = { nullptr };
+	const _bool* m_pParentisRoll = { nullptr };
+
+private:
+	_float m_fTimeAcc = {};
 
 protected:
 	virtual HRESULT Ready_Components(void* pArg) override;

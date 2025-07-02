@@ -18,6 +18,7 @@ public:
 	{
 		_uint		iNumInstance{500};
 		_float2		vSize{0.5f, 1.f};
+		_float2     vScale{ 0.5f, 1.f };
 		_float3		vRange{5.f, 5.f, 5.f};
 		_float3		vCenter{0.f, 0.f, 0.f};
 		_float3		vPivot{0.f, 0.f, 0.f};
@@ -52,7 +53,7 @@ private:
 	const _float m_fMinSpeed{ 0.1f };
 
 private:
-	_float4 m_vColor{0.1f, 0.1f, 0.1f, 1.f};
+	_float4 m_vColor{1.f, 1.f, 1.f, 1.f};
 	_bool   m_isSprite = { false };
 	vector<_string> m_ProtoTextureNames;
 

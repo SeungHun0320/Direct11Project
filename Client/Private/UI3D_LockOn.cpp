@@ -44,7 +44,7 @@ void CUI3D_LockOn::Priority_Update(_float fTimeDelta)
 		m_pGameInstance->Get_Transform_Matrix(D3DTS::VIEW) *
 		m_pGameInstance->Get_Transform_Matrix(D3DTS::PROJ);
 
-	m_fHexAngleAcc += fTimeDelta * XMConvertToRadians(180.f); 
+	m_fHexAngleAcc += fTimeDelta * 5.f; 
 
 	const _float fRadius = 85.f;
 	const _uint iHexCount = PART_HEX - PART_HEX_START + 1;

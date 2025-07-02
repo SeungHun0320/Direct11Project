@@ -122,7 +122,7 @@ HRESULT CPlayer::Initialize(void* pArg)
 	m_fMaxHp = m_fHp;
 
 	/* 스태미나 */
-	m_fStaminaRecoveryPerSec = 20.f;
+	m_fStaminaRecoveryPerSec = 40.f;
 	m_fMaxStamina = 100.f;
 	m_fStamina = m_fMaxStamina;
 	/* 마나 */
@@ -191,13 +191,14 @@ void CPlayer::Late_Update(_float fTimeDelta)
 
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 
+#ifdef _DEBUG
+	m_pGameInstance->Add_DebugComponent(m_pNavigationCom);
+#endif
+
 }
 
 HRESULT CPlayer::Render()
 {
-#ifdef _DEBUG
-		m_pNavigationCom->Render();
-#endif
 	return S_OK;
 }
 
@@ -760,15 +761,9 @@ void CPlayer::Use_Stamina(_float fStamina)
 	m_fStaminaDelayTimeAcc = 0.f;
 
 	if (0 >= m_fStamina)
-	{
-		m_fStamina = 0.f;
-		m_fStaminaDelayTime = 3.f;
-		m_isNoStamina = true;
-	}
+		m_fStaminaDelayTime = 2.f;
 	else
-	{
-		m_fStaminaDelayTime = 1.5f;
-	}
+		m_fStaminaDelayTime = 1.f;
 }
 
 void CPlayer::Stamina_Recovery(_float fTimeDelta)
@@ -1150,6 +1145,7 @@ HRESULT CPlayer::Ready_PartObjects()
 	DashDesc.strParticleModelTag = TEXT("Prototype_Component_Model_Particle_Instance_Dash");
 	DashDesc.pParentisNoStamina = &m_isNoStamina;
 	DashDesc.pParentisUseStamina = &m_isUseStamina;
+	DashDesc.pParentisRoll = &m_isRoll;
 
 	if (FAILED(__super::Add_PartObject(PART_EFFECT, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Dash"), &DashDesc)))
 		return E_FAIL;

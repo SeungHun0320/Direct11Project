@@ -62,7 +62,7 @@ void CTool_Effect::Add_ListBoxName()
 
 void CTool_Effect::Adjust_ParticleDesc()
 {
-	_uint iMinNumInstance{1}, iMaxNumInstance{10000};
+	_uint iMinNumInstance{ 1 }, iMaxNumInstance{ 10000 };
 
 	ImGui::SliderScalar(u8"인스턴스 갯수", ImGuiDataType_U32, &m_ParticleDesc.iNumInstance, &iMinNumInstance, &iMaxNumInstance);
 	ImGui::InputScalar("##NumInstance", ImGuiDataType_U32, &m_ParticleDesc.iNumInstance, &iMinNumInstance, &iMaxNumInstance);
@@ -72,25 +72,29 @@ void CTool_Effect::Adjust_ParticleDesc()
 	ImGui::InputFloat2("##Size", reinterpret_cast<_float*>(&m_ParticleDesc.vSize));
 	
 	ImGui::Separator();
+	ImGui::DragFloat2(u8"스케일", reinterpret_cast<_float*>(&m_ParticleDesc.vScale), m_fMinSize);
+	ImGui::InputFloat2("##Scale", reinterpret_cast<_float*>(&m_ParticleDesc.vScale));
+
+	ImGui::Separator();
 	ImGui::DragFloat3(u8"거리", reinterpret_cast<_float*>(&m_ParticleDesc.vRange), m_fMinRange);
 	ImGui::InputFloat3("##Range", reinterpret_cast<_float*>(&m_ParticleDesc.vRange));
-	
+
 	ImGui::Separator();
 	ImGui::DragFloat3(u8"센터", reinterpret_cast<_float*>(&m_ParticleDesc.vCenter), m_fMinCenter);
 	ImGui::InputFloat3("##Center", reinterpret_cast<_float*>(&m_ParticleDesc.vCenter));
-	
+
 	ImGui::Separator();
 	ImGui::DragFloat3(u8"피벗", reinterpret_cast<_float*>(&m_ParticleDesc.vPivot), m_fMinPivot);
 	ImGui::InputFloat3("##Pivot", reinterpret_cast<_float*>(&m_ParticleDesc.vPivot));
-	
+
 	ImGui::Separator();
 	ImGui::DragFloat2(u8"라이프타임", reinterpret_cast<_float*>(&m_ParticleDesc.vLifeTime), m_fMinLifeTime);
 	ImGui::InputFloat2("##LifeTime", reinterpret_cast<_float*>(&m_ParticleDesc.vLifeTime));
-	
+
 	ImGui::Separator();
 	ImGui::DragFloat2(u8"속도", reinterpret_cast<_float*>(&m_ParticleDesc.vSpeed), m_fMinSpeed);
 	ImGui::InputFloat2("##Speed", reinterpret_cast<_float*>(&m_ParticleDesc.vSpeed));
-	
+
 	ImGui::Checkbox(u8"루프", reinterpret_cast<_bool*>(&m_ParticleDesc.isLoop));
 
 	static CParticle_Tool::MOVEMENT eType{};
@@ -102,7 +106,12 @@ void CTool_Effect::Adjust_ParticleDesc()
 		eType = CParticle_Tool::SPREAD;
 
 	m_pParticleTool->Change_Move(eType);
-
+	
+	if (ImGui::RadioButton(u8"스프라이트", m_isSprite))
+	{
+		m_isSprite = !m_isSprite;
+	}
+	m_isSprite == true ? m_pParticleTool->Change_Pass(CParticle_Tool::SPRITE) : m_pParticleTool->Change_Pass(CParticle_Tool::TOOL);
 
 	Adjust_ParticeSpriteDesc();
 
@@ -116,24 +125,15 @@ void CTool_Effect::Adjust_ParticleDesc()
 		m_pVIBufferTool->Set_Translation(m_ParticleDesc.vCenter, m_ParticleDesc.vRange);
 		m_pVIBufferTool->Set_LifeTime(m_ParticleDesc.vLifeTime);
 		m_pVIBufferTool->Set_FrameXY(m_ParticleDesc.vFrameXY);
+		m_pVIBufferTool->Set_Scale(m_ParticleDesc.vScale);
 		m_pVIBufferTool->Set_SpriteSpeed(m_ParticleDesc.vFrameSpeed);
 	}
 
-	if (ImGui::RadioButton(u8"스프라이트", m_isSprite))
-	{
-		m_isSprite = !m_isSprite;
 
-		m_isSprite == true ? m_pParticleTool->Change_Pass(CParticle_Tool::SPRITE) : m_pParticleTool->Change_Pass(CParticle_Tool::TOOL);
-	}
-		
+	ImGui::Text(u8"색깔");
 
-	if (ImGui::TreeNode(u8"색깔"))
-	{
-		ImGui::ColorEdit4("RGBA Color", reinterpret_cast<_float*>(&m_vColor));
-		m_pParticleTool->Change_Color(m_vColor);
-
-		ImGui::TreePop();
-	}
+	ImGui::ColorEdit4("RGBA Color", reinterpret_cast<_float*>(&m_vColor));
+	m_pParticleTool->Change_Color(m_vColor);
 
 	Change_TextureListBox();
 }

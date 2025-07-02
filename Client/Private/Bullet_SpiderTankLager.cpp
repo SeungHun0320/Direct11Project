@@ -62,10 +62,6 @@ void CBullet_SpiderTankLager::Late_Update(_float fTimeDelta)
 
 HRESULT CBullet_SpiderTankLager::Render()
 {
-#ifdef _DEBUG
-	m_pColliderCom->Render();
-#endif
-
     return S_OK;
 }
 

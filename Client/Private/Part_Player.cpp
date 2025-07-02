@@ -53,6 +53,11 @@ LIFE CPart_Player::Update(_float fTimeDelta)
 void CPart_Player::Late_Update(_float fTimeDelta)
 {
     m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+
+#ifdef _DEBUG /* 이제 네비게이션이나 콜라이더나 디버그용으로 렌더하는 컴포넌트들은 렌더러를 통해서 렌더할 것. */
+    m_pGameInstance->Add_DebugComponent(m_pColliderCom);
+#endif
+ 
 }
 
 HRESULT CPart_Player::Render()
@@ -78,12 +83,6 @@ HRESULT CPart_Player::Render()
         if (FAILED(m_pModelCom->Render(i)))
             return E_FAIL;
     }
-
-#ifdef _DEBUG
-
-    m_pColliderCom->Render();
-
-#endif
 
     return S_OK;
 }
@@ -140,6 +139,8 @@ HRESULT CPart_Player::Bind_ShaderResources()
     if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::VIEW))))
         return E_FAIL;
     if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::PROJ))))
+        return E_FAIL;
+    if (FAILED(m_pShaderCom->Bind_RawValue("g_fFar", m_pGameInstance->Get_Far_Ptr(), sizeof(_float))))
         return E_FAIL;
 
 

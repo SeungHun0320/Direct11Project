@@ -27,7 +27,9 @@ public:
 
 	virtual void Drop(_uint iMeshIndex, _float fTimeDelta);
 	virtual void Spread(_uint iMeshIndex, _float fTimeDelta);
+	virtual void MoveTrail(_uint iMeshIndex, _fvector vWorldPos, _float fTimeDelta);
 	virtual void Shrink(_uint iMeshIndex, _float fTimeDelta);
+	virtual void Reset(_uint iMeshIndex);
 
 private: /* 메쉬 갯수, 메쉬들을 담아두는 벡터 */
 	_uint										m_iNumMeshes = {};

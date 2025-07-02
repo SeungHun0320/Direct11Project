@@ -269,6 +269,11 @@ HRESULT CGameInstance::Add_RenderGroup(RENDERGROUP eRenderGroup, CGameObject* pR
 	return m_pRenderer->Add_RenderGroup(eRenderGroup, pRenderObject);
 }
 
+HRESULT CGameInstance::Add_DebugComponent(CComponent* pDebugCom)
+{
+	return m_pRenderer->Add_DebugComponent(pDebugCom);
+}
+
 #pragma endregion
 
 #pragma region TIMER_MANAGER
@@ -424,9 +429,33 @@ _matrix CGameInstance::Get_Transform_Matrix(D3DTS eState) const
 {
 	return m_pPipeLine->Get_Transform_Matrix(eState);
 }
+const _float4x4* CGameInstance::Get_Transform_Float4x4_Inv(D3DTS eState) const
+{
+	return  m_pPipeLine->Get_Transform_Float4x4_Inv(eState);
+}
+_matrix CGameInstance::Get_Transform_Matrix_Inv(D3DTS eState) const
+{
+	return  m_pPipeLine->Get_Transform_Matrix_Inv(eState);
+}
 const _float4* CGameInstance::Get_CamPosition() const
 {
 	return m_pPipeLine->Get_CamPosition();
+}
+void CGameInstance::Set_Far(_float fFar)
+{
+	m_pPipeLine->Set_Far(fFar);
+}
+void CGameInstance::Set_Near(_float fNear)
+{
+	m_pPipeLine->Set_Near(fNear);
+}
+const _float* CGameInstance::Get_Far_Ptr() const
+{
+	return m_pPipeLine->Get_Far_Ptr();
+}
+const _float* CGameInstance::Get_Near_Prt() const
+{
+	return m_pPipeLine->Get_Near_Prt();
 }
 #pragma endregion
 

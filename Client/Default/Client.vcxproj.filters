@@ -460,6 +460,9 @@
     <Filter Include="02.GameObjects\09.Effect\Particle\Mesh\Dash">
       <UniqueIdentifier>{947ccac5-bda5-4d9c-bc0c-800cb5f8bdbe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\09.Effect\Container">
+      <UniqueIdentifier>{e12a4bae-ab34-4f41-a319-2d6b32f06f74}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -833,6 +836,9 @@
     </ClInclude>
     <ClInclude Include="..\public\Particle_Mesh_Dash.h">
       <Filter>02.GameObjects\09.Effect\Particle\Mesh\Dash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\EffectContainerPart.h">
+      <Filter>02.GameObjects\09.Effect\Container</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1250,6 +1256,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Particle_Mesh_Dash.cpp">
       <Filter>02.GameObjects\09.Effect\Particle\Mesh\Dash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\EffectContainerPart.cpp">
+      <Filter>02.GameObjects\09.Effect\Container</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -77,9 +77,19 @@ void CModel_Particle_Instance::Spread(_uint iMeshIndex, _float fTimeDelta)
     m_MeshInstances[iMeshIndex]->Spread(fTimeDelta);
 }
 
+void CModel_Particle_Instance::MoveTrail(_uint iMeshIndex, _fvector vWorldPos, _float fTimeDelta)
+{
+    m_MeshInstances[iMeshIndex]->MoveTrail(vWorldPos, fTimeDelta);
+}
+
 void CModel_Particle_Instance::Shrink(_uint iMeshIndex, _float fTimeDelta)
 {
     m_MeshInstances[iMeshIndex]->Shrink(fTimeDelta);
+}
+
+void CModel_Particle_Instance::Reset(_uint iMeshIndex)
+{
+    m_MeshInstances[iMeshIndex]->Reset();
 }
 
 HRESULT CModel_Particle_Instance::Ready_Meshes(ifstream& _InFile, const CVIBuffer_Mesh_Particle_Instance::DESC* pArg, _fmatrix PreTransformMatrix)

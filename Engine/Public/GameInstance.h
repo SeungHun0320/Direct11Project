@@ -64,6 +64,10 @@ public:
 
 #pragma region RENDERER
 	HRESULT Add_RenderGroup(RENDERGROUP eRenderGroup, class CGameObject* pRenderObject);
+#ifdef _DEBUG
+	HRESULT Add_DebugComponent(class CComponent* pDebugCom);
+#endif
+
 #pragma endregion
 	
 #pragma region TIMER_MANAGER
@@ -111,7 +115,17 @@ public:
 	void Set_Transform(D3DTS eState, _fmatrix TransformMatrix);
 	const _float4x4* Get_Transform_Float4x4(D3DTS eState) const;
 	_matrix Get_Transform_Matrix(D3DTS eState) const;
+
+	const _float4x4* Get_Transform_Float4x4_Inv(D3DTS eState) const;
+	_matrix Get_Transform_Matrix_Inv(D3DTS eState) const;
+
 	const _float4* Get_CamPosition() const;
+
+	void Set_Far(_float fFar);
+	void Set_Near(_float fNear);
+
+	const _float* Get_Far_Ptr() const;
+	const _float* Get_Near_Prt() const;
 #pragma endregion
 
 #pragma region LIGHT_MANAGER

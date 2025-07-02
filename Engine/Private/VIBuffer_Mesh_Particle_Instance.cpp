@@ -215,6 +215,26 @@ void CVIBuffer_Mesh_Particle_Instance::Spread(_float fTimeDelta)
 	m_pContext->Unmap(m_pVBInstance, 0);
 }
 
+void CVIBuffer_Mesh_Particle_Instance::MoveTrail(_fvector vWorldPos, _float fTimeDelta)
+{
+	D3D11_MAPPED_SUBRESOURCE SubResorce{};
+
+	/* 이 옵션을 줘야 덮어쓰기를 안함 */
+	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResorce);
+
+	VTXMESH_PARTICLE_INSTANCE* pVertices = static_cast<VTXMESH_PARTICLE_INSTANCE*>(SubResorce.pData);
+
+	if (m_iEmitIndex >= m_iNumInstance)
+		m_iEmitIndex = 0;
+
+	XMStoreFloat4(&pVertices[m_iEmitIndex].vTranslation,
+		XMLoadFloat4(&m_pVertexInstances[m_iEmitIndex].vTranslation) + vWorldPos);
+
+	++m_iEmitIndex;
+
+	m_pContext->Unmap(m_pVBInstance, 0);
+}
+
 void CVIBuffer_Mesh_Particle_Instance::Shrink(_float fTimeDelta)
 {
 	D3D11_MAPPED_SUBRESOURCE SubResorce{};
@@ -232,10 +252,30 @@ void CVIBuffer_Mesh_Particle_Instance::Shrink(_float fTimeDelta)
 			pVertices[i].vLifeTime.y >= pVertices[i].vLifeTime.x)
 		{
 			pVertices[i].vLifeTime.y = 0.f;
+			/* 원래 위치로 이동 */
+			pVertices[i].vTranslation = m_pVertexInstances[i].vTranslation;
 		}
 	}
 
 	m_pContext->Unmap(m_pVBInstance, 0);
+}
+
+void CVIBuffer_Mesh_Particle_Instance::Reset()
+{
+	D3D11_MAPPED_SUBRESOURCE SubResorce{};
+
+	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResorce);
+
+	VTXMESH_PARTICLE_INSTANCE* pVertices = static_cast<VTXMESH_PARTICLE_INSTANCE*>(SubResorce.pData);
+
+	for (_uint i = 0; i < m_iNumInstance; i++)
+	{
+		pVertices[i].vTranslation = m_pVertexInstances[i].vTranslation;
+		pVertices[i].vLifeTime.y = 0.f;
+	}
+
+	m_pContext->Unmap(m_pVBInstance, 0);
+
 }
 
 CVIBuffer_Mesh_Particle_Instance* CVIBuffer_Mesh_Particle_Instance::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const MESH_DESC* pMeshArg, const DESC* pArg, _fmatrix PreTransformMatrix)

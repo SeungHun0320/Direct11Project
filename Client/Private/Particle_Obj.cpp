@@ -45,7 +45,7 @@ LIFE CParticle_Obj::Update(_float fTimeDelta)
 
 void CParticle_Obj::Late_Update(_float fTimeDelta)
 {
-    m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+    m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONLIGHT, this);
 }
 
 HRESULT CParticle_Obj::Render()

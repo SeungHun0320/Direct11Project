@@ -22,6 +22,7 @@ HRESULT CParticle_Mesh_Dash::Initialize(void* pArg)
 
 	m_pParentisNoStamina = pDesc->pParentisNoStamina;
 	m_pParentisUseStamina = pDesc->pParentisUseStamina;
+	m_pParentisRoll = pDesc->pParentisRoll;
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -42,12 +43,32 @@ LIFE CParticle_Mesh_Dash::Update(_float fTimeDelta)
 
 	_uint		iNumMesh = m_pModelCom->Get_NumMeshes();
 
-	for (_uint i = 0; i < iNumMesh; i++)
-		m_pModelCom->Shrink(i, fTimeDelta);
+	if (!(*m_pParentisRoll))
+	{
+		for (_uint i = 0; i < iNumMesh; i++)
+			m_pModelCom->Reset(0);
+	}
+	else
+	{
+		m_fTimeAcc += fTimeDelta;
 
-	XMStoreFloat4x4(&m_CombinedWorldMatrix,
-		XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Float4x4()) * XMLoadFloat4x4(m_pParentMatrix)
-	);
+		if (0.03f <= m_fTimeAcc)
+		{
+			for (_uint i = 0; i < iNumMesh; i++)
+			{
+				_matrix ParentMatrix = XMLoadFloat4x4(m_pParentMatrix);
+				m_pModelCom->MoveTrail(i, XMVectorSetW(ParentMatrix.r[3], 0.f), fTimeDelta);
+			}
+
+			XMStoreFloat4x4(&m_CombinedWorldMatrix,
+				XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Float4x4()));
+
+			m_fTimeAcc = 0.f;
+		}
+
+		for (_uint i = 0; i < iNumMesh; i++)
+			m_pModelCom->Shrink(i, fTimeDelta);
+	}
 
 
 	return LIFE::NONE;

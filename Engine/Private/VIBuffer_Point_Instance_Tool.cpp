@@ -137,6 +137,25 @@ void CVIBuffer_Point_Instance_Tool::Set_FrameXY(_float2 vFrameXY)
 	m_pContext->Unmap(m_pVBInstance, 0);
 }
 
+void CVIBuffer_Point_Instance_Tool::Set_Scale(_float2 vScale)
+{
+	D3D11_MAPPED_SUBRESOURCE SubResorce{};
+	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_DISCARD, 0, &SubResorce);
+	VTXPOINT_PARTICLE_INSTANCE* pVertices = static_cast<VTXPOINT_PARTICLE_INSTANCE*>(SubResorce.pData);
+
+	for (_uint i = 0; i < m_iNumInstance; i++)
+	{
+		XMStoreFloat4(&pVertices[i].vRight,XMLoadFloat4(&pVertices[i].vRight) * vScale.x);
+		XMStoreFloat4(&pVertices[i].vUp, XMLoadFloat4(&pVertices[i].vUp) * vScale.y);
+
+		m_pVertexInstances[i].vRight = pVertices[i].vRight;
+		m_pVertexInstances[i].vUp = pVertices[i].vUp;
+	}
+
+
+	m_pContext->Unmap(m_pVBInstance, 0);
+}
+
 HRESULT CVIBuffer_Point_Instance_Tool::Initialize_Prototype(const DESC* pArg)
 {
 	const DESC* pDesc = static_cast<const DESC*>(pArg);

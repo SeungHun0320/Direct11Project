@@ -38,8 +38,8 @@ namespace Engine
 		float				fRange;
 		/* ºûÀÇ »ö»ó */
 		XMFLOAT4			vDiffuse;
-		/* È®»ê±¤? */
-		XMFLOAT4			vAmbient;
+		/* ºûÀÇ ÃÖ¼Ò ¹à±â¸¦ º¸Àå  */
+		float				fAmbient;
 		/* ¹Ý»ç±¤ */
 		XMFLOAT4			vSpecular;
 	}LIGHT_DESC;
@@ -153,7 +153,9 @@ namespace Engine
 		float		    fMaxFrame;
 		float           fFrameSpeed;
 
-		static const unsigned int					iNumElements = { 9 };
+		float          fRotationZ;
+
+		static const unsigned int					iNumElements = { 10 };
 		static const D3D11_INPUT_ELEMENT_DESC		Elements[iNumElements];
 	}VTXPOINT_PARTICLE_INSTANCE;
 }
