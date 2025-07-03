@@ -148,6 +148,7 @@ HRESULT CLevel_Tools::Ready_DockSpace()
 	ImGui::PopStyleVar(2);
 
 	m_pMapTool->File_Menu();
+	m_pEffectTool->Save_Load_Menu();
 
 	ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_PassthruCentralNode;
 	ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");

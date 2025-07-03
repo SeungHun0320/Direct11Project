@@ -16,6 +16,9 @@ public:
 
 		_float2 vFrameXY{};
 		_float2 vFrameSpeed{};
+
+		_float2 vRotationZ{};
+
 	}DESC;
 
 private:
@@ -32,7 +35,7 @@ public:
 	void Set_isLoop(_bool isLoop);
 	void Set_SpriteSpeed(_float2 vSpeed);
 	void Set_FrameXY(_float2 vFrameXY);
-	void Set_Scale(_float2 vScale);
+	void Set_RotationZ(_float2 vRotationZ);
 
 public:
 	virtual HRESULT Initialize_Prototype(const DESC* pArg);

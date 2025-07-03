@@ -17,7 +17,7 @@
 #include "Item.h"
 #include "Monster.h"
 
-#include "Particle_Obj.h"
+#include "Effect_Obj.h"
 
 #define CurLevel LEVEL::COURTYARD
 
@@ -212,7 +212,7 @@ HRESULT CLevel_Courtyard::Ready_Layer_BackGround(const _wstring& strLayerTag)
 
 HRESULT CLevel_Courtyard::Ready_Layer_Effect(const _wstring& strLayerTag)
 {
-	CParticle_Obj::DESC SnowDesc{};
+	CEffect_Obj::DESC SnowDesc{};
 	SnowDesc.eLevelID = CurLevel;
 	SnowDesc.strName = TEXT("Particle_Snow");
 	SnowDesc.strParticleBufferTag = TEXT("Prototype_Component_VIBuffer_Snow");

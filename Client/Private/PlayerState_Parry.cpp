@@ -12,7 +12,7 @@ void CPlayerState_Parry::Enter(_float fTimeDelta)
 	m_fTimeAcc = 0.f;
 	m_fDuration = 1.1f;
 
-	m_pOwner->Set_Active(WEAPON_TYPE::SHILED);
+	m_pOwner->Set_Collider_Active(WEAPON_TYPE::SHILED);
 }
 
 void CPlayerState_Parry::Execute(_float fTimeDelta)
@@ -24,7 +24,7 @@ void CPlayerState_Parry::Execute(_float fTimeDelta)
 
 	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta))
 	{
-		m_pOwner->Set_Active(WEAPON_TYPE::SHILED, false);
+		m_pOwner->Set_Collider_Active(WEAPON_TYPE::SHILED, false);
 
 		if (m_pOwner->IsAnyMoveKeyPressed())
 		{

@@ -13,7 +13,7 @@ public:
 public:
 	enum PART { PART_BODY, PART_WEAPON,
 		PART_HP, PART_STAMINA, PART_MP, PART_INVEN, PART_ITEMSLOTS, PART_POTION, PART_UIINVEN, PART_SWEAT,
-		PART_EFFECT, PART_END };
+		PART_DODGE, PART_EFFECT_POTION, PART_END };
 
 	enum MESHES	{
 		MESH_SHILED, MESH_SWORD, MESH_POTION, MESH_POTION2, MESH_STICK, MESH_DAGGER, MESHES_END
@@ -92,9 +92,12 @@ public: /* 상태로 넘겨줄 함수들 */
 	void  CheckChange_Anim(PART ePart, _uint iNextIndex, _bool isLoop = true, _float fBlendDuration = 0.f, _bool isBlend = true);
 
 	/* 충돌 관련 */
-	void Set_Active(PART ePart, _bool isActive = true);
-	void Set_Active(WEAPON_TYPE eType, _bool isActive = true);
+	void Set_Collider_Active(PART ePart, _bool isActive = true);
+	void Set_Collider_Active(WEAPON_TYPE eType, _bool isActive = true);
 	CCollider* Get_Collider(PART ePart, _uint iColliderIndex = 0);
+
+	/* 이펙트 관련 */
+	void Set_Effect_Active(_uint iPart, _bool isActive = true);
 
 	/* 이동 관련 */
 	void  Dodge(_fvector vDir,_float fTimeDelta, _float fSpeed);
@@ -146,11 +149,15 @@ public: /* 스테이트 갖고오기 */
 
 	_float Compute_StaggerValue() const;
 
+	/* 포션 */
+	_bool Get_isUsePotion() const { return m_isUsePotion; }
+	void Set_isUsePotion(_bool isUsePotion) { m_isUsePotion = isUsePotion; }
+
 	/* 스태미나 */
 	_float Get_Stamina() const { return m_fStamina; }
 	void Use_Stamina(_float fStamina);
 
-	void Set_isNoStamina(_bool isStamina) { m_isNoStamina = true; }
+	void Set_isNoStamina(_bool isStamina) { m_isNoStamina = isStamina; }
 
 	_bool Get_isRoll() const { return m_isRoll; }
 	void Set_isRoll(_bool isRoll) { m_isRoll = isRoll; }
@@ -177,6 +184,7 @@ public: /* 전략패턴 트라이 */
 private: /* 체력 */
 	_float m_fHPRecorveryStat = {};
 	_float m_fStaggerRecoveryPerSec = {};
+	_bool  m_isUsePotion = { false };
 
 private: /* 스태미나 */
 	_float m_fStamina = {};

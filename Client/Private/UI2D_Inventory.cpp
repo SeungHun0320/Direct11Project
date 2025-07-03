@@ -36,12 +36,6 @@ HRESULT CUI2D_Inventory::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
-	if (FAILED(Ready_Components(pArg)))
-		return E_FAIL;
-
-	if (FAILED(Ready_PartObjects()))
-		return E_FAIL;
-
 	SetPos_InvenSlots();
 
 	XMStoreFloat3(&m_vOffInvenPos, XMVectorSet(-900.f, 0.f, 0.f, 1.f));

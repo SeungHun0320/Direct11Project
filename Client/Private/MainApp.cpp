@@ -17,8 +17,9 @@
 #include "UI2D_Inventory.h"
 #include "UI2D_InventorySlot.h"
 
-#include "Particle_Part.h"
-#include "Particle_Mesh_Dash.h"
+#include "Effect_Part.h"
+#include "Effect_Mesh_Dodge.h"
+#include "Effect_Potion.h"
 
 #include "UI.h"
 #include "UI_Animation.h"
@@ -120,6 +121,7 @@ HRESULT CMainApp::Render()
 HRESULT CMainApp::Ready_Prototype_Texture()
 {
 	/*-------------------------------------------포션----------------------------------------------------*/
+#pragma region POTION
 
 	/* For.Prototype_Component_Texture_Potion*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Potion"),
@@ -131,7 +133,11 @@ HRESULT CMainApp::Ready_Prototype_Texture()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GameUI/PKeyBoard.png")))))
 		return E_FAIL;
 
+#pragma endregion
+
 	/*-------------------------------------------상태바----------------------------------------------------*/
+
+#pragma region PLAYERSTAT
 
 	/* For.Prototype_Component_Texture_HexBar_Back*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_HexBar_Back"),
@@ -178,7 +184,11 @@ HRESULT CMainApp::Ready_Prototype_Texture()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/Player/sweat.png")))))
 		return E_FAIL;
 
+#pragma endregion
+
 	/* ----------------------------------------------인벤토리 관련------------------------------------------------------- */
+
+#pragma region INVENTORY
 
 	/* For.Prototype_Component_Texture_ItemSlot*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_ItemSlot"),
@@ -249,7 +259,24 @@ HRESULT CMainApp::Ready_Prototype_Texture()
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_UISelector"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Inventory/UI_selector.png")))))
 		return E_FAIL;
-	
+
+#pragma endregion
+
+	/* ----------------------------------------------이펙트 관련------------------------------------------------------- */
+
+#pragma	region EFFECT
+
+	/* For.Prototype_Component_Texture_PotionLine*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_PotionLine"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/Player/twinkle particle star.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_SpinningDiamond*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_SpinningDiamond"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/Player/spinning diamond.png")))))
+		return E_FAIL;
+
+#pragma endregion
 	return S_OK;
 }
 
@@ -257,7 +284,7 @@ HRESULT CMainApp::Ready_Prototype_Component()
 {
 	_matrix		PreTransformMatrix = XMMatrixIdentity();
 
-	/* For.Prototype_Component_Model_Particle_Instance_Dash*/
+	/* For.Prototype_Component_Model_Particle_Instance_Dodge*/
 	CVIBuffer_Mesh_Particle_Instance::DESC DashDesc{};
 	DashDesc.iNumInstance = 30;
 	DashDesc.isLoop = false;
@@ -269,8 +296,23 @@ HRESULT CMainApp::Ready_Prototype_Component()
 	DashDesc.vSpeed = _float2(0.5f, 1.f);
 
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Particle_Instance_Dash"),
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Particle_Instance_Dodge"),
 		CModel_Particle_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Models/NonAnim/Effect/Dash/Dash.Model"), &DashDesc, PreTransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_PotionLine */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_PotionLine"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/Potion/PotionLine.Effect")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_Confetti */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_Confetti"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/Potion/Confetti.Effect")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_HealthSpell */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_HealthSpell"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/Potion/HealthSpell.Effect")))))
 		return E_FAIL;
 
 	/* -----------------------------------------------테스트용-------------------------------------------------*/
@@ -448,9 +490,19 @@ HRESULT CMainApp::Ready_Prototype_Object()
 
 	/*---------------------------------------------이펙트(파티클)----------------------------------------------------*/
 
-		/* For.Prototype_GameObject_Dash */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Dash"),
-		CParticle_Mesh_Dash::Create(m_pDevice, m_pContext))))
+	/* For.Prototype_GameObject_Dodge */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Dodge"),
+		CEffect_Mesh_Dodge::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Effect_Potion */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_Potion"),
+		CEffect_Potion::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Effect_Part */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_Part"),
+		CEffect_Part::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 

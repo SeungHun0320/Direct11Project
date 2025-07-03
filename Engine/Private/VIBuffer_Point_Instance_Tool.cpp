@@ -137,21 +137,17 @@ void CVIBuffer_Point_Instance_Tool::Set_FrameXY(_float2 vFrameXY)
 	m_pContext->Unmap(m_pVBInstance, 0);
 }
 
-void CVIBuffer_Point_Instance_Tool::Set_Scale(_float2 vScale)
+void CVIBuffer_Point_Instance_Tool::Set_RotationZ(_float2 vRotationZ)
 {
 	D3D11_MAPPED_SUBRESOURCE SubResorce{};
 	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_DISCARD, 0, &SubResorce);
-	VTXPOINT_PARTICLE_INSTANCE* pVertices = static_cast<VTXPOINT_PARTICLE_INSTANCE*>(SubResorce.pData);
 
+	VTXPOINT_PARTICLE_INSTANCE* pVertices = static_cast<VTXPOINT_PARTICLE_INSTANCE*>(SubResorce.pData);
 	for (_uint i = 0; i < m_iNumInstance; i++)
 	{
-		XMStoreFloat4(&pVertices[i].vRight,XMLoadFloat4(&pVertices[i].vRight) * vScale.x);
-		XMStoreFloat4(&pVertices[i].vUp, XMLoadFloat4(&pVertices[i].vUp) * vScale.y);
-
-		m_pVertexInstances[i].vRight = pVertices[i].vRight;
-		m_pVertexInstances[i].vUp = pVertices[i].vUp;
+		m_pVertexInstances[i].fRotationZ = m_pGameInstance->Compute_Random(vRotationZ.x, vRotationZ.y);
+		pVertices[i].fRotationZ = m_pVertexInstances[i].fRotationZ;
 	}
-
 
 	m_pContext->Unmap(m_pVBInstance, 0);
 }
@@ -239,6 +235,8 @@ HRESULT CVIBuffer_Point_Instance_Tool::Initialize_Prototype(const DESC* pArg)
 	m_pSpeeds = new _float[m_iNumInstance];
 	ZeroMemory(m_pSpeeds, sizeof(_float) * m_iNumInstance);
 
+	_float fAngleStep = XM_2PI / m_iNumInstance;
+
 	/* 인스턴스들에게 값을 할당 */
 	for (_uint i = 0; i < m_iNumInstance; i++)
 	{
@@ -264,6 +262,11 @@ HRESULT CVIBuffer_Point_Instance_Tool::Initialize_Prototype(const DESC* pArg)
 		m_pVertexInstances[i].fMaxFrame = pDesc->vFrameXY.x * pDesc->vFrameXY.y;
 		m_pVertexInstances[i].vFrameXY = pDesc->vFrameXY;
 		m_pVertexInstances[i].fFrameSpeed = m_pGameInstance->Compute_Random(pDesc->vFrameSpeed.x, pDesc->vFrameSpeed.y);
+
+		_float fBaseAngle = fAngleStep * i;
+		_float fAngle = fBaseAngle + m_pGameInstance->Compute_Random(pDesc->vRotationZ.x, pDesc->vRotationZ.y);
+
+ 		m_pVertexInstances[i].fRotationZ = fAngle;
 	}
 
 	m_VBInstanceSubResourceData.pSysMem = m_pVertexInstances;

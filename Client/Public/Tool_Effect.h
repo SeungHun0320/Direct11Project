@@ -18,7 +18,6 @@ public:
 	{
 		_uint		iNumInstance{500};
 		_float2		vSize{0.5f, 1.f};
-		_float2     vScale{ 0.5f, 1.f };
 		_float3		vRange{5.f, 5.f, 5.f};
 		_float3		vCenter{0.f, 0.f, 0.f};
 		_float3		vPivot{0.f, 0.f, 0.f};
@@ -26,6 +25,7 @@ public:
 		_float2		vSpeed{1.f, 2.f};
 		_float2     vFrameXY{};
 		_float2     vFrameSpeed{};
+		_float2     vRotationZ{ 0.f, XM_2PI };
 		_bool		isLoop{true};
 	}DESC;
 private:
@@ -37,6 +37,9 @@ public:
 	virtual void Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 	virtual HRESULT Render_ExtraUI() override;
+
+public:
+	void Save_Load_Menu();
 
 private: /* ÆÄÆ¼Å¬ Desc */
 	DESC m_ParticleDesc = {};
@@ -53,9 +56,19 @@ private:
 	const _float m_fMinSpeed{ 0.1f };
 
 private:
+	EFFECT_PASS m_ePass = { EFFECT_PASS::PASS_END };
+	EFFECT_MOVE m_eMove = { EFFECT_MOVE::MOVE_END };
+
+private:
 	_float4 m_vColor{1.f, 1.f, 1.f, 1.f};
 	_bool   m_isSprite = { false };
+	_bool   m_isSoft = { false };
+
+private:
 	vector<_string> m_ProtoTextureNames;
+
+private:
+	_string m_strParticleTag = {};
 
 private:
 	void Add_ListBoxName();
@@ -64,6 +77,12 @@ private:
 	void Adjust_ParticleDesc();
 	void Adjust_ParticeSpriteDesc();
 	void Change_TextureListBox();
+
+private:
+	void Save_Menu();
+	void Load_Menu();
+	HRESULT Save_ParticleDesc(const _string& strParticleTag);
+	HRESULT Load_ParticleDesc(const _string& strParticleTag);
 
 private:
 	HRESULT Ready_Tool_Particle(const _wstring& strLayerTag);

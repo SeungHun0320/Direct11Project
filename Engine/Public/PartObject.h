@@ -37,8 +37,10 @@ public: /* 애니메이션 */
 	virtual const _float4x4* Get_BoneMatrix(const _string& strBoneName) const { return nullptr; };
 
 public: /* 콜라이더 */
-	virtual void Set_Active(_bool isActive = true) {};
 	virtual class CCollider* Get_Collider(_uint iColliderIndex = 0) const { return nullptr; };
+	
+public:
+	virtual void Set_Active(_bool isActive = true) {};
 
 protected:
 	const _float4x4* m_pParentMatrix = { nullptr };

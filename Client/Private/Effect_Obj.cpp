@@ -1,23 +1,23 @@
-#include "Particle_Obj.h"
+#include "Effect_Obj.h"
 
 #include "GameInstance.h"
 
-CParticle_Obj::CParticle_Obj(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CEffect_Obj::CEffect_Obj(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :CGameObject {pDevice, pContext}
 {
 }
 
-CParticle_Obj::CParticle_Obj(const CParticle_Obj& Prototype)
+CEffect_Obj::CEffect_Obj(const CEffect_Obj& Prototype)
     :CGameObject(Prototype)
 {
 }
 
-HRESULT CParticle_Obj::Initialize_Prototype()
+HRESULT CEffect_Obj::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT CParticle_Obj::Initialize(void* pArg)
+HRESULT CEffect_Obj::Initialize(void* pArg)
 {
     DESC* pDesc = static_cast<DESC*>(pArg);
 
@@ -32,23 +32,23 @@ HRESULT CParticle_Obj::Initialize(void* pArg)
     return S_OK;
 }
 
-void CParticle_Obj::Priority_Update(_float fTimeDelta)
+void CEffect_Obj::Priority_Update(_float fTimeDelta)
 {
 }
 
-LIFE CParticle_Obj::Update(_float fTimeDelta)
+LIFE CEffect_Obj::Update(_float fTimeDelta)
 {
     m_pVIBufferCom->Drop(fTimeDelta);
 
     return LIFE::NONE;
 }
 
-void CParticle_Obj::Late_Update(_float fTimeDelta)
+void CEffect_Obj::Late_Update(_float fTimeDelta)
 {
     m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONLIGHT, this);
 }
 
-HRESULT CParticle_Obj::Render()
+HRESULT CEffect_Obj::Render()
 {
     if (FAILED(Bind_ShaderResources()))
         return E_FAIL;
@@ -68,7 +68,7 @@ HRESULT CParticle_Obj::Render()
     return S_OK;
 }
 
-HRESULT CParticle_Obj::Ready_Components(void* pArg)
+HRESULT CEffect_Obj::Ready_Components(void* pArg)
 {
     DESC* pDesc = static_cast<DESC*>(pArg);
 
@@ -90,7 +90,7 @@ HRESULT CParticle_Obj::Ready_Components(void* pArg)
     return S_OK;
 }
 
-HRESULT CParticle_Obj::Bind_ShaderResources()
+HRESULT CEffect_Obj::Bind_ShaderResources()
 {
     if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
         return E_FAIL;
@@ -106,33 +106,33 @@ HRESULT CParticle_Obj::Bind_ShaderResources()
     return S_OK;
 }
 
-CParticle_Obj* CParticle_Obj::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CEffect_Obj* CEffect_Obj::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-    CParticle_Obj* pInstance = new CParticle_Obj(pDevice, pContext);
+    CEffect_Obj* pInstance = new CEffect_Obj(pDevice, pContext);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CParticle_Obj");
+        MSG_BOX("Failed to Created : CEffect_Obj");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-CGameObject* CParticle_Obj::Clone(void* pArg)
+CGameObject* CEffect_Obj::Clone(void* pArg)
 {
-    CParticle_Obj* pInstance = new CParticle_Obj(*this);
+    CEffect_Obj* pInstance = new CEffect_Obj(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
-        MSG_BOX("Failed to Cloned : CParticle_Obj");
+        MSG_BOX("Failed to Cloned : CEffect_Obj");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-void CParticle_Obj::Free()
+void CEffect_Obj::Free()
 {
     __super::Free();
 

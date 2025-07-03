@@ -296,9 +296,6 @@ public: // CPlayerState을(를) 통해 상속됨
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
 
-private:
-	_bool m_isUse = { false };
-
 public:
 	virtual void Free() override;
 };

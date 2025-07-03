@@ -32,11 +32,6 @@ HRESULT CUI2D_PlayerItemSlots::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
-	if (FAILED(Ready_Components(pArg)))
-		return E_FAIL;
-
-	if (FAILED(Ready_PartObjects()))
-		return E_FAIL;
 	Set_TextureIndex(PART_J_ITEMS, 7);
 
 	return S_OK;

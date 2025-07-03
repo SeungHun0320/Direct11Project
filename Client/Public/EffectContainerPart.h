@@ -11,13 +11,16 @@ public:
 	typedef struct tagUIContainerPartDesc : public CPartObject::DESC
 	{
 		LEVEL* pParentLevelID{};
-		_uint	iNumPartObjects{};
+		_uint  iNumPartObjects{};
 	}DESC;
 
 protected:
 	CEffectContainerPart(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CEffectContainerPart(const CEffectContainerPart& Prototype);
 	~CEffectContainerPart() = default;
+
+public:
+	virtual void Set_Active(_bool isActive = true) override { m_isActive = isActive;};
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -31,8 +34,9 @@ protected:
 	_uint				 m_iNumPartObjects = {};
 	vector<CPartObject*> m_PartObjects;
 
-protected: 	/* 어떤 레벨에서 쓸지 오브젝트 별로 변수 필요함 */
+protected: 	
 	LEVEL* m_pLevelID = { nullptr };
+	_bool  m_isActive = { false };
 
 protected:
 	HRESULT Add_PartObject(_uint iPartID, _uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, void* pArg);

@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Particle_Mesh.h"
+#include "Effect_Mesh.h"
 
 BEGIN(Client)
 
-class CParticle_Mesh_Dash final : public CParticle_Mesh
+class CEffect_Mesh_Dodge final : public CEffect_Mesh
 {
 public:
-	typedef struct tagParticleMeshDashDesc : public CParticle_Mesh::DESC
+	typedef struct tagParticleMeshDashDesc : public CEffect_Mesh::DESC
 	{
 		const _bool* pParentisUseStamina{ nullptr };
 		const _bool* pParentisNoStamina{ nullptr };
@@ -15,9 +15,9 @@ public:
 	}DESC;
 
 private:
-	CParticle_Mesh_Dash(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CParticle_Mesh_Dash(const CParticle_Mesh_Dash& Prototype);
-	virtual ~CParticle_Mesh_Dash() = default;
+	CEffect_Mesh_Dodge(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CEffect_Mesh_Dodge(const CEffect_Mesh_Dodge& Prototype);
+	virtual ~CEffect_Mesh_Dodge() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -39,7 +39,7 @@ protected:
 	virtual HRESULT Ready_Components(void* pArg) override;
 
 public:
-	static CParticle_Mesh_Dash* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CEffect_Mesh_Dodge* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 };

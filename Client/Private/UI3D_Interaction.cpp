@@ -27,12 +27,6 @@ HRESULT CUI3D_Interaction::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
-	if (FAILED(Ready_Components(pArg)))
-		return E_FAIL;
-
-	if (FAILED(Ready_PartObjects()))
-		return E_FAIL;
-
 	return S_OK;
 }
 

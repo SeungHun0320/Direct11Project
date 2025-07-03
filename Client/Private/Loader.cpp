@@ -71,7 +71,7 @@
 #include "UI2D_Reward.h"
 
 /* 파티클들 */
-#include "Particle_Obj.h"
+#include "Effect_Obj.h"
 
 /* 툴 용 */
 #include "Particle_Tool.h"
@@ -580,7 +580,7 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 
 	/* For.Prototype_GameObject_Snow */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Snow"),
-		CParticle_Obj::Create(m_pDevice, m_pContext))))
+		CEffect_Obj::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	///* For.Prototype_GameObject_Effect */
@@ -937,7 +937,7 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 
 	/* For.Prototype_Component_Texture_SpikeParticle*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_SpikeParticle"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/Player/spike_particle.png")))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/Player/twinkle particle star.png")))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_SpinningDiamond*/
@@ -1102,6 +1102,7 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 	ToolDesc.isLoop = true;
 	ToolDesc.vFrameXY = _float2(4.f, 2.f);
 	ToolDesc.vFrameSpeed = _float2(10.f, 15.f);
+	ToolDesc.vRotationZ = _float2(10.f, 15.f);
 
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_VIBuffer_Tool"),
 		CVIBuffer_Point_Instance_Tool::Create(m_pDevice, m_pContext, &ToolDesc))))

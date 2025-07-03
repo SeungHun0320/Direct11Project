@@ -21,8 +21,8 @@
 /* ÃÑ¾Ë */
 #include "Bullet_FireCracker.h"
 /* ÀÌÆåÆ®(ÆÄÆ¼Å¬) */
-#include "Particle_Part.h"
-#include "Particle_Mesh_Dash.h"
+#include "Effect_Mesh_Dodge.h"
+#include "Effect_Potion.h"
 
 /* ¥W, */
 #include "Monster.h"
@@ -274,13 +274,13 @@ void CPlayer::CheckChange_Anim(PART ePart, _uint iNextIndex, _bool isLoop, _floa
 		Change_Animation(ePart, iNextIndex, true, 0.2f);
 }
 
-void CPlayer::Set_Active(PART ePart, _bool isActive)
+void CPlayer::Set_Collider_Active(PART ePart, _bool isActive)
 {
 	if(COLLIDER_ID::BUSH != m_eCurInteractID)
 		m_PartObjects[ePart]->Set_Active(isActive);
 }
 
-void CPlayer::Set_Active(WEAPON_TYPE eType, _bool isActive)
+void CPlayer::Set_Collider_Active(WEAPON_TYPE eType, _bool isActive)
 {
 	m_pWeaponPart->Set_Active(eType, isActive);
 }
@@ -288,6 +288,11 @@ void CPlayer::Set_Active(WEAPON_TYPE eType, _bool isActive)
 CCollider* CPlayer::Get_Collider(PART ePart, _uint iColliderIndex)
 {
 	return m_PartObjects[ePart]->Get_Collider(iColliderIndex);
+}
+
+void CPlayer::Set_Effect_Active(_uint iPart, _bool isActive)
+{
+	m_PartObjects[iPart]->Set_Active(isActive);
 }
 
 void CPlayer::Dodge(_fvector vDir, _float fTimeDelta, _float fSpeed)
@@ -1138,16 +1143,26 @@ HRESULT CPlayer::Ready_PartObjects()
 	if (FAILED(__super::Add_PartObject(PART_SWEAT, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI3D_PlayerSweat"), &SweatDesc)))
 		return E_FAIL;
 
-	CParticle_Mesh_Dash::DESC DashDesc{};
+	CEffect_Mesh_Dodge::DESC DashDesc{};
 
 	DashDesc.pParentLevelID = &eLevelID;
 	DashDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
-	DashDesc.strParticleModelTag = TEXT("Prototype_Component_Model_Particle_Instance_Dash");
+	DashDesc.strParticleModelTag = TEXT("Prototype_Component_Model_Particle_Instance_Dodge");
 	DashDesc.pParentisNoStamina = &m_isNoStamina;
 	DashDesc.pParentisUseStamina = &m_isUseStamina;
 	DashDesc.pParentisRoll = &m_isRoll;
 
-	if (FAILED(__super::Add_PartObject(PART_EFFECT, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Dash"), &DashDesc)))
+	if (FAILED(__super::Add_PartObject(PART_DODGE, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Dodge"), &DashDesc)))
+		return E_FAIL;
+	
+	CEffect_Potion::DESC EffectPotionDesc{};
+
+	EffectPotionDesc.iNumPartObjects = CEffect_Potion::PART_END;
+	EffectPotionDesc.pParentLevelID = &eLevelID;
+	EffectPotionDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	EffectPotionDesc.pParentIsUsePotion = &m_isUsePotion;
+
+	if (FAILED(__super::Add_PartObject(PART_EFFECT_POTION, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_Potion"), &EffectPotionDesc)))
 		return E_FAIL;
 
 	return S_OK;

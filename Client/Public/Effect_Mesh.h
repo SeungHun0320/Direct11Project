@@ -10,7 +10,7 @@ END
 
 BEGIN(Client)
 
-class CParticle_Mesh : public CPartObject
+class CEffect_Mesh : public CPartObject
 {
 public:
 	typedef struct tagParticleMeshDesc : public CPartObject::DESC
@@ -20,9 +20,9 @@ public:
 	}DESC;
 
 protected:
-	CParticle_Mesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CParticle_Mesh(const CParticle_Mesh& Prototype);
-	virtual ~CParticle_Mesh() = default;
+	CEffect_Mesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CEffect_Mesh(const CEffect_Mesh& Prototype);
+	virtual ~CEffect_Mesh() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -45,7 +45,7 @@ protected:
 	HRESULT Bind_ShaderResources();
 
 public:
-	static CParticle_Mesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CEffect_Mesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 };

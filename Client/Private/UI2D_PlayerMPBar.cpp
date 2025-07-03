@@ -29,12 +29,6 @@ HRESULT CUI2D_PlayerMPBar::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
-	if (FAILED(Ready_Components(pArg)))
-		return E_FAIL;
-
-	if (FAILED(Ready_PartObjects()))
-		return E_FAIL;
-
 	m_fLerpSpeed = 5.f;
 
 	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(140.f, 0.f, 0.f, 1.f));

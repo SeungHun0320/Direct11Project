@@ -15,7 +15,7 @@ void CPlayerState_Dodge::Enter(_float fTimeDelta)
 	{
 		m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::DODGE, false, 0.1f);
 		m_fDuration = 0.7f;
-		m_pOwner->Set_Active(CPlayer::PART_BODY, false);
+		m_pOwner->Set_Collider_Active(CPlayer::PART_BODY, false);
 	}
 	else
 	{
@@ -37,7 +37,7 @@ void CPlayerState_Dodge::Execute(_float fTimeDelta)
 
 	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta)) /* 재생 시간 */
 	{
-		m_pOwner->Set_Active(CPlayer::PART_BODY);
+		m_pOwner->Set_Collider_Active(CPlayer::PART_BODY);
 
 		m_pOwner->LookTarget(fTimeDelta);
 

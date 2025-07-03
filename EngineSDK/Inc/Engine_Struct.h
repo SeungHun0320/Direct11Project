@@ -153,7 +153,7 @@ namespace Engine
 		float		    fMaxFrame;
 		float           fFrameSpeed;
 
-		float          fRotationZ;
+		float           fRotationZ;
 
 		static const unsigned int					iNumElements = { 10 };
 		static const D3D11_INPUT_ELEMENT_DESC		Elements[iNumElements];

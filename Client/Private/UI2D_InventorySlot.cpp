@@ -34,12 +34,6 @@ HRESULT CUI2D_InventorySlot::Initialize(void* pArg)
     if (FAILED(__super::Initialize(pArg)))
         return E_FAIL;
 
-    if (FAILED(Ready_Components(pArg)))
-        return E_FAIL;
-
-    if (FAILED(Ready_PartObjects()))
-        return E_FAIL;
-
     Set_UIVisible(PART_SELECTOR, false);
     Set_UIVisible(PART_ITEMS, false);
 

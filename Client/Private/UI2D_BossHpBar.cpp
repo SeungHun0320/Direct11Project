@@ -30,12 +30,6 @@ HRESULT CUI2D_BossHPBar::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
-	if (FAILED(Ready_Components(pArg)))
-		return E_FAIL;
-
-	if (FAILED(Ready_PartObjects()))
-		return E_FAIL;
-
 	m_fLerpSpeed = 5.f;
 
 	return S_OK;

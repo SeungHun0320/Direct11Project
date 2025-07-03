@@ -28,11 +28,20 @@ HRESULT CEffectContainerPart::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
+	if (FAILED(Ready_Components(pArg)))
+		return E_FAIL;
+
+	if (FAILED(Ready_PartObjects()))
+		return E_FAIL;
+
 	return S_OK;
 }
 
 void CEffectContainerPart::Priority_Update(_float fTimeDelta)
 {
+	if (!m_isActive)
+		return;
+
 	for (auto& pPartObject : m_PartObjects)
 	{
 		if (nullptr != pPartObject)
@@ -42,6 +51,9 @@ void CEffectContainerPart::Priority_Update(_float fTimeDelta)
 
 LIFE CEffectContainerPart::Update(_float fTimeDelta)
 {
+	if (!m_isActive)
+		return LIFE::NONE;
+
 	LIFE eLife = {};
 	for (auto Iter = m_PartObjects.begin();
 		Iter != m_PartObjects.end();)
@@ -66,6 +78,9 @@ LIFE CEffectContainerPart::Update(_float fTimeDelta)
 
 void CEffectContainerPart::Late_Update(_float fTimeDelta)
 {
+	if (!m_isActive)
+		return;
+
 	for (auto& pPartObject : m_PartObjects)
 	{
 		if (nullptr != pPartObject)

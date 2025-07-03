@@ -32,11 +32,6 @@ HRESULT CUI2D_PlayerPotion::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
-	if (FAILED(Ready_Components(pArg)))
-		return E_FAIL;
-
-	if (FAILED(Ready_PartObjects()))
-		return E_FAIL;
 
 	for (_int i = PART_POTION; i >= m_pInventory->Get_NumPotion(); i--)
 		Set_UIVisible(i, false);
@@ -64,9 +59,7 @@ void CUI2D_PlayerPotion::Late_Update(_float fTimeDelta)
 	Set_UIVisible(iNumPotion - 1, true);
 
 	for (_int i = 0; i < iNumPotion; i++)
-	{
 		Set_TextureIndex(i, i < iCurNumPotion ? 0 : 1);
-	}
 		
 
 	__super::Late_Update(fTimeDelta);

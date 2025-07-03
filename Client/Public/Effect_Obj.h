@@ -11,7 +11,7 @@ END
 
 BEGIN(Client)
 
-class CParticle_Obj : public CGameObject
+class CEffect_Obj : public CGameObject
 {
 public:
 	typedef struct tagParticleObjDesc : public CGameObject::DESC
@@ -23,9 +23,9 @@ public:
 	}DESC;
 
 private:
-	CParticle_Obj(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CParticle_Obj(const CParticle_Obj& Prototype);
-	virtual ~CParticle_Obj() = default;
+	CEffect_Obj(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CEffect_Obj(const CEffect_Obj& Prototype);
+	virtual ~CEffect_Obj() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -48,7 +48,7 @@ private:
 	HRESULT Bind_ShaderResources();
 
 public:
-	static CParticle_Obj* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CEffect_Obj* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 };

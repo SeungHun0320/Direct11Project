@@ -38,10 +38,10 @@ LIFE CParticle_Tool::Update(_float fTimeDelta)
 {
 	switch (m_eType)
 	{
-	case DROP:
+	case EFFECT_MOVE::DROP:
 		m_pVIBufferCom->Drop(fTimeDelta);
 		break;
-	case SPREAD:
+	case EFFECT_MOVE::SPREAD:
 		m_pVIBufferCom->Spread(fTimeDelta);
 		break;
 	}
@@ -101,7 +101,7 @@ HRESULT CParticle_Tool::Ready_Components(void* pArg)
 		return E_FAIL;
 
 	/* For.Com_Texture */
-	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_Component_Texture_SpinningDiamondParticle"),
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_Component_Texture_SpikeParticle"),
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
 
@@ -122,6 +122,12 @@ HRESULT CParticle_Tool::Bind_ShaderResources()
 		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_vColor", &m_vColor, sizeof(_float4))))
+		return E_FAIL;
+
+	if(FAILED(m_pShaderCom->Bind_RawValue("g_fFar", m_pGameInstance->Get_Far_Ptr(), sizeof(_float))))
+		return E_FAIL;
+	
+	if(FAILED(m_pGameInstance->Bind_RT_ShaderResource(TEXT("Target_Depth"), "g_DepthTexture", m_pShaderCom)))
 		return E_FAIL;
 
 	return S_OK;

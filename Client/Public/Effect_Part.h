@@ -11,22 +11,24 @@ END
 
 BEGIN(Client)
 
-class CParticle_Part : public CPartObject
+class CEffect_Part : public CPartObject
 {
 public:
 	typedef struct tagParticlePartDesc : public CPartObject::DESC
 	{
-		_wstring strParticleBufferTag{};
-		_wstring strParticleTextureTag{};
-		const _float4x4* pSocketMatrix = { nullptr };
-		LEVEL* pParentLevelID = { nullptr };
+		_wstring strParticeFilePath{};
+
+		_wstring    strParticleTextureTag{};
+		_wstring    strParticleBufferTag{};
+
+		LEVEL*      pParentLevelID = { nullptr };
 
 	}DESC;
 
 protected:
-	CParticle_Part(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CParticle_Part(const CParticle_Part& Prototype);
-	virtual ~CParticle_Part() = default;
+	CEffect_Part(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CEffect_Part(const CEffect_Part& Prototype);
+	virtual ~CEffect_Part() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -36,23 +38,27 @@ public:
 	virtual void Late_Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
+public:
+	void Effect_Reset();
+
 protected:
-	CShader* m_pShaderCom = { nullptr };
+	CShader*  m_pShaderCom = { nullptr };
 	CTexture* m_pTextureCom = { nullptr };
 	CVIBuffer_Point_Instance* m_pVIBufferCom = { nullptr };
 
 protected:
-	const _float4x4* m_pSocketMatrix = { nullptr };
-
-protected:
-	LEVEL*  m_pParentLevelID = { nullptr };
+	_float4		m_vColor = {};
+	EFFECT_PASS m_ePass = { EFFECT_PASS::PASS_END };
+	EFFECT_MOVE m_eMoveType = { EFFECT_MOVE::MOVE_END };
+	LEVEL*		m_pParentLevelID = { nullptr };
 
 protected:
 	virtual HRESULT Ready_Components(void* pArg);
+	virtual HRESULT Ready_Desc(const wstring& strParticleFilePath);
 	HRESULT Bind_ShaderResources();
 
 public:
-	static CParticle_Part* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CEffect_Part* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 };

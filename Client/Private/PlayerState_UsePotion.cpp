@@ -12,7 +12,6 @@ void CPlayerState_UsePotion::Enter(_float fTimeDelta)
 {
 	m_fDuration = 1.9f;
 	m_fTimeAcc = 0.f;
-	m_isUse = false;
 
 	for (_uint i = 0; i < CPlayer::MESHES_END; i++)
 	{
@@ -32,10 +31,11 @@ void CPlayerState_UsePotion::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 
-	if (1.f <= m_fTimeAcc && !m_isUse)
+	if (1.f <= m_fTimeAcc && !m_pOwner->Get_isUsePotion())
 	{
 		m_pOwner->Heal();
-		m_isUse = true;
+		m_pOwner->Set_isUsePotion(true);
+		m_pOwner->Set_Effect_Active(CPlayer::PART_EFFECT_POTION);
 	}
 
 	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta))
@@ -59,7 +59,7 @@ void CPlayerState_UsePotion::Exit()
 {
 	m_fDuration = 0.f;
 	m_fTimeAcc = 0.f;
-	m_isUse = false;
+	m_pOwner->Set_isUsePotion(false);
 }
 
 void CPlayerState_UsePotion::Free()

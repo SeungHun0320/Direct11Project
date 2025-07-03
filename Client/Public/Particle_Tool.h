@@ -15,7 +15,8 @@ class CParticle_Tool final : public CGameObject
 {
 public:
 	enum MOVEMENT { DROP, SPREAD, MOVEMENT_END };
-	enum PASS { DEFAULT, TOOL, SPRITE, PASS_END };
+	enum PASS { DEFAULT, TOOL, SPRITE, ROTATION,
+				TOOL_BLEND, SPRITE_BLEND, ROTATION_BLEND, PASS_END };
 public:
 	typedef struct tagParticleObjDesc : public CGameObject::DESC
 	{
@@ -32,11 +33,11 @@ public:
 		m_vColor = vColor;
 	};
 
-	void Change_Move(MOVEMENT eType) {
+	void Change_Move(EFFECT_MOVE eType) {
 		m_eType = eType;
 	}
 
-	void Change_Pass(PASS ePass) {
+	void Change_Pass(EFFECT_PASS ePass) {
 		m_ePass = ePass;
 	}
 
@@ -53,8 +54,8 @@ public:
 
 private:
 	_float4							m_vColor{1.f, 1.f, 1.f, 255.f};
-	MOVEMENT						m_eType{ MOVEMENT_END };
-	PASS							m_ePass{ DEFAULT };
+	EFFECT_MOVE						m_eType{ EFFECT_MOVE::MOVE_END };
+	EFFECT_PASS						m_ePass{ EFFECT_PASS::PASS_END };
 
 	CTexture*						m_pTextureCom = { nullptr };
 	CShader*						m_pShaderCom = { nullptr };

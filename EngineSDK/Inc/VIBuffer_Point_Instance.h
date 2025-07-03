@@ -16,6 +16,8 @@ public:
 		_float2 vFrameXY{};
 		_float2 vFrameSpeed{};
 		_bool   isLoop{};
+
+		_float2 vRotationZ{};
 	}DESC;
 
 private:
@@ -25,10 +27,13 @@ private:
 
 public:
 	virtual HRESULT Initialize_Prototype(const DESC* pArg);
+	virtual HRESULT Initialize_Prototype(const _wstring& strParticleFilePath);
 	virtual HRESULT Initialize(void* pArg);
 
+	virtual void Reset() override;
 	virtual void Drop(_float fTimeDelta) override;
 	virtual void Spread(_float fTimeDelta) override;
+
 
 
 private:
@@ -41,6 +46,7 @@ private:
 
 public:
 	static CVIBuffer_Point_Instance* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const DESC* pArg);
+	static CVIBuffer_Point_Instance* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _wstring& strParticleFilePath);
 	virtual CComponent* Clone(void* pArg)override;
 	virtual void Free() override;
 };
