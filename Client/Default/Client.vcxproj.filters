@@ -490,6 +490,12 @@
     <Filter Include="02.GameObjects\09.Effect\Container\Mesh\Anim\Ice">
       <UniqueIdentifier>{2b8fe5b8-6789-47c7-902c-26f649358a2e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\09.Effect\02. BossEffect">
+      <UniqueIdentifier>{ba41d300-b1aa-429d-bf3f-b12d0d42b7de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\09.Effect\02. BossEffect\NewFilter1">
+      <UniqueIdentifier>{c4c1e5d0-72c6-4097-beb4-e2e38e94de3c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">

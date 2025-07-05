@@ -43,7 +43,7 @@ LIFE CEffect_Potion::Update(_float fTimeDelta)
 	if ((*m_pParentIsUsePotion) && !m_isUse)
 	{
 		for (_uint i = 0; i < PART_END; i++)
-			Effect_Reset(i);
+			Reset_Effect(i);
 		m_isUse = true;
 	}
 
@@ -60,9 +60,9 @@ HRESULT CEffect_Potion::Render()
 	return S_OK;
 }
 
-void CEffect_Potion::Effect_Reset(_uint iPart)
+void CEffect_Potion::Reset_Effect(_uint iPart)
 {
-	dynamic_cast<CEffect_Part*>(m_PartObjects[iPart])->Effect_Reset();
+	dynamic_cast<CEffect_Part*>(m_PartObjects[iPart])->Reset_Effect();
 }
 
 HRESULT CEffect_Potion::Ready_Components(void* pArg)

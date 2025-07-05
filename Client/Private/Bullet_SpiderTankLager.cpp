@@ -29,7 +29,7 @@ HRESULT CBullet_SpiderTankLager::Initialize(void* pArg)
 	m_pTransformCom->Set_Matrix(XMLoadFloat4x4(m_pParentMatrix));
 
 	m_fDeadTime = 1.f;
-	m_fAttack = 30.f;
+	m_fAttack = 40.f;
 	m_fStaggerValue = 50.f;
 
     return S_OK;

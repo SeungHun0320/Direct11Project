@@ -19,7 +19,12 @@ HRESULT CEffect_AnimMesh_Ice::Initialize_Prototype()
 HRESULT CEffect_AnimMesh_Ice::Initialize(void* pArg)
 {
 	if (FAILED(__super::Initialize(pArg)))
-		return E_FAIL;  
+		return E_FAIL;
+
+	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSetW(m_pTransformCom->Get_State(STATE::POSITION) + XMVectorSet(0.f, 0.5f, 0.f, 0.f), 1.f));
+	m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(180.f));
+
+	m_pModelCom->Set_Animation(0, false);
 
     return S_OK;
 }
@@ -31,6 +36,8 @@ void CEffect_AnimMesh_Ice::Priority_Update(_float fTimeDelta)
 
 LIFE CEffect_AnimMesh_Ice::Update(_float fTimeDelta)
 {
+	m_pModelCom->Play_Animation(fTimeDelta);
+
     return __super::Update(fTimeDelta);
 }
 
@@ -49,7 +56,7 @@ HRESULT CEffect_AnimMesh_Ice::Ready_Components(void* pArg)
 	if (FAILED(__super::Ready_Components(pArg)))
 		return E_FAIL;
 
-    return E_NOTIMPL;
+    return S_OK;
 }
 
 CEffect_AnimMesh_Ice* CEffect_AnimMesh_Ice::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

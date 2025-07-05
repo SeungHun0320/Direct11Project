@@ -308,7 +308,7 @@ void CPlayer::Dodge(_fvector vDir, _float fTimeDelta, _float fSpeed)
 void CPlayer::Move(_fvector vDir, _float fTimeDelta, _float fSpeed)
 {
 	m_pTransformCom->Set_SpeedPerSec(fSpeed);
-	m_pTransformCom->LookDirLerp(vDir, fTimeDelta, fSpeed * 1.5f);
+	m_pTransformCom->LookDirLerp(vDir, fTimeDelta, fSpeed);
 	m_pTransformCom->Go_Dir(vDir, fTimeDelta, m_pNavigationCom);
 }
 
@@ -918,10 +918,10 @@ void CPlayer::On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDura
 		else
 		{
 			m_fInvicibleTime = fInvicibleDuration;
+			Change_States(STATES::HIT);
 		}
 
 		m_isInvincible = true;
-		Change_States(STATES::HIT);
 	}
 }
 
@@ -939,7 +939,6 @@ void CPlayer::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObjec
 			return;
 
 		m_pTransformCom->Apply_Sliding(pCollider->Get_SlidingVector(), m_pNavigationCom);
-		m_isBlocked = true;
 	}
 
 	if (CI_MONSTER_ATTACK(eColliderID))
@@ -1169,6 +1168,18 @@ HRESULT CPlayer::Ready_PartObjects()
 
 	if (FAILED(__super::Add_PartObject(PART_EFFECT_POTION, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_Potion"), &EffectPotionDesc)))
 		return E_FAIL;	
+
+	CEffect_Dagger::DESC EffectDaggerDesc{};
+
+	EffectDaggerDesc.iNumPartObjects = CEffect_Dagger::PART_END;
+	EffectDaggerDesc.pParentLevelID = &eLevelID;
+	EffectDaggerDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	EffectDaggerDesc.pParentWeaponType = &m_eWeaponType;
+	EffectDaggerDesc.pParentisDaggerAttack = &m_isDaggerAttack;
+
+	if (FAILED(__super::Add_PartObject(PART_EFFECT_DAGGER, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_Dagger"), &EffectDaggerDesc)))
+		return E_FAIL;
+
 
 	return S_OK;
 }

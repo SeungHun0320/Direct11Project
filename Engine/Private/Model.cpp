@@ -79,6 +79,11 @@ void CModel::Set_NextTickPerSecond(_float fTickPerSecond)
     m_Animations[m_iNextAnimIndex]->Set_TickPerSecond(fTickPerSecond);
 }
 
+void CModel::Reset_Animation()
+{
+    m_Animations[m_iCurrentAnimIndex]->Reset();
+}
+
 HRESULT CModel::Bind_Material(CShader* pShader, const _char* pConstantName, _uint iMeshIndex, TEX_TYPE eType, _uint iTextureIndex)
 {
     if (iMeshIndex >= m_iNumMeshes)

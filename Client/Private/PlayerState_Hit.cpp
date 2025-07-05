@@ -81,6 +81,7 @@ void CPlayerState_Hit::Exit()
 	m_fTimeAcc = 0.f;
 	m_fDownTime = 0.f;
 	m_fDuration = 0.f;
+	m_pOwner->Set_IsStagger();
 	XMStoreFloat3(&m_vStaggerDir, XMVectorZero());
 }
 

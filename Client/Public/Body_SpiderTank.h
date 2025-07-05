@@ -7,6 +7,7 @@
 
 BEGIN(Engine)
 class CCollider;
+class CTexture;
 class CShader;
 class CModel;
 END
@@ -50,6 +51,7 @@ public:
 private:
 	CCollider* m_pColliderCom[CSpiderTank::COL_END] = {nullptr};
 	CShader*   m_pShaderCom = { nullptr };
+	CTexture*  m_pTextureCom = { nullptr };
 	CModel*    m_pModelCom = { nullptr };
 
 private:

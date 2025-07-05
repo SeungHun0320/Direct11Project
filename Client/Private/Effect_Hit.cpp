@@ -51,9 +51,9 @@ HRESULT CEffect_Hit::Render()
 	return S_OK;
 }
 
-void CEffect_Hit::Effect_Reset(_uint iPart)
+void CEffect_Hit::Reset_Effect(_uint iPart)
 {
-	dynamic_cast<CEffect_Part*>(m_PartObjects[iPart])->Effect_Reset();
+	dynamic_cast<CEffect_Part*>(m_PartObjects[iPart])->Reset_Effect();
 }
 
 HRESULT CEffect_Hit::Ready_Components(void* pArg)

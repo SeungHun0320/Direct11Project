@@ -29,6 +29,8 @@ public:
 		m_isBlended = isBlended;
 	}
 
+	void Reset_Animation();
+
 	void Change_Animation(_uint iNextIndex, _bool isLoop = true, _float fBlendDuration = 0.f, _bool isBlended = true) {		
 		if (false == isBlended)
 			m_iCurrentAnimIndex = iNextIndex;

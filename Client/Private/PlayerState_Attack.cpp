@@ -66,9 +66,11 @@ void CPlayerState_Attack1::Execute(_float fTimeDelta)
 
     Check_ComboKey();
 
-    if(m_fAttackStartTime <= m_fTimeAcc)
+    if (m_fAttackStartTime <= m_fTimeAcc)
+    {
         m_pOwner->Set_Collider_Active(m_eWeaponType);
-
+    }
+      
     if (WEAPON_TYPE::STICK == m_eWeaponType)
     {
         if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta))
@@ -123,6 +125,12 @@ void CPlayerState_Attack1::Execute(_float fTimeDelta)
     }
     else if (WEAPON_TYPE::DAGGER == m_eWeaponType)
     {
+        if (0.4f <= m_fTimeAcc)
+        {
+            m_pOwner->Set_isDaggerAttack();
+            m_pOwner->Set_Effect_Active(CPlayer::PART_EFFECT_DAGGER, true);
+        }
+
         if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta))
         {
             m_pOwner->Set_Collider_Active(m_eWeaponType, false);
@@ -139,14 +147,10 @@ void CPlayerState_Attack1::Execute(_float fTimeDelta)
         else if (0.3f <= m_fTimeAcc)
         {
             if (!isBlocked)
-                m_pOwner->Go_Dir(XMLoadFloat3(&m_vInputDir), fTimeDelta, 3.f);
+                m_pOwner->Go_Dir(XMLoadFloat3(&m_vInputDir), fTimeDelta, 1.f);
         }
 
     }
-
-
-    if (m_pOwner->Get_Dead())
-        m_pOwner->Change_States(CPlayer::STATES::DIE);
 }
 
 void CPlayerState_Attack1::Exit()
@@ -157,6 +161,7 @@ void CPlayerState_Attack1::Exit()
     m_iMaxCombo = 0;
     XMStoreFloat3(&m_vInputDir, XMVectorZero());
     m_pOwner->Set_Collider_Active(m_eWeaponType, false);
+    m_pOwner->Set_isDaggerAttack(false);
 }
 
 void CPlayerState_Attack1::Free()

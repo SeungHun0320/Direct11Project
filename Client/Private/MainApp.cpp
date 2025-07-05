@@ -23,6 +23,7 @@
 #include "Effect_Stick.h"
 #include "Effect_Sword.h"
 #include "Effect_Dagger.h"
+#include "Effect_AnimMesh_Ice.h"
 
 #include "UI.h"
 #include "UI_Animation.h"
@@ -289,6 +290,16 @@ HRESULT CMainApp::Ready_Prototype_Texture()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/NoNormal.png")))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_Starburst*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Starburst"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/Upgrade UI_starburst.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Swirl*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Swirl"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/hex bokeh particle.png")))))
+		return E_FAIL;
+
 #pragma endregion
 	return S_OK;
 }
@@ -326,6 +337,16 @@ HRESULT CMainApp::Ready_Prototype_Component()
 	/* For.Prototype_Component_VIBuffer_HealthSpell */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_HealthSpell"),
 		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/Potion/HealthSpell.Effect")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_IceSwirl */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_IceSwirl"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/Dagger/IceSwirl.Effect")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_IceStardust */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_IceStardust"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/Dagger/IceStardust.Effect")))))
 		return E_FAIL;
 
 
@@ -410,6 +431,13 @@ HRESULT CMainApp::Ready_Prototype_Object()
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Fox"),
 	CModel::Create(m_pDevice, m_pContext, MODEL::ANIM, TEXT("../Bin/Resources/Models/Anim/Fox/_Fox.Model"), PreTransformMatrix))))
 	return E_FAIL;
+
+
+	/*For.Prototype_Component_Model_IceBlast*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_IceBlast"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::ANIM, TEXT("../Bin/Resources/Models/Anim/Effect/IceBlast/IceBlast.Model"), PreTransformMatrix))))
+		return E_FAIL;
 
 	/*For.Prototype_GameObject_Player */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Player"),
@@ -517,6 +545,16 @@ HRESULT CMainApp::Ready_Prototype_Object()
 	/* For.Prototype_GameObject_Effect_Sword */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_Sword"),
 		CEffect_Sword::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Effect_Dagger */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_Dagger"),
+		CEffect_Dagger::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Effect_AnimMesh_IceBlast */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_AnimMesh_IceBlast"),
+		CEffect_AnimMesh_Ice::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Effect_Part */

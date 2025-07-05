@@ -30,7 +30,7 @@ HRESULT CBullet_SpiderTankOrb::Initialize(void* pArg)
 	m_pColliderCom->Set_Active(false);
 
 	m_fDeadTime = 3.f;
-	m_fAttack = 5.f;
+	m_fAttack = 20.f;
 	m_fStaggerValue = 10.f;
 
 	return S_OK;

@@ -49,9 +49,9 @@ HRESULT CEffect_Stick::Render()
 	return S_OK;
 }
 
-void CEffect_Stick::Effect_Reset(_uint iPart)
+void CEffect_Stick::Reset_Effect(_uint iPart)
 {
-	dynamic_cast<CEffect_Part*>(m_PartObjects[iPart])->Effect_Reset();
+	dynamic_cast<CEffect_Part*>(m_PartObjects[iPart])->Reset_Effect();
 }
 
 HRESULT CEffect_Stick::Ready_Components(void* pArg)

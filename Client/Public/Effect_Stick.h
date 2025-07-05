@@ -35,7 +35,7 @@ private:
 	const _float4x4* m_pSocketMatrix = { nullptr };
 
 private:
-	void Effect_Reset(_uint iPart);
+	void Reset_Effect(_uint iPart);
 
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;

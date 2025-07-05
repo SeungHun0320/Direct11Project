@@ -33,7 +33,7 @@ private:
 	WEAPON_TYPE* m_pParentWeaponType = { nullptr };
 
 public:
-	void Effect_Reset(_uint iPart);
+	void Reset_Effect(_uint iPart);
 
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;

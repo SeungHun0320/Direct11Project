@@ -32,6 +32,10 @@ public:
 	virtual void Late_Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
+public:
+	void Reset_Animation();
+	void Set_MeshVisible(_bool IsVisible);
+
 protected:
 	LEVEL*   m_pParentLevelID = { nullptr };
 

@@ -50,6 +50,7 @@ public: /* 피격 관련 */
 	_bool Get_IsStagger() const {
 		return m_isStagger;
 	}
+	void Set_IsStagger(_bool isStagger = false) { m_isStagger = isStagger; }
 
 public: /* 충돌 관련 */
 	_bool Get_IsBlocked() const {

@@ -21,6 +21,7 @@ HRESULT CEffect_Part::Initialize(void* pArg)
 	DESC* pDesc = static_cast<DESC*>(pArg);
 
 	m_pParentLevelID = pDesc->pParentLevelID;
+	m_eOrientation = pDesc->eOrientation;
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -50,14 +51,22 @@ LIFE CEffect_Part::Update(_float fTimeDelta)
 		break;
 	}
 
-	_matrix ParentMatrix = XMLoadFloat4x4(m_pParentMatrix);
+	if (WORLD == m_eOrientation)
+	{
+		_matrix ParentMatrix = XMLoadFloat4x4(m_pParentMatrix);
 
-	ParentMatrix.r[0] = XMVectorSet(1.f, 0.f, 0.f, 0.f);
-	ParentMatrix.r[1] = XMVectorSet(0.f, 1.f, 0.f, 0.f);
-	ParentMatrix.r[2] = XMVectorSet(0.f, 0.f, 1.f, 0.f);
+		ParentMatrix.r[0] = XMVectorSet(1.f, 0.f, 0.f, 0.f);
+		ParentMatrix.r[1] = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+		ParentMatrix.r[2] = XMVectorSet(0.f, 0.f, 1.f, 0.f);
 
-	XMStoreFloat4x4(&m_CombinedWorldMatrix,
-		XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Float4x4()) * ParentMatrix);
+		XMStoreFloat4x4(&m_CombinedWorldMatrix,
+			XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Float4x4()) * ParentMatrix);
+	}
+	else if (LOCAL == m_eOrientation)
+	{
+		XMStoreFloat4x4(&m_CombinedWorldMatrix,
+			XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Float4x4()) * XMLoadFloat4x4(m_pParentMatrix));
+	}
 
 	return LIFE::NONE;
 }
@@ -87,7 +96,7 @@ HRESULT CEffect_Part::Render()
 	return S_OK;
 }
 
-void CEffect_Part::Effect_Reset()
+void CEffect_Part::Reset_Effect()
 {
 	m_pVIBufferCom->Reset();
 }

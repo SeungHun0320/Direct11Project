@@ -89,8 +89,8 @@ HRESULT CWeapon_Player::Ready_Components(void* pArg)
 		TEXT("Com_Collider_Sword"), reinterpret_cast<CComponent**>(&m_pColliders[ENUM_CLASS(WEAPON_TYPE::SWORD)]), &OBBDesc)))
 		return E_FAIL;
 
-	OBBDesc.vExtents = _float3(1.5f, 1.5f, 2.5f);
-	OBBDesc.vCenter = _float3(0.0f, OBBDesc.vExtents.y, OBBDesc.vExtents.z);
+	OBBDesc.vExtents = _float3(1.5f, 1.5f, 3.f);
+	OBBDesc.vCenter = _float3(0.0f, OBBDesc.vExtents.y, OBBDesc.vExtents.z + 1.f);
 	OBBDesc.iColliderID = ENUM_CLASS(COLLIDER_ID::DAGGER);
 
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_OBB"),

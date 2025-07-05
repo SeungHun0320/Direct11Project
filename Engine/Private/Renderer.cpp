@@ -71,8 +71,8 @@ HRESULT CRenderer::Initialize()
 	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(ViewPortDesc.Width, ViewPortDesc.Height, 0.0f, 1.f));
 
 #ifdef _DEBUG
-	_float fRTWidth = ViewPortDesc.Width * 0.2f;
-	_float fRTHeight = ViewPortDesc.Height * 0.2f;
+	_float fRTWidth = ViewPortDesc.Width * 0.225f;
+	_float fRTHeight = ViewPortDesc.Height * 0.225f;
 	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Diffuse"), fRTWidth * 0.5f, fRTHeight * 0.5f, fRTWidth, fRTHeight)))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Normal"), fRTWidth * 0.5f, fRTHeight * 1.5f, fRTWidth, fRTHeight)))

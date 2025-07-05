@@ -34,7 +34,7 @@ private:
 	_bool m_isUse = { true };
 
 private:
-	void Effect_Reset(_uint iPart);
+	void Reset_Effect(_uint iPart);
 	
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;

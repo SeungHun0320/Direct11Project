@@ -177,8 +177,9 @@ public: /* 스테이트 갖고오기 */
 
 public: /* 전략패턴 트라이 */
 	void Set_AttackStrategy(class CPlayer_IAttackStrategy* pStrategy);
-	class CPlayer_IAttackStrategy* Get_AttackStrategy() const {
-		return m_pAttackStrategy; }
+	class CPlayer_IAttackStrategy* Get_AttackStrategy() const {	return m_pAttackStrategy; }
+
+	void Set_isDaggerAttack(_bool isDaggerAttack = true) { m_isDaggerAttack = isDaggerAttack; }
 
 /* 실제 플레이어 상태관련  */
 private: /* 체력 */
@@ -224,6 +225,7 @@ private: /* 상태 패턴들 */
 
 private: /* 전략 패턴 트라이 */
 	class CPlayer_IAttackStrategy* m_pAttackStrategy = { nullptr };
+	_bool m_isDaggerAttack = { false };
 
 private: /* 락온 상태관련 변수들 */
 	class CMonster* m_pTarget = { nullptr };
