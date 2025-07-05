@@ -33,7 +33,12 @@ void CWizard::Priority_Update(_float fTimeDelta)
 
 LIFE CWizard::Update(_float fTimeDelta)
 {
-	return __super::Update(fTimeDelta);
+	if (m_bDead)
+	{
+		Craete_SmokeEffect();
+	}
+
+	return 	__super::Update(fTimeDelta);
 }
 
 void CWizard::Late_Update(_float fTimeDelta)

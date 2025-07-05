@@ -72,6 +72,8 @@
 
 /* 파티클들 */
 #include "Effect_Obj.h"
+#include "Effect_Hit.h"
+#include "Effect_Mesh_Smoke.h"
 
 /* 툴 용 */
 #include "Particle_Tool.h"
@@ -235,8 +237,18 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Snow/Snow.png")))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_RingSpikes*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_RingSpikes"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/Player/icedagger_ring_spikes.png")))))
+		return E_FAIL;
 
-	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
+	/* For.Prototype_Component_Texture_SplashEffect*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_SplashEffect"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/splashfx ramp.png")))))
+		return E_FAIL;
+
+
+	lstrcpy(m_szLoadingText, TEXT("버퍼을(를) 로딩중입니다."));
 	/* For.Prototype_Component_VIBuffer_Terrain */
 	/*if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
 		CVIBuffer_Terrain::Create(m_pGraphic_Device, 256, 256))))
@@ -247,6 +259,18 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 		CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Height.bmp")))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_VIBuffer_HitLineEffect */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_VIBuffer_HitLineEffect"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/Hit/HitLine.Effect")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_HitSplashEffect */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_VIBuffer_HitSplashEffect"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/Hit/HitSplash.Effect")))))
+		return E_FAIL;
+
+
+	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
 	_matrix		PreTransformMatrix = XMMatrixIdentity();
 
 	/*For.Prototype_Component_Model_Courtyard*/
@@ -381,6 +405,21 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_AlertEffect"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Effect/Alert_Effect/Alert_Effect.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
+	CVIBuffer_Mesh_Particle_Instance::DESC SmokeDesc{};
+	SmokeDesc.iNumInstance = 30;
+	SmokeDesc.isLoop = false;
+	SmokeDesc.vCenter = _float3(0.f, 0.25f, 0.f);
+	SmokeDesc.vPivot = _float3(0.5f, 0.f, 0.5f);
+	SmokeDesc.vRange = _float3(2.f, 1.f, 2.f);
+	SmokeDesc.vSize = _float2(0.6f, 2.f);
+	SmokeDesc.vLifeTime = _float2(0.4f, 0.7f);
+	SmokeDesc.vSpeed = _float2(5.f, 7.5f);
+
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Particle_Instance_Smoke"),
+		CModel_Particle_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Models/NonAnim/Effect/Dash/Dash.Model"), &SmokeDesc, PreTransformMatrix))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_VIBuffer_Snow */
@@ -573,6 +612,16 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 		CUI2D_Reward::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_Effect_Hit */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Effect_Hit"),
+		CEffect_Hit::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Effect_Mesh_Smoke */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Effect_Mesh_Smoke"),
+		CEffect_Mesh_Smoke::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* For.Prototype_GameObject_Sky */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Sky"),
 		CSky::Create(m_pDevice, m_pContext))))
@@ -638,6 +687,27 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GameUI/SpaceKeyBoard.png")))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_RingSpikes*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_RingSpikes"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/Player/icedagger_ring_spikes.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_SplashEffect*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_SplashEffect"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/splashfx ramp.png")))))
+		return E_FAIL;
+
+	lstrcpy(m_szLoadingText, TEXT("버퍼을(를) 로딩중입니다."));
+
+	/* For.Prototype_Component_VIBuffer_HitLineEffect */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_VIBuffer_HitLineEffect"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/Hit/HitLine.Effect")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_HitSplashEffect */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_VIBuffer_HitSplashEffect"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/Hit/HitSplash.Effect")))))
+		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
 	_matrix		PreTransformMatrix = XMMatrixIdentity();
@@ -753,6 +823,11 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 	/* For.Prototype_GameObject_Coin */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Coin"),
 		CItem_Coin::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Effect_Hit */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Effect_Hit"),
+		CEffect_Hit::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Sky */
@@ -945,6 +1020,19 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/Player/spinning diamond.png")))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_RingSpikes*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_RingSpikesParticle"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/Player/icedagger_ring_spikes.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_SplashEffect*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_SplashEffect"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/splashfx ramp.png")))))
+		return E_FAIL;
+	/* For.Prototype_Component_Texture_FireEffect*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_FireEffect"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/fire voronoi.png")))))
+		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
 	_matrix		PreTransformMatrix = XMMatrixIdentity();
@@ -1106,6 +1194,11 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_VIBuffer_Tool"),
 		CVIBuffer_Point_Instance_Tool::Create(m_pDevice, m_pContext, &ToolDesc))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_HitLineEffect */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_VIBuffer_HitLineEffect"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/Hit/HitLine.Effect")))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
@@ -1279,6 +1372,11 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 	/* For.Prototype_GameObject_Sky */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Sky"),
 		CSky::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Effect_Hit */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Effect_Hit"),
+		CEffect_Hit::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Particle_Tool */

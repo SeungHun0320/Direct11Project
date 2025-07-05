@@ -11,6 +11,10 @@ CVIBuffer_Mesh_Particle_Instance::CVIBuffer_Mesh_Particle_Instance(const CVIBuff
 	: CVIBuffer_Instance(Prototype)
 	, m_pVertexInstances{ Prototype.m_pVertexInstances }
 	, m_iMaterialIndex{ Prototype.m_iMaterialIndex }
+    , m_vPivot{ Prototype.m_vPivot }
+	, m_pSpeeds{ Prototype.m_pSpeeds }
+	, m_isLoop{ Prototype.m_isLoop }
+	, m_fMaxLifeTime {Prototype.m_fMaxLifeTime}
 {
 
 }
@@ -142,6 +146,8 @@ HRESULT CVIBuffer_Mesh_Particle_Instance::Initialize_Prototype(const MESH_DESC* 
 			m_pGameInstance->Compute_Random(pDesc->vLifeTime.x, pDesc->vLifeTime.y),
 			0.f
 		);
+
+		m_fMaxLifeTime = max(m_fMaxLifeTime, m_pVertexInstances[i].vLifeTime.x);
 	}
 
 	m_VBInstanceSubResourceData.pSysMem = m_pVertexInstances;
@@ -276,6 +282,20 @@ void CVIBuffer_Mesh_Particle_Instance::Reset()
 
 	m_pContext->Unmap(m_pVBInstance, 0);
 
+}
+
+void CVIBuffer_Mesh_Particle_Instance::Reset_LifeTime()
+{
+	D3D11_MAPPED_SUBRESOURCE SubResorce{};
+
+	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResorce);
+
+	VTXMESH_PARTICLE_INSTANCE* pVertices = static_cast<VTXMESH_PARTICLE_INSTANCE*>(SubResorce.pData);
+
+	for (_uint i = 0; i < m_iNumInstance; i++)
+		pVertices[i].vLifeTime.y = 0.f;
+
+	m_pContext->Unmap(m_pVBInstance, 0);
 }
 
 CVIBuffer_Mesh_Particle_Instance* CVIBuffer_Mesh_Particle_Instance::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const MESH_DESC* pMeshArg, const DESC* pArg, _fmatrix PreTransformMatrix)

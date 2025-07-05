@@ -20,6 +20,9 @@
 #include "Effect_Part.h"
 #include "Effect_Mesh_Dodge.h"
 #include "Effect_Potion.h"
+#include "Effect_Stick.h"
+#include "Effect_Sword.h"
+#include "Effect_Dagger.h"
 
 #include "UI.h"
 #include "UI_Animation.h"
@@ -87,7 +90,7 @@ void CMainApp::Update(_float fTimeDelta)
 {
 	m_pGameInstance->Update_Engine(fTimeDelta);
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	m_fTimeAcc += fTimeDelta;
 
 
@@ -100,7 +103,7 @@ void CMainApp::Update(_float fTimeDelta)
 		m_fTimeAcc = 0.f;
 		m_iFPS = 0;
 	}
-#endif
+//#endif
 
 }
 
@@ -110,9 +113,9 @@ HRESULT CMainApp::Render()
 
 	m_pGameInstance->Draw();
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	m_pGameInstance->Draw_Font(TEXT("Font_Money"), m_szFPS, _float2(0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
-#endif
+//#endif
 
 	m_pGameInstance->End_Draw();
     return S_OK;
@@ -266,14 +269,24 @@ HRESULT CMainApp::Ready_Prototype_Texture()
 
 #pragma	region EFFECT
 
-	/* For.Prototype_Component_Texture_PotionLine*/
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_PotionLine"),
+	/* For.Prototype_Component_Texture_CrossLine*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_CrossLine"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/Player/twinkle particle star.png")))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_SpinningDiamond*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_SpinningDiamond"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/Player/spinning diamond.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_RingSpikes*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_RingSpikes"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/Player/icedagger_ring_spikes.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_NoNormal*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_NoNormal"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/NoNormal.png")))))
 		return E_FAIL;
 
 #pragma endregion
@@ -315,7 +328,8 @@ HRESULT CMainApp::Ready_Prototype_Component()
 		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/Potion/HealthSpell.Effect")))))
 		return E_FAIL;
 
-	/* -----------------------------------------------테스트용-------------------------------------------------*/
+
+	/* ---------------------------------------------위쪽으로 이펙트 파트-------------------------------------------------*/
 
 	/* For.Prototype_Component_Collider_AABB */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_AABB"),
@@ -498,6 +512,11 @@ HRESULT CMainApp::Ready_Prototype_Object()
 	/* For.Prototype_GameObject_Effect_Potion */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_Potion"),
 		CEffect_Potion::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Effect_Sword */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_Sword"),
+		CEffect_Sword::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Effect_Part */

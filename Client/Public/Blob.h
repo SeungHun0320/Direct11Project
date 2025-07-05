@@ -62,7 +62,7 @@ private: /* 상태 패턴 변수들 */
 	class CBlobState* m_pStates[ENUM_CLASS(STATES::STATES_END)] = { nullptr };
 
 private:
-	virtual void On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDuration = 0.3f) override;
+	virtual void On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDuration = 0.6f) override;
 	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner) override;
 
 private:

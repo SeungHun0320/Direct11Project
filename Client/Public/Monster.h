@@ -85,6 +85,8 @@ protected: /* 상태 관련 변수들 */
 
 protected:
 	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner) override;
+	HRESULT Create_HitEffect();
+	HRESULT Craete_SmokeEffect();
 
 protected:
 	virtual HRESULT Ready_Components(void* pArg);

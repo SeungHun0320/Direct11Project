@@ -25,12 +25,12 @@ private:
 	ID3D11Device*				m_pDevice = { nullptr };
 	ID3D11DeviceContext*		m_pContext = { nullptr };
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 private:
 	_float	m_fTimeAcc = {};
 	_uint	m_iFPS = {};
 	_tchar	m_szFPS[MAX_PATH] = {};
-#endif
+//#endif
 
 private:
 	HRESULT Ready_Prototype_Texture();

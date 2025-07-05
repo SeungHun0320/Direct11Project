@@ -1,9 +1,9 @@
-#include "Picking.h"
+#include "RayPicking.h"
 #include "GameInstance.h"
 
 #include "GameObject.h"
 
-CPicking::CPicking(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CRayPicking::CRayPicking(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice {pDevice}
 	, m_pContext {pContext}
 	, m_pGameInstance {CGameInstance::Get_Instance()}
@@ -13,7 +13,7 @@ CPicking::CPicking(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	Safe_AddRef(m_pGameInstance);
 }
 
-HRESULT CPicking::Initialize(HWND hWnd, _uint iWinSizeX, _uint iWinSizeY)
+HRESULT CRayPicking::Initialize(HWND hWnd, _uint iWinSizeX, _uint iWinSizeY)
 {
 	m_hWnd = hWnd;
 	m_iWinSizeX = iWinSizeX;
@@ -21,7 +21,7 @@ HRESULT CPicking::Initialize(HWND hWnd, _uint iWinSizeX, _uint iWinSizeY)
     return S_OK;
 }
 
-void CPicking::Update()
+void CRayPicking::Update()
 {
 	POINT		ptMouse = {};
 
@@ -58,7 +58,7 @@ void CPicking::Update()
  	XMStoreFloat3(&m_vMouseRay, XMVector3Normalize(XMLoadFloat3(&m_vMouseRay)));
 }
 
-_bool CPicking::Picking_InWorld(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC)
+_bool CRayPicking::Picking_InWorld(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC)
 {
 	_float		fDist{};
 
@@ -69,7 +69,7 @@ _bool CPicking::Picking_InWorld(_float3& vPickedPos, const _float3& vPointA, con
 	return isPicked;
 }
 
-_bool CPicking::Picking_InLocal(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC)
+_bool CRayPicking::Picking_InLocal(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC)
 {
 	_float		fDist{};
 
@@ -80,7 +80,7 @@ _bool CPicking::Picking_InLocal(_float3& vPickedPos, const _float3& vPointA, con
 	return isPicked;
 }
 
-_bool CPicking::Picking_InWorldEx(_float3& vPickedPos, _float& fDist, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC)
+_bool CRayPicking::Picking_InWorldEx(_float3& vPickedPos, _float& fDist, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC)
 {
 	_float		fDistance = { FLT_MAX };
 
@@ -99,7 +99,7 @@ _bool CPicking::Picking_InWorldEx(_float3& vPickedPos, _float& fDist, const _flo
 	return isPicked;
 }
 
-_bool CPicking::Picking_InLocalEx(_float3& vPickedPos, _float& fDist, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC)
+_bool CRayPicking::Picking_InLocalEx(_float3& vPickedPos, _float& fDist, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC)
 {
 	_float		fDistance{};
 
@@ -114,7 +114,7 @@ _bool CPicking::Picking_InLocalEx(_float3& vPickedPos, _float& fDist, const _flo
 	return isPicked;
 }
 
-void CPicking::Transform_ToLocalSpace(_fmatrix WorldMatrixInverse)
+void CRayPicking::Transform_ToLocalSpace(_fmatrix WorldMatrixInverse)
 {
 	/* 월드매트릭스는 각각의 객체가 들고 있고, */
 	/* 우린 월드매트릭스의 역행렬을 구해주는 함수를 갖고 있다. */
@@ -125,20 +125,20 @@ void CPicking::Transform_ToLocalSpace(_fmatrix WorldMatrixInverse)
 	XMStoreFloat3(&m_vLocalMouseRay, XMVector3TransformNormal(XMLoadFloat3(&m_vMouseRay), WorldMatrixInverse));
 }
 
-CPicking* CPicking::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HWND hWnd, _uint iWinSizeX, _uint iWinSizeY)
+CRayPicking* CRayPicking::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HWND hWnd, _uint iWinSizeX, _uint iWinSizeY)
 {
-	CPicking* pInstance = new CPicking(pDevice, pContext);
+	CRayPicking* pInstance = new CRayPicking(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize(hWnd, iWinSizeX, iWinSizeY)))
 	{
-		MSG_BOX("Failed to Created : CPicking");
+		MSG_BOX("Failed to Created : CRayPicking");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CPicking::Free()
+void CRayPicking::Free()
 {
     __super::Free();
 

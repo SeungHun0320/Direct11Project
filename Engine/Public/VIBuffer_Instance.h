@@ -41,6 +41,7 @@ public:
 	virtual void MoveTrail(_fvector vWorldPos, _float fTimeDelta) {};
 	virtual void Shrink(_float fTimeDelta) {};
 	virtual void Reset() {};
+	virtual void Reset_LifeTime() {};
 
 protected:
 	/* 인스턴스용 버퍼 */

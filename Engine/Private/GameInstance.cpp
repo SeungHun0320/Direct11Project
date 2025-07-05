@@ -1,8 +1,9 @@
 #include "GameInstance.h"
 
-#include "Picking.h"
 #include "Renderer.h"
 #include "PipeLine.h"
+#include "RayPicking.h"
+#include "PixelPicking.h"
 #include "Sound_Device.h"
 #include "Input_Device.h"
 #include "Font_Manager.h"
@@ -68,8 +69,8 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ ID
 	if (nullptr == m_pPipeLine)
 		return E_FAIL;
 
-	m_pPicking = CPicking::Create(*ppDeviceOut, *ppContextOut, EngineDesc.hWnd, EngineDesc.iWinSizeX, EngineDesc.iWinSizeY);
-	if (nullptr == m_pPicking)
+	m_pRayPicking = CRayPicking::Create(*ppDeviceOut, *ppContextOut, EngineDesc.hWnd, EngineDesc.iWinSizeX, EngineDesc.iWinSizeY);
+	if (nullptr == m_pRayPicking)
 		return E_FAIL;
 
 	m_pLight_Manager = CLight_Manager::Create();
@@ -92,16 +93,22 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ ID
 	if (nullptr == m_pEvent_Manager)
 		return E_FAIL;
 
+	//m_pPixelPicking = CPixelPicking::Create(*ppDeviceOut, *ppContextOut, EngineDesc.hWnd);
+	//if (nullptr == m_pPixelPicking)
+	//	return E_FAIL;
+
 	return S_OK;
 }
 
 void CGameInstance::Update_Engine(_float fTimeDelta)
 {
+	//m_pPixelPicking->Update();
+
 	m_pInputDevice->Update();
 	m_pObject_Manager->Priority_Update(fTimeDelta);
 
 	m_pPipeLine->Update();
-	m_pPicking->Update();
+	m_pRayPicking->Update();
 
 	m_pObject_Manager->Update(fTimeDelta);	
 
@@ -269,10 +276,12 @@ HRESULT CGameInstance::Add_RenderGroup(RENDERGROUP eRenderGroup, CGameObject* pR
 	return m_pRenderer->Add_RenderGroup(eRenderGroup, pRenderObject);
 }
 
+#ifdef _DEBUG
 HRESULT CGameInstance::Add_DebugComponent(CComponent* pDebugCom)
 {
 	return m_pRenderer->Add_DebugComponent(pDebugCom);
 }
+#endif 
 
 #pragma endregion
 
@@ -298,44 +307,44 @@ void CGameInstance::Update_Timer(const _wstring& strTimerTag)
 #pragma region PICKING
 void CGameInstance::Transform_Picking_ToLocalSpace(_fmatrix WorldMatrixInverse)
 {
-	m_pPicking->Transform_ToLocalSpace(WorldMatrixInverse);
+	m_pRayPicking->Transform_ToLocalSpace(WorldMatrixInverse);
 }
 _bool CGameInstance::Picking_InWorld(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC)
 {
-	return m_pPicking->Picking_InWorld(vPickedPos, vPointA, vPointB, vPointC);
+	return m_pRayPicking->Picking_InWorld(vPickedPos, vPointA, vPointB, vPointC);
 }
 _bool CGameInstance::Picking_InLocal(_float3& vPickedPos, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC)
 {
-	return m_pPicking->Picking_InLocal(vPickedPos, vPointA, vPointB, vPointC);
+	return m_pRayPicking->Picking_InLocal(vPickedPos, vPointA, vPointB, vPointC);
 }
 
 _bool CGameInstance::Picking_InWorldEx(_float3& vPickedPos, _float& fDist, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC)
 {
-	return m_pPicking->Picking_InWorldEx(vPickedPos, fDist, vPointA, vPointB, vPointC);
+	return m_pRayPicking->Picking_InWorldEx(vPickedPos, fDist, vPointA, vPointB, vPointC);
 }
 _bool CGameInstance::Picking_InLocalEx(_float3& vPickedPos, _float& fDist, const _float3& vPointA, const _float3& vPointB, const _float3& vPointC)
 {
-	return m_pPicking->Picking_InLocalEx(vPickedPos, fDist, vPointA, vPointB, vPointC);
+	return m_pRayPicking->Picking_InLocalEx(vPickedPos, fDist, vPointA, vPointB, vPointC);
 }
 
 const _float3& CGameInstance::Get_MousePos()
 {
-	return m_pPicking->Get_MousePos();
+	return m_pRayPicking->Get_MousePos();
 }
 
 const _float3& CGameInstance::Get_MouseRay()
 {
-	return m_pPicking->Get_MouseRay();
+	return m_pRayPicking->Get_MouseRay();
 }
 
 const _float3& CGameInstance::Get_LocalMousePos()
 {
-	return m_pPicking->Get_LocalMousePos();
+	return m_pRayPicking->Get_LocalMousePos();
 }
 
 const _float3& CGameInstance::Get_LocalMouseRay()
 {
-	return m_pPicking->Get_LocalMouseRay();
+	return m_pRayPicking->Get_LocalMouseRay();
 }
 
 #pragma endregion
@@ -473,6 +482,10 @@ HRESULT CGameInstance::Render_Lights(CShader* pShader, CVIBuffer_Rect* pVIBuffer
 {
 	return m_pLight_Manager->Render_Lights(pShader, pVIBuffer);
 }
+void CGameInstance::Clear_Lights()
+{
+	m_pLight_Manager->Clear_Lights();
+}
 #pragma endregion
 
 
@@ -566,6 +579,13 @@ HRESULT CGameInstance::End_MRT()
 {
 	return m_pTarget_Manager->End_MRT();
 }
+HRESULT CGameInstance::Copy_RT_Resource(const _wstring& strTargetTag, ID3D11Texture2D* pDest)
+{
+	return m_pTarget_Manager->Copy_Resource(strTargetTag, pDest);
+}
+
+#ifdef _DEBUG
+
 HRESULT CGameInstance::Ready_RT_Debug(const _wstring& strTargetTag, _float fX, _float fY, _float fSizeX, _float fSizeY)
 {
 	return m_pTarget_Manager->Ready_Debug(strTargetTag, fX, fY, fSizeX, fSizeY);
@@ -574,16 +594,25 @@ HRESULT CGameInstance::Render_MRT_Debug(const _wstring& strMRTTag, CShader* pSha
 {
 	return m_pTarget_Manager->Render_Debug(strMRTTag, pShader, pVIBuffer);
 }
+
+#endif
+
+_bool CGameInstance::Picking(_float4* pOut)
+{
+	return m_pPixelPicking->Picking(pOut);
+}
 #pragma endregion
 
 
 void CGameInstance::Release_Engine()
 {
+	//Safe_Release(m_pPixelPicking);
+
 	Safe_Release(m_pCollider_Manager);
 
 	Safe_Release(m_pFont_Manager);
 
-	Safe_Release(m_pPicking);
+	Safe_Release(m_pRayPicking);
 
 	Safe_Release(m_pTimer_Manager);
 

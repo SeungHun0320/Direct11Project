@@ -302,9 +302,6 @@ void CWizard_SwordState_Dead::Execute(_float fTimeDelta)
 
 	if (m_pOwner->Play_Animation(CWizard_Sword::PART_BODY, fTimeDelta))
 		m_pOwner->Set_Dead(true);
-
-	if (m_fDuration <= m_fTimeAcc)
-		m_pOwner->Change_States(CWizard_Sword::STATES::ATTACK);
 }
 
 void CWizard_SwordState_Dead::Exit()

@@ -76,6 +76,8 @@ HRESULT CBody_SpiderTank::Render()
 		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TEX_TYPE::DIFFUSE, 0)))
 			return E_FAIL;
 
+		m_pModelCom->Bind_Material(m_pShaderCom, "g_NormalTexture", i, TEX_TYPE::NORMALS, 0);
+		
 		m_pModelCom->Bind_Bone_Matrices(m_pShaderCom, "g_BoneMatrices", i);
 
 		if (FAILED(m_pShaderCom->Begin(0)))

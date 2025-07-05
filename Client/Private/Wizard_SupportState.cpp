@@ -147,9 +147,6 @@ void CWizard_SupportState_Dead::Execute(_float fTimeDelta)
 
 	if (m_pOwner->Play_Animation(CWizard_Support::PART_BODY, fTimeDelta))
 		m_pOwner->Set_Dead(true);
-
-	if (m_fDuration <= m_fTimeAcc)
-		m_pOwner->Change_States(CWizard_Support::STATES::IDLE);
 }
 
 void CWizard_SupportState_Dead::Exit()

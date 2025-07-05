@@ -92,6 +92,11 @@ void CModel_Particle_Instance::Reset(_uint iMeshIndex)
     m_MeshInstances[iMeshIndex]->Reset();
 }
 
+void CModel_Particle_Instance::Reset_LifeTime(_uint iMeshIndex)
+{
+    m_MeshInstances[iMeshIndex]->Reset_LifeTime();
+}
+
 HRESULT CModel_Particle_Instance::Ready_Meshes(ifstream& _InFile, const CVIBuffer_Mesh_Particle_Instance::DESC* pArg, _fmatrix PreTransformMatrix)
 {
     /* 이쪽에서 파일입출력해서 갯수를 먼저 받아오기  */

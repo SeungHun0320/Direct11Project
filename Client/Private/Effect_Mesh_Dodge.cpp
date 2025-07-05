@@ -2,12 +2,12 @@
 #include "GameInstance.h"
 
 CEffect_Mesh_Dodge::CEffect_Mesh_Dodge(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	:CEffect_Mesh{pDevice, pContext}
+	:CEffect_Part_Mesh{pDevice, pContext}
 {
 }
 
 CEffect_Mesh_Dodge::CEffect_Mesh_Dodge(const CEffect_Mesh_Dodge& Prototype)
-	:CEffect_Mesh(Prototype)
+	:CEffect_Part_Mesh(Prototype)
 {
 }
 
@@ -46,7 +46,7 @@ LIFE CEffect_Mesh_Dodge::Update(_float fTimeDelta)
 	if (!(*m_pParentisRoll))
 	{
 		for (_uint i = 0; i < iNumMesh; i++)
-			m_pModelCom->Reset(0);
+			m_pModelCom->Reset(i);
 	}
 	else
 	{

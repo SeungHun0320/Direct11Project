@@ -2,6 +2,10 @@
 
 #include "Part_Player.h"
 
+BEGIN(Engine)
+class CVIBuffer_Point_Instance;
+END
+
 BEGIN(Client)
 
 class CWeapon_Player final : public CPart_Player
@@ -9,7 +13,6 @@ class CWeapon_Player final : public CPart_Player
 public:
 	typedef struct tagPlayerWeaponDesc : public CPart_Player::DESC
 	{
-
 	}DESC;
 
 private:
@@ -29,7 +32,7 @@ public:
 	void Set_Active(WEAPON_TYPE eType, _bool isActive);
 
 private:
-	CCollider* m_pColliders[ENUM_CLASS(WEAPON_TYPE::WT_END)] = { nullptr };
+	CCollider*					m_pColliders[ENUM_CLASS(WEAPON_TYPE::WT_END)] = { nullptr };
 
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;

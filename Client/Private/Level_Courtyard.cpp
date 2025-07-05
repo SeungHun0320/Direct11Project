@@ -44,8 +44,8 @@ HRESULT CLevel_Courtyard::Initialize()
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Effect(TEXT("Layer_Effect"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Effect(TEXT("Layer_Effect"))))
+	//	return E_FAIL;
 
 	if (FAILED(Load_Map(TEXT("Courtyard.Map"))))
 		return E_FAIL;
@@ -78,6 +78,7 @@ void CLevel_Courtyard::Update(_float fTimeDelta)
 
 	if (m_iNextLevel)
 	{
+		m_pGameInstance->Clear_Lights();
 		m_pGameInstance->Clear_Colliders();
 		m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
 			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::ARENA));
@@ -472,4 +473,6 @@ void CLevel_Courtyard::Free()
 	Safe_Release(m_pBGM);
 
 	m_MonsterDescs.clear();
+
+
 }

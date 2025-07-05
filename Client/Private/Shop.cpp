@@ -1,4 +1,5 @@
 #include "Shop.h"
+#include "GameInstance.h"
 
 CShop::CShop(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CMap{ pDevice, pContext }
@@ -43,7 +44,7 @@ void CShop::Late_Update(_float fTimeDelta)
 
 HRESULT CShop::Render()
 {
-	return  __super::Render();
+	return __super::Render();
 }
 
 HRESULT CShop::Ready_Components(void* pArg)

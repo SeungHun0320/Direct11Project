@@ -23,6 +23,9 @@
 /* 이펙트(파티클) */
 #include "Effect_Mesh_Dodge.h"
 #include "Effect_Potion.h"
+#include "Effect_Stick.h"
+#include "Effect_Sword.h"
+#include "Effect_Dagger.h"
 
 /* 쩦, */
 #include "Monster.h"
@@ -752,6 +755,7 @@ void CPlayer::Set_AttackStrategy(CPlayer_IAttackStrategy* pStrategy)
 {
 	Safe_Release(m_pAttackStrategy);
 	m_pAttackStrategy = pStrategy;
+	m_eWeaponType = m_pAttackStrategy->Get_WeaponType();
 }
 
 _float CPlayer::Compute_StaggerValue() const
@@ -923,7 +927,9 @@ void CPlayer::On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDura
 
 void CPlayer::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
 {
+	COLLIDER_ID eMyColliderID = static_cast<COLLIDER_ID>(MyColliderID);
 	COLLIDER_ID eColliderID = static_cast<COLLIDER_ID>(OtherColliderID);
+
 	_float fInvicibleDuration = Compute_InvincibleTime(static_cast<COLLIDER_ID>(OtherColliderID));
 
 	if (CI_MONSTER(eColliderID))
@@ -959,7 +965,6 @@ void CPlayer::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObjec
 	{
 	case COLLIDER_ID::BUSH:
 	case COLLIDER_ID::CHEST:
-	case COLLIDER_ID::CHECKPOINT:
 	{
 		CCollider* pCollider = Get_Collider(PART_BODY);
 		if (nullptr == pCollider)
@@ -1143,16 +1148,16 @@ HRESULT CPlayer::Ready_PartObjects()
 	if (FAILED(__super::Add_PartObject(PART_SWEAT, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI3D_PlayerSweat"), &SweatDesc)))
 		return E_FAIL;
 
-	CEffect_Mesh_Dodge::DESC DashDesc{};
+	CEffect_Mesh_Dodge::DESC DodgeDesc{};
 
-	DashDesc.pParentLevelID = &eLevelID;
-	DashDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
-	DashDesc.strParticleModelTag = TEXT("Prototype_Component_Model_Particle_Instance_Dodge");
-	DashDesc.pParentisNoStamina = &m_isNoStamina;
-	DashDesc.pParentisUseStamina = &m_isUseStamina;
-	DashDesc.pParentisRoll = &m_isRoll;
+	DodgeDesc.pParentLevelID = &eLevelID;
+	DodgeDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	DodgeDesc.strEffectModelTag = TEXT("Prototype_Component_Model_Particle_Instance_Dodge");
+	DodgeDesc.pParentisNoStamina = &m_isNoStamina;
+	DodgeDesc.pParentisUseStamina = &m_isUseStamina;
+	DodgeDesc.pParentisRoll = &m_isRoll;
 
-	if (FAILED(__super::Add_PartObject(PART_DODGE, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Dodge"), &DashDesc)))
+	if (FAILED(__super::Add_PartObject(PART_DODGE, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Dodge"), &DodgeDesc)))
 		return E_FAIL;
 	
 	CEffect_Potion::DESC EffectPotionDesc{};
@@ -1163,7 +1168,7 @@ HRESULT CPlayer::Ready_PartObjects()
 	EffectPotionDesc.pParentIsUsePotion = &m_isUsePotion;
 
 	if (FAILED(__super::Add_PartObject(PART_EFFECT_POTION, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_Potion"), &EffectPotionDesc)))
-		return E_FAIL;
+		return E_FAIL;	
 
 	return S_OK;
 }

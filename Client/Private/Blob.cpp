@@ -7,6 +7,8 @@
 #include "UI3D_MobHPBar.h"
 #include "UI3D_LockOn.h"
 
+#include "Effect_Hit.h"
+
 #include "Player.h"
 #include "Bullet.h"
 
@@ -61,7 +63,10 @@ void CBlob::Priority_Update(_float fTimeDelta)
 LIFE CBlob::Update(_float fTimeDelta)
 {
 	if (m_bDead)
+	{
+		Craete_SmokeEffect();
 		return LIFE::DEAD;
+	}
 
 	if (m_pCurState)
 	{
@@ -170,6 +175,8 @@ void CBlob::On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDurati
 {
 	if (m_isInvincible || m_bDead)
 		return;
+
+	Create_HitEffect();
 
 	m_fHp -= fDamage;
 	m_fStaggerGage -= fStaggerValue;

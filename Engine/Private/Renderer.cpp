@@ -20,29 +20,31 @@ HRESULT CRenderer::Initialize()
 
 	m_pContext->RSGetViewports(&iNumViewPorts, &ViewPortDesc);
 
+	_uint iWidth = static_cast<_uint>(ViewPortDesc.Width);
+	_uint iHeight = static_cast<_uint>(ViewPortDesc.Height);
+
 	/* 32비트로 표현 8 8 8 8 */
-	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Diffuse"),
-		static_cast<_uint>(ViewPortDesc.Width), static_cast<_uint>(ViewPortDesc.Height), DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Diffuse"), iWidth, iHeight, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 	/* DXGI_FORMAT_R16G16B16A16_UNORM :  0 ~ 65535의 값을 0.f ~ 1.f로 바꿔서 사용함 나중에 노말 계산할 때 잘 알아두기 */
 	/* 노말은 -1.f ~ 1.f까지인데, UNORM으로 받아왔기 때문에 -1.f이 자동으로 0.f로 바뀌어서 저장되기 때문에 셰이더에서 0.f ~ 1.f로 치환한뒤에 Out에 저장해줘야 함*/
-	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Normal"),
-		static_cast<_uint>(ViewPortDesc.Width), static_cast<_uint>(ViewPortDesc.Height), DXGI_FORMAT_R16G16B16A16_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Normal"),	iWidth, iHeight, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Shade"),
-		static_cast<_uint>(ViewPortDesc.Width), static_cast<_uint>(ViewPortDesc.Height), DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.0f, 0.f, 0.f, 0.f))))
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Shade"), iWidth, iHeight, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 	
 	/* 깊이를 계산해서 렌더타겟에 저장한다 원래 16으로 받아왔지만, 0~1 사이의 값을 완벽하게 채울 수 없기 때문에 어쩔 수 없이 32로 포맷을 바꿔줌 */
-	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Depth"),
-		static_cast<_uint>(ViewPortDesc.Width), static_cast<_uint>(ViewPortDesc.Height), DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.0f, 0.f, 0.f, 0.f))))
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Depth"), iWidth, iHeight, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.f, 1.f, 0.f, 0.f))))
 		return E_FAIL;
 
 	/* 스펙큘러는 합연산이기때문에 백버퍼를 검정색으로 그려준다 */
-	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Specular"),
-		static_cast<_uint>(ViewPortDesc.Width), static_cast<_uint>(ViewPortDesc.Height), DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Specular"), iWidth, iHeight, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
+
+	//if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_PickPos"), iWidth, iHeight, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.f, 0.f, 0.f, 0.f))))
+	//	return E_FAIL;
+
 
 
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_GameObjects"), TEXT("Target_Diffuse"))))
@@ -51,6 +53,8 @@ HRESULT CRenderer::Initialize()
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_GameObjects"), TEXT("Target_Depth"))))
 		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_GameObjects"), TEXT("Target_PickPos"))))
+	//	return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Lights"), TEXT("Target_Shade"))))
 		return E_FAIL;
@@ -381,7 +385,11 @@ void CRenderer::Free()
 	}
 	m_RenderObjects->clear();
 
+#ifdef _DEBUG
 	for (auto& pDebugCom : m_DebugComponents)
 		Safe_Release(pDebugCom);
 	m_DebugComponents.clear();
+
+#endif
+
 }

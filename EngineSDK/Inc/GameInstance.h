@@ -132,6 +132,7 @@ public:
 	const LIGHT_DESC* Get_Light(_uint iIndex);
 	HRESULT Add_Light(const LIGHT_DESC& LightDesc);
 	HRESULT Render_Lights(class CShader* pShader, class CVIBuffer_Rect* pVIBuffer);
+	void Clear_Lights();
 #pragma endregion
 
 #pragma region FONT_MANAGER
@@ -187,11 +188,19 @@ public:
 	HRESULT Bind_RT_ShaderResource(const _wstring& strTargetTag, const _char* pConstantName, class CShader* pShader);
 	HRESULT Begin_MRT(const _wstring& strMRTTag);
 	HRESULT End_MRT();
+	HRESULT Copy_RT_Resource(const _wstring& strTargetTag, ID3D11Texture2D* pDest);
 #ifdef _DEBUG
 	HRESULT Ready_RT_Debug(const _wstring& strTargetTag, _float fX, _float fY, _float fSizeX, _float fSizeY);
 	HRESULT Render_MRT_Debug(const _wstring& strMRTTag, class CShader* pShader, class CVIBuffer_Rect* pVIBuffer);
 #endif
+
 #pragma endregion
+
+#pragma region PIXELPICKING
+	_bool Picking(_float4* pOut);
+#pragma endregion
+
+
 
 private:
 	class CGraphic_Device*		m_pGraphic_Device = { nullptr };
@@ -203,13 +212,14 @@ private:
 	class CTimer_Manager*		m_pTimer_Manager = { nullptr };
 	class CSound_Device*		m_pSound_Device = { nullptr };
 	class CPipeLine*			m_pPipeLine = { nullptr };
-	class CPicking*				m_pPicking = { nullptr };
+	class CRayPicking*			m_pRayPicking = { nullptr };
 	class CLight_Manager*		m_pLight_Manager = { nullptr };
 	class CFont_Manager*		m_pFont_Manager = { nullptr };
 	class CCamera_Manager*		m_pCamera_Manager = { nullptr };
 	class CCollider_Manager*	m_pCollider_Manager = { nullptr };
 	class CEvent_Manager*		m_pEvent_Manager = { nullptr };
 	class CTarget_Manager*      m_pTarget_Manager = { nullptr };
+	class CPixelPicking*		m_pPixelPicking = { nullptr };	
 
 public:
 	void Release_Engine();

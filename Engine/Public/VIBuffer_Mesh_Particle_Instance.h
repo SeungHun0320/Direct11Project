@@ -34,6 +34,9 @@ private:
 	virtual ~CVIBuffer_Mesh_Particle_Instance() = default;
 
 public:
+	const _float Get_MaxLifeTime() const { return m_fMaxLifeTime; }
+
+public:
 	virtual HRESULT Initialize_Prototype(const MESH_DESC* pMeshArg, const DESC* pArg, _fmatrix PreTransformMatrix);
 	virtual HRESULT Initialize(void* pArg);
 
@@ -42,6 +45,7 @@ public:
 	virtual void MoveTrail(_fvector vWorldPos, _float fTimeDelta) override;
 	virtual void Shrink(_float fTimeDelta) override;
 	virtual void Reset() override;
+	virtual void Reset_LifeTime() override;
 
 protected:
 	_uint						m_iMaterialIndex = {};
@@ -50,6 +54,7 @@ protected:
 protected:
 	_float3  m_vPivot = {};
 	_float*  m_pSpeeds = { nullptr };
+	_float   m_fMaxLifeTime = {};
 	_bool    m_isLoop = { false };
 	_uint    m_iEmitIndex = {};
 

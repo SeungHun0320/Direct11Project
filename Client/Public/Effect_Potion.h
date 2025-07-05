@@ -3,6 +3,8 @@
 #include "Client_Defines.h"
 #include "EffectContainerPart.h"
 
+BEGIN(Client)
+
 class CEffect_Potion final : public CEffectContainerPart
 {
 public:
@@ -44,3 +46,4 @@ public:
 	virtual void Free() override;
 };
 
+END

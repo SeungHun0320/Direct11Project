@@ -3,6 +3,9 @@
 #include "GameInstance.h"
 #include "PartObject.h"
 
+#include "Effect_Hit.h"
+#include "Effect_Mesh_Smoke.h"
+
 #include "Player.h"
 
 CMonster::CMonster(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -119,6 +122,41 @@ void CMonster::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObje
 		m_isBlocked = true;
 		break;
 	}
+}
+
+HRESULT CMonster::Create_HitEffect()
+{
+	CEffect_Hit::DESC tDesc{};
+
+	tDesc.iNumPartObjects = CEffect_Hit::PART_END;
+	tDesc.pParentLevelID = &m_eLevelID;
+	tDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	tDesc.strName = TEXT("Effect_Hit");
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_") + tDesc.strName,
+		ENUM_CLASS(m_eLevelID), TEXT("Layer_Effect"), &tDesc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CMonster::Craete_SmokeEffect()
+{
+	CEffect_Mesh_Smoke::DESC tDesc{};
+	_float3 vPos{};
+
+	XMStoreFloat3(&vPos, m_pTransformCom->Get_State(STATE::POSITION));
+
+	tDesc.eLevelID = m_eLevelID;
+	tDesc.WorldMatrix = XMMatrixTranslation(vPos.x, vPos.y, vPos.z);
+	tDesc.strEffectModelTag = TEXT("Prototype_Component_Model_Particle_Instance_Smoke");
+	tDesc.strName = TEXT("Effect_Mesh_Smoke");
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_") + tDesc.strName,
+		ENUM_CLASS(m_eLevelID), TEXT("Layer_Effect"), &tDesc)))
+		return E_FAIL;
+
+	return S_OK;
 }
 
 HRESULT CMonster::Ready_Components(void* pArg)

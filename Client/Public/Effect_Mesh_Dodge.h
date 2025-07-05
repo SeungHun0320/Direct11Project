@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Effect_Mesh.h"
+#include "Effect_Part_Mesh.h"
 
 BEGIN(Client)
 
-class CEffect_Mesh_Dodge final : public CEffect_Mesh
+class CEffect_Mesh_Dodge final : public CEffect_Part_Mesh
 {
 public:
-	typedef struct tagParticleMeshDashDesc : public CEffect_Mesh::DESC
+	typedef struct tagParticleMeshDodgeDesc : public CEffect_Part_Mesh::DESC
 	{
 		const _bool* pParentisUseStamina{ nullptr };
 		const _bool* pParentisNoStamina{ nullptr };

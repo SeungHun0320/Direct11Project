@@ -40,7 +40,7 @@ LIFE CWeapon_Player::Update(_float fTimeDelta)
 	XMStoreFloat4x4(&m_CombinedWorldMatrix, m_pTransformCom->Get_WorldMatrix() * XMLoadFloat4x4(m_pParentMatrix));
 
 	for (_uint i = 0; i < ENUM_CLASS(WEAPON_TYPE::WT_END); i++)
-		m_pColliders[i]->Update(XMLoadFloat4x4(&m_CombinedWorldMatrix));
+		m_pColliders[i]->Update(XMLoadFloat4x4(m_pParentMatrix));
 
 	return LIFE::NONE;
 }
@@ -50,10 +50,8 @@ void CWeapon_Player::Late_Update(_float fTimeDelta)
 	__super::Late_Update(fTimeDelta);
 
 #ifdef _DEBUG
-
 	for (auto& pCollider : m_pColliders)
 		m_pGameInstance->Add_DebugComponent(pCollider);
-
 #endif
 }
 

@@ -6,6 +6,7 @@ BEGIN(Engine)
 class CShader;
 class CModel;
 class CNavigation;
+class CTexture;
 END
 
 BEGIN(Client)
@@ -37,6 +38,7 @@ public:
 protected:
 	CShader*	 m_pShaderCom = { nullptr };
 	CModel*		 m_pModelCom = { nullptr };
+	CTexture*    m_pTextureCom = { nullptr };	
 	CNavigation* m_pNavigationCom = { nullptr };
 
 protected:

@@ -4,11 +4,11 @@
 
 BEGIN(Engine)
 
-class CPicking final : public CBase
+class CRayPicking final : public CBase
 {
 private:
-	CPicking(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	~CPicking() = default;
+	CRayPicking(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	~CRayPicking() = default;
 public:
 	const _float3& Get_MousePos() {
 		return m_vMousePos;
@@ -59,7 +59,7 @@ private:
 	_float3			m_vLocalMousePos = {};
 
 public:
-	static CPicking* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HWND hWnd, _uint iWinSizeX, _uint iWinSizeY);
+	static CRayPicking* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HWND hWnd, _uint iWinSizeX, _uint iWinSizeY);
 	virtual void Free()override;
 };
 

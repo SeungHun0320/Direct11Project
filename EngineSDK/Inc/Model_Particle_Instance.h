@@ -18,6 +18,10 @@ public:
 		return m_iNumMeshes;
 	}
 
+	const _float Get_MaxLifeTime(_uint iMeshIndex) const {
+		return m_MeshInstances[iMeshIndex]->Get_MaxLifeTime();
+	}
+
 	HRESULT Bind_Material(class CShader* pShader, const _char* pConstantName, _uint iMeshIndex, TEX_TYPE eType, _uint iTextureIndex = 0);
 
 public:
@@ -30,6 +34,7 @@ public:
 	virtual void MoveTrail(_uint iMeshIndex, _fvector vWorldPos, _float fTimeDelta);
 	virtual void Shrink(_uint iMeshIndex, _float fTimeDelta);
 	virtual void Reset(_uint iMeshIndex);
+	virtual void Reset_LifeTime(_uint iMeshIndex);
 
 private: /* 메쉬 갯수, 메쉬들을 담아두는 벡터 */
 	_uint										m_iNumMeshes = {};

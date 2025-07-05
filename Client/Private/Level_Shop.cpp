@@ -57,6 +57,7 @@ void CLevel_Shop::Update(_float fTimeDelta)
 
 	if (m_iNextLevel)
 	{
+		m_pGameInstance->Clear_Lights();
 		m_pGameInstance->Clear_Colliders();
 		m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
 			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::LOGO));

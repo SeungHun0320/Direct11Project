@@ -50,11 +50,20 @@ HRESULT CRenderTarget::Bind_ShaderResource(const _char* pContantName, CShader* p
 	return pShader->Bind_SRV(pContantName, m_pSRV);
 }
 
+HRESULT CRenderTarget::Copy_Resource(ID3D11Texture2D* pDest)
+{
+	m_pContext->CopyResource(pDest, m_pTexture2D);
+
+	return S_OK;
+}
+
 void CRenderTarget::Clear()
 {
 	/* 생성할때 지정해준 클리어컬러로 렌더타겟을 클리어해준다 */
 	m_pContext->ClearRenderTargetView(m_pRTV, reinterpret_cast<const _float*>(&m_vClearColor));
 }
+
+#ifdef _DEBUG
 
 HRESULT CRenderTarget::Ready_Debug(_float fX, _float fY, _float fSizeX, _float fSizeY)
 {
@@ -94,6 +103,8 @@ HRESULT CRenderTarget::Render(CShader* pShader, CVIBuffer_Rect* pVIBuffer)
 
 	return S_OK;
 }
+
+#endif
 
 CRenderTarget* CRenderTarget::Craete(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, const _float4& vClearColor)
 {

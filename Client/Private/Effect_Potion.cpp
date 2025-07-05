@@ -77,7 +77,7 @@ HRESULT CEffect_Potion::Ready_PartObjects()
 	LineDesc.pParentLevelID = m_pLevelID;
 	LineDesc.pParentMatrix = m_pParentMatrix;
 	LineDesc.strParticeFilePath = TEXT("../Bin/DataFiles/Effect/Potion/PotionLine.Effect_Ex");
-	LineDesc.strParticleTextureTag = TEXT("Prototype_Component_Texture_PotionLine");
+	LineDesc.strParticleTextureTag = TEXT("Prototype_Component_Texture_CrossLine");
 	LineDesc.strParticleBufferTag = TEXT("Prototype_Component_VIBuffer_PotionLine");
 
 	if (FAILED(__super::Add_PartObject(PART_LINE, ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_Part"), &LineDesc)))

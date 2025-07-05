@@ -141,7 +141,9 @@ void CTool_Map::Update(_float fTimeDelta)
 	if (m_bMode[CREATE] && MOUSE_DOWN(DIMK::LBUTTON))
 	{
 		_float3 vInitPos = m_pMap->Get_PickedPos_World();
-		XMStoreFloat3(&vInitPos, XMVectorRound(XMLoadFloat3(&vInitPos)));
+		//_float4 vInitPos{};
+		//if (m_pGameInstance->Picking(&vInitPos))
+		//	XMStoreFloat4(&vInitPos, XMVectorSetW(XMVectorRound(XMLoadFloat4(&vInitPos)), 1.f));
 
 		if (m_bLists[ENVIRONMENT])
 		{

@@ -13,7 +13,7 @@ public:
 public:
 	enum PART { PART_BODY, PART_WEAPON,
 		PART_HP, PART_STAMINA, PART_MP, PART_INVEN, PART_ITEMSLOTS, PART_POTION, PART_UIINVEN, PART_SWEAT,
-		PART_DODGE, PART_EFFECT_POTION, PART_END };
+		PART_DODGE, PART_EFFECT_POTION, PART_EFFECT_STICK, PART_EFFECT_SWORD, PART_EFFECT_DAGGER, PART_END };
 
 	enum MESHES	{
 		MESH_SHILED, MESH_SWORD, MESH_POTION, MESH_POTION2, MESH_STICK, MESH_DAGGER, MESHES_END
@@ -206,8 +206,9 @@ private: /* 마나 */
 private: /* 먹는 타입 */
 	_byte m_byEatType = {};
 
-private: /* 인벤 켰음? */
+private: /* 인벤 켰음? / 무기 타입 */
 	_bool  m_isOnInven = { false };
+	WEAPON_TYPE m_eWeaponType = { WEAPON_TYPE::WT_END };
 
 private: /* 현재 충돌한 상호작용 오브젝트의 콜라이더 아이디 */
 	COLLIDER_ID m_eCurInteractID = { COLLIDER_ID::CI_END };

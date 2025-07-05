@@ -85,9 +85,6 @@
     <ClInclude Include="..\public\PipeLine.h">
       <Filter>01.Utility\06.PipeLine</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Picking.h">
-      <Filter>01.Utility\07.Picking</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Camera.h">
       <Filter>01.Utility\03.GameObject\Objects\Camera</Filter>
     </ClInclude>
@@ -208,6 +205,12 @@
     <ClInclude Include="..\public\VIBuffer_Mesh_Particle_Instance.h">
       <Filter>01.Utility\04.Components\VIBuffer\Instance\MeshParticle</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\RayPicking.h">
+      <Filter>01.Utility\07.Picking\LayPicking</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\PixelPicking.h">
+      <Filter>01.Utility\07.Picking\PixelPicking</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Timer.cpp">
@@ -284,9 +287,6 @@
     </ClCompile>
     <ClCompile Include="..\private\PipeLine.cpp">
       <Filter>01.Utility\06.PipeLine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Picking.cpp">
-      <Filter>01.Utility\07.Picking</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Camera.cpp">
       <Filter>01.Utility\03.GameObject\Objects\Camera</Filter>
@@ -398,6 +398,12 @@
     </ClCompile>
     <ClCompile Include="..\private\VIBuffer_Mesh_Particle_Instance.cpp">
       <Filter>01.Utility\04.Components\VIBuffer\Instance\MeshParticle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\RayPicking.cpp">
+      <Filter>01.Utility\07.Picking\LayPicking</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\PixelPicking.cpp">
+      <Filter>01.Utility\07.Picking\PixelPicking</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -616,6 +622,12 @@
     </Filter>
     <Filter Include="01.Utility\04.Components\VIBuffer\Instance\MeshParticle">
       <UniqueIdentifier>{4a61a20b-0288-4332-b522-d4f6cfa18fce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\07.Picking\LayPicking">
+      <UniqueIdentifier>{7e89ed9a-a9b9-49a0-b12e-be7e3853460f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\07.Picking\PixelPicking">
+      <UniqueIdentifier>{1d505fc4-34ba-48f9-9b47-585e88b3aed5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

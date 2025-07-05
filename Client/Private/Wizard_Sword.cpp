@@ -68,17 +68,6 @@ void CWizard_Sword::Priority_Update(_float fTimeDelta)
 
 LIFE CWizard_Sword::Update(_float fTimeDelta)
 {
-	if (m_bDead)
-		return LIFE::DEAD;
-
-	if (KEY_DOWN(DIK_2))
-	{
-		Change_States(STATES::HIT);
-	}
-	if (KEY_DOWN(DIK_3))
-		Change_States(STATES::DEAD);
-
-
 	if (m_pCurState)
 	{
 		if (m_eCurState != m_ePreState)
@@ -90,7 +79,7 @@ LIFE CWizard_Sword::Update(_float fTimeDelta)
 		m_pCurState->Execute(fTimeDelta);
 	}
 
-	return	__super::Update(fTimeDelta);
+	return __super::Update(fTimeDelta);
 }
 
 void CWizard_Sword::Late_Update(_float fTimeDelta)
@@ -139,8 +128,10 @@ void CWizard_Sword::Set_Active(_bool isActive)
 
 void CWizard_Sword::On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDuration)
 {
-	if (m_isInvincible || m_bDead)
+	if (m_isInvincible || STATES::DEAD == m_eCurState)
 		return;
+
+	Create_HitEffect();
 
 	m_fHp -= fDamage;
 	m_fStaggerGage -= fStaggerValue;

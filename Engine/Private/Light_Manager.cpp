@@ -36,6 +36,14 @@ HRESULT CLight_Manager::Render_Lights(CShader* pShader, CVIBuffer_Rect* pVIBuffe
 	return S_OK;
 }
 
+void CLight_Manager::Clear_Lights()
+{
+	for (auto& pLight : m_Lights)
+		Safe_Release(pLight);
+
+	m_Lights.clear();
+}
+
 CLight_Manager* CLight_Manager::Create()
 {
 	return new CLight_Manager();
