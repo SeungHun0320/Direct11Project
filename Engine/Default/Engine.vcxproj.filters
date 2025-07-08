@@ -479,9 +479,6 @@
     <Filter Include="01.Utility\03.GameObject\Objects">
       <UniqueIdentifier>{f0653b6c-d07d-40f2-b0cd-d44ef142df4a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\03.GameObject\Objects\AlphaObject">
-      <UniqueIdentifier>{92c16ed6-c8f2-4ced-9d55-8a49f6fa9443}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utility\03.GameObject\Objects\ContainerObject">
       <UniqueIdentifier>{10b3f85d-b644-4321-94f2-2fe6bbe2a0c0}</UniqueIdentifier>
     </Filter>
@@ -628,6 +625,9 @@
     </Filter>
     <Filter Include="01.Utility\07.Picking\PixelPicking">
       <UniqueIdentifier>{1d505fc4-34ba-48f9-9b47-585e88b3aed5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.GameObject\Objects\BlendObject">
+      <UniqueIdentifier>{92c16ed6-c8f2-4ced-9d55-8a49f6fa9443}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

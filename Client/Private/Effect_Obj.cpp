@@ -29,6 +29,9 @@ HRESULT CEffect_Obj::Initialize(void* pArg)
     if (FAILED(Ready_Components(pArg)))
         return E_FAIL;
 
+    if (FAILED(Ready_Desc(pDesc->strParticeFilePath)))
+        return E_FAIL;
+
     return S_OK;
 }
 
@@ -38,7 +41,17 @@ void CEffect_Obj::Priority_Update(_float fTimeDelta)
 
 LIFE CEffect_Obj::Update(_float fTimeDelta)
 {
-    m_pVIBufferCom->Drop(fTimeDelta);
+    switch (m_eMoveType)
+    {
+    case EFFECT_MOVE::DROP:
+        m_pVIBufferCom->Drop(fTimeDelta);
+        break;
+    case EFFECT_MOVE::SPREAD:
+        m_pVIBufferCom->Spread(fTimeDelta);
+        break;
+    default:
+        break;
+    }
 
     return LIFE::NONE;
 }
@@ -56,7 +69,7 @@ HRESULT CEffect_Obj::Render()
     if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
         return E_FAIL;
 
-    if (FAILED(m_pShaderCom->Begin(0)))
+    if (FAILED(m_pShaderCom->Begin(m_ePass)))
         return E_FAIL;
 
     if (FAILED(m_pVIBufferCom->Bind_Buffers()))
@@ -90,6 +103,22 @@ HRESULT CEffect_Obj::Ready_Components(void* pArg)
     return S_OK;
 }
 
+HRESULT CEffect_Obj::Ready_Desc(const wstring& strParticleFilePath)
+{
+    ifstream LoadFile(strParticleFilePath, ios::binary);
+
+    if (!LoadFile.is_open())
+        return E_FAIL;
+
+    LoadFile.read(reinterpret_cast<_char*>(&m_vColor), sizeof(_float4));
+    LoadFile.read(reinterpret_cast<_char*>(&m_ePass), sizeof(EFFECT_PASS));
+    LoadFile.read(reinterpret_cast<_char*>(&m_eMoveType), sizeof(EFFECT_MOVE));
+
+    LoadFile.close();
+
+    return S_OK;
+}
+
 HRESULT CEffect_Obj::Bind_ShaderResources()
 {
     if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
@@ -99,10 +128,15 @@ HRESULT CEffect_Obj::Bind_ShaderResources()
         return E_FAIL;
     if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::PROJ))))
         return E_FAIL;
-
     if (FAILED(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4))))
         return E_FAIL;
 
+    if (FAILED(m_pShaderCom->Bind_RawValue("g_vColor", &m_vColor, sizeof(_float4))))
+        return E_FAIL;
+    if (FAILED(m_pShaderCom->Bind_RawValue("g_fFar", m_pGameInstance->Get_Far_Ptr(), sizeof(_float))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(TEXT("Target_Depth"), "g_DepthTexture", m_pShaderCom)))
+        return E_FAIL;
     return S_OK;
 }
 

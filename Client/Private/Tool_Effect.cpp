@@ -105,14 +105,18 @@ void CTool_Effect::Adjust_ParticleDesc()
 	ImGui::SameLine();
 	if (ImGui::RadioButton(u8"스프레드", iType == ENUM_CLASS(EFFECT_MOVE::SPREAD)))
 		m_eMove = EFFECT_MOVE::SPREAD;
+	ImGui::SameLine();
+	if (ImGui::RadioButton(u8"추적", iType == ENUM_CLASS(EFFECT_MOVE::CHASE)))
+		m_eMove = EFFECT_MOVE::CHASE;
 
 	m_pParticleTool->Change_Move(m_eMove);
 	
-	if (ImGui::RadioButton(u8"스프라이트", m_isSprite))
-		m_isSprite = !m_isSprite;
-
-	if (ImGui::RadioButton(u8"소프트 블렌드", m_isSoft))
-		m_isSoft = !m_isSoft;
+	ImGui::Separator();
+	ImGui::Checkbox(u8"스프라이트", &m_isSprite);
+	ImGui::SameLine();
+	ImGui::Checkbox(u8"소프트 블렌드", &m_isSoft);
+	ImGui::SameLine();
+	ImGui::Checkbox(u8"마스크", &m_isMask);
 
 	if (m_isSprite && !m_isSoft)
 		m_ePass = EFFECT_PASS::SPRITE;
@@ -122,6 +126,9 @@ void CTool_Effect::Adjust_ParticleDesc()
 		m_ePass = EFFECT_PASS::ROTATION;
 	else if (!m_isSprite && m_isSoft)
 		m_ePass = EFFECT_PASS::ROTATION_BLEND;
+
+	if(m_isMask)
+		m_ePass = EFFECT_PASS::MASK;
 
 	m_pParticleTool->Change_Pass(m_ePass);
 

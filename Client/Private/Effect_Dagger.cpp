@@ -116,7 +116,7 @@ HRESULT CEffect_Dagger::Ready_PartObjects()
 	SwrilDesc.pParentLevelID = m_pLevelID;
 	SwrilDesc.pParentMatrix = m_pParentMatrix;
 	SwrilDesc.strParticeFilePath = TEXT("../Bin/DataFiles/Effect/Dagger/IceSwirl.Effect_Ex");
-	SwrilDesc.strParticleTextureTag = TEXT("Prototype_Component_Texture_Swirl");
+	SwrilDesc.strParticleTextureTag = TEXT("Prototype_Component_Texture_HexParticle");
 	SwrilDesc.strParticleBufferTag = TEXT("Prototype_Component_VIBuffer_IceSwirl");
 	SwrilDesc.eOrientation = CEffect_Part::LOCAL;
 	

@@ -1,6 +1,9 @@
 #include "Bullet_SpiderTankOrb.h"
-
 #include "GameInstance.h"
+
+#include "Effect_BossSteam.h"
+#include "Effect_Mesh_Smoke.h"
+#include "Effect_Obj.h"
 
 CBullet_SpiderTankOrb::CBullet_SpiderTankOrb(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CBullet_Monster { pDevice, pContext }
@@ -29,7 +32,7 @@ HRESULT CBullet_SpiderTankOrb::Initialize(void* pArg)
 
 	m_pColliderCom->Set_Active(false);
 
-	m_fDeadTime = 3.f;
+	m_fDeadTime = 7.5f;
 	m_fAttack = 20.f;
 	m_fStaggerValue = 10.f;
 
@@ -43,6 +46,9 @@ void CBullet_SpiderTankOrb::Priority_Update(_float fTimeDelta)
 
 LIFE CBullet_SpiderTankOrb::Update(_float fTimeDelta)
 {
+	if (m_bDead)
+		Craete_SmokeEffect();
+
 	if (!m_bGrounded)
 	{
 		// 위치 적용
@@ -77,6 +83,38 @@ void CBullet_SpiderTankOrb::Late_Update(_float fTimeDelta)
 HRESULT CBullet_SpiderTankOrb::Render()
 {
 	return  __super::Render();
+}
+
+HRESULT CBullet_SpiderTankOrb::Craete_SmokeEffect()
+{
+	CEffect_Mesh_Smoke::DESC SmokeDesc{};
+	_float3 vPos{};
+
+	XMStoreFloat3(&vPos, m_pTransformCom->Get_State(STATE::POSITION));
+
+	SmokeDesc.eLevelID = m_eLevelID;
+	SmokeDesc.WorldMatrix = XMMatrixTranslation(vPos.x, vPos.y, vPos.z);
+	SmokeDesc.strEffectModelTag = TEXT("Prototype_Component_Model_Particle_Instance_OrbSmoke");
+	SmokeDesc.strName = TEXT("Effect_Mesh_Smoke");
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_") + SmokeDesc.strName,
+		ENUM_CLASS(m_eLevelID), TEXT("Layer_Effect"), &SmokeDesc)))
+		return E_FAIL;
+
+
+	CEffect_Obj::DESC ExplosionDesc{};
+	ExplosionDesc.eLevelID = m_eLevelID;
+	ExplosionDesc.WorldMatrix = XMMatrixTranslation(vPos.x, vPos.y, vPos.z);
+	ExplosionDesc.strParticeFilePath = TEXT("../Bin/DataFiles/Effect/Explosion/Explosion.Effect_Ex");
+	ExplosionDesc.strParticleBufferTag = TEXT("Prototype_Component_VIBuffer_Explosion");
+	ExplosionDesc.strParticleTextureTag = TEXT("Prototype_Component_Texture_VoidParticle");
+	ExplosionDesc.strName = TEXT("Effect_Obj");
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_") + ExplosionDesc.strName,
+		ENUM_CLASS(m_eLevelID), TEXT("Layer_Effect"), &ExplosionDesc)))
+		return E_FAIL;
+
+	return S_OK;
 }
 
 void CBullet_SpiderTankOrb::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
@@ -117,6 +155,20 @@ HRESULT CBullet_SpiderTankOrb::Ready_Components(void* pArg)
 
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_Sphere"),
 		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &ColDesc)))
+		return E_FAIL;
+
+	CEffect_BossSteam::DESC SteamDesc{};
+
+	SteamDesc.pParentLevelID = &m_eLevelID;
+	SteamDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	SteamDesc.strParticeFilePath = TEXT("../Bin/DataFiles/Effect/SpiderTank/BossBombSteam.Effect_Ex");
+	SteamDesc.strParticleBufferTag = TEXT("Prototype_Component_VIBuffer_BossBombSteam");
+	SteamDesc.strParticleTextureTag = TEXT("Prototype_Component_Texture_SteamMask");
+	SteamDesc.pParentisInBattle = &m_isShoot;
+	SteamDesc.eOrientation = CEffect_Part::PARTICLE_ORIENTATION::LOCAL;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Effect_BossSteam"),
+		ENUM_CLASS(m_eLevelID), TEXT("Layer_Effect"), &SteamDesc)))
 		return E_FAIL;
 
 	return S_OK;

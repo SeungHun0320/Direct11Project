@@ -493,8 +493,17 @@
     <Filter Include="02.GameObjects\09.Effect\02. BossEffect">
       <UniqueIdentifier>{ba41d300-b1aa-429d-bf3f-b12d0d42b7de}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\09.Effect\02. BossEffect\NewFilter1">
+    <Filter Include="02.GameObjects\09.Effect\02. BossEffect\BossSteam">
       <UniqueIdentifier>{c4c1e5d0-72c6-4097-beb4-e2e38e94de3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\09.Effect\02. BossEffect\BossBullet">
+      <UniqueIdentifier>{3209dcb8-c96c-4fb7-985f-98bb9d41b004}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\09.Effect\02. BossEffect\BossLager">
+      <UniqueIdentifier>{8ec4a34f-470a-4ec6-b456-d6a8e820b79a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\09.Effect\02. BossEffect\BossSwing">
+      <UniqueIdentifier>{b98d6d77-53ab-4e06-bda4-90e8ed3dd638}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -893,6 +902,15 @@
     </ClInclude>
     <ClInclude Include="..\public\Effect_AnimMesh_Ice.h">
       <Filter>02.GameObjects\09.Effect\Container\Mesh\Anim\Ice</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Effect_BossSteam.h">
+      <Filter>02.GameObjects\09.Effect\02. BossEffect\BossSteam</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Effect_BossSwing.h">
+      <Filter>02.GameObjects\09.Effect\02. BossEffect\BossSwing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Effect_BossBullet.h">
+      <Filter>02.GameObjects\09.Effect\02. BossEffect\BossBullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1334,6 +1352,15 @@
     </ClCompile>
     <ClCompile Include="..\private\Effect_AnimMesh_Ice.cpp">
       <Filter>02.GameObjects\09.Effect\Container\Mesh\Anim\Ice</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Effect_BossSteam.cpp">
+      <Filter>02.GameObjects\09.Effect\02. BossEffect\BossSteam</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Effect_BossSwing.cpp">
+      <Filter>02.GameObjects\09.Effect\02. BossEffect\BossSwing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Effect_BossBullet.cpp">
+      <Filter>02.GameObjects\09.Effect\02. BossEffect\BossBullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

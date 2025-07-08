@@ -33,6 +33,7 @@ public:
 	virtual void Reset() override;
 	virtual void Drop(_float fTimeDelta) override;
 	virtual void Spread(_float fTimeDelta) override;
+	virtual void MoveTrail(_fvector vWorldPos, _float fTimeDelta) override;
 
 
 

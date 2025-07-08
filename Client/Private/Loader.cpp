@@ -19,6 +19,8 @@
 
 #include "UI2D_BossHpBar.h"
 
+#include "Effect_BossSteam.h"
+
 #include "Blob.h"
 #include "Body_Blob.h"
 
@@ -697,6 +699,31 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/splashfx ramp.png")))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_SteamMask*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_SteamMask"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/spidertank steam mask.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_SteamNoise*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_SteamNoise"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/spidertank steam noise.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_VoidParticle*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_VoidParticle"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/void particle mask.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_VoidSmokeParticle*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_VoidSmokeParticle"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/voidtouched_smoke_particle.png")))))
+		return E_FAIL;
+	
+	/* For.Prototype_Component_Texture_HexParticle*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_HexParticle"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/hex bokeh particle.png")))))
+		return E_FAIL;
+
 	lstrcpy(m_szLoadingText, TEXT("버퍼을(를) 로딩중입니다."));
 
 	/* For.Prototype_Component_VIBuffer_HitLineEffect */
@@ -709,8 +736,45 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/Hit/HitSplash.Effect")))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_VIBuffer_BossSteam */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_VIBuffer_BossSteam"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/SpiderTank/SpiderTankSteam.Effect")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_BossBombSteam */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_VIBuffer_BossBombSteam"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/SpiderTank/BossBombSteam.Effect")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_Explosion */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_VIBuffer_Explosion"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/Explosion/Explosion.Effect")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_BossBulletTrail */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_VIBuffer_BossBulletTrail"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/SpiderTank/BossBulletTrail.Effect")))))
+		return E_FAIL;
+
+
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
 	_matrix		PreTransformMatrix = XMMatrixIdentity();
+
+	/* For.Prototype_Component_Model_Particle_Instance_OrbSmoke*/
+	CVIBuffer_Mesh_Particle_Instance::DESC SmokeDesc{};
+	SmokeDesc.iNumInstance = 30;
+	SmokeDesc.isLoop = false;
+	SmokeDesc.vCenter = _float3(0.f, 0.25f, 0.f);
+	SmokeDesc.vPivot = _float3(0.f, -2.f, 0.f);
+	SmokeDesc.vRange = _float3(5.f, 0.25f, 5.f);
+	SmokeDesc.vSize = _float2(1.3f, 2.f);
+	SmokeDesc.vLifeTime = _float2(0.8f, 1.f);
+	SmokeDesc.vSpeed = _float2(6.f, 9.f);
+
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Particle_Instance_OrbSmoke"),
+		CModel_Particle_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Models/NonAnim/Effect/Dash/Dash.Model"), &SmokeDesc, PreTransformMatrix))))
+		return E_FAIL;
 
 	/*For.Prototype_Component_Model_Arena*/
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
@@ -790,6 +854,12 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_SpiderTank_Lager"),
 		CBullet_SpiderTankLager::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	
+	/* For.Prototype_GameObject_Effect_BossSteam */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Effect_BossSteam"),
+		CEffect_BossSteam::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
 	/* For.Prototype_GameObject_Body_Grass */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Body_Grass"),
@@ -798,6 +868,11 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 	/* For.Prototype_GameObject_Grass */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Grass"),
 		CGrass::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Effect_Mesh_Smoke */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Effect_Mesh_Smoke"),
+		CEffect_Mesh_Smoke::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/*For.Prototype_GameObject_UI2D_BossHPBar */
@@ -1040,9 +1115,29 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/Upgrade UI_starburst.png")))))
 		return E_FAIL;
 
-	/* For.Prototype_Component_Texture_SwirlParticle*/
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_SwirlParticle"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/ice swirl.png")))))
+	/* For.Prototype_Component_Texture_HexParticle*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_HexParticle"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/hex bokeh particle.png")))))
+		return E_FAIL;
+	
+	/* For.Prototype_Component_Texture_SteamMask*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_SteamMaskEffect"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/spidertank steam mask.png")))))
+		return E_FAIL;
+	
+	/* For.Prototype_Component_Texture_SteamNoise*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_SteamNoiseEffect"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/spidertank steam noise.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_VoidParticle*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_VoidParticle"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/void particle mask.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_VoidSmokeParticle*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_VoidSmokeParticle"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/voidtouched_smoke_particle.png")))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));

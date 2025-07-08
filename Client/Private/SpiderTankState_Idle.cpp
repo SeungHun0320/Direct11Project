@@ -115,6 +115,9 @@ void CSpiderTankState_Idle::Execute(_float fTimeDelta)
 
 	m_pOwner->AttackCoolDownAcc(fTimeDelta);
 
+	//m_pOwner->Change_States(CSpiderTank::STATES::READY_SHOT);
+	//return;
+
 	_float fRandom = CGameInstance::Get_Instance()->Compute_Random(0.f, 1.f);
 
 	if (fAngle >= XMConvertToRadians(55.f))

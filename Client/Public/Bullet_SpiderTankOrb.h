@@ -27,7 +27,12 @@ public:
 
 private:
 	_float3 m_vVelocity = {};
+
 	_bool  m_bGrounded = { false };
+	_bool  m_isShoot = { true };
+
+private:
+	virtual HRESULT Craete_SmokeEffect() override;
 
 private:
 	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner) override;

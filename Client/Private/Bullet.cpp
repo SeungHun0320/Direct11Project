@@ -85,6 +85,11 @@ HRESULT CBullet::Render()
 	return S_OK;
 }
 
+HRESULT CBullet::Craete_SmokeEffect()
+{
+	return S_OK;
+}
+
 void CBullet::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
 {
 }

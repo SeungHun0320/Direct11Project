@@ -335,7 +335,7 @@ void CSpiderTankState_Shot::Enter(_float fTimeDelta)
 	m_fDuration = 6.f;
 	m_fTimeAcc = 0.f;
 
-	m_fReloadTime = 0.1f;
+	m_fReloadTime = 0.2f;
 	m_fShotTime = 0.f;
 
 	m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::SHOT, true, 0.2f);

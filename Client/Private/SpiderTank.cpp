@@ -6,6 +6,8 @@
 #include "UI2D_BossHpBar.h"
 #include "UI3D_LockOn.h"
 
+#include "Effect_BossSteam.h"
+
 #include "SpiderTankState.h"
 
 #include "Bullet_SpiderTank.h"
@@ -254,7 +256,7 @@ HRESULT CSpiderTank::Shot_Bullet()
 
 	tDesc.eLevelID = m_eLevelID;
 	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
-	tDesc.fSpeedPerSec = 50.f;
+	tDesc.fSpeedPerSec = 30.f;
 	tDesc.strName = TEXT("SpiderTank_Bullet");
 	tDesc.strPrototypeModelTag = TEXT("Prototype_Component_Model_SpiderTankOrb");
 
@@ -455,6 +457,20 @@ HRESULT CSpiderTank::Ready_PartObjects()
 
 	if (FAILED(__super::Add_PartObject(PART_LOCKON_END, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_UI3D_LockOn"), &LockOnDesc)))
 		return E_FAIL;
+
+	CEffect_BossSteam::DESC SteamDesc{};
+
+	SteamDesc.pParentLevelID = &m_eLevelID;
+	SteamDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	SteamDesc.strParticeFilePath = TEXT("../Bin/DataFiles/Effect/SpiderTank/SpiderTankSteam.Effect_Ex");
+	SteamDesc.strParticleBufferTag = TEXT("Prototype_Component_VIBuffer_BossSteam");
+	SteamDesc.strParticleTextureTag = TEXT("Prototype_Component_Texture_SteamMask");
+	SteamDesc.pParentisInBattle = &m_isInBattle;
+	SteamDesc.eOrientation = CEffect_Part::PARTICLE_ORIENTATION::WORLD;
+
+	if (FAILED(__super::Add_PartObject(PART_STEAM, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Effect_BossSteam"), &SteamDesc)))
+		return E_FAIL;
+
 
 
 	Safe_AddRef(m_pBodyPart);

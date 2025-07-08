@@ -1,6 +1,7 @@
 #include "Bullet_SpiderTank.h"
-
 #include "GameInstance.h"
+
+#include "Effect_Part.h"
 
 CBullet_SpiderTank::CBullet_SpiderTank(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CBullet_Monster{ pDevice, pContext }
@@ -30,8 +31,11 @@ HRESULT CBullet_SpiderTank::Initialize(void* pArg)
 	m_fAttack = 7.5f;
 	m_fStaggerValue = 0.f;
 
-	m_pTransformCom->Scaling(0.5f, 0.5f, 0.5f);
+	m_pTransformCom->Scaling(0.3f, 0.3f, 0.3f);
 	m_pTransformCom->LookAt(XMVectorSetW(XMLoadFloat3(&m_vDir), 1.f));
+
+	if (FAILED(Create_Trail()))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -58,6 +62,25 @@ HRESULT CBullet_SpiderTank::Render()
 	return  __super::Render();
 }
 
+HRESULT CBullet_SpiderTank::Create_Trail()
+{
+	CEffect_Part::DESC TrailDesc{};
+
+	TrailDesc.eOrientation = CEffect_Part::LOCAL;
+	TrailDesc.pParentLevelID = &m_eLevelID;
+	TrailDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	TrailDesc.strParticeFilePath = TEXT("../Bin/DataFiles/Effect/SpiderTank/BossBulletTrail.Effect_Ex");
+	TrailDesc.strParticleBufferTag = TEXT("Prototype_Component_VIBuffer_BossBulletTrail");
+	TrailDesc.strParticleTextureTag = TEXT("Prototype_Component_Texture_HexParticle");
+	TrailDesc.strName = TEXT("Effect_Part");
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_") + TrailDesc.strName,
+		ENUM_CLASS(m_eLevelID), TEXT("Layer_Effect"), &TrailDesc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 void CBullet_SpiderTank::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
 {
 	COLLIDER_ID eColliderID = static_cast<COLLIDER_ID>(OtherColliderID);
@@ -81,7 +104,7 @@ HRESULT CBullet_SpiderTank::Ready_Components(void* pArg)
 	_float3 vScale = m_pTransformCom->Get_Scaled();
 
 	ColDesc.vCenter = _float3(0.f, 0.f, 0.f);
-	ColDesc.fRadius = vScale.x;
+	ColDesc.fRadius = vScale.x + 2.f;
 	ColDesc.pOwner = this;
 	ColDesc.iColliderGroupID = ENUM_CLASS(COLLIDER_GROUP::MONSTER_BULLET);
 	ColDesc.iColliderID = ENUM_CLASS(COLLIDER_ID::SPIDERTANK_BULLET);

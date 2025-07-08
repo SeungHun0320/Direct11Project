@@ -63,6 +63,7 @@ private:
 	_float4 m_vColor{1.f, 1.f, 1.f, 1.f};
 	_bool   m_isSprite = { false };
 	_bool   m_isSoft = { false };
+	_bool   m_isMask = { false };
 
 private:
 	vector<_string> m_ProtoTextureNames;

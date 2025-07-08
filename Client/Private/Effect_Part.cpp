@@ -49,6 +49,12 @@ LIFE CEffect_Part::Update(_float fTimeDelta)
 	case EFFECT_MOVE::SPREAD:
 		m_pVIBufferCom->Spread(fTimeDelta);
 		break;
+	case EFFECT_MOVE::CHASE:
+		_matrix ParentMatrix = XMLoadFloat4x4(m_pParentMatrix);
+		m_pVIBufferCom->MoveTrail(XMVectorSetW(ParentMatrix.r[3], 0.f), fTimeDelta);
+		break;
+	default:
+		break;
 	}
 
 	if (WORLD == m_eOrientation)

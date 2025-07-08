@@ -366,6 +366,39 @@ void CVIBuffer_Point_Instance::Spread(_float fTimeDelta)
 	m_pContext->Unmap(m_pVBInstance, 0);
 }
 
+void CVIBuffer_Point_Instance::MoveTrail(_fvector vWorldPos, _float fTimeDelta)
+{
+	D3D11_MAPPED_SUBRESOURCE SubResorce{};
+
+	/* 이 옵션을 줘야 덮어쓰기를 안함 */
+	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResorce);
+
+	VTXPOINT_PARTICLE_INSTANCE* pVertices = static_cast<VTXPOINT_PARTICLE_INSTANCE*>(SubResorce.pData);
+
+	_vector vDir = {};
+
+	for (_uint i = 0; i < m_iNumInstance; i++)
+	{
+		pVertices[i].vLifeTime.y += fTimeDelta;
+
+		vDir = XMVectorSetW(XMVector3Normalize(XMLoadFloat4(&m_pVertexInstances[i].vTranslation) - vWorldPos), 0.f);
+
+		XMStoreFloat4(&pVertices[i].vTranslation,
+			XMLoadFloat4(&pVertices[i].vTranslation) + (vDir * m_pSpeeds[i] * fTimeDelta));
+
+		if (true == m_isLoop &&
+			pVertices[i].vLifeTime.y >= pVertices[i].vLifeTime.x)
+		{
+			pVertices[i].vLifeTime.y = 0.f;
+			/* 원래 위치로 이동 */
+			pVertices[i].vTranslation = m_pVertexInstances[i].vTranslation;
+		}
+	}
+
+
+	m_pContext->Unmap(m_pVBInstance, 0);
+}
+
 CVIBuffer_Point_Instance* CVIBuffer_Point_Instance::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const DESC* pArg)
 {
 	CVIBuffer_Point_Instance* pInstance = new CVIBuffer_Point_Instance(pDevice, pContext);

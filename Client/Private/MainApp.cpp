@@ -18,6 +18,7 @@
 #include "UI2D_InventorySlot.h"
 
 #include "Effect_Part.h"
+#include "Effect_Obj.h"
 #include "Effect_Mesh_Dodge.h"
 #include "Effect_Potion.h"
 #include "Effect_Stick.h"
@@ -295,8 +296,8 @@ HRESULT CMainApp::Ready_Prototype_Texture()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/Upgrade UI_starburst.png")))))
 		return E_FAIL;
 
-	/* For.Prototype_Component_Texture_Swirl*/
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Swirl"),
+	/* For.Prototype_Component_Texture_HexParticle*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_HexParticle"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/hex bokeh particle.png")))))
 		return E_FAIL;
 
@@ -560,6 +561,11 @@ HRESULT CMainApp::Ready_Prototype_Object()
 	/* For.Prototype_GameObject_Effect_Part */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_Part"),
 		CEffect_Part::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Effect_Obj */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_Obj"),
+		CEffect_Obj::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 

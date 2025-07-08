@@ -18,6 +18,9 @@ public:
 	enum PASS { DEFAULT, TOOL, SPRITE, ROTATION,
 				TOOL_BLEND, SPRITE_BLEND, ROTATION_BLEND, PASS_END };
 public:
+	enum TEX_TYPE { TEXTURE, MASK, NOISE, TEX_END };
+
+public:
 	typedef struct tagParticleObjDesc : public CGameObject::DESC
 	{
 		_wstring strParticleTextureTag{};
@@ -57,7 +60,7 @@ private:
 	EFFECT_MOVE						m_eType{ EFFECT_MOVE::MOVE_END };
 	EFFECT_PASS						m_ePass{ EFFECT_PASS::PASS_END };
 
-	CTexture*						m_pTextureCom = { nullptr };
+	CTexture*						m_pTextureCom[TEX_END] = { nullptr };
 	CShader*						m_pShaderCom = { nullptr };
 	CVIBuffer_Point_Instance_Tool*  m_pVIBufferCom = { nullptr };
 

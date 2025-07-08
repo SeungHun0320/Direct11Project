@@ -59,6 +59,9 @@ protected:
 	CModel* m_pModelCom = { nullptr };
 
 protected:
+	virtual HRESULT Craete_SmokeEffect();
+
+protected:
 	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner) override;
 
 protected:

@@ -16,10 +16,13 @@ class CEffect_Obj : public CGameObject
 public:
 	typedef struct tagParticleObjDesc : public CGameObject::DESC
 	{
-		LEVEL eLevelID = { LEVEL::LEVEL_END };
-		_wstring strParticleBufferTag{};
-		_wstring strParticleTextureTag{};
+		_wstring strParticeFilePath{};
 
+		LEVEL eLevelID = { LEVEL::LEVEL_END };
+
+		_wstring    strParticleTextureTag{};
+		_wstring    strParticleBufferTag{};
+		
 	}DESC;
 
 private:
@@ -35,16 +38,24 @@ public:
 	virtual void Late_Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
-private:
+protected:
 	LEVEL   m_eLevelID = { LEVEL::LEVEL_END };
 
-private:
+protected:
+	_float4		m_vColor = {};
+
+protected:
+	EFFECT_PASS m_ePass = { EFFECT_PASS::PASS_END };
+	EFFECT_MOVE m_eMoveType = { EFFECT_MOVE::MOVE_END };
+
+protected:
 	CShader*				  m_pShaderCom = { nullptr };
 	CTexture*				  m_pTextureCom = { nullptr };
 	CVIBuffer_Point_Instance* m_pVIBufferCom = { nullptr };
 
 private:
 	virtual HRESULT Ready_Components(void* pArg);
+	virtual HRESULT Ready_Desc(const wstring& strParticleFilePath);
 	HRESULT Bind_ShaderResources();
 
 public:

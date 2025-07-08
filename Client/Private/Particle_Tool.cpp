@@ -44,6 +44,8 @@ LIFE CParticle_Tool::Update(_float fTimeDelta)
 	case EFFECT_MOVE::SPREAD:
 		m_pVIBufferCom->Spread(fTimeDelta);
 		break;
+	case EFFECT_MOVE::CHASE:
+		m_pVIBufferCom->MoveTrail(XMVectorSet(2.5f, 0.f, 0.f, 1.f), fTimeDelta);
 	}
 
 	return LIFE::NONE;
@@ -59,7 +61,13 @@ HRESULT CParticle_Tool::Render()
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
-	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
+	if (FAILED(m_pTextureCom[TEXTURE]->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
+		return E_FAIL;
+
+	if (FAILED(m_pTextureCom[MASK]->Bind_ShaderResource(m_pShaderCom, "g_MaskTexture", 0)))
+		return E_FAIL;
+
+	if (FAILED(m_pTextureCom[NOISE]->Bind_ShaderResource(m_pShaderCom, "g_NoiseTexture", 0)))
 		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Begin(m_ePass)))
@@ -76,11 +84,11 @@ HRESULT CParticle_Tool::Render()
 
 HRESULT CParticle_Tool::Change_TextureCom(const _wstring& strTextureTag)
 {
-	Safe_Release(m_pTextureCom);
+	Safe_Release(m_pTextureCom[TEXTURE]);
 
 	/* For.Com_Texture */
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::TOOLS), strTextureTag,
-		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom[TEXTURE]))))
 		return E_FAIL;
 
 	return E_NOTIMPL;
@@ -102,7 +110,17 @@ HRESULT CParticle_Tool::Ready_Components(void* pArg)
 
 	/* For.Com_Texture */
 	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_Component_Texture_SpikeParticle"),
-		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom[TEXTURE]))))
+		return E_FAIL;
+
+	/* For.Com_Texture */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_Component_Texture_SteamMaskEffect"),
+		TEXT("Com_TextureMask"), reinterpret_cast<CComponent**>(&m_pTextureCom[MASK]))))
+		return E_FAIL;
+
+	/* For.Com_Texture */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_Component_Texture_SteamNoiseEffect"),
+		TEXT("Com_TextureNoise"), reinterpret_cast<CComponent**>(&m_pTextureCom[NOISE]))))
 		return E_FAIL;
 
 	return S_OK;
@@ -163,7 +181,9 @@ void CParticle_Tool::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pTextureCom);
+	for (_uint i = 0; i < TEX_END; ++i)
+		Safe_Release(m_pTextureCom[i]);
+
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pVIBufferCom);
 }
