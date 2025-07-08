@@ -1,0 +1,37 @@
+#pragma once
+
+#include "Base.h"
+
+BEGIN(Engine)
+
+class CShadow final : public CBase
+{
+private:
+	CShadow(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual ~CShadow() = default;
+
+public:
+	const _float4x4* Get_Light_ViewMatrix() {
+		return &m_LightViewMatrix;
+	}
+	const _float4x4* Get_Light_ProjMatrix() {
+		return &m_LightProjMatrix;
+	}
+
+public:
+	HRESULT Ready_Light_For_Shadow(const SHADOW_DESC& Desc);
+
+private:
+	ID3D11Device*		 m_pDevice = { nullptr };
+	ID3D11DeviceContext* m_pContext = { nullptr };
+
+private:
+	_float4x4						m_LightViewMatrix = {};
+	_float4x4						m_LightProjMatrix = {};
+
+public:
+	static CShadow* Craete(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual void Free() override;
+};
+
+END

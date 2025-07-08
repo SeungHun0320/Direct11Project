@@ -53,6 +53,7 @@ LIFE CPart_Player::Update(_float fTimeDelta)
 void CPart_Player::Late_Update(_float fTimeDelta)
 {
     m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+    m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_SHADOW, this);
 
 #ifdef _DEBUG /* 이제 네비게이션이나 콜라이더나 디버그용으로 렌더하는 컴포넌트들은 렌더러를 통해서 렌더할 것. */
     m_pGameInstance->Add_DebugComponent(m_pColliderCom);
@@ -78,6 +79,34 @@ HRESULT CPart_Player::Render()
         m_pModelCom->Bind_Bone_Matrices(m_pShaderCom, "g_BoneMatrices", i);
 
         if (FAILED(m_pShaderCom->Begin(2)))
+            return E_FAIL;
+
+        if (FAILED(m_pModelCom->Render(i)))
+            return E_FAIL;
+    }
+
+    return S_OK;
+}
+
+HRESULT CPart_Player::Render_Shadow()
+{
+    if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix)))
+        return E_FAIL;
+    if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Light_ViewMatrix())))
+        return E_FAIL;
+    if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Light_ProjMatrix())))
+        return E_FAIL;
+
+    _uint		iNumMesh = m_pModelCom->Get_NumMeshes();
+
+    for (_uint i = 0; i < iNumMesh; i++)
+    {
+        if (m_pModelCom->Get_MeshVisible(i))
+            continue;
+
+        m_pModelCom->Bind_Bone_Matrices(m_pShaderCom, "g_BoneMatrices", i);
+
+        if (FAILED(m_pShaderCom->Begin(3)))
             return E_FAIL;
 
         if (FAILED(m_pModelCom->Render(i)))

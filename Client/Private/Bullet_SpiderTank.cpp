@@ -54,7 +54,7 @@ LIFE CBullet_SpiderTank::Update(_float fTimeDelta)
 
 void CBullet_SpiderTank::Late_Update(_float fTimeDelta)
 {
-	__super::Late_Update(fTimeDelta); 
+
 }
 
 HRESULT CBullet_SpiderTank::Render()

@@ -80,6 +80,8 @@
 /* 툴 용 */
 #include "Particle_Tool.h"
 
+#include "GlobalShadow.h"
+
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice { pDevice }
@@ -634,6 +636,11 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 		CEffect_Obj::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/*For.Prototype_GameObject_GlobalShadow */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_GlobalShadow"),
+		CGlobalShadow::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	///* For.Prototype_GameObject_Effect */
 	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Effect"),
 	//	CEffect::Create(m_pGraphic_Device))))
@@ -794,6 +801,12 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/Anim/Monster/Spidertank/Orb/Spidertank_Orb.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
+	/*For.Prototype_Component_Model_SpiderTankMuzzle*/
+	PreTransformMatrix = XMMatrixScaling(0.008f, 0.008f, 0.008f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_SpiderTankMuzzle"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Effect/Spidertank/Muzzle.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
 	/* For.Prototype_Component_Model_Instance_Grass */
 	CVIBuffer_Mesh_Instance::DESC		GrassDesc{};
 	GrassDesc.iNumInstance = 50;
@@ -908,6 +921,11 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 	/* For.Prototype_GameObject_Sky */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Sky"),
 		CSky::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/*For.Prototype_GameObject_GlobalShadow */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_GlobalShadow"),
+		CGlobalShadow::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
@@ -1042,6 +1060,11 @@ HRESULT CLoader::Loading_For_Shop(LEVEL eLevelID)
 	/*For.Prototype_GameObject_UI2D_Reward */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_UI2D_Reward"),
 		CUI2D_Reward::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/*For.Prototype_GameObject_GlobalShadow */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_GlobalShadow"),
+		CGlobalShadow::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 

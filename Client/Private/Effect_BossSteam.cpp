@@ -41,7 +41,12 @@ LIFE CEffect_BossSteam::Update(_float fTimeDelta)
     if (!(*m_pParentisInBattle))
         return LIFE::NONE;
 
-    return  __super::Update(fTimeDelta);
+    __super::Update(fTimeDelta);
+
+    XMStoreFloat4x4(&m_CombinedWorldMatrix,
+        XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Float4x4()) * XMLoadFloat4x4(m_pParentMatrix));
+
+    return LIFE::NONE;
 }
 
 void CEffect_BossSteam::Late_Update(_float fTimeDelta)

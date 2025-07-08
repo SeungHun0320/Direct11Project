@@ -20,11 +20,11 @@ HRESULT CEffect_Potion::Initialize_Prototype()
 
 HRESULT CEffect_Potion::Initialize(void* pArg)
 {
-	DESC* pDesc = static_cast<DESC*>(pArg);	
+	DESC* pDesc = static_cast<DESC*>(pArg);
 
 	m_pParentIsUsePotion = pDesc->pParentIsUsePotion;
 
-	if(FAILED(__super::Initialize(pArg)))
+	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
 	return S_OK;
@@ -62,7 +62,11 @@ HRESULT CEffect_Potion::Render()
 
 void CEffect_Potion::Reset_Effect(_uint iPart)
 {
-	dynamic_cast<CEffect_Part*>(m_PartObjects[iPart])->Reset_Effect();
+	if (CEffect_Part* pPart = dynamic_cast<CEffect_Part*>(m_PartObjects[iPart]))
+	{
+		pPart->Reset_Effect();
+		pPart->Set_ParentMatrix(XMLoadFloat4x4(m_pParentMatrix));
+	}
 }
 
 HRESULT CEffect_Potion::Ready_Components(void* pArg)

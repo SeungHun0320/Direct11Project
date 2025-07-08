@@ -19,6 +19,8 @@
 
 #include "Effect_Obj.h"
 
+#include "GlobalShadow.h"
+
 #define CurLevel LEVEL::COURTYARD
 
 CLevel_Courtyard::CLevel_Courtyard(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -131,7 +133,7 @@ HRESULT CLevel_Courtyard::Ready_Layer_Camera(const _wstring& strLayerTag)
 	//FreeCameraDesc.fSensor = 0.1f;
 
 	//FreeCameraDesc.vEye = _float3(0.f, 20.f, -15.f);
-	//FreeCameraDesc.vAt = _float3(0.f, 0.f, 0.f);
+	//FreeCameraDesc.vAt =  _float3(0.f, 0.f, 0.f);
 	//FreeCameraDesc.fFov = XMConvertToRadians(60.f);
 	//FreeCameraDesc.fNear = 0.1f;
 	//FreeCameraDesc.fFar = 3000.f;
@@ -398,6 +400,29 @@ HRESULT CLevel_Courtyard::Ready_Lights()
 	LightDesc.vSpecular = _float4(0.7f, 0.7f, 0.7f, 1.f);
 
 	if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
+		return E_FAIL;
+
+	CGameObject* pPlayer = GET_PLAYER;
+
+	_float3 vPos{}, vOffset{ -11.f, 15.f, -11.f };
+	XMStoreFloat3(&vPos, static_cast<CTransform*>(pPlayer->Get_Component(TEXT("Com_Transform")))->Get_State(STATE::POSITION));
+
+	SHADOW_DESC ShadowDesc = {};
+
+	ShadowDesc.vEye = _float4(vPos.x + vOffset.x, vPos.y + vOffset.y, vPos.z + vOffset.z, 1.f);
+	ShadowDesc.vAt = _float4(vPos.x, vPos.y, vPos.z, 1.f);
+	ShadowDesc.fFovy = XMConvertToRadians(60.f);
+	ShadowDesc.fNear = 0.1f;
+	ShadowDesc.fFar = 1000.f;
+
+	if (FAILED(m_pGameInstance->Ready_Light_For_Shadow(ShadowDesc)))
+		return E_FAIL;
+
+	CGlobalShadow::DESC GlobalShadowDesc{};
+	GlobalShadowDesc.eLevelID = CurLevel;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_GlobalShadow"),
+		ENUM_CLASS(CurLevel), TEXT("Layer_GlobalShadow"), &GlobalShadowDesc)))
 		return E_FAIL;
 
 	return S_OK;

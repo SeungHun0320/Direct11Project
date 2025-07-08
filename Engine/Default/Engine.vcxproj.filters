@@ -211,6 +211,9 @@
     <ClInclude Include="..\public\PixelPicking.h">
       <Filter>01.Utility\07.Picking\PixelPicking</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Shadow.h">
+      <Filter>01.Utility\12.Shadow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Timer.cpp">
@@ -404,6 +407,9 @@
     </ClCompile>
     <ClCompile Include="..\private\PixelPicking.cpp">
       <Filter>01.Utility\07.Picking\PixelPicking</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Shadow.cpp">
+      <Filter>01.Utility\12.Shadow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -628,6 +634,9 @@
     </Filter>
     <Filter Include="01.Utility\03.GameObject\Objects\BlendObject">
       <UniqueIdentifier>{92c16ed6-c8f2-4ced-9d55-8a49f6fa9443}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\12.Shadow">
+      <UniqueIdentifier>{ea4cbffe-d469-44cd-818a-50f9936abd63}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

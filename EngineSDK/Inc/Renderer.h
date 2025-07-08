@@ -49,6 +49,7 @@ private:
 	HRESULT Render_Lights();
 	HRESULT Render_BackBuffer();
 	HRESULT Render_NonLight();
+	HRESULT Render_Shadow();
 
 #ifdef _DEBUG
 private:

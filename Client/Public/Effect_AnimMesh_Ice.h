@@ -2,6 +2,10 @@
 
 #include "Effect_AnimMesh.h"
 
+
+
+BEGIN(Client)
+
 class CEffect_AnimMesh_Ice final : public CEffect_AnimMesh
 {
 public:
@@ -32,3 +36,4 @@ public:
 	virtual void Free() override;
 };
 
+END

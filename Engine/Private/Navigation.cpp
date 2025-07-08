@@ -79,7 +79,7 @@ HRESULT CNavigation::Initialize(void* pArg)
 
 void CNavigation::Update(_fmatrix WorldMatrix)
 {
-	/* 오직 맵에서만 월드매트릭스를 저장시켜줌 (스태틱으로 둔 이유 )*/
+	/* 오직 맵에서만 월드매트릭스를 저장시켜줌 ( 스태틱으로 둔 이유 )*/
 	XMStoreFloat4x4(&m_WorldMatrix, WorldMatrix);
 }
 

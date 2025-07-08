@@ -44,6 +44,12 @@ namespace Engine
 		XMFLOAT4			vSpecular;
 	}LIGHT_DESC;
 
+	typedef struct tagShadowDesc
+	{
+		XMFLOAT4 vEye, vAt;
+		float	 fFovy, fNear, fFar;
+	}SHADOW_DESC;
+
 	/* 화면에 그려야하는 최종적인 색 = Light.Diffuse * 재질.Diffuse */
 	typedef struct ENGINE_DLL tagVertexPosition
 	{

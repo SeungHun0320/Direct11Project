@@ -505,6 +505,9 @@
     <Filter Include="02.GameObjects\09.Effect\02. BossEffect\BossSwing">
       <UniqueIdentifier>{b98d6d77-53ab-4e06-bda4-90e8ed3dd638}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.Shadow">
+      <UniqueIdentifier>{d8da6f82-3e06-434d-93d3-8a67e153d9c6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -911,6 +914,9 @@
     </ClInclude>
     <ClInclude Include="..\public\Effect_BossBullet.h">
       <Filter>02.GameObjects\09.Effect\02. BossEffect\BossBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\GlobalShadow.h">
+      <Filter>03.Shadow</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1361,6 +1367,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Effect_BossBullet.cpp">
       <Filter>02.GameObjects\09.Effect\02. BossEffect\BossBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\GlobalShadow.cpp">
+      <Filter>03.Shadow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

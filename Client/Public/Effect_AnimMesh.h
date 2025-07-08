@@ -6,6 +6,7 @@
 BEGIN(Engine)
 class CShader;
 class CModel;
+class CTexture;
 END
 
 BEGIN(Client)
@@ -35,13 +36,19 @@ public:
 public:
 	void Reset_Animation();
 	void Set_MeshVisible(_bool IsVisible);
+	void Set_ParentMatrix(_matrix ParentMatrix) { XMStoreFloat4x4(&m_ParentMatrix, ParentMatrix); }
 
 protected:
 	LEVEL*   m_pParentLevelID = { nullptr };
+	_float   m_fRatio = {};
 
 protected:
-	CShader* m_pShaderCom = { nullptr };
-	CModel*  m_pModelCom = { nullptr };
+	CShader*  m_pShaderCom = { nullptr };
+	CModel*   m_pModelCom = { nullptr };
+	CTexture* m_pMaskTextureCom = { nullptr };
+
+protected:
+	_float4x4 m_ParentMatrix = {};
 
 protected:
 	virtual HRESULT Ready_Components(void* pArg);

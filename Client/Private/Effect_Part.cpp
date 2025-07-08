@@ -52,14 +52,17 @@ LIFE CEffect_Part::Update(_float fTimeDelta)
 	case EFFECT_MOVE::CHASE:
 		_matrix ParentMatrix = XMLoadFloat4x4(m_pParentMatrix);
 		m_pVIBufferCom->MoveTrail(XMVectorSetW(ParentMatrix.r[3], 0.f), fTimeDelta);
-		break;
+		XMStoreFloat4x4(&m_CombinedWorldMatrix,
+			XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Float4x4()) * XMLoadFloat4x4(m_pParentMatrix));
+		return LIFE::NONE;
 	default:
 		break;
+
 	}
 
 	if (WORLD == m_eOrientation)
 	{
-		_matrix ParentMatrix = XMLoadFloat4x4(m_pParentMatrix);
+		_matrix ParentMatrix = XMLoadFloat4x4(&m_ParentMatrix);
 
 		ParentMatrix.r[0] = XMVectorSet(1.f, 0.f, 0.f, 0.f);
 		ParentMatrix.r[1] = XMVectorSet(0.f, 1.f, 0.f, 0.f);
@@ -71,8 +74,9 @@ LIFE CEffect_Part::Update(_float fTimeDelta)
 	else if (LOCAL == m_eOrientation)
 	{
 		XMStoreFloat4x4(&m_CombinedWorldMatrix,
-			XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Float4x4()) * XMLoadFloat4x4(m_pParentMatrix));
+			XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Float4x4()) * XMLoadFloat4x4(&m_ParentMatrix));
 	}
+
 
 	return LIFE::NONE;
 }

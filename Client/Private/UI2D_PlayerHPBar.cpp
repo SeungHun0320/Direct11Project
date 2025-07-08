@@ -58,7 +58,6 @@ LIFE CUI2D_PlayerHPBar::Update(_float fTimeDelta)
 		// 체력바 기준값
 		_float fHpRatio = clamp(m_fHpRatio, 0.05f, 0.95f);
 
-
 		_float fBarCenterY = g_iWinSizeY * 0.825f;
 		_float fBarHeight = 150.6f;
 		_float fCapRadius = 20.6f * 0.5f;

@@ -34,6 +34,7 @@ public:
 	virtual LIFE Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
+	virtual HRESULT Render_Shadow() override;
 
 public:
 	virtual _bool Is_CurrentAnim(_uint iNextIndex) override;

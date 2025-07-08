@@ -186,7 +186,7 @@ public:
 	HRESULT Add_MRT(const _wstring& strMRTTag, const _wstring& strTargetTag);
 	/* 특정 타겟들을 장치에 동시에(최대 8개) 바인딩 해준다 */
 	HRESULT Bind_RT_ShaderResource(const _wstring& strTargetTag, const _char* pConstantName, class CShader* pShader);
-	HRESULT Begin_MRT(const _wstring& strMRTTag);
+	HRESULT Begin_MRT(const _wstring& strMRTTag, _bool isDepthClear = false);
 	HRESULT End_MRT();
 	HRESULT Copy_RT_Resource(const _wstring& strTargetTag, ID3D11Texture2D* pDest);
 #ifdef _DEBUG
@@ -200,7 +200,11 @@ public:
 	_bool Picking(_float4* pOut);
 #pragma endregion
 
-
+#pragma region SHADOW
+	const _float4x4* Get_Light_ViewMatrix();
+	const _float4x4* Get_Light_ProjMatrix();
+	HRESULT Ready_Light_For_Shadow(const SHADOW_DESC& Desc);
+#pragma endregion
 
 private:
 	class CGraphic_Device*		m_pGraphic_Device = { nullptr };
@@ -219,7 +223,9 @@ private:
 	class CCollider_Manager*	m_pCollider_Manager = { nullptr };
 	class CEvent_Manager*		m_pEvent_Manager = { nullptr };
 	class CTarget_Manager*      m_pTarget_Manager = { nullptr };
-	class CPixelPicking*		m_pPixelPicking = { nullptr };	
+	class CPixelPicking*		m_pPixelPicking = { nullptr };
+	class CShadow*				m_pShadow = { nullptr };
+
 
 public:
 	void Release_Engine();

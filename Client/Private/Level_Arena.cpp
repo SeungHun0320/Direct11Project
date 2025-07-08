@@ -14,6 +14,8 @@
 #include "SpiderTank.h"
 #include "Sky.h"
 
+#include "GlobalShadow.h"
+
 #define CurLevel LEVEL::ARENA
 
 CLevel_Arena::CLevel_Arena(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -344,6 +346,29 @@ HRESULT CLevel_Arena::Ready_Lights()
 	LightDesc.vSpecular = _float4(0.3f, 0.3f, 0.3f, 1.f);
 
 	if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
+		return E_FAIL;
+
+	CGameObject* pPlayer = GET_PLAYER;
+
+	_float3 vPos{}, vOffset{ -20.f, 35.f, -20.f };
+	XMStoreFloat3(&vPos, static_cast<CTransform*>(pPlayer->Get_Component(TEXT("Com_Transform")))->Get_State(STATE::POSITION));
+
+	SHADOW_DESC ShadowDesc = {};
+
+	ShadowDesc.vEye = _float4(vPos.x + vOffset.x, vPos.y + vOffset.y, vPos.z + vOffset.z, 1.f);
+	ShadowDesc.vAt = _float4(vPos.x, vPos.y, vPos.z, 1.f);
+	ShadowDesc.fFovy = XMConvertToRadians(60.f);
+	ShadowDesc.fNear = 0.1f;
+	ShadowDesc.fFar = 1000.f;
+
+	if (FAILED(m_pGameInstance->Ready_Light_For_Shadow(ShadowDesc)))
+		return E_FAIL;
+
+	CGlobalShadow::DESC GlobalShadowDesc{};
+	GlobalShadowDesc.eLevelID = CurLevel;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_GlobalShadow"),
+		ENUM_CLASS(CurLevel), TEXT("Layer_GlobalShadow"), &GlobalShadowDesc)))
 		return E_FAIL;
 
 	return S_OK;

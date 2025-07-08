@@ -16,12 +16,12 @@ HRESULT CRenderer::Initialize()
 {
 	/* 렌더러를 생성할때 미리 렌더타겟들을 생성해놓는다 */
 	_uint			iNumViewPorts = { 1 };
-	D3D11_VIEWPORT	ViewPortDesc{};
+	D3D11_VIEWPORT	ViewportDesc{};
 
-	m_pContext->RSGetViewports(&iNumViewPorts, &ViewPortDesc);
+	m_pContext->RSGetViewports(&iNumViewPorts, &ViewportDesc);
 
-	_uint iWidth = static_cast<_uint>(ViewPortDesc.Width);
-	_uint iHeight = static_cast<_uint>(ViewPortDesc.Height);
+	_uint iWidth = static_cast<_uint>(ViewportDesc.Width);
+	_uint iHeight = static_cast<_uint>(ViewportDesc.Height);
 
 	/* 32비트로 표현 8 8 8 8 */
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Diffuse"), iWidth, iHeight, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
@@ -45,6 +45,8 @@ HRESULT CRenderer::Initialize()
 	//if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_PickPos"), iWidth, iHeight, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.f, 0.f, 0.f, 0.f))))
 	//	return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Shadow"), iWidth, iHeight, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(1.f, 1.f, 1.f, 1.f))))
+		return E_FAIL;
 
 
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_GameObjects"), TEXT("Target_Diffuse"))))
@@ -61,18 +63,21 @@ HRESULT CRenderer::Initialize()
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Lights"), TEXT("Target_Specular"))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_ShadowObjects"), TEXT("Target_Shadow"))))
+		return E_FAIL;
+
 	if (FAILED(Ready_Resources()))
 		return E_FAIL;
 
 	/* 화면에 꽉 채워서 그려야 하기때문에 뷰포트사이즈를 통해 크기를 맞춰줌 */
-	XMStoreFloat4x4(&m_WorldMatrix, XMMatrixScaling(ViewPortDesc.Width, ViewPortDesc.Height, 1.f));
+	XMStoreFloat4x4(&m_WorldMatrix, XMMatrixScaling(ViewportDesc.Width, ViewportDesc.Height, 1.f));
 	/* 직교 투영용 행렬을 만들어줌 */
 	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
-	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(ViewPortDesc.Width, ViewPortDesc.Height, 0.0f, 1.f));
+	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(ViewportDesc.Width, ViewportDesc.Height, 0.0f, 1.f));
 
 #ifdef _DEBUG
-	_float fRTWidth = ViewPortDesc.Width * 0.225f;
-	_float fRTHeight = ViewPortDesc.Height * 0.225f;
+	_float fRTWidth = ViewportDesc.Width * 0.225f;
+	_float fRTHeight = ViewportDesc.Height * 0.225f;
 	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Diffuse"), fRTWidth * 0.5f, fRTHeight * 0.5f, fRTWidth, fRTHeight)))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Normal"), fRTWidth * 0.5f, fRTHeight * 1.5f, fRTWidth, fRTHeight)))
@@ -83,6 +88,9 @@ HRESULT CRenderer::Initialize()
 	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Shade"), fRTWidth * 1.5f, fRTHeight * 0.5f, fRTWidth, fRTHeight)))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Specular"), fRTWidth * 1.5f, fRTHeight * 1.5f, fRTWidth, fRTHeight)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Shadow"), ViewportDesc.Width - (fRTWidth * 0.5f), fRTHeight * 0.5f, fRTWidth, fRTHeight)))
 		return E_FAIL;
 #endif
 
@@ -121,6 +129,10 @@ HRESULT CRenderer::Draw()
 {
 	if (FAILED(Render_Priority()))
 		return E_FAIL;
+
+	if (FAILED(Render_Shadow()))
+		return E_FAIL;
+
 	if (FAILED(Render_NonBlend()))
 		return E_FAIL;
 	
@@ -167,7 +179,7 @@ HRESULT CRenderer::Render_Priority()
 HRESULT CRenderer::Render_NonBlend()
 {
 	/* Diffuse + Normal */
-	if (FAILED(m_pGameInstance->Begin_MRT(TEXT("MRT_GameObjects"))))
+	if (FAILED(m_pGameInstance->Begin_MRT(TEXT("MRT_GameObjects"), true)))
 		return E_FAIL;
 
 	for (auto& pGameObject : m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_NONBLEND)])
@@ -275,6 +287,10 @@ HRESULT CRenderer::Render_BackBuffer()
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(TEXT("Target_Specular"), "g_SpecularTexture", m_pShader)))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(TEXT("Target_Depth"), "g_DepthTexture", m_pShader)))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(TEXT("Target_Shadow"), "g_ShadowTexture", m_pShader)))
+		return E_FAIL;
 
 	/* 장치에 이미 셋 되어있기 때문에 할 필요 없을 수도 있겠지만? */
 	/* 백버퍼에 그리기 전 다른 후처리가 적용될 때 바뀔 수도 있으니까 */
@@ -283,6 +299,19 @@ HRESULT CRenderer::Render_BackBuffer()
 	if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
 		return E_FAIL;
 	if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+		return E_FAIL;
+
+	if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrixInv", m_pGameInstance->Get_Transform_Float4x4_Inv(D3DTS::VIEW))))
+		return E_FAIL;
+	if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrixInv", m_pGameInstance->Get_Transform_Float4x4_Inv(D3DTS::PROJ))))
+		return E_FAIL;
+
+	if (FAILED(m_pShader->Bind_Matrix("g_LightViewMatrix", m_pGameInstance->Get_Light_ViewMatrix())))
+		return E_FAIL;
+	if (FAILED(m_pShader->Bind_Matrix("g_LightProjMatrix", m_pGameInstance->Get_Light_ProjMatrix())))
+		return E_FAIL;
+
+	if (FAILED(m_pShader->Bind_RawValue("g_fFar", m_pGameInstance->Get_Far_Ptr(), sizeof(_float))))
 		return E_FAIL;
 
 	/* 디퍼드 쉐이더 패스 */
@@ -304,6 +333,33 @@ HRESULT CRenderer::Render_NonLight()
 		Safe_Release(pGameObject);
 	}
 	m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_NONLIGHT)].clear();
+
+	return S_OK;
+}
+
+HRESULT CRenderer::Render_Shadow()
+{
+	m_pGameInstance->Begin_MRT(TEXT("MRT_ShadowObjects"));
+
+	for (auto& pGameObject : m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_PRIORITY_SHADOW)])
+	{
+		if (nullptr != pGameObject)
+			pGameObject->Render_Shadow();
+
+		Safe_Release(pGameObject);
+	}
+	m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_PRIORITY_SHADOW)].clear();
+
+	for (auto& pGameObject : m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_SHADOW)])
+	{
+		if (nullptr != pGameObject)
+			pGameObject->Render_Shadow();
+
+		Safe_Release(pGameObject);
+	}
+	m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_SHADOW)].clear();
+
+	m_pGameInstance->End_MRT();
 
 	return S_OK;
 }
@@ -332,6 +388,7 @@ HRESULT CRenderer::Render_Debug()
 
 	m_pGameInstance->Render_MRT_Debug(TEXT("MRT_GameObjects"), m_pShader, m_pVIBuffer);
 	m_pGameInstance->Render_MRT_Debug(TEXT("MRT_Lights"), m_pShader, m_pVIBuffer);
+	m_pGameInstance->Render_MRT_Debug(TEXT("MRT_ShadowObjects"), m_pShader, m_pVIBuffer);
 
 	return S_OK;
 }

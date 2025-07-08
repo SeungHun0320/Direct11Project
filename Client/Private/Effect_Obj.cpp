@@ -49,6 +49,8 @@ LIFE CEffect_Obj::Update(_float fTimeDelta)
     case EFFECT_MOVE::SPREAD:
         m_pVIBufferCom->Spread(fTimeDelta);
         break;
+    case EFFECT_MOVE::CHASE:
+        //m_pVIBufferCom->MoveTrail();
     default:
         break;
     }

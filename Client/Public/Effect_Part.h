@@ -44,6 +44,7 @@ public:
 
 public:
 	void Reset_Effect();
+	void Set_ParentMatrix(_matrix ParentMatrix) { XMStoreFloat4x4(&m_ParentMatrix, ParentMatrix); }
 
 protected:
 	CShader*  m_pShaderCom = { nullptr };
@@ -53,6 +54,7 @@ protected:
 protected:
 	_float4		m_vColor = {};
 	LEVEL*		m_pParentLevelID = { nullptr };
+	_float4x4   m_ParentMatrix = {};
 
 protected:
 	EFFECT_PASS m_ePass = { EFFECT_PASS::PASS_END };

@@ -300,8 +300,22 @@ HRESULT CMainApp::Ready_Prototype_Texture()
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_HexParticle"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/hex bokeh particle.png")))))
 		return E_FAIL;
+	
+	/* For.Prototype_Component_Texture_Noise*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Noise"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/Noise.png")))))
+		return E_FAIL;
 
 #pragma endregion
+
+#pragma region SHADOW
+	/* For.Prototype_Component_Texture_Shadow*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Shadow"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/forest cookie texture.png")))))
+		return E_FAIL;
+
+#pragma endregion
+
 	return S_OK;
 }
 

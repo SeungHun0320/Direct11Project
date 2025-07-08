@@ -1,5 +1,6 @@
 #include "GameInstance.h"
 
+#include "Shadow.h"
 #include "Renderer.h"
 #include "PipeLine.h"
 #include "RayPicking.h"
@@ -93,9 +94,14 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ ID
 	if (nullptr == m_pEvent_Manager)
 		return E_FAIL;
 
+	/* 통맵을 여러번 렌더타겟을 나눠서 그리니까 프레임이 너무 박살나서 피킹은 우선 생성에서 제외했음,, */
 	//m_pPixelPicking = CPixelPicking::Create(*ppDeviceOut, *ppContextOut, EngineDesc.hWnd);
 	//if (nullptr == m_pPixelPicking)
 	//	return E_FAIL;
+
+	m_pShadow = CShadow::Craete(*ppDeviceOut, *ppContextOut);
+	if (nullptr == m_pShadow)
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -134,8 +140,8 @@ HRESULT CGameInstance::Draw()
 	if (nullptr == m_pGraphic_Device)
 		return E_FAIL;
 
-	m_pRenderer->Draw();
 	m_pLevel_Manager->Render();
+	m_pRenderer->Draw();
 
 	return S_OK;
 }
@@ -571,9 +577,9 @@ HRESULT CGameInstance::Bind_RT_ShaderResource(const _wstring& strTargetTag, cons
 {
 	return m_pTarget_Manager->Bind_ShaderResource(strTargetTag, pConstantName, pShader);
 }
-HRESULT CGameInstance::Begin_MRT(const _wstring& strMRTTag)
+HRESULT CGameInstance::Begin_MRT(const _wstring& strMRTTag, _bool isDepthClear)
 {
-	return m_pTarget_Manager->Begin_MRT(strMRTTag);
+	return m_pTarget_Manager->Begin_MRT(strMRTTag, isDepthClear);
 }
 HRESULT CGameInstance::End_MRT()
 {
@@ -601,11 +607,25 @@ _bool CGameInstance::Picking(_float4* pOut)
 {
 	return m_pPixelPicking->Picking(pOut);
 }
+const _float4x4* CGameInstance::Get_Light_ViewMatrix()
+{
+	return m_pShadow->Get_Light_ViewMatrix();
+}
+const _float4x4* CGameInstance::Get_Light_ProjMatrix()
+{
+	return m_pShadow->Get_Light_ProjMatrix();
+}
+HRESULT CGameInstance::Ready_Light_For_Shadow(const SHADOW_DESC& Desc)
+{
+	return m_pShadow->Ready_Light_For_Shadow(Desc);
+}
 #pragma endregion
 
 
 void CGameInstance::Release_Engine()
 {
+	Safe_Release(m_pShadow);
+
 	//Safe_Release(m_pPixelPicking);
 
 	Safe_Release(m_pCollider_Manager);

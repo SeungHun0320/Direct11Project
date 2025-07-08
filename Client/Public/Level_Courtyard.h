@@ -19,6 +19,7 @@ public:
 	virtual HRESULT Render() override;
 
 private:
+	class CGlobalShadow* m_pGlobalShadow = { nullptr };
 	CSound_Core* m_pBGM = { nullptr };
 
 private:
