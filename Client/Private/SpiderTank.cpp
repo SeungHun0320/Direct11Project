@@ -6,7 +6,9 @@
 #include "UI2D_BossHpBar.h"
 #include "UI3D_LockOn.h"
 
+#include "Effect_Obj.h"
 #include "Effect_BossSteam.h"
+#include "Effect_BossBullet.h"
 
 #include "SpiderTankState.h"
 
@@ -81,8 +83,8 @@ LIFE CSpiderTank::Update(_float fTimeDelta)
 
 	__super::Update(fTimeDelta);
 
-	Update_BoneWorldMatrices(m_pHeadBoneMatrix, &m_HeadBoneWolrdMatrix);
-	Update_BoneWorldMatrices(m_pPowerCellBoneMatrix, &m_PowerCellBoneWolrdMatrix);
+	Update_BoneWorldMatrices(m_pHeadBoneMatrix, &m_HeadBoneWorldMatrix);
+	Update_BoneWorldMatrices(m_pPowerCellBoneMatrix, &m_PowerCellBoneWorldMatrix);
 
 	if (m_pCurState)
 	{
@@ -251,23 +253,45 @@ _bool CSpiderTank::Is_TargetOnRight()
 
 HRESULT CSpiderTank::Shot_Bullet()
 {
-	CBullet_SpiderTank::DESC tDesc{};
-	_float3 vPos{};
+	CBullet_SpiderTank::DESC BulletDesc{};
 
-	tDesc.eLevelID = m_eLevelID;
-	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
-	tDesc.fSpeedPerSec = 30.f;
-	tDesc.strName = TEXT("SpiderTank_Bullet");
-	tDesc.strPrototypeModelTag = TEXT("Prototype_Component_Model_SpiderTankOrb");
+	BulletDesc.eLevelID = m_eLevelID;
+	BulletDesc.fRotationPerSec = XMConvertToRadians(180.f);
+	BulletDesc.fSpeedPerSec = 30.f;
+	BulletDesc.strName = TEXT("SpiderTank_Bullet");
+	BulletDesc.strPrototypeModelTag = TEXT("Prototype_Component_Model_SpiderTankOrb");
 
-	XMStoreFloat3(&vPos, m_pTransformCom->Get_State(STATE::POSITION));
 	_vector vTarget = Get_TargetPosition();
-	XMStoreFloat3(&tDesc.vDir, vTarget);
+	XMStoreFloat3(&BulletDesc.vDir, vTarget);
 
-	tDesc.WorldMatrix = XMMatrixTranslation(vPos.x, vPos.y + 7.5f, vPos.z);
+	_matrix HeadWorldMatrix = XMLoadFloat4x4(&m_HeadBoneWorldMatrix);
 
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_") + tDesc.strName,
-		ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_MonsterBullet"), &tDesc)))
+	_vector vHeadLook = XMVector3Normalize(HeadWorldMatrix.r[2]);
+	_vector vHeadPos = HeadWorldMatrix.r[3];
+	_float  fOffset = 2.f;
+
+	_vector vNewPos = vHeadPos + vHeadLook * fOffset;
+
+	HeadWorldMatrix.r[3] = vNewPos;
+
+	BulletDesc.WorldMatrix = HeadWorldMatrix;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_") + BulletDesc.strName,
+		ENUM_CLASS(BulletDesc.eLevelID), TEXT("Layer_MonsterBullet"), &BulletDesc)))
+		return E_FAIL;
+
+	CEffect_Obj::DESC MuzzleDesc{};
+
+	MuzzleDesc.eLevelID = m_eLevelID;
+	MuzzleDesc.strParticeFilePath = TEXT("../Bin/DataFiles/Effect/SpiderTank/BossBulletMuzzle.Effect_Ex");
+	MuzzleDesc.strParticleBufferTag = TEXT("Prototype_Component_VIBuffer_BossBulletMuzzle");
+	MuzzleDesc.strParticleTextureTag = TEXT("Prototype_Component_Texture_VoidSmokeParticle");
+	MuzzleDesc.strName = TEXT("Effect_Obj");
+
+	MuzzleDesc.WorldMatrix = HeadWorldMatrix;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_") + MuzzleDesc.strName,
+		ENUM_CLASS(MuzzleDesc.eLevelID), TEXT("Layer_Effect"), &MuzzleDesc)))
 		return E_FAIL;
 
 	return S_OK;
@@ -303,7 +327,7 @@ HRESULT CSpiderTank::Shot_Lager()
 
 	tDesc.eLevelID = m_eLevelID;
 	tDesc.strName = TEXT("SpiderTank_Lager");
-	tDesc.pParentMatrix = &m_HeadBoneWolrdMatrix;
+	tDesc.pParentMatrix = &m_HeadBoneWorldMatrix;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_") + tDesc.strName,
 		ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_MonsterBullet"), &tDesc)))
@@ -428,6 +452,8 @@ HRESULT CSpiderTank::Ready_PartObjects()
 	if (nullptr == m_pBodyPart)
 		return E_FAIL;
 
+	Safe_AddRef(m_pBodyPart);
+
 
 	CUI2D_BossHPBar::DESC	HpDesc{};
 
@@ -445,14 +471,14 @@ HRESULT CSpiderTank::Ready_PartObjects()
 
 	LockOnDesc.pParentLevelID = &m_eLevelID;
 	LockOnDesc.iNumPartObjects = CUI3D_LockOn::PART_END;
-	LockOnDesc.pParentMatrix = &m_HeadBoneWolrdMatrix;
+	LockOnDesc.pParentMatrix = &m_HeadBoneWorldMatrix;
 	LockOnDesc.pParentIsTargeted = &m_IsLockOnTarget;
 	LockOnDesc.strName = TEXT("HeadLockOn");
 
 	if (FAILED(__super::Add_PartObject(PART_LOCKON_START, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_UI3D_LockOn"), &LockOnDesc)))
 		return E_FAIL;
 
-	LockOnDesc.pParentMatrix = &m_PowerCellBoneWolrdMatrix;
+	LockOnDesc.pParentMatrix = &m_PowerCellBoneWorldMatrix;
 	LockOnDesc.strName = TEXT("PowercellLockOn");
 
 	if (FAILED(__super::Add_PartObject(PART_LOCKON_END, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_UI3D_LockOn"), &LockOnDesc)))
@@ -471,9 +497,17 @@ HRESULT CSpiderTank::Ready_PartObjects()
 	if (FAILED(__super::Add_PartObject(PART_STEAM, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Effect_BossSteam"), &SteamDesc)))
 		return E_FAIL;
 
+	CEffect_BossBullet::DESC BulletDesc{};
+	BulletDesc.iNumPartObjects = CEffect_BossBullet::PART_END;
+	BulletDesc.pParentLevelID = &m_eLevelID;
+	BulletDesc.pParentMatrix = &m_HeadBoneWorldMatrix;
+	BulletDesc.pParentisShot = &m_isShot;
+
+	if (FAILED(__super::Add_PartObject(PART_EFFECT_BULLET, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Effect_BossBullet"), &BulletDesc)))
+		return E_FAIL;
 
 
-	Safe_AddRef(m_pBodyPart);
+
 
 	return S_OK;
 }

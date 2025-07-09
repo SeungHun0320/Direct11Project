@@ -31,9 +31,6 @@ public:
 	virtual HRESULT Render() override;
 
 private:
-	CModel_Instance* m_pModelInstanceCom = { nullptr };
-
-private:
 	virtual HRESULT Ready_Components(void* pArg) override;
 
 public:

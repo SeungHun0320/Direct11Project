@@ -20,32 +20,32 @@ HRESULT CRenderer::Initialize()
 
 	m_pContext->RSGetViewports(&iNumViewPorts, &ViewportDesc);
 
-	_uint iWidth = static_cast<_uint>(ViewportDesc.Width);
-	_uint iHeight = static_cast<_uint>(ViewportDesc.Height);
+	m_iOriginWidth = static_cast<_uint>(ViewportDesc.Width);
+	m_iOriginHeight = static_cast<_uint>(ViewportDesc.Height);
 
 	/* 32비트로 표현 8 8 8 8 */
-	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Diffuse"), iWidth, iHeight, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Diffuse"), m_iOriginWidth, m_iOriginHeight, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 	/* DXGI_FORMAT_R16G16B16A16_UNORM :  0 ~ 65535의 값을 0.f ~ 1.f로 바꿔서 사용함 나중에 노말 계산할 때 잘 알아두기 */
 	/* 노말은 -1.f ~ 1.f까지인데, UNORM으로 받아왔기 때문에 -1.f이 자동으로 0.f로 바뀌어서 저장되기 때문에 셰이더에서 0.f ~ 1.f로 치환한뒤에 Out에 저장해줘야 함*/
-	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Normal"),	iWidth, iHeight, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Normal"),	m_iOriginWidth, m_iOriginHeight, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Shade"), iWidth, iHeight, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Shade"), m_iOriginWidth, m_iOriginHeight, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 	
 	/* 깊이를 계산해서 렌더타겟에 저장한다 원래 16으로 받아왔지만, 0~1 사이의 값을 완벽하게 채울 수 없기 때문에 어쩔 수 없이 32로 포맷을 바꿔줌 */
-	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Depth"), iWidth, iHeight, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.f, 1.f, 0.f, 0.f))))
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Depth"), m_iOriginWidth, m_iOriginHeight, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.f, 1.f, 0.f, 0.f))))
 		return E_FAIL;
 
 	/* 스펙큘러는 합연산이기때문에 백버퍼를 검정색으로 그려준다 */
-	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Specular"), iWidth, iHeight, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Specular"), m_iOriginWidth, m_iOriginHeight, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 
-	//if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_PickPos"), iWidth, iHeight, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.f, 0.f, 0.f, 0.f))))
+	//if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_PickPos"), m_iOriginWidth, m_iOriginHeight, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.f, 0.f, 0.f, 0.f))))
 	//	return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Shadow"), iWidth, iHeight, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(1.f, 1.f, 1.f, 1.f))))
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Shadow"), g_iMaxWidth, g_iMaxHeight, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
 		return E_FAIL;
 
 
@@ -67,6 +67,9 @@ HRESULT CRenderer::Initialize()
 		return E_FAIL;
 
 	if (FAILED(Ready_Resources()))
+		return E_FAIL;
+
+	if (FAILED(Ready_DepthStencilView(g_iMaxWidth, g_iMaxHeight)))
 		return E_FAIL;
 
 	/* 화면에 꽉 채워서 그려야 하기때문에 뷰포트사이즈를 통해 크기를 맞춰줌 */
@@ -179,7 +182,7 @@ HRESULT CRenderer::Render_Priority()
 HRESULT CRenderer::Render_NonBlend()
 {
 	/* Diffuse + Normal */
-	if (FAILED(m_pGameInstance->Begin_MRT(TEXT("MRT_GameObjects"), true)))
+	if (FAILED(m_pGameInstance->Begin_MRT(TEXT("MRT_GameObjects"))))
 		return E_FAIL;
 
 	for (auto& pGameObject : m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_NONBLEND)])
@@ -339,7 +342,10 @@ HRESULT CRenderer::Render_NonLight()
 
 HRESULT CRenderer::Render_Shadow()
 {
-	m_pGameInstance->Begin_MRT(TEXT("MRT_ShadowObjects"));
+	m_pGameInstance->Begin_MRT(TEXT("MRT_ShadowObjects"), m_pShadowDSV, true);
+
+	if (FAILED(Change_ViewportDesc(g_iMaxWidth, g_iMaxHeight)))
+		return E_FAIL;
 
 	for (auto& pGameObject : m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_PRIORITY_SHADOW)])
 	{
@@ -360,6 +366,9 @@ HRESULT CRenderer::Render_Shadow()
 	m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_SHADOW)].clear();
 
 	m_pGameInstance->End_MRT();
+
+	if (FAILED(Change_ViewportDesc(m_iOriginWidth, m_iOriginHeight)))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -383,12 +392,12 @@ HRESULT CRenderer::Render_Debug()
 	/* 직교투영용 행렬을 셰이더에 던진다..
 	월드를 안던지는 이유?? 렌더타겟마다 다른 위치에 그려져야 하기 때문에
 	셰이더와 버퍼를 렌더타겟까지 끌고가서 렌더타겟의 월드행렬을 셰이더에 던지고 그려준다 */
-	m_pShader->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix);
-	m_pShader->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix);
+	//m_pShader->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix);
+	//m_pShader->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix);
 
-	m_pGameInstance->Render_MRT_Debug(TEXT("MRT_GameObjects"), m_pShader, m_pVIBuffer);
-	m_pGameInstance->Render_MRT_Debug(TEXT("MRT_Lights"), m_pShader, m_pVIBuffer);
-	m_pGameInstance->Render_MRT_Debug(TEXT("MRT_ShadowObjects"), m_pShader, m_pVIBuffer);
+	//m_pGameInstance->Render_MRT_Debug(TEXT("MRT_GameObjects"), m_pShader, m_pVIBuffer);
+	//m_pGameInstance->Render_MRT_Debug(TEXT("MRT_Lights"), m_pShader, m_pVIBuffer);
+	//m_pGameInstance->Render_MRT_Debug(TEXT("MRT_ShadowObjects"), m_pShader, m_pVIBuffer);
 
 	return S_OK;
 }
@@ -405,6 +414,61 @@ HRESULT CRenderer::Ready_Resources()
 	m_pShader = CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_Deferred.hlsl"), VTXPOSTEX::Elements, VTXPOSTEX::iNumElements);
 	if (nullptr == m_pShader)
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CRenderer::Ready_DepthStencilView(_uint iWidth, _uint iHeight)
+{
+	ID3D11Texture2D* pDepthStencilTexture = nullptr;
+
+	D3D11_TEXTURE2D_DESC	TextureDesc;
+	ZeroMemory(&TextureDesc, sizeof(D3D11_TEXTURE2D_DESC));
+
+	/* 깊이 버퍼의 픽셀은 백버퍼의 픽셀과 갯수가 동일해야만 깊이 텍스트가 가능해진다. */
+	/* 픽셀의 수가 다르면 아에 렌더링을 못함. */
+
+	/* 그래서 그림자용 깊이버퍼를 새로 만들어준다. */
+	TextureDesc.Width = iWidth;
+	TextureDesc.Height = iHeight;
+	TextureDesc.MipLevels = 1;
+	TextureDesc.ArraySize = 1;
+	TextureDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+
+	TextureDesc.SampleDesc.Quality = 0;
+	TextureDesc.SampleDesc.Count = 1;
+
+	TextureDesc.Usage = D3D11_USAGE_DEFAULT;
+	TextureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	TextureDesc.CPUAccessFlags = 0;
+	TextureDesc.MiscFlags = 0;
+
+	if (FAILED(m_pDevice->CreateTexture2D(&TextureDesc, nullptr, &pDepthStencilTexture)))
+		return E_FAIL;
+
+
+	if (FAILED(m_pDevice->CreateDepthStencilView(pDepthStencilTexture, nullptr, &m_pShadowDSV)))
+		return E_FAIL;
+
+	Safe_Release(pDepthStencilTexture);
+
+	return S_OK;
+}
+
+HRESULT CRenderer::Change_ViewportDesc(_uint iWidth, _uint iHeight)
+{
+	/* 백퍼버를 크게 그린다면, 뷰포트상에서 밀려서 그려지기 때문에 뷰포트도 사이즈를 맞춰줘야 한다. */
+	D3D11_VIEWPORT			ViewportDesc{};
+	_uint					iNumViewports = { 1 };
+
+	ViewportDesc.TopLeftX = 0;
+	ViewportDesc.TopLeftY = 0;
+	ViewportDesc.Width = static_cast<_float>(iWidth);
+	ViewportDesc.Height = static_cast<_float>(iHeight);
+	ViewportDesc.MinDepth = 0.f;
+	ViewportDesc.MaxDepth = 1.f;
+
+	m_pContext->RSSetViewports(iNumViewports, &ViewportDesc);
 
 	return S_OK;
 }
@@ -428,6 +492,8 @@ void CRenderer::Free()
 
 	Safe_Release(m_pVIBuffer);
 	Safe_Release(m_pShader);
+
+	Safe_Release(m_pShadowDSV);
 
 	Safe_Release(m_pGameInstance);
 	Safe_Release(m_pDevice);

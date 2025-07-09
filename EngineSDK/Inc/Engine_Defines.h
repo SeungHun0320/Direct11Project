@@ -47,6 +47,12 @@ namespace Engine
 {
 	const _wstring	g_strTransformTag = TEXT("Com_Transform");
 	const _uint g_iMaxNumBones = 512;
+
+	//const unsigned int g_iMaxWidth = 8192;
+	//const unsigned int g_iMaxHeight = 4608;
+
+	const unsigned int g_iMaxWidth = 4096;
+	const unsigned int g_iMaxHeight = 2304;
 }
 
 using namespace Engine;

@@ -195,6 +195,7 @@
     <ClInclude Include="..\public\Effect_AnimMesh.h" />
     <ClInclude Include="..\public\Effect_AnimMesh_Ice.h" />
     <ClInclude Include="..\public\Effect_BossBullet.h" />
+    <ClInclude Include="..\public\Effect_Mesh_BossMuzzle.h" />
     <ClInclude Include="..\public\Effect_BossSteam.h" />
     <ClInclude Include="..\public\Effect_BossSwing.h" />
     <ClInclude Include="..\public\Effect_Dagger.h" />
@@ -329,6 +330,7 @@
     <ClCompile Include="..\private\Effect_AnimMesh.cpp" />
     <ClCompile Include="..\private\Effect_AnimMesh_Ice.cpp" />
     <ClCompile Include="..\private\Effect_BossBullet.cpp" />
+    <ClCompile Include="..\private\Effect_Mesh_BossMuzzle.cpp" />
     <ClCompile Include="..\private\Effect_BossSteam.cpp" />
     <ClCompile Include="..\private\Effect_BossSwing.cpp" />
     <ClCompile Include="..\private\Effect_Dagger.cpp" />

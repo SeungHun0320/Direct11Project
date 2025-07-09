@@ -385,8 +385,8 @@ HRESULT CLevel_Courtyard::Ready_Lights()
 
 	LightDesc.eType = LIGHT_DESC::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(0.9f, 0.9f, 0.9f, 1.f);
-	LightDesc.fAmbient = 0.4f;
+	LightDesc.vDiffuse = _float4(1.f, 0.95f, 0.8f, 1.f);
+	LightDesc.fAmbient = 0.8f;
 	LightDesc.vSpecular = _float4(0.3f, 0.3f, 0.3f, 1.f);
 
 	if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
@@ -397,20 +397,15 @@ HRESULT CLevel_Courtyard::Ready_Lights()
 	LightDesc.fRange = 15.f;
 	LightDesc.vDiffuse = _float4(1.f, 0.6f, 0.1f, 1.f);
 	LightDesc.fAmbient = 0.6f;
-	LightDesc.vSpecular = _float4(0.7f, 0.7f, 0.7f, 1.f);
+	LightDesc.vSpecular = _float4(0.8f, 0.8f, 0.8f, 1.f);
 
 	if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
 		return E_FAIL;
 
-	CGameObject* pPlayer = GET_PLAYER;
-
-	_float3 vPos{}, vOffset{ -11.f, 15.f, -11.f };
-	XMStoreFloat3(&vPos, static_cast<CTransform*>(pPlayer->Get_Component(TEXT("Com_Transform")))->Get_State(STATE::POSITION));
-
 	SHADOW_DESC ShadowDesc = {};
 
-	ShadowDesc.vEye = _float4(vPos.x + vOffset.x, vPos.y + vOffset.y, vPos.z + vOffset.z, 1.f);
-	ShadowDesc.vAt = _float4(vPos.x, vPos.y, vPos.z, 1.f);
+	ShadowDesc.vEye = _float4(-87.f, 77.f, -137.f, 1.f);
+	ShadowDesc.vAt = _float4(0.f, 0.f, -100.f, 1.f);
 	ShadowDesc.fFovy = XMConvertToRadians(60.f);
 	ShadowDesc.fNear = 0.1f;
 	ShadowDesc.fFar = 1000.f;
@@ -420,6 +415,11 @@ HRESULT CLevel_Courtyard::Ready_Lights()
 
 	CGlobalShadow::DESC GlobalShadowDesc{};
 	GlobalShadowDesc.eLevelID = CurLevel;
+	GlobalShadowDesc.fSizeX = g_iWinSizeX;
+	GlobalShadowDesc.fSizeY = g_iWinSizeY;
+	GlobalShadowDesc.fX = g_iWinSizeX * 0.5f;
+	GlobalShadowDesc.fY = g_iWinSizeY * 0.5f;
+	GlobalShadowDesc.fTiling = 4.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_GlobalShadow"),
 		ENUM_CLASS(CurLevel), TEXT("Layer_GlobalShadow"), &GlobalShadowDesc)))

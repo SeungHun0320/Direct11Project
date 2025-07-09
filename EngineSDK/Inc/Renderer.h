@@ -31,6 +31,8 @@ private: /* 렌더 타겟을 나눴을때 그려주기 위한 직교투영 백그라운드 */
 	/* 셰이더 전역변수에 값을 던져주기 위한 직교투영용 행렬들 */
 	/* 월드매트릭스는 백그라운드를 그려주기 위해서 */
 	_float4x4					m_WorldMatrix{}, m_ViewMatrix{}, m_ProjMatrix{};
+	ID3D11DepthStencilView*     m_pShadowDSV = { nullptr };
+	_uint						m_iOriginWidth{}, m_iOriginHeight{};
 
 private:
 	list<class CGameObject*>	m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_END)];
@@ -58,6 +60,8 @@ private:
 
 private:
 	HRESULT Ready_Resources();
+	HRESULT Ready_DepthStencilView(_uint iWidth, _uint iHeight);
+	HRESULT Change_ViewportDesc(_uint iWidth, _uint iHeight);
 
 public:
 	static CRenderer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

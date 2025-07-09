@@ -28,6 +28,9 @@ HRESULT CEffect_Hit::Initialize(void* pArg)
 
 	m_isActive = true;
 
+	for (_int i = 0; i < PART_END; i++)
+		Reset_Effect(i);
+
 	return S_OK;
 }
 
@@ -53,7 +56,11 @@ HRESULT CEffect_Hit::Render()
 
 void CEffect_Hit::Reset_Effect(_uint iPart)
 {
-	dynamic_cast<CEffect_Part*>(m_PartObjects[iPart])->Reset_Effect();
+	if (CEffect_Part* pPart = dynamic_cast<CEffect_Part*>(m_PartObjects[iPart]))
+	{
+		pPart->Reset_Effect();
+		pPart->Set_ParentMatrix(XMLoadFloat4x4(m_pParentMatrix));
+	}
 }
 
 HRESULT CEffect_Hit::Ready_Components(void* pArg)

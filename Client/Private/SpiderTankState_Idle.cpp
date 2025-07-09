@@ -115,9 +115,6 @@ void CSpiderTankState_Idle::Execute(_float fTimeDelta)
 
 	m_pOwner->AttackCoolDownAcc(fTimeDelta);
 
-	m_pOwner->Change_States(CSpiderTank::STATES::READY_SHOT);
-	return;
-
 	_float fRandom = CGameInstance::Get_Instance()->Compute_Random(0.f, 1.f);
 
 	if (fAngle >= XMConvertToRadians(55.f))
@@ -160,6 +157,9 @@ void CSpiderTankState_Idle::Execute(_float fTimeDelta)
 			m_pOwner->Change_States(m_pOwner->Is_TargetOnRight() ? CSpiderTank::STATES::RTURN : CSpiderTank::STATES::LTURN);
 		return;
 	}
+
+	m_pOwner->Change_States(CSpiderTank::STATES::READY_SHOT);
+	return;
 
 	if (fDistance >= fPreferredDist - fBackOffset &&
 		fDistance <= fPreferredDist + fForOffset &&

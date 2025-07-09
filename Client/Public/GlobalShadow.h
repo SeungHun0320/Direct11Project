@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "GameObject.h"
+#include "UIObject.h"
 
 BEGIN(Engine)
 class CTexture;
@@ -11,12 +11,13 @@ END
 
 BEGIN(Client)
 
-class CGlobalShadow final : public CGameObject
+class CGlobalShadow final : public CUIObject
 {
 public:
-	typedef struct tagGlobalShadowDesc : public CGameObject::DESC
+	typedef struct tagGlobalShadowDesc : public CUIObject::DESC
 	{
-		LEVEL eLevelID{ LEVEL::LEVEL_END };
+		LEVEL  eLevelID{ LEVEL::LEVEL_END };
+		_float fTiling{};
 	}DESC;
 
 private:
@@ -37,10 +38,8 @@ private:
 	CTexture*			m_pTextureCom = { nullptr };
 	CShader*			m_pShaderCom = { nullptr };
 
-private:
-	_float4x4	m_WorldMatrix{}, m_ViewMatrix{}, m_ProjMatrix{};
-
-	LEVEL m_eLevelID = { LEVEL::LEVEL_END };
+	LEVEL  m_eLevelID = { LEVEL::LEVEL_END };
+	_float m_fTiling = {};
 
 private:
 	HRESULT Ready_Components();

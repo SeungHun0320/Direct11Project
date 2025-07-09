@@ -47,17 +47,17 @@ HRESULT CBody_Grass::Render()
     if (FAILED(Bind_ShaderResources()))
         return E_FAIL;
 
-    _uint		iNumMesh = m_pModelInstanceCom->Get_NumMeshes();
+    _uint		iNumMesh = m_pModelCom->Get_NumMeshes();
 
     for (_uint i = 0; i < iNumMesh; i++)
     {
-        if (FAILED(m_pModelInstanceCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TEX_TYPE::DIFFUSE, 0)))
+        if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TEX_TYPE::DIFFUSE, 0)))
             return E_FAIL;
 
         if (FAILED(m_pShaderCom->Begin(0)))
             return E_FAIL;
 
-        if (FAILED(m_pModelInstanceCom->Render(i)))
+        if (FAILED(m_pModelCom->Render(i)))
             return E_FAIL;
     }
     return S_OK;
@@ -66,16 +66,14 @@ HRESULT CBody_Grass::Render()
 
 HRESULT CBody_Grass::Ready_Components(void* pArg)
 {
-    DESC* pDesc = static_cast<DESC*>(pArg);
-
-    /* For.Com_Shader */
-    if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxMeshInstance"),
-        TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
+    if (FAILED(__super::Ready_Components(pArg)))
         return E_FAIL;
 
+    DESC* pDesc = static_cast<DESC*>(pArg);
+
     /* For.Com_Model */
-    if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Model_Instance_Grass"),
-        TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelInstanceCom))))
+    if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Model_Grass"),
+        TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
         return E_FAIL;
 
     /* For.Com_Collider */
@@ -122,9 +120,4 @@ CGameObject* CBody_Grass::Clone(void* pArg)
 void CBody_Grass::Free()
 {
     __super::Free();
-
-    Safe_Release(m_pModelInstanceCom);
-
-    //while(m_pModelInstanceCom)
-    //    Safe_Release(m_pModelInstanceCom);
 }

@@ -105,6 +105,8 @@ HRESULT CMesh::Ready_NonAnim_Mesh(const COMMON* pDesc, _fmatrix PreTransformMatr
 		XMStoreFloat3(&pVertices[i].vNormal, XMVector3TransformNormal(XMLoadFloat3(&pVertices[i].vNormal), PreTransformMatrix));
 
 		memcpy(&pVertices[i].vTangent, &pNonAnimMeshDesc->Vertices[i].vTangent, sizeof(_float3));
+		XMStoreFloat3(&pVertices[i].vTangent, XMVector3TransformNormal(XMLoadFloat3(&pVertices[i].vTangent), PreTransformMatrix));
+
 		memcpy(&pVertices[i].vTexcoord, &pNonAnimMeshDesc->Vertices[i].vTexcoord, sizeof(_float2));
 	}
 

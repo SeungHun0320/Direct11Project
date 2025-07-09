@@ -20,6 +20,8 @@
 #include "UI2D_BossHpBar.h"
 
 #include "Effect_BossSteam.h"
+#include "Effect_Mesh_BossMuzzle.h"
+#include "Effect_BossBullet.h"
 
 #include "Blob.h"
 #include "Body_Blob.h"
@@ -728,7 +730,7 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 	
 	/* For.Prototype_Component_Texture_HexParticle*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_HexParticle"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/hex bokeh particle.png")))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/hex particle.png")))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("버퍼을(를) 로딩중입니다."));
@@ -763,6 +765,11 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/SpiderTank/BossBulletTrail.Effect")))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_VIBuffer_BossBulletMuzzle */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_VIBuffer_BossBulletMuzzle"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/SpiderTank/BossBulletMuzzle.Effect")))))
+		return E_FAIL;
+
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
 	_matrix		PreTransformMatrix = XMMatrixIdentity();
@@ -783,6 +790,17 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 		CModel_Particle_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Models/NonAnim/Effect/Dash/Dash.Model"), &SmokeDesc, PreTransformMatrix))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Model_Instance_BossMuzzle */
+	CVIBuffer_Mesh_Particle_Instance::DESC		MuzzleDesc{};
+	MuzzleDesc.iNumInstance = 1;
+	MuzzleDesc.vSize = _float2(1.f, 1.f);
+	MuzzleDesc.vLifeTime = _float2(0.8f, 1.f);
+
+	PreTransformMatrix = XMMatrixScaling(0.07f, 0.07f, 0.07f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Particle_Instance_BossMuzzle"),
+		CModel_Particle_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Models/NonAnim/Effect/SpiderTank/Muzzle.Model"), &MuzzleDesc, PreTransformMatrix))))
+		return E_FAIL;
+
 	/*For.Prototype_Component_Model_Arena*/
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Arena"),
@@ -801,10 +819,10 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/Anim/Monster/Spidertank/Orb/Spidertank_Orb.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
-	/*For.Prototype_Component_Model_SpiderTankMuzzle*/
-	PreTransformMatrix = XMMatrixScaling(0.008f, 0.008f, 0.008f);
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_SpiderTankMuzzle"),
-		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Effect/Spidertank/Muzzle.Model"), PreTransformMatrix))))
+	/*For.Prototype_Component_Model_Grass*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Grass"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Environment_Objects/Grass/grass base.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Model_Instance_Grass */
@@ -873,6 +891,15 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 		CEffect_BossSteam::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObejct_Effect_BossMuzzle */
+	if(FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Effect_BossMuzzle"),
+		CEffect_Mesh_BossMuzzle::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Effect_BossBullet */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Effect_BossBullet"),
+		CEffect_BossBullet::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	/* For.Prototype_GameObject_Body_Grass */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Body_Grass"),
@@ -881,6 +908,15 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 	/* For.Prototype_GameObject_Grass */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Grass"),
 		CGrass::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Body_CheckPoint */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Body_CheckPoint"),
+		CBody_CheckPoint::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	/* For.Prototype_GameObject_CheckPoint */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_CheckPoint"),
+		CCheckPoint::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Effect_Mesh_Smoke */

@@ -140,8 +140,8 @@ HRESULT CGameInstance::Draw()
 	if (nullptr == m_pGraphic_Device)
 		return E_FAIL;
 
-	m_pLevel_Manager->Render();
 	m_pRenderer->Draw();
+	m_pLevel_Manager->Render();
 
 	return S_OK;
 }
@@ -577,9 +577,9 @@ HRESULT CGameInstance::Bind_RT_ShaderResource(const _wstring& strTargetTag, cons
 {
 	return m_pTarget_Manager->Bind_ShaderResource(strTargetTag, pConstantName, pShader);
 }
-HRESULT CGameInstance::Begin_MRT(const _wstring& strMRTTag, _bool isDepthClear)
+HRESULT CGameInstance::Begin_MRT(const _wstring& strMRTTag, ID3D11DepthStencilView* pDSV,  _bool isDepthClear)
 {
-	return m_pTarget_Manager->Begin_MRT(strMRTTag, isDepthClear);
+	return m_pTarget_Manager->Begin_MRT(strMRTTag, pDSV, isDepthClear);
 }
 HRESULT CGameInstance::End_MRT()
 {

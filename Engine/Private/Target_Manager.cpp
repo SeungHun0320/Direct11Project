@@ -51,7 +51,7 @@ HRESULT CTarget_Manager::Add_MRT(const _wstring& strMRTTag, const _wstring& strT
 	return S_OK;
 }
 
-HRESULT CTarget_Manager::Begin_MRT(const _wstring& strMRTTag, _bool isDepthClear)
+HRESULT CTarget_Manager::Begin_MRT(const _wstring& strMRTTag, ID3D11DepthStencilView* pDSV, _bool isDepthClear)
 {
 	list<CRenderTarget*>* pMRTList = Find_MRT(strMRTTag);
 	if (nullptr == pMRTList)
@@ -61,8 +61,10 @@ HRESULT CTarget_Manager::Begin_MRT(const _wstring& strMRTTag, _bool isDepthClear
 	/* 내부적으로 레퍼런스 카운트를 올림 */
 	m_pContext->OMGetRenderTargets(1, &m_pBackBuffer, &m_pOriginalDSV);
 
+	ID3D11DepthStencilView* pDepthStencilView = nullptr == pDSV ? m_pOriginalDSV : pDSV;
+
 	if(true == isDepthClear)
-		m_pContext->ClearDepthStencilView(m_pOriginalDSV, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
+		m_pContext->ClearDepthStencilView(pDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
 
 	_uint iNumTargets = { 0 };
 
@@ -78,7 +80,7 @@ HRESULT CTarget_Manager::Begin_MRT(const _wstring& strMRTTag, _bool isDepthClear
 		return E_FAIL;
 
 	/* 렌더타겟의 갯수만큼 배열의 주소를 던진다 */
-	m_pContext->OMSetRenderTargets(iNumTargets, pRenderTargets, m_pOriginalDSV);
+	m_pContext->OMSetRenderTargets(iNumTargets, pRenderTargets, pDepthStencilView);
 
 	return S_OK;
 }

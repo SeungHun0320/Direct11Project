@@ -43,6 +43,7 @@ protected:
 
 protected:
 	_float4		m_vColor = {};
+	_float      m_fTimeAcc = {};
 
 protected:
 	EFFECT_PASS m_ePass = { EFFECT_PASS::PASS_END };

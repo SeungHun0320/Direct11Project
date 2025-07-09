@@ -2,12 +2,12 @@
 #include "GameInstance.h"
 
 CGlobalShadow::CGlobalShadow(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CGameObject {pDevice, pContext}
+	: CUIObject {pDevice, pContext}
 {
 }
 
 CGlobalShadow::CGlobalShadow(const CGlobalShadow& Prototype)
-	: CGameObject (Prototype)
+	: CUIObject(Prototype)
 {
 }
 
@@ -21,18 +21,13 @@ HRESULT CGlobalShadow::Initialize(void* pArg)
 	DESC* pDesc = static_cast<DESC*>(pArg);
 
 	m_eLevelID = pDesc->eLevelID;
+	m_fTiling = pDesc->fTiling;
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
-
-	/* 화면에 꽉 채워서 그려야 하기때문에 뷰포트사이즈를 통해 크기를 맞춰줌 */
-	XMStoreFloat4x4(&m_WorldMatrix, XMMatrixScaling(static_cast<_float>(g_iWinSizeX), static_cast<_float>(g_iWinSizeY), 1.f));
-	/* 직교 투영용 행렬을 만들어줌 */
-	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
-	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(static_cast<_float>(g_iWinSizeX), static_cast<_float>(g_iWinSizeY), 0.0f, 1.f));
 
 	return S_OK;
 }
@@ -53,8 +48,12 @@ void CGlobalShadow::Late_Update(_float fTimeDelta)
 
 HRESULT CGlobalShadow::Render_Shadow()
 {
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_WorldMatrix)))
+	if(FAILED(m_pShaderCom->Bind_RawValue("g_fTiling", &m_fTiling, sizeof(_float))))
 		return E_FAIL;
+
+	if(FAILED(m_pTransformCom->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
+		return E_FAIL;
+
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))

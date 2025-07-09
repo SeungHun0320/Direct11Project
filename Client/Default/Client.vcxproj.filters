@@ -508,6 +508,12 @@
     <Filter Include="03.Shadow">
       <UniqueIdentifier>{d8da6f82-3e06-434d-93d3-8a67e153d9c6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\09.Effect\02. BossEffect\BossBullet\Mesh_Muzzle">
+      <UniqueIdentifier>{e226863a-bd9a-4647-b58f-9f58eb1777c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\09.Effect\02. BossEffect\BossBullet\Part_Muzzle">
+      <UniqueIdentifier>{6d8d31be-726f-463b-9938-aeabf5bf083d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -917,6 +923,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\GlobalShadow.h">
       <Filter>03.Shadow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Effect_Mesh_BossMuzzle.h">
+      <Filter>02.GameObjects\09.Effect\02. BossEffect\BossBullet\Mesh_Muzzle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1370,6 +1379,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\GlobalShadow.cpp">
       <Filter>03.Shadow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Effect_Mesh_BossMuzzle.cpp">
+      <Filter>02.GameObjects\09.Effect\02. BossEffect\BossBullet\Mesh_Muzzle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

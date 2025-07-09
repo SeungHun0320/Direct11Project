@@ -335,7 +335,7 @@ void CSpiderTankState_Shot::Enter(_float fTimeDelta)
 	m_fDuration = 6.f;
 	m_fTimeAcc = 0.f;
 
-	m_fReloadTime = 0.2f;
+	m_fReloadTime = 0.1f;
 	m_fShotTime = 0.f;
 
 	m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::SHOT, true, 0.2f);
@@ -353,10 +353,16 @@ void CSpiderTankState_Shot::Execute(_float fTimeDelta)
 
 	m_pOwner->Play_Animation(CSpiderTank::PART_BODY, fTimeDelta);
 
+	if (m_fReloadTime - 0.3f <= m_fShotTime)
+		m_pOwner->Set_isShot(false);
+
 	if (m_fReloadTime <= m_fShotTime)
 	{
-		if(m_pOwner->Compute_AngleToPlayer() <= XMConvertToRadians(60.f))
+		if (m_pOwner->Compute_AngleToPlayer() <= XMConvertToRadians(60.f))
+		{
+			m_pOwner->Set_isShot(true);
 			m_pOwner->Shot_Bullet();
+		}
 
 		m_fShotTime = 0.f;
 	}
@@ -378,6 +384,7 @@ void CSpiderTankState_Shot::Execute(_float fTimeDelta)
 
 void CSpiderTankState_Shot::Exit()
 {
+	m_pOwner->Set_isShot(false);
 	m_fDuration = 6.f;
 	m_fTimeAcc = 0.f;
 

@@ -13,7 +13,7 @@ public:
 	}DESC;
 
 public:
-	enum PART { PART_BODY, PART_HP, PART_LOCKON_START, PART_LOCKON_END, PART_STEAM, PART_END };
+	enum PART { PART_BODY, PART_HP, PART_LOCKON_START, PART_LOCKON_END, PART_STEAM, PART_EFFECT_BULLET, PART_END };
 
 	enum ANIM_STATE {
 		//NONE은 사용안함 ( 나중에 혹시 모름 )
@@ -85,6 +85,8 @@ public: /* 상태로 넘겨줄 함수들 */
 
 	/* 공격 관련 */
 	HRESULT Shot_Bullet();
+	const _bool Get_isShot() const { return m_isShot; }
+	void    Set_isShot(_bool isShot) { m_isShot = isShot; }
 	HRESULT Shot_Bomb();
 	HRESULT Shot_Lager();
 
@@ -111,14 +113,15 @@ private:
 	_uint  m_iSequence = {};
 private:
 	_bool m_isInBattle = { false };
+	_bool m_isShot = { false };
 	
 
 private: /* 필요해 */
 	const _float4x4* m_pHeadBoneMatrix = { nullptr };
-	_float4x4		 m_HeadBoneWolrdMatrix = {};
+	_float4x4		 m_HeadBoneWorldMatrix = {};
 
 	const _float4x4* m_pPowerCellBoneMatrix = { nullptr };
-	_float4x4		 m_PowerCellBoneWolrdMatrix = {};
+	_float4x4		 m_PowerCellBoneWorldMatrix = {};
 
 private: /* 매번 캐스팅 해주기 싫어서 변수로 선언함 */
 	class CBody_SpiderTank* m_pBodyPart = { nullptr };
@@ -126,7 +129,7 @@ private: /* 매번 캐스팅 해주기 싫어서 변수로 선언함 */
 private:
 	void Update_BoneWorldMatrices(const _float4x4* pBoneMatrix, _float4x4* pBoneWorldMatrix);
 	const _float4x4* Get_BoneMatrix(const _string& strBoneName);
-	virtual void On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDuration = 0.5f) override;
+	virtual void On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDuration = 0.6f) override;
 	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner) override;
 
 private:

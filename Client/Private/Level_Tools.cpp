@@ -9,6 +9,8 @@
 #include "Sky.h"
 #include "Map.h"
 
+#include "GlobalShadow.h"
+
 CLevel_Tools::CLevel_Tools(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel{ pDevice, pContext }
 {
@@ -44,8 +46,8 @@ void CLevel_Tools::Update(_float fTimeDelta)
 	if (m_pNavigationTool->IsFocused())
 		m_eActiveType = TOOL_NAVIGATION;
 
-	if (m_pEffectTool->IsFocused())
-		m_eActiveType = TOOL_EFFECT;
+	//if (m_pEffectTool->IsFocused())
+	//	m_eActiveType = TOOL_EFFECT;
 
 	switch (m_eActiveType)
 	{
@@ -56,7 +58,7 @@ void CLevel_Tools::Update(_float fTimeDelta)
 		m_pNavigationTool->Update(fTimeDelta);
 		break;
 	case TOOL_EFFECT:
-		m_pEffectTool->Update(fTimeDelta);
+		//m_pEffectTool->Update(fTimeDelta);
 		break;
 	default:
 		break;
@@ -85,7 +87,7 @@ HRESULT CLevel_Tools::Render()
 	// UI는 항상 보여줌 이것도 나중에는 바꿔야할수도?
 	m_pMapTool->Render();
 	m_pNavigationTool->Render();
-	m_pEffectTool->Render();
+	//m_pEffectTool->Render();
 
 	switch (m_eActiveType)
 	{
@@ -96,7 +98,7 @@ HRESULT CLevel_Tools::Render()
 		m_pNavigationTool->Render_ExtraUI();
 		break;
 	case TOOL_EFFECT:
-		m_pEffectTool->Render_ExtraUI();
+		//m_pEffectTool->Render_ExtraUI();
 		break;
 	default:
 		break;
@@ -221,9 +223,9 @@ HRESULT CLevel_Tools::Ready_Tools()
 	if (nullptr == m_pNavigationTool)
 		return E_FAIL;
 
-	m_pEffectTool = CTool_Effect::Create(m_pDevice, m_pContext);
-	if (nullptr == m_pEffectTool)
-		return E_FAIL;
+	//m_pEffectTool = CTool_Effect::Create(m_pDevice, m_pContext);
+	//if (nullptr == m_pEffectTool)
+	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -240,6 +242,18 @@ HRESULT CLevel_Tools::Ready_Lights()
 
 	if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
 		return E_FAIL;
+
+	SHADOW_DESC ShadowDesc = {};
+
+	ShadowDesc.vEye = _float4(-87.f, 77.f, -137.f, 1.f);
+	ShadowDesc.vAt = _float4(0.f, 0.f, -100.f, 1.f);
+	ShadowDesc.fFovy = XMConvertToRadians(60.f);
+	ShadowDesc.fNear = 0.1f;
+	ShadowDesc.fFar = 1000.f;
+
+	if (FAILED(m_pGameInstance->Ready_Light_For_Shadow(ShadowDesc)))
+		return E_FAIL;
+
 
 	return S_OK;
 }

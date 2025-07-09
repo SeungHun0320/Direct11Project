@@ -41,6 +41,11 @@ void CEffect_Obj::Priority_Update(_float fTimeDelta)
 
 LIFE CEffect_Obj::Update(_float fTimeDelta)
 {
+    m_fTimeAcc += fTimeDelta;
+
+    if (5.f <= m_fTimeAcc)
+        return LIFE::DEAD;
+
     switch (m_eMoveType)
     {
     case EFFECT_MOVE::DROP:
