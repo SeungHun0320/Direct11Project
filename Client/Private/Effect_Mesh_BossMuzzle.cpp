@@ -44,7 +44,7 @@ LIFE CEffect_Mesh_BossMuzzle::Update(_float fTimeDelta)
 
 void CEffect_Mesh_BossMuzzle::Late_Update(_float fTimeDelta)
 {
-    __super::Late_Update(fTimeDelta);
+    m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_DEPTH_NONLIGHT, this);
 }
 
 HRESULT CEffect_Mesh_BossMuzzle::Render()

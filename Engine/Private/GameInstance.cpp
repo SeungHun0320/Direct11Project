@@ -1,6 +1,7 @@
 #include "GameInstance.h"
 
 #include "Shadow.h"
+#include "Frustum.h"
 #include "Renderer.h"
 #include "PipeLine.h"
 #include "RayPicking.h"
@@ -99,8 +100,12 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ ID
 	//if (nullptr == m_pPixelPicking)
 	//	return E_FAIL;
 
-	m_pShadow = CShadow::Craete(*ppDeviceOut, *ppContextOut);
+	m_pShadow = CShadow::Create(*ppDeviceOut, *ppContextOut);
 	if (nullptr == m_pShadow)
+		return E_FAIL;
+
+	m_pFrustum = CFrustum::Create();
+	if (nullptr == m_pFrustum)
 		return E_FAIL;
 
 	return S_OK;
@@ -115,6 +120,8 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 
 	m_pPipeLine->Update();
 	m_pRayPicking->Update();
+
+	m_pFrustum->Transform_ToWorldSpace();
 
 	m_pObject_Manager->Update(fTimeDelta);	
 
@@ -577,10 +584,10 @@ HRESULT CGameInstance::Bind_RT_ShaderResource(const _wstring& strTargetTag, cons
 {
 	return m_pTarget_Manager->Bind_ShaderResource(strTargetTag, pConstantName, pShader);
 }
-HRESULT CGameInstance::Begin_MRT(const _wstring& strMRTTag, ID3D11DepthStencilView* pDSV,  _bool isDepthClear)
+HRESULT CGameInstance::Begin_MRT(const _wstring& strMRTTag, _bool isTargetClear, ID3D11DepthStencilView* pDSV,  _bool isDepthClear)
 {
-	return m_pTarget_Manager->Begin_MRT(strMRTTag, pDSV, isDepthClear);
-}
+	return m_pTarget_Manager->Begin_MRT(strMRTTag, isTargetClear, pDSV, isDepthClear);
+} 
 HRESULT CGameInstance::End_MRT()
 {
 	return m_pTarget_Manager->End_MRT();
@@ -619,14 +626,20 @@ HRESULT CGameInstance::Ready_Light_For_Shadow(const SHADOW_DESC& Desc)
 {
 	return m_pShadow->Ready_Light_For_Shadow(Desc);
 }
+_bool CGameInstance::isIn_WorldSpace(_fvector vWorldPos, _float fRange)
+{
+	return m_pFrustum->isIn_WorldSpace(vWorldPos, fRange);
+}
 #pragma endregion
 
 
 void CGameInstance::Release_Engine()
 {
+	Safe_Release(m_pFrustum);
+
 	Safe_Release(m_pShadow);
 
-	//Safe_Release(m_pPixelPicking);
+	Safe_Release(m_pPixelPicking);
 
 	Safe_Release(m_pCollider_Manager);
 

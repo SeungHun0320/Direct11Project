@@ -30,7 +30,7 @@ private:
 	_float4x4						m_LightProjMatrix = {};
 
 public:
-	static CShadow* Craete(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CShadow* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual void Free() override;
 };
 

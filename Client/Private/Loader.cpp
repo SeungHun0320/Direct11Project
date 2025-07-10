@@ -808,13 +808,13 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 		return E_FAIL;
 
 	/*For.Prototype_Component_Model_SpiderTank*/
-	PreTransformMatrix = XMMatrixScaling(0.008f, 0.008f, 0.008f) * XMMatrixRotationY(XMConvertToRadians(180.f));
+	PreTransformMatrix = XMMatrixScaling(0.009f, 0.009f, 0.009f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_SpiderTank"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::ANIM, TEXT("../Bin/Resources/Models/Anim/Monster/Spidertank/Spidertank.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
 	/*For.Prototype_Component_Model_SpiderTankOrb*/
-	PreTransformMatrix = XMMatrixScaling(0.008f, 0.008f, 0.008f);
+	PreTransformMatrix = XMMatrixScaling(0.009f, 0.009f, 0.009f);
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_SpiderTankOrb"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/Anim/Monster/Spidertank/Orb/Spidertank_Orb.Model"), PreTransformMatrix))))
 		return E_FAIL;
@@ -834,6 +834,12 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Instance_Grass"),
 		CModel_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Models/NonAnim/Environment_Objects/Grass/grass base.Model"), &GrassDesc, PreTransformMatrix))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_CheckPoint*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_CheckPoint"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Environment_Objects/TUNIC_Checkpoint/TUNIC_Checkpoint.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
 	/*For.Prototype_Component_Model_FireCracker*/

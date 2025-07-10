@@ -268,7 +268,7 @@ HRESULT CSpiderTank::Shot_Bullet()
 
 	_vector vHeadLook = XMVector3Normalize(HeadWorldMatrix.r[2]);
 	_vector vHeadPos = HeadWorldMatrix.r[3];
-	_float  fOffset = 2.f;
+	_float  fOffset = 3.f;
 
 	_vector vNewPos = vHeadPos + vHeadLook * fOffset;
 
@@ -288,7 +288,11 @@ HRESULT CSpiderTank::Shot_Bullet()
 	MuzzleDesc.strParticleTextureTag = TEXT("Prototype_Component_Texture_VoidSmokeParticle");
 	MuzzleDesc.strName = TEXT("Effect_Obj");
 
-	MuzzleDesc.WorldMatrix = HeadWorldMatrix;
+	MuzzleDesc.WorldMatrix = XMMatrixRotationZ(XMConvertToRadians(m_fMuzzleAngle)) * HeadWorldMatrix;
+
+	m_fMuzzleAngle += 30.f;
+	if (360.f <= m_fMuzzleAngle)
+		m_fMuzzleAngle = 0.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_") + MuzzleDesc.strName,
 		ENUM_CLASS(MuzzleDesc.eLevelID), TEXT("Layer_Effect"), &MuzzleDesc)))

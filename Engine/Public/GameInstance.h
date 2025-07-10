@@ -26,13 +26,11 @@ public:
 	HRESULT End_Draw();
 
 #pragma region UTILITY
-
 	_float Compute_Random_Normal();
 	_float Compute_Random(_float fMin, _float fMax);
 
 	_string WStringToString(const _wstring& wstr);
 	_wstring StringToWString(const _string& str);
-
 #pragma endregion
 
 #pragma region LEVEL_MANAGER
@@ -186,7 +184,7 @@ public:
 	HRESULT Add_MRT(const _wstring& strMRTTag, const _wstring& strTargetTag);
 	/* 특정 타겟들을 장치에 동시에(최대 8개) 바인딩 해준다 */
 	HRESULT Bind_RT_ShaderResource(const _wstring& strTargetTag, const _char* pConstantName, class CShader* pShader);
-	HRESULT Begin_MRT(const _wstring& strMRTTag, ID3D11DepthStencilView* pDSV = nullptr, _bool isDepthClear = false);
+	HRESULT Begin_MRT(const _wstring& strMRTTag, _bool isTargetClear = true, ID3D11DepthStencilView* pDSV = nullptr, _bool isDepthClear = false);
 	HRESULT End_MRT();
 	HRESULT Copy_RT_Resource(const _wstring& strTargetTag, ID3D11Texture2D* pDest);
 #ifdef _DEBUG
@@ -204,6 +202,10 @@ public:
 	const _float4x4* Get_Light_ViewMatrix();
 	const _float4x4* Get_Light_ProjMatrix();
 	HRESULT Ready_Light_For_Shadow(const SHADOW_DESC& Desc);
+#pragma endregion
+
+#pragma region FRUSTUM
+	_bool isIn_WorldSpace(_fvector vWorldPos, _float fRange);
 #pragma endregion
 
 private:
@@ -225,6 +227,7 @@ private:
 	class CTarget_Manager*      m_pTarget_Manager = { nullptr };
 	class CPixelPicking*		m_pPixelPicking = { nullptr };
 	class CShadow*				m_pShadow = { nullptr };
+	class CFrustum*				m_pFrustum = { nullptr };
 
 
 public:

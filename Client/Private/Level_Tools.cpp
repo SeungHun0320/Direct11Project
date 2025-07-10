@@ -46,8 +46,8 @@ void CLevel_Tools::Update(_float fTimeDelta)
 	if (m_pNavigationTool->IsFocused())
 		m_eActiveType = TOOL_NAVIGATION;
 
-	//if (m_pEffectTool->IsFocused())
-	//	m_eActiveType = TOOL_EFFECT;
+	if (m_pEffectTool->IsFocused())
+		m_eActiveType = TOOL_EFFECT;
 
 	switch (m_eActiveType)
 	{
@@ -58,7 +58,7 @@ void CLevel_Tools::Update(_float fTimeDelta)
 		m_pNavigationTool->Update(fTimeDelta);
 		break;
 	case TOOL_EFFECT:
-		//m_pEffectTool->Update(fTimeDelta);
+		m_pEffectTool->Update(fTimeDelta);
 		break;
 	default:
 		break;
@@ -87,7 +87,7 @@ HRESULT CLevel_Tools::Render()
 	// UI는 항상 보여줌 이것도 나중에는 바꿔야할수도?
 	m_pMapTool->Render();
 	m_pNavigationTool->Render();
-	//m_pEffectTool->Render();
+	m_pEffectTool->Render();
 
 	switch (m_eActiveType)
 	{
@@ -98,7 +98,7 @@ HRESULT CLevel_Tools::Render()
 		m_pNavigationTool->Render_ExtraUI();
 		break;
 	case TOOL_EFFECT:
-		//m_pEffectTool->Render_ExtraUI();
+		m_pEffectTool->Render_ExtraUI();
 		break;
 	default:
 		break;
@@ -223,9 +223,9 @@ HRESULT CLevel_Tools::Ready_Tools()
 	if (nullptr == m_pNavigationTool)
 		return E_FAIL;
 
-	//m_pEffectTool = CTool_Effect::Create(m_pDevice, m_pContext);
-	//if (nullptr == m_pEffectTool)
-	//	return E_FAIL;
+	m_pEffectTool = CTool_Effect::Create(m_pDevice, m_pContext);
+	if (nullptr == m_pEffectTool)
+		return E_FAIL;
 
 	return S_OK;
 }

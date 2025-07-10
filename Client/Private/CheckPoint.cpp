@@ -43,6 +43,9 @@ LIFE CCheckPoint::Update(_float fTimeDelta)
 
 void CCheckPoint::Late_Update(_float fTimeDelta)
 {
+	if (!m_pGameInstance->isIn_WorldSpace(m_pTransformCom->Get_State(STATE::POSITION), 3.f))
+		return;
+
 	__super::Late_Update(fTimeDelta);
 }
 

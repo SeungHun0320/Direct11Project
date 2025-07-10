@@ -53,6 +53,9 @@ private:
 	HRESULT Render_NonLight();
 	HRESULT Render_Shadow();
 
+	HRESULT Render_Blur();
+	HRESULT Render_Final();
+
 #ifdef _DEBUG
 private:
 	HRESULT Render_Debug();

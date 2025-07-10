@@ -353,7 +353,7 @@ void CSpiderTankState_Shot::Execute(_float fTimeDelta)
 
 	m_pOwner->Play_Animation(CSpiderTank::PART_BODY, fTimeDelta);
 
-	if (m_fReloadTime - 0.3f <= m_fShotTime)
+	if (m_fReloadTime - 0.1f <= m_fShotTime)
 		m_pOwner->Set_isShot(false);
 
 	if (m_fReloadTime <= m_fShotTime)

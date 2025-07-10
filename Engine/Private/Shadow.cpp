@@ -22,7 +22,7 @@ HRESULT CShadow::Ready_Light_For_Shadow(const SHADOW_DESC& Desc)
     return S_OK;
 }
 
-CShadow* CShadow::Craete(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CShadow* CShadow::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
     return new CShadow(pDevice, pContext);
 }

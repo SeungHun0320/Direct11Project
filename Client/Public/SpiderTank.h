@@ -112,6 +112,8 @@ private:
 	/* ¼­¼ø */
 	_uint  m_iSequence = {};
 private:
+	_float m_fMuzzleAngle = {};
+
 	_bool m_isInBattle = { false };
 	_bool m_isShot = { false };
 	

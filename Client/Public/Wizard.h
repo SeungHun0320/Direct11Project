@@ -2,6 +2,8 @@
 
 #include "Monster.h"
 
+BEGIN(Client)
+
 class CWizard abstract : public CMonster
 {
 public:
@@ -46,3 +48,4 @@ public:
 	virtual void Free() override;
 };
 
+END

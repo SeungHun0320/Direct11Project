@@ -2,24 +2,18 @@
 
 #include "EffectContainerPart.h"
 
-
-BEGIN(Client)
-
-class CEffect_BossBullet final : public CEffectContainerPart
+class CEffect_BossLager final : public CEffectContainerPart
 {
 public:
-	enum PART { PART_MUZZLE, PART_END };
-
-public:
-	typedef struct tagEffectBossBulletDesc : public CEffectContainerPart::DESC
+	typedef struct tagEffectBossLagerDesc : public CEffectContainerPart::DESC
 	{
-		const _bool* pParentisShot{ nullptr };
+
 	}DESC;
 
 private:
-	CEffect_BossBullet(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CEffect_BossBullet(const CEffect_BossBullet& Prototype);
-	virtual ~CEffect_BossBullet() = default;
+	CEffect_BossLager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CEffect_BossLager(const CEffect_BossLager& Prototype);
+	virtual ~CEffect_BossLager() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -30,20 +24,18 @@ public:
 	virtual HRESULT Render() override;
 
 private:
-	void Set_MeshVisible(_uint iPart, _bool IsVisible = true);
+	void Set_MeshVisible(_uint iPart, _bool isVisible = true);
 	void TurnZ(_uint iPart, _float fTimeDelta);
 
-private:
-	const _bool* m_pParentisShot = { nullptr };
 
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;
 	virtual HRESULT Ready_PartObjects() override;
 
 public:
-	static CEffect_BossBullet* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CEffect_BossLager* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
+
 };
 
-END

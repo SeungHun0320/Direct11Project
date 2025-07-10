@@ -70,15 +70,6 @@
     <Filter Include="02.GameObjects\05.Environment_Objects\02.CheckPoint">
       <UniqueIdentifier>{2d7b8845-30fa-4f80-b368-7a9173d644e4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\05.Environment_Objects\03.Urn">
-      <UniqueIdentifier>{39f69328-8513-4c21-a989-c392db825a8a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\05.Environment_Objects\03.Urn\Urn">
-      <UniqueIdentifier>{186e6e0c-0b67-49a4-9d17-0257a67c45fe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\05.Environment_Objects\03.Urn\Urn_Firey">
-      <UniqueIdentifier>{45438d73-7194-460e-bcbe-e351b8bd8b64}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Levels\Tools">
       <UniqueIdentifier>{83f920ac-2c4c-4a14-9b66-269354c366cf}</UniqueIdentifier>
     </Filter>
@@ -117,12 +108,6 @@
     </Filter>
     <Filter Include="02.GameObjects\05.Environment_Objects\02.CheckPoint\Body">
       <UniqueIdentifier>{570c83ab-159a-4e0c-a527-636f055cb471}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\05.Environment_Objects\03.Urn\PartObjects">
-      <UniqueIdentifier>{c9bd6b49-875a-409b-a5d2-234b775295b6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\05.Environment_Objects\03.Urn\PartObjects\Body">
-      <UniqueIdentifier>{df653adc-26b8-4d38-8131-329cd467ee34}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\05.Environment_Objects\04.Chest\Body">
       <UniqueIdentifier>{6a275086-9851-4651-a708-f79968b94766}</UniqueIdentifier>
@@ -502,17 +487,17 @@
     <Filter Include="02.GameObjects\09.Effect\02. BossEffect\BossLager">
       <UniqueIdentifier>{8ec4a34f-470a-4ec6-b456-d6a8e820b79a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\09.Effect\02. BossEffect\BossSwing">
-      <UniqueIdentifier>{b98d6d77-53ab-4e06-bda4-90e8ed3dd638}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03.Shadow">
       <UniqueIdentifier>{d8da6f82-3e06-434d-93d3-8a67e153d9c6}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\09.Effect\02. BossEffect\BossBullet\Mesh_Muzzle">
       <UniqueIdentifier>{e226863a-bd9a-4647-b58f-9f58eb1777c6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\09.Effect\02. BossEffect\BossBullet\Part_Muzzle">
-      <UniqueIdentifier>{6d8d31be-726f-463b-9938-aeabf5bf083d}</UniqueIdentifier>
+    <Filter Include="02.GameObjects\09.Effect\02. BossEffect\BossSwing">
+      <UniqueIdentifier>{493be362-47a1-484a-a635-fa0ec13e8689}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\09.Effect\02. BossEffect\BossLager\Effect_Mesh_BossLager">
+      <UniqueIdentifier>{17e24efb-4648-4dc3-b7ef-bea3e5502cfa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -915,9 +900,6 @@
     <ClInclude Include="..\public\Effect_BossSteam.h">
       <Filter>02.GameObjects\09.Effect\02. BossEffect\BossSteam</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Effect_BossSwing.h">
-      <Filter>02.GameObjects\09.Effect\02. BossEffect\BossSwing</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Effect_BossBullet.h">
       <Filter>02.GameObjects\09.Effect\02. BossEffect\BossBullet</Filter>
     </ClInclude>
@@ -926,6 +908,12 @@
     </ClInclude>
     <ClInclude Include="..\public\Effect_Mesh_BossMuzzle.h">
       <Filter>02.GameObjects\09.Effect\02. BossEffect\BossBullet\Mesh_Muzzle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect_BossSwing.h">
+      <Filter>02.GameObjects\09.Effect\02. BossEffect\BossSwing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Effect_BossLager.h">
+      <Filter>02.GameObjects\09.Effect\02. BossEffect\BossLager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1371,9 +1359,6 @@
     <ClCompile Include="..\private\Effect_BossSteam.cpp">
       <Filter>02.GameObjects\09.Effect\02. BossEffect\BossSteam</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Effect_BossSwing.cpp">
-      <Filter>02.GameObjects\09.Effect\02. BossEffect\BossSwing</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Effect_BossBullet.cpp">
       <Filter>02.GameObjects\09.Effect\02. BossEffect\BossBullet</Filter>
     </ClCompile>
@@ -1382,6 +1367,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Effect_Mesh_BossMuzzle.cpp">
       <Filter>02.GameObjects\09.Effect\02. BossEffect\BossBullet\Mesh_Muzzle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_BossSwing.cpp">
+      <Filter>02.GameObjects\09.Effect\02. BossEffect\BossSwing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Effect_BossLager.cpp">
+      <Filter>02.GameObjects\09.Effect\02. BossEffect\BossLager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
