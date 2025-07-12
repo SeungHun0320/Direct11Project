@@ -217,6 +217,9 @@
     <ClInclude Include="..\public\Frustum.h">
       <Filter>01.Utility\13.Frustum</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Trail.h">
+      <Filter>01.Utility\04.Components\VIBuffer\Trail</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Timer.cpp">
@@ -416,6 +419,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Frustum.cpp">
       <Filter>01.Utility\13.Frustum</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Trail.cpp">
+      <Filter>01.Utility\04.Components\VIBuffer\Trail</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -646,6 +652,9 @@
     </Filter>
     <Filter Include="01.Utility\99.SuperClass">
       <UniqueIdentifier>{c5c38433-b538-4e7b-891b-4809c69188f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\VIBuffer\Trail">
+      <UniqueIdentifier>{9b65d459-9645-4747-9dc2-2579074cf8dd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

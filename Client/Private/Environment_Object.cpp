@@ -48,6 +48,9 @@ LIFE CEnvironment_Object::Update(_float fTimeDelta)
 
 void CEnvironment_Object::Late_Update(_float fTimeDelta)
 {
+	if (!m_pGameInstance->isIn_WorldSpace(m_pTransformCom->Get_State(STATE::POSITION), 5.f))
+		return;
+
 	__super::Late_Update(fTimeDelta);
 
 	m_isCollision = false;

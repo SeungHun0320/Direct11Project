@@ -11,19 +11,19 @@ END
 
 BEGIN(Client)
 
-class CEffect_AnimMesh abstract : public CPartObject
+class CEffect_Part_AnimMesh abstract : public CPartObject
 {
 public:
-	typedef struct tagEffectAnimMeshDesc : public CPartObject::DESC
+	typedef struct tagEffectPartAnimMeshDesc : public CPartObject::DESC
 	{
 		LEVEL*    pParentLevelID;
 		_wstring  strPrototypeModelTag;
 	}DESC;
 
 protected:
-	CEffect_AnimMesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CEffect_AnimMesh(const CEffect_AnimMesh& Prototype);
-	virtual ~CEffect_AnimMesh() = default;
+	CEffect_Part_AnimMesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CEffect_Part_AnimMesh(const CEffect_Part_AnimMesh& Prototype);
+	virtual ~CEffect_Part_AnimMesh() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;

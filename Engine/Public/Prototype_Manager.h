@@ -5,6 +5,7 @@
 #include "Model_Particle_Instance.h"
 #include "VIBuffer_Terrain.h"
 #include "Model_Instance.h"
+#include "VIBuffer_Trail.h"
 #include "VIBuffer_Cube.h"
 #include "VIBuffer_Rect.h"
 #include "VIBuffer_Cell.h"

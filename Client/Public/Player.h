@@ -144,40 +144,44 @@ public: /* 이벤트 매니저 관련 */
 	void  Equip_Shield();
 
 public: /* 스테이트 갖고오기 */
-	STATES Get_CurState() {	return m_eCurState; }
-	STATES Get_PreState() { return m_ePreState; }
+	const STATES Get_CurState() const {	return m_eCurState; }
+	const STATES Get_PreState() const { return m_ePreState; }
 
-	_float Compute_StaggerValue() const;
+	const _float Compute_StaggerValue() const;
 
 	/* 포션 */
-	_bool Get_isUsePotion() const { return m_isUsePotion; }
+	const _bool Get_isUsePotion() const { return m_isUsePotion; }
 	void Set_isUsePotion(_bool isUsePotion) { m_isUsePotion = isUsePotion; }
 
 	/* 스태미나 */
-	_float Get_Stamina() const { return m_fStamina; }
+	const _float Get_Stamina() const { return m_fStamina; }
 	void Use_Stamina(_float fStamina);
 
 	void Set_isNoStamina(_bool isStamina) { m_isNoStamina = isStamina; }
 
-	_bool Get_isRoll() const { return m_isRoll; }
+	const _bool Get_isRoll() const { return m_isRoll; }
 	void Set_isRoll(_bool isRoll) { m_isRoll = isRoll; }
+
+	/* 공격 */
+	const _bool Get_isAttacked() const { return m_isAttacked; }
+	void Set_isAttacked(_bool isAttacked = true) { m_isAttacked = isAttacked; }
 
 	/* 마나 */
 	void Use_Mana(_float fMana);
 
 	/* 방패 관련 */
-	_bool Has_Shield() const;
+	const _bool Has_Shield() const;
 
 	/* 뭐 먹는중? */
-	_byte Get_EatType() const { return m_byEatType; }
+	const _byte Get_EatType() const { return m_byEatType; }
 
     /* 타깃 관련 */
-	_bool Get_IsTarget() const { return m_isTarget; }
-	_float Get_FindDistance() const { return m_fFindDistance; }
+	const _bool Get_IsTarget() const { return m_isTarget; }
+	const _float Get_FindDistance() const { return m_fFindDistance; }
 
 public: /* 전략패턴 트라이 */
 	void Set_AttackStrategy(class CPlayer_IAttackStrategy* pStrategy);
-	class CPlayer_IAttackStrategy* Get_AttackStrategy() const {	return m_pAttackStrategy; }
+	const class CPlayer_IAttackStrategy* Get_AttackStrategy() const { return m_pAttackStrategy; }
 
 	void Set_isDaggerAttack(_bool isDaggerAttack = true) { m_isDaggerAttack = isDaggerAttack; }
 
@@ -210,6 +214,7 @@ private: /* 먹는 타입 */
 private: /* 인벤 켰음? / 무기 타입 */
 	_bool  m_isOnInven = { false };
 	WEAPON_TYPE m_eWeaponType = { WEAPON_TYPE::WT_END };
+	_bool  m_isAttacked = { false };
 
 private: /* 현재 충돌한 상호작용 오브젝트의 콜라이더 아이디 */
 	COLLIDER_ID m_eCurInteractID = { COLLIDER_ID::CI_END };

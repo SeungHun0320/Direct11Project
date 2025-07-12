@@ -1,22 +1,22 @@
-#include "Effect_AnimMesh.h"
+#include "Effect_Part_AnimMesh.h"
 #include "GameInstance.h"
 
-CEffect_AnimMesh::CEffect_AnimMesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CEffect_Part_AnimMesh::CEffect_Part_AnimMesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CPartObject{ pDevice, pContext }
 {
 }
 
-CEffect_AnimMesh::CEffect_AnimMesh(const CEffect_AnimMesh& Prototype)
+CEffect_Part_AnimMesh::CEffect_Part_AnimMesh(const CEffect_Part_AnimMesh& Prototype)
 	: CPartObject(Prototype)
 {
 }
 
-HRESULT CEffect_AnimMesh::Initialize_Prototype()
+HRESULT CEffect_Part_AnimMesh::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CEffect_AnimMesh::Initialize(void* pArg)
+HRESULT CEffect_Part_AnimMesh::Initialize(void* pArg)
 {
 	DESC* pDesc = static_cast<DESC*>(pArg);
 
@@ -31,11 +31,11 @@ HRESULT CEffect_AnimMesh::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CEffect_AnimMesh::Priority_Update(_float fTimeDelta)
+void CEffect_Part_AnimMesh::Priority_Update(_float fTimeDelta)
 {
 }
 
-LIFE CEffect_AnimMesh::Update(_float fTimeDelta)
+LIFE CEffect_Part_AnimMesh::Update(_float fTimeDelta)
 {
 	m_fRatio += fTimeDelta;
 
@@ -45,12 +45,12 @@ LIFE CEffect_AnimMesh::Update(_float fTimeDelta)
 	return LIFE::NONE;
 }
 
-void CEffect_AnimMesh::Late_Update(_float fTimeDelta)
+void CEffect_Part_AnimMesh::Late_Update(_float fTimeDelta)
 {
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 }
 
-HRESULT CEffect_AnimMesh::Render()
+HRESULT CEffect_Part_AnimMesh::Render()
 {
     if (FAILED(Bind_ShaderResources()))
         return E_FAIL;
@@ -77,20 +77,20 @@ HRESULT CEffect_AnimMesh::Render()
     return S_OK;
 }
 
-void CEffect_AnimMesh::Reset_Animation()
+void CEffect_Part_AnimMesh::Reset_Animation()
 {
 	m_pModelCom->Set_MeshVisible(0, true);
 	m_pModelCom->Reset_Animation();
 	m_fRatio = 0;
 }
 
-void CEffect_AnimMesh::Set_MeshVisible(_bool isVisible)
+void CEffect_Part_AnimMesh::Set_MeshVisible(_bool isVisible)
 {
 	for(_uint i = 0; i < m_pModelCom->Get_NumMeshes(); i++)
 		m_pModelCom->Set_MeshVisible(i, isVisible);
 }
 
-HRESULT CEffect_AnimMesh::Ready_Components(void* pArg)
+HRESULT CEffect_Part_AnimMesh::Ready_Components(void* pArg)
 {
 	DESC* pDesc = static_cast<DESC*>(pArg);	
 
@@ -112,7 +112,7 @@ HRESULT CEffect_AnimMesh::Ready_Components(void* pArg)
 	return S_OK;
 }
 
-HRESULT CEffect_AnimMesh::Bind_ShaderResources()
+HRESULT CEffect_Part_AnimMesh::Bind_ShaderResources()
 {
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix)))
 		return E_FAIL;
@@ -133,7 +133,7 @@ HRESULT CEffect_AnimMesh::Bind_ShaderResources()
 	return S_OK;
 }
 
-void CEffect_AnimMesh::Free()
+void CEffect_Part_AnimMesh::Free()
 {
 	__super::Free();
 

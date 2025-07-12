@@ -23,8 +23,6 @@
 /* 이펙트(파티클) */
 #include "Effect_Mesh_Dodge.h"
 #include "Effect_Potion.h"
-#include "Effect_Stick.h"
-#include "Effect_Sword.h"
 #include "Effect_Dagger.h"
 
 /* 쩦, */
@@ -414,7 +412,7 @@ void CPlayer::Use_QuickSlot(_uint eSlot)
 	switch (QuickSlot.eType)
 	{
 	case ITEM_TYPE::STICK:
-		Equip_Weapon(new CPlayer_SwordAttack(1, WEAPON_TYPE::STICK));
+		Equip_Weapon(new CPlayer_StickAttack(1, WEAPON_TYPE::STICK));
 		break;
 	case ITEM_TYPE::SWORD:
 		Equip_Weapon(new CPlayer_SwordAttack(3, WEAPON_TYPE::SWORD));
@@ -473,6 +471,7 @@ void CPlayer::Use_FireCracker()
 
 	tDesc.eLevelID = m_eLevelID;
 	tDesc.fSpeedPerSec = 7.5f;
+	tDesc.fRotationPerSec = 1.f;
 	tDesc.strName = TEXT("FireCracker");
 	tDesc.strPrototypeModelTag = TEXT("Prototype_Component_Model_FireCracker");
 
@@ -628,7 +627,7 @@ _bool CPlayer::CheckDodgeComboWeapon()
 	if (ITEM_TYPE::IT_END == eItemType)
 		return false;
 
-	return DodgeComboAttack(eItemType);//여기서 타입을 받아서 바꾸고, 똑같은 녀석일때만 리턴 하면 될 듯
+	return DodgeComboAttack(eItemType); //여기서 타입을 받아서 바꾸고, 똑같은 녀석일때만 리턴 하면 될 듯
 }
 
 _vector CPlayer::Get_InputDirection()
@@ -758,7 +757,7 @@ void CPlayer::Set_AttackStrategy(CPlayer_IAttackStrategy* pStrategy)
 	m_eWeaponType = m_pAttackStrategy->Get_WeaponType();
 }
 
-_float CPlayer::Compute_StaggerValue() const
+const _float CPlayer::Compute_StaggerValue() const
 {
 	return m_pAttackStrategy->Get_StaggerValue();
 }
@@ -796,7 +795,7 @@ void CPlayer::Use_Mana(_float fMana)
 	m_fMana = max(m_fMana, 0);
 }
 
-_bool CPlayer::Has_Shield() const
+const _bool CPlayer::Has_Shield() const
 {
 	return m_pInventory->Get_isShield();
 }
@@ -1035,10 +1034,14 @@ HRESULT CPlayer::Ready_PartObjects()
 		return E_FAIL;
 
 	CWeapon_Player::DESC	WeaponDesc{};
-
+	 
 	WeaponDesc.eLevelID = m_eLevelID;
 	WeaponDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	WeaponDesc.pSocketMatrix[CWeapon_Player::SWORD] = m_PartObjects[PART_BODY]->Get_BoneMatrix("sword_proxy");
+	WeaponDesc.pSocketMatrix[CWeapon_Player::SWORD_TRAIL] = m_PartObjects[PART_BODY]->Get_BoneMatrix("sword1_trail");
+	WeaponDesc.pParentWeaponType = &m_eWeaponType;
 	WeaponDesc.pParentState = &m_eCurState;
+	WeaponDesc.pParentisAttacked = &m_isAttacked;
 	WeaponDesc.strName = TEXT("Weapon_Player");
 	WeaponDesc.pOwner = this;
 

@@ -43,7 +43,7 @@ LIFE CGlobalShadow::Update(_float fTimeDelta)
 
 void CGlobalShadow::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_PRIORITY_SHADOW, this);
+	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_GLOBAL_SHADOW, this);
 }
 
 HRESULT CGlobalShadow::Render_Shadow()
@@ -62,7 +62,7 @@ HRESULT CGlobalShadow::Render_Shadow()
 	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_GlobalShadow", 0)))
 		return E_FAIL;
 
-	m_pShaderCom->Begin(7);
+	m_pShaderCom->Begin(8);
 
 	m_pVIBufferCom->Bind_Buffers();
 	m_pVIBufferCom->Render();

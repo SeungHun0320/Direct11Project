@@ -28,7 +28,7 @@ protected:
 	virtual ~CPart_Player() = default;
 
 public:
-	const _float4x4* Get_SocketMatrix(const _string& strBoneName);
+	virtual const _float4x4* Get_BoneMatrix(const _string& strBoneName) const override;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;

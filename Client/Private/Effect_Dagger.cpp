@@ -89,7 +89,7 @@ void CEffect_Dagger::Reset_Effect(_uint iPart)
 
 void CEffect_Dagger::Reset_Animation(_uint iPart)
 {
-	if (CEffect_AnimMesh* pPart = dynamic_cast<CEffect_AnimMesh*>(m_PartObjects[iPart]))
+	if (CEffect_Part_AnimMesh* pPart = dynamic_cast<CEffect_Part_AnimMesh*>(m_PartObjects[iPart]))
 	{
 		pPart->Reset_Animation();
 		pPart->Set_ParentMatrix(XMLoadFloat4x4(m_pParentMatrix));
@@ -99,7 +99,7 @@ void CEffect_Dagger::Reset_Animation(_uint iPart)
 
 void CEffect_Dagger::Set_MeshVisible(_uint iPart, _bool isVisible)
 {
-	if (CEffect_AnimMesh* pPart = dynamic_cast<CEffect_AnimMesh*>(m_PartObjects[iPart]))
+	if (CEffect_Part_AnimMesh* pPart = dynamic_cast<CEffect_Part_AnimMesh*>(m_PartObjects[iPart]))
 		pPart->Set_MeshVisible(isVisible);
 }
 

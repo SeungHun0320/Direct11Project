@@ -25,9 +25,13 @@ void CSpiderTankState_Lager::Execute(_float fTimeDelta)
 
 	if (m_fLagerTime <= m_fTimeAcc && !m_isShot)
 	{
+		m_pOwner->Set_isUseLager(true);
 		m_pOwner->Shot_Lager();
 		m_isShot = true;
 	}
+
+	if(3.f <= m_fTimeAcc)
+		m_pOwner->Set_isUseLager(false);
 
 	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CSpiderTank::PART_BODY, fTimeDelta))
 	{

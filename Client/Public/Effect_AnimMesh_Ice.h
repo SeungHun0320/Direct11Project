@@ -1,15 +1,13 @@
 #pragma once
 
-#include "Effect_AnimMesh.h"
-
-
+#include "Effect_Part_AnimMesh.h"
 
 BEGIN(Client)
 
-class CEffect_AnimMesh_Ice final : public CEffect_AnimMesh
+class CEffect_AnimMesh_Ice final : public CEffect_Part_AnimMesh
 {
 public:
-	typedef struct tagEffectAnimMeshIceDesc : public CEffect_AnimMesh::DESC
+	typedef struct tagEffectAnimMeshIceDesc : public CEffect_Part_AnimMesh::DESC
 	{
 
 	}DESC;	

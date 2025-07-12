@@ -59,6 +59,7 @@ LIFE CBody_Wizard::Update(_float fTimeDelta)
 void CBody_Wizard::Late_Update(_float fTimeDelta)
 {
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
+    m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_SHADOW, this);
 #ifdef _DEBUG
     m_pGameInstance->Add_DebugComponent(m_pColliderCom);
 #endif
@@ -84,6 +85,31 @@ HRESULT CBody_Wizard::Render()
         m_pModelCom->Bind_Bone_Matrices(m_pShaderCom, "g_BoneMatrices", i);
 
         if (FAILED(m_pShaderCom->Begin(0)))
+            return E_FAIL;
+
+        if (FAILED(m_pModelCom->Render(i)))
+            return E_FAIL;
+    }
+
+    return S_OK;
+}
+
+HRESULT CBody_Wizard::Render_Shadow()
+{
+    if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_CombinedWorldMatrix)))
+        return E_FAIL;
+    if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_Light_ViewMatrix())))
+        return E_FAIL;
+    if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Light_ProjMatrix())))
+        return E_FAIL;
+
+    _uint		iNumMesh = m_pModelCom->Get_NumMeshes();
+
+    for (_uint i = 0; i < iNumMesh; i++)
+    {
+        m_pModelCom->Bind_Bone_Matrices(m_pShaderCom, "g_BoneMatrices", i);
+
+        if (FAILED(m_pShaderCom->Begin(3)))
             return E_FAIL;
 
         if (FAILED(m_pModelCom->Render(i)))

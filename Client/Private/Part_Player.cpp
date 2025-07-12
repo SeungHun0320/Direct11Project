@@ -12,7 +12,7 @@ CPart_Player::CPart_Player(const CPart_Player& Prototype)
 {
 }
 
-const _float4x4* CPart_Player::Get_SocketMatrix(const _string& strBoneName)
+const _float4x4* CPart_Player::Get_BoneMatrix(const _string& strBoneName) const
 {
     return m_pModelCom->Get_BoneMatrix(strBoneName);
 }

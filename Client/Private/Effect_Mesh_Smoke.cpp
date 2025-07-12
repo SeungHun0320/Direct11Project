@@ -45,7 +45,7 @@ LIFE CEffect_Mesh_Smoke::Update(_float fTimeDelta)
 	{
 		m_fTimeAcc = 0.f;
 		m_pModelCom->Reset(0);
-		m_bDead = true;
+		Set_Dead(true);
 	}
 
 	return LIFE::NONE;

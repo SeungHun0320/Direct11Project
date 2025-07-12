@@ -13,7 +13,7 @@ public:
 	}DESC;
 
 public:
-	enum PART { PART_BODY, PART_HP, PART_LOCKON_START, PART_LOCKON_END, PART_STEAM, PART_EFFECT_BULLET, PART_END };
+	enum PART { PART_BODY, PART_HP, PART_LOCKON_START, PART_LOCKON_END, PART_STEAM, PART_EFFECT_BULLET, PART_EFFECT_LAGER, PART_END };
 
 	enum ANIM_STATE {
 		//NONE은 사용안함 ( 나중에 혹시 모름 )
@@ -85,10 +85,13 @@ public: /* 상태로 넘겨줄 함수들 */
 
 	/* 공격 관련 */
 	HRESULT Shot_Bullet();
-	const _bool Get_isShot() const { return m_isShot; }
-	void    Set_isShot(_bool isShot) { m_isShot = isShot; }
 	HRESULT Shot_Bomb();
 	HRESULT Shot_Lager();
+
+	const _bool Get_isShot() const { return m_isShot; }
+	void		Set_isShot(_bool isShot) { m_isShot = isShot; }
+	const _bool Get_isUseLager() const { return m_isUseLager; }
+	void        Set_isUseLager(_bool isUseLager) { m_isUseLager = isUseLager; }
 
 	void AttackCoolDownAcc(_float fTimeDelta) {	m_fAttackCoolDown += fTimeDelta; }
 	_bool Is_AttackCoolDownReady(_float fAttackDelay) {	return m_fAttackCoolDown >= fAttackDelay; }
@@ -116,6 +119,7 @@ private:
 
 	_bool m_isInBattle = { false };
 	_bool m_isShot = { false };
+	_bool m_isUseLager = { false };
 	
 
 private: /* 필요해 */

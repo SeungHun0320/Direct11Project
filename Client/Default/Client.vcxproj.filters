@@ -439,17 +439,11 @@
     <Filter Include="02.GameObjects\09.Effect\00. PlayerEffect\Weapon">
       <UniqueIdentifier>{b4acc136-7955-4647-a16e-4cc76e549048}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\09.Effect\00. PlayerEffect\Weapon\Stick">
-      <UniqueIdentifier>{7fc18bd8-5b5d-4c0f-8632-946ff045a9e7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\09.Effect\00. PlayerEffect\Weapon\Dagger">
       <UniqueIdentifier>{9eff0183-8fc2-497b-b7a8-5d14ee3d1b58}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\09.Effect\01. MonsterEffect">
       <UniqueIdentifier>{bf2698eb-548d-4619-ad26-babfa987ca40}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\09.Effect\00. PlayerEffect\Weapon\Sword">
-      <UniqueIdentifier>{37509466-3310-43e4-ba56-694b5ef76fb4}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\09.Effect\01. MonsterEffect\Hit">
       <UniqueIdentifier>{6f100656-c6de-4694-9c0e-ece069d1d42a}</UniqueIdentifier>
@@ -471,9 +465,6 @@
     </Filter>
     <Filter Include="02.GameObjects\09.Effect\Container\Mesh\Anim">
       <UniqueIdentifier>{d8732637-a604-45f8-b052-c6a35d6eb6b4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\09.Effect\Container\Mesh\Anim\Ice">
-      <UniqueIdentifier>{2b8fe5b8-6789-47c7-902c-26f649358a2e}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\09.Effect\02. BossEffect">
       <UniqueIdentifier>{ba41d300-b1aa-429d-bf3f-b12d0d42b7de}</UniqueIdentifier>
@@ -498,6 +489,27 @@
     </Filter>
     <Filter Include="02.GameObjects\09.Effect\02. BossEffect\BossLager\Effect_Mesh_BossLager">
       <UniqueIdentifier>{17e24efb-4648-4dc3-b7ef-bea3e5502cfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\09.Effect\Container\Mesh\Anim\Part">
+      <UniqueIdentifier>{5d8c14fb-5d14-4b15-93eb-39cd14150518}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\09.Effect\Container\Mesh\Anim\Obj">
+      <UniqueIdentifier>{714a64c4-4ae1-4858-9505-dbbc09cab17a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\09.Effect\Container\Mesh\Anim\Obj\Explosion">
+      <UniqueIdentifier>{73cb196a-b0b7-416d-bcc4-1299dd9d65da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\09.Effect\Container\Mesh\Anim\Part\Ice">
+      <UniqueIdentifier>{2b8fe5b8-6789-47c7-902c-26f649358a2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\09.Effect\03. BulletEffect">
+      <UniqueIdentifier>{13964a11-980c-44d8-b990-67a3e7dd0bbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\09.Effect\03. BulletEffect\FirecrackersEffect">
+      <UniqueIdentifier>{303a970d-0fcd-4564-bc13-e9d7bfc4fccb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\09.Effect\01. MonsterEffect\AOE">
+      <UniqueIdentifier>{7a814b10-d6aa-4b06-bba9-901b9cd445cd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -870,12 +882,6 @@
     <ClInclude Include="..\public\Effect_Potion.h">
       <Filter>02.GameObjects\09.Effect\00. PlayerEffect\Potion</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Effect_Stick.h">
-      <Filter>02.GameObjects\09.Effect\00. PlayerEffect\Weapon\Stick</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Effect_Sword.h">
-      <Filter>02.GameObjects\09.Effect\00. PlayerEffect\Weapon\Sword</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Effect_Dagger.h">
       <Filter>02.GameObjects\09.Effect\00. PlayerEffect\Weapon\Dagger</Filter>
     </ClInclude>
@@ -891,11 +897,8 @@
     <ClInclude Include="..\public\Effect_Obj_Mesh.h">
       <Filter>02.GameObjects\09.Effect\Container\Mesh\Object</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Effect_AnimMesh.h">
-      <Filter>02.GameObjects\09.Effect\Container\Mesh\Anim</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Effect_AnimMesh_Ice.h">
-      <Filter>02.GameObjects\09.Effect\Container\Mesh\Anim\Ice</Filter>
+      <Filter>02.GameObjects\09.Effect\Container\Mesh\Anim\Part\Ice</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Effect_BossSteam.h">
       <Filter>02.GameObjects\09.Effect\02. BossEffect\BossSteam</Filter>
@@ -914,6 +917,21 @@
     </ClInclude>
     <ClInclude Include="..\public\Effect_BossLager.h">
       <Filter>02.GameObjects\09.Effect\02. BossEffect\BossLager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Effect_Mesh_BossLager.h">
+      <Filter>02.GameObjects\09.Effect\02. BossEffect\BossLager\Effect_Mesh_BossLager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Effect_AnimMesh_Explosion.h">
+      <Filter>02.GameObjects\09.Effect\Container\Mesh\Anim\Obj\Explosion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Effect_Part_AnimMesh.h">
+      <Filter>02.GameObjects\09.Effect\Container\Mesh\Anim\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Effect_Obj_AnimMesh.h">
+      <Filter>02.GameObjects\09.Effect\Container\Mesh\Anim\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Effect_Mesh_Firecracker_Smoke.h">
+      <Filter>02.GameObjects\09.Effect\03. BulletEffect\FirecrackersEffect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1329,12 +1347,6 @@
     <ClCompile Include="..\private\Effect_Potion.cpp">
       <Filter>02.GameObjects\09.Effect\00. PlayerEffect\Potion</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Effect_Stick.cpp">
-      <Filter>02.GameObjects\09.Effect\00. PlayerEffect\Weapon\Stick</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Effect_Sword.cpp">
-      <Filter>02.GameObjects\09.Effect\00. PlayerEffect\Weapon\Sword</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Effect_Dagger.cpp">
       <Filter>02.GameObjects\09.Effect\00. PlayerEffect\Weapon\Dagger</Filter>
     </ClCompile>
@@ -1350,11 +1362,8 @@
     <ClCompile Include="..\private\Effect_Obj_Mesh.cpp">
       <Filter>02.GameObjects\09.Effect\Container\Mesh\Object</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Effect_AnimMesh.cpp">
-      <Filter>02.GameObjects\09.Effect\Container\Mesh\Anim</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Effect_AnimMesh_Ice.cpp">
-      <Filter>02.GameObjects\09.Effect\Container\Mesh\Anim\Ice</Filter>
+      <Filter>02.GameObjects\09.Effect\Container\Mesh\Anim\Part\Ice</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Effect_BossSteam.cpp">
       <Filter>02.GameObjects\09.Effect\02. BossEffect\BossSteam</Filter>
@@ -1373,6 +1382,21 @@
     </ClCompile>
     <ClCompile Include="..\private\Effect_BossLager.cpp">
       <Filter>02.GameObjects\09.Effect\02. BossEffect\BossLager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Effect_Mesh_BossLager.cpp">
+      <Filter>02.GameObjects\09.Effect\02. BossEffect\BossLager\Effect_Mesh_BossLager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Effect_AnimMesh_Explosion.cpp">
+      <Filter>02.GameObjects\09.Effect\Container\Mesh\Anim\Obj\Explosion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Effect_Part_AnimMesh.cpp">
+      <Filter>02.GameObjects\09.Effect\Container\Mesh\Anim\Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Effect_Obj_AnimMesh.cpp">
+      <Filter>02.GameObjects\09.Effect\Container\Mesh\Anim\Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Effect_Mesh_Firecracker_Smoke.cpp">
+      <Filter>02.GameObjects\09.Effect\03. BulletEffect\FirecrackersEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -5,9 +5,12 @@
 class CEffect_BossLager final : public CEffectContainerPart
 {
 public:
+	enum PART { PART_LAGER, PART_END };
+
+public:
 	typedef struct tagEffectBossLagerDesc : public CEffectContainerPart::DESC
 	{
-
+		const _bool* pParnetisUseLager{ nullptr };
 	}DESC;
 
 private:
@@ -23,9 +26,14 @@ public:
 	virtual void Late_Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
+
+private:
+	const _bool* m_pParnetisUseLager = { nullptr };
+
 private:
 	void Set_MeshVisible(_uint iPart, _bool isVisible = true);
 	void TurnZ(_uint iPart, _float fTimeDelta);
+	void Scaling(_uint iPart, const _float3& vScale);
 
 
 private:

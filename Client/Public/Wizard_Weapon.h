@@ -33,6 +33,7 @@ public:
 	virtual LIFE Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
+	virtual HRESULT Render_Shadow() override;
 
 protected:
 	CCollider*  m_pColliderCom = { nullptr };

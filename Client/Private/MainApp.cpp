@@ -21,10 +21,10 @@
 #include "Effect_Obj.h"
 #include "Effect_Mesh_Dodge.h"
 #include "Effect_Potion.h"
-#include "Effect_Stick.h"
-#include "Effect_Sword.h"
 #include "Effect_Dagger.h"
 #include "Effect_AnimMesh_Ice.h"
+#include "Effect_AnimMesh_Explosion.h"
+#include "Effect_Mesh_Firecracker_Smoke.h"
 
 #include "UI.h"
 #include "UI_Animation.h"
@@ -306,6 +306,11 @@ HRESULT CMainApp::Ready_Prototype_Texture()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/Noise.png")))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_Trail*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Trail"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/Player/fox sword trail.png")))))
+		return E_FAIL;
+
 #pragma endregion
 
 #pragma region SHADOW
@@ -339,6 +344,22 @@ HRESULT CMainApp::Ready_Prototype_Component()
 		CModel_Particle_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Models/NonAnim/Effect/Dash/Dash.Model"), &DashDesc, PreTransformMatrix))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Model_Particle_Instance_Explosion*/
+	CVIBuffer_Mesh_Particle_Instance::DESC ExploDesc{};
+	ExploDesc.iNumInstance = 30;
+	ExploDesc.isLoop = false;
+	ExploDesc.vCenter = _float3(0.f, 0.25f, 0.f);
+	ExploDesc.vPivot = _float3(0.f, -1.5f, 0.f);
+	ExploDesc.vRange = _float3(2.f, 2.f, 2.f);
+	ExploDesc.vSize = _float2(0.5f, 3.f);
+	ExploDesc.vLifeTime = _float2(0.8f, 1.2f);
+	ExploDesc.vSpeed = _float2(3.f, 4.f);
+
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Particle_Instance_Explosion"),
+		CModel_Particle_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Models/NonAnim/Effect/Dash/Dash.Model"), &ExploDesc, PreTransformMatrix))))
+		return E_FAIL;
+
 	/* For.Prototype_Component_VIBuffer_PotionLine */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_PotionLine"),
 		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/Potion/PotionLine.Effect")))))
@@ -362,6 +383,11 @@ HRESULT CMainApp::Ready_Prototype_Component()
 	/* For.Prototype_Component_VIBuffer_IceStardust */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_IceStardust"),
 		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/Dagger/IceStardust.Effect")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_FirecrackersDiamond */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_FirecrackersDiamond"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/Firecrackers/FirecrackersDiamond.Effect")))))
 		return E_FAIL;
 
 
@@ -390,6 +416,11 @@ HRESULT CMainApp::Ready_Prototype_Component()
 	/* For.Prototype_Component_VIBuffer_Cube*/
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_Cube"),
 		CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_Trail*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_Trail"),
+		CVIBuffer_Trail::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Shader_VtxPosTex */
@@ -447,11 +478,16 @@ HRESULT CMainApp::Ready_Prototype_Object()
 	CModel::Create(m_pDevice, m_pContext, MODEL::ANIM, TEXT("../Bin/Resources/Models/Anim/Fox/_Fox.Model"), PreTransformMatrix))))
 	return E_FAIL;
 
-
 	/*For.Prototype_Component_Model_IceBlast*/
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_IceBlast"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::ANIM, TEXT("../Bin/Resources/Models/Anim/Effect/IceBlast/IceBlast.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_Firecracker_Explosion*/
+	PreTransformMatrix = XMMatrixScaling(0.001f, 0.001f, 0.001f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Firecracker_Explosion"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::ANIM, TEXT("../Bin/Resources/Models/Anim/Effect/Explosion/Firecracker_Explosion.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
 	/*For.Prototype_GameObject_Player */
@@ -557,11 +593,6 @@ HRESULT CMainApp::Ready_Prototype_Object()
 		CEffect_Potion::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_Effect_Sword */
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_Sword"),
-		CEffect_Sword::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
 	/* For.Prototype_GameObject_Effect_Dagger */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_Dagger"),
 		CEffect_Dagger::Create(m_pDevice, m_pContext))))
@@ -570,6 +601,16 @@ HRESULT CMainApp::Ready_Prototype_Object()
 	/* For.Prototype_GameObject_Effect_AnimMesh_IceBlast */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_AnimMesh_IceBlast"),
 		CEffect_AnimMesh_Ice::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Effect_AnimMesh_Explosion */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_AnimMesh_Explosion"),
+		CEffect_AnimMesh_Explosion::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Effect_Firecracker_Smoke*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_Firecracker_Smoke"),
+		CEffect_Mesh_Firecracker_Smoke::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Effect_Part */

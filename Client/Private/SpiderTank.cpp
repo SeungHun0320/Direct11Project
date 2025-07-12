@@ -9,6 +9,7 @@
 #include "Effect_Obj.h"
 #include "Effect_BossSteam.h"
 #include "Effect_BossBullet.h"
+#include "Effect_BossLager.h"
 
 #include "SpiderTankState.h"
 
@@ -510,8 +511,14 @@ HRESULT CSpiderTank::Ready_PartObjects()
 	if (FAILED(__super::Add_PartObject(PART_EFFECT_BULLET, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Effect_BossBullet"), &BulletDesc)))
 		return E_FAIL;
 
+	CEffect_BossLager::DESC LagerDesc{};
+	LagerDesc.iNumPartObjects = CEffect_BossLager::PART_END;
+	LagerDesc.pParentLevelID = &m_eLevelID;
+	LagerDesc.pParentMatrix = &m_HeadBoneWorldMatrix;
+	LagerDesc.pParnetisUseLager = &m_isUseLager;
 
-
+	if (FAILED(__super::Add_PartObject(PART_EFFECT_LAGER, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Effect_BossLager"), &LagerDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }

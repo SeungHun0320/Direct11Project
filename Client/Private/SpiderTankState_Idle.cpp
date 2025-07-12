@@ -158,6 +158,9 @@ void CSpiderTankState_Idle::Execute(_float fTimeDelta)
 		return;
 	}
 
+	m_pOwner->Change_States(CSpiderTank::STATES::LAGER);
+	return;
+
 	if (fDistance >= fPreferredDist - fBackOffset &&
 		fDistance <= fPreferredDist + fForOffset &&
 		m_pOwner->Is_AttackCoolDownReady(m_fAttackDelay))

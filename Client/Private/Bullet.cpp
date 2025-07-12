@@ -70,7 +70,8 @@ HRESULT CBullet::Render()
 
 	for (_uint i = 0; i < iNumMesh; i++)
 	{
-		//m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TEX_TYPE::DIFFUSE, 0);
+		if (m_pModelCom->Get_MeshVisible(i))
+			continue;
 
 		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TEX_TYPE::DIFFUSE, 0)))
 			return E_FAIL;

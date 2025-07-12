@@ -23,8 +23,11 @@ public:
 	virtual HRESULT Render() override;
 
 private:
-	virtual HRESULT Ready_Components(void* pArg) override;
+	HRESULT Ready_Effects(const _wstring& strLayerTag);
 
+private:
+	virtual HRESULT Ready_Components(void* pArg) override;
+	
 public:
 	static CWizard_Support_AOE* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CGameObject* Clone(void* pArg) override;

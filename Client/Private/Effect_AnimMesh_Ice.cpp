@@ -2,12 +2,12 @@
 #include "GameInstance.h"
 
 CEffect_AnimMesh_Ice::CEffect_AnimMesh_Ice(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CEffect_AnimMesh{ pDevice, pContext }
+	: CEffect_Part_AnimMesh{ pDevice, pContext }
 {
 }
 
 CEffect_AnimMesh_Ice::CEffect_AnimMesh_Ice(const CEffect_AnimMesh_Ice& Prototype)
-	: CEffect_AnimMesh(Prototype)
+	: CEffect_Part_AnimMesh(Prototype)
 {
 }
 

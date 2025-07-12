@@ -45,6 +45,9 @@ HRESULT CRenderer::Initialize()
 	//if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_PickPos"), m_iOriginWidth, m_iOriginHeight, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.f, 0.f, 0.f, 0.f))))
 	//	return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_GlobalShadow"), g_iMaxWidth, g_iMaxHeight, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
+		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Shadow"), g_iMaxWidth, g_iMaxHeight, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
 		return E_FAIL;
 
@@ -74,6 +77,8 @@ HRESULT CRenderer::Initialize()
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Lights"), TEXT("Target_Specular"))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_GlobalShadow"), TEXT("Target_GlobalShadow"))))
+		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_ShadowObjects"), TEXT("Target_Shadow"))))
 		return E_FAIL;
@@ -114,6 +119,9 @@ HRESULT CRenderer::Initialize()
 	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Shade"), fRTWidth * 1.5f, fRTHeight * 0.5f, fRTWidth, fRTHeight)))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Specular"), fRTWidth * 1.5f, fRTHeight * 1.5f, fRTWidth, fRTHeight)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_GlobalShadow"), ViewportDesc.Width - (fRTWidth * 0.5f), fRTHeight * 1.5f, fRTWidth, fRTHeight)))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Shadow"), ViewportDesc.Width - (fRTWidth * 0.5f), fRTHeight * 0.5f, fRTWidth, fRTHeight)))
@@ -187,6 +195,7 @@ HRESULT CRenderer::Draw()
 
 	if (FAILED(Render_Blend()))
 		return E_FAIL;
+
 	if (FAILED(Render_UI()))
 		return E_FAIL;
 	
@@ -337,6 +346,8 @@ HRESULT CRenderer::Render_BackBuffer()
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(TEXT("Target_Shadow"), "g_ShadowTexture", m_pShader)))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(TEXT("Target_GlobalShadow"), "g_GlobalShadowTexture", m_pShader)))
+		return E_FAIL;
 
 	/* 장치에 이미 셋 되어있기 때문에 할 필요 없을 수도 있겠지만? */
 	/* 백버퍼에 그리기 전 다른 후처리가 적용될 때 바뀔 수도 있으니까 */
@@ -407,21 +418,26 @@ HRESULT CRenderer::Render_NonLight()
 
 HRESULT CRenderer::Render_Shadow()
 {
-	if(FAILED(m_pGameInstance->Begin_MRT(TEXT("MRT_ShadowObjects"), true, m_pShadowDSV, true)))
+	if (FAILED(m_pGameInstance->Begin_MRT(TEXT("MRT_GlobalShadow"), true, m_pShadowDSV, true)))
 		return E_FAIL;
 
 	if (FAILED(Change_ViewportDesc(g_iMaxWidth, g_iMaxHeight)))
 		return E_FAIL;
 
-	for (auto& pGameObject : m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_PRIORITY_SHADOW)])
+	for (auto& pGameObject : m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_GLOBAL_SHADOW)])
 	{
 		if (nullptr != pGameObject)
 			pGameObject->Render_Shadow();
 
 		Safe_Release(pGameObject);
 	}
-	m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_PRIORITY_SHADOW)].clear();
+	m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_GLOBAL_SHADOW)].clear();
 
+	if (FAILED(m_pGameInstance->End_MRT()))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Begin_MRT(TEXT("MRT_ShadowObjects"), true, m_pShadowDSV)))
+		return E_FAIL;
 
 	for (auto& pGameObject : m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_SHADOW)])
 	{
@@ -543,6 +559,7 @@ HRESULT CRenderer::Render_Debug()
 	m_pGameInstance->Render_MRT_Debug(TEXT("MRT_GameObjects"), m_pShader, m_pVIBuffer);
 	m_pGameInstance->Render_MRT_Debug(TEXT("MRT_Lights"), m_pShader, m_pVIBuffer);
 	m_pGameInstance->Render_MRT_Debug(TEXT("MRT_ShadowObjects"), m_pShader, m_pVIBuffer);
+	m_pGameInstance->Render_MRT_Debug(TEXT("MRT_GlobalShadow"), m_pShader, m_pVIBuffer);
 	m_pGameInstance->Render_MRT_Debug(TEXT("MRT_Effects"), m_pShader, m_pVIBuffer);
 
 	return S_OK;

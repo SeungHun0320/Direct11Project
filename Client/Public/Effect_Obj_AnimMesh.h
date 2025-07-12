@@ -5,24 +5,25 @@
 
 BEGIN(Engine)
 class CShader;
-class CModel_Particle_Instance;
+class CModel;
+class CTexture;
 END
 
 BEGIN(Client)
 
-class CEffect_Obj_Mesh abstract : public CGameObject
+class CEffect_Obj_AnimMesh : public CGameObject
 {
 public:
-	typedef struct tagParticleMeshDesc : public CGameObject::DESC
+	typedef struct tagEffectPartAnimMeshDesc : public CGameObject::DESC
 	{
-		_wstring strEffectModelTag{};
-		LEVEL eLevelID = {LEVEL::LEVEL_END};
+		LEVEL eLevelID{ LEVEL::LEVEL_END };
+		_wstring  strPrototypeModelTag;
 	}DESC;
 
 protected:
-	CEffect_Obj_Mesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CEffect_Obj_Mesh(const CEffect_Obj_Mesh& Prototype);
-	virtual ~CEffect_Obj_Mesh() = default;
+	CEffect_Obj_AnimMesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CEffect_Obj_AnimMesh(const CEffect_Obj_AnimMesh& Prototype);
+	virtual ~CEffect_Obj_AnimMesh() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -33,12 +34,15 @@ public:
 	virtual HRESULT Render() override;
 
 protected:
-	CShader*					m_pShaderCom = { nullptr };
-	CModel_Particle_Instance*	m_pModelCom = { nullptr };
-
-protected:
 	LEVEL m_eLevelID = { LEVEL::LEVEL_END };
 
+protected:
+	CShader* m_pShaderCom = { nullptr };
+	CModel*  m_pModelCom = { nullptr };
+
+protected:
+	virtual void Reset_Animation();
+	virtual void Set_MeshVisible(_uint iMeshIndex, _bool IsVisible);
 
 protected:
 	virtual HRESULT Ready_Components(void* pArg);

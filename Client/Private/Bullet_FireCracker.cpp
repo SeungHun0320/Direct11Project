@@ -2,6 +2,10 @@
 
 #include "GameInstance.h"
 
+#include "Effect_Obj.h"
+#include "Effect_AnimMesh_Explosion.h"
+#include "Effect_Mesh_Firecracker_Smoke.h"
+
 CBullet_FireCracker::CBullet_FireCracker(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     : CBullet{pDevice, pContext}
 {
@@ -36,6 +40,9 @@ HRESULT CBullet_FireCracker::Initialize(void* pArg)
     XMStoreFloat3(&m_vVelocity, XMLoadFloat3(&m_vDir) * 15.f);
     m_vVelocity.y = 10.f;
 
+    for (_uint i = 0; i < m_pModelCom->Get_NumMeshes(); i++)
+        m_pModelCom->Set_MeshVisible(i, false);
+
     return S_OK;
 }
 
@@ -60,22 +67,37 @@ LIFE CBullet_FireCracker::Update(_float fTimeDelta)
 
         if (!m_isExplosion)
         {
-            CBounding_Sphere::DESC	ColDesc{};
-
-            ColDesc.vCenter = _float3(0.f, 0.f, 0.f);
-            ColDesc.fRadius = 3.5f;
-            ColDesc.pOwner = this;
-            ColDesc.iColliderGroupID = ENUM_CLASS(COLLIDER_GROUP::BULLET);
-            ColDesc.iColliderID = ENUM_CLASS(COLLIDER_ID::BULLET_EXPLOSION);
-
-            if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_Sphere"),
-                TEXT("Com_ExplosionCollider"), reinterpret_cast<CComponent**>(&m_pExplosionCollider), &ColDesc)))
-                return LIFE::DEAD;
-
+            Explosion();
             m_isExplosion = true;
         }
     }
 
+    Thrown(fTimeDelta);
+
+    if (nullptr != m_pExplosionCollider)
+        m_pExplosionCollider->Update(m_pTransformCom->Get_WorldMatrix());
+
+    m_pColliderCom->Update(m_pTransformCom->Get_WorldMatrix());
+
+    return  LIFE::NONE;
+}
+
+void CBullet_FireCracker::Late_Update(_float fTimeDelta)
+{
+    __super::Late_Update(fTimeDelta);
+#ifdef _DEBUG
+    if (nullptr != m_pExplosionCollider)
+        m_pGameInstance->Add_DebugComponent(m_pExplosionCollider);
+#endif
+}
+
+HRESULT CBullet_FireCracker::Render()
+{
+    return __super::Render();
+}
+
+void CBullet_FireCracker::Thrown(_float fTimeDelta)
+{
     if (!m_isExplosion)
     {
         m_vVelocity.y += m_fGravity * fTimeDelta;
@@ -98,29 +120,62 @@ LIFE CBullet_FireCracker::Update(_float fTimeDelta)
             }
         }
 
+        m_pTransformCom->Turn(XMConvertToRadians(2.5f), XMConvertToRadians(0.f), XMConvertToRadians(10.f));
         m_pTransformCom->Set_State(STATE::POSITION, XMVectorSetW(vNextPos, 1.f));
     }
-
-    if (nullptr != m_pExplosionCollider)
-        m_pExplosionCollider->Update(m_pTransformCom->Get_WorldMatrix());
-
-    m_pColliderCom->Update(m_pTransformCom->Get_WorldMatrix());
-
-    return  LIFE::NONE;
 }
 
-void CBullet_FireCracker::Late_Update(_float fTimeDelta)
+HRESULT CBullet_FireCracker::Explosion()
 {
-    __super::Late_Update(fTimeDelta);
-#ifdef _DEBUG
-    if (nullptr != m_pExplosionCollider)
-        m_pGameInstance->Add_DebugComponent(m_pExplosionCollider);
-#endif
-}
+    CBounding_Sphere::DESC	ColDesc{};
 
-HRESULT CBullet_FireCracker::Render()
-{
-    return __super::Render();
+    ColDesc.vCenter = _float3(0.f, 0.f, 0.f);
+    ColDesc.fRadius = 4.f;
+    ColDesc.pOwner = this;
+    ColDesc.iColliderGroupID = ENUM_CLASS(COLLIDER_GROUP::BULLET);
+    ColDesc.iColliderID = ENUM_CLASS(COLLIDER_ID::BULLET_EXPLOSION);
+
+    if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_Sphere"),
+        TEXT("Com_ExplosionCollider"), reinterpret_cast<CComponent**>(&m_pExplosionCollider), &ColDesc)))
+        return E_FAIL;
+
+    _float3 vPos{};
+    XMStoreFloat3(&vPos, m_pTransformCom->Get_State(STATE::POSITION));
+
+    CEffect_Obj::DESC DiamondDesc{};
+    DiamondDesc.eLevelID = LEVEL::STATIC;
+    DiamondDesc.strParticeFilePath = TEXT("../Bin/DataFiles/Effect/Firecrackers/FirecrackersDiamond.Effect_Ex");
+    DiamondDesc.strParticleTextureTag = TEXT("Prototype_Component_Texture_SpinningDiamond");
+    DiamondDesc.strParticleBufferTag = TEXT("Prototype_Component_VIBuffer_FirecrackersDiamond");
+    DiamondDesc.WorldMatrix = XMMatrixTranslation(vPos.x, vPos.y, vPos.z);
+
+    if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_Obj"),
+        ENUM_CLASS(m_eLevelID), TEXT("Layer_Effect"), &DiamondDesc)))
+        return E_FAIL;
+
+    CEffect_AnimMesh_Explosion::DESC ExploDesc{};
+    ExploDesc.eLevelID = LEVEL::STATIC;
+    ExploDesc.strPrototypeModelTag = TEXT("Prototype_Component_Model_Firecracker_Explosion");
+    ExploDesc.WorldMatrix = XMMatrixTranslation(vPos.x, vPos.y, vPos.z);
+
+    if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_AnimMesh_Explosion"),
+        ENUM_CLASS(m_eLevelID), TEXT("Layer_Effect"), &ExploDesc)))
+        return E_FAIL;
+
+    CEffect_Mesh_Firecracker_Smoke::DESC SmokeDesc{};
+    SmokeDesc.eLevelID = LEVEL::STATIC;
+    SmokeDesc.strEffectModelTag = TEXT("Prototype_Component_Model_Particle_Instance_Explosion");
+    SmokeDesc.WorldMatrix = XMMatrixTranslation(vPos.x, vPos.y, vPos.z);
+
+    if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_Firecracker_Smoke"),
+        ENUM_CLASS(m_eLevelID), TEXT("Layer_Effect"), &SmokeDesc)))
+        return E_FAIL;
+    
+
+    for (_uint i = 0; i < m_pModelCom->Get_NumMeshes(); i++)
+        m_pModelCom->Set_MeshVisible(i, true);
+
+    return S_OK;
 }
 
 void CBullet_FireCracker::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)

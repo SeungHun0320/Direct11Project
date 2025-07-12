@@ -1,6 +1,8 @@
 #include "Wizard_Support_AOE.h"
 #include "GameInstance.h"
 
+#include "Effect_Obj.h"
+
 CWizard_Support_AOE::CWizard_Support_AOE(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :CBullet_Monster_AOE{pDevice, pContext}
 {
@@ -23,6 +25,9 @@ HRESULT CWizard_Support_AOE::Initialize(void* pArg)
 
     m_pTransformCom->Set_State(STATE::POSITION, m_pTargetTransform->Get_State(STATE::POSITION));
 
+    if (FAILED(Ready_Effects(TEXT("Layer_Effect"))))
+        return E_FAIL;
+
     m_fDeadTime = 5.f;
     m_fAttack = 10.f;
     m_fStaggerValue = 10.f;
@@ -42,7 +47,7 @@ LIFE CWizard_Support_AOE::Update(_float fTimeDelta)
 
 void CWizard_Support_AOE::Late_Update(_float fTimeDelta)
 {
-	__super::Late_Update(fTimeDelta);
+    __super::Late_Update(fTimeDelta);
 }
 
 HRESULT CWizard_Support_AOE::Render()
@@ -50,15 +55,53 @@ HRESULT CWizard_Support_AOE::Render()
     return S_OK;
 }
 
+HRESULT CWizard_Support_AOE::Ready_Effects(const _wstring& strLayerTag)
+{
+    _float3 vPos{};
+    XMStoreFloat3(&vPos, m_pTransformCom->Get_State(STATE::POSITION));
+
+    CEffect_Obj::DESC AOE1Desc{};
+    AOE1Desc.eLevelID = m_eLevelID;
+    AOE1Desc.strParticeFilePath = TEXT("../Bin/DataFiles/Effect/Wizard/Wizard_AOE1.Effect_Ex");
+    AOE1Desc.strParticleTextureTag = TEXT("Prototype_Component_Texture_Twinkle");
+    AOE1Desc.strParticleBufferTag = TEXT("Prototype_Component_VIBuffer_WizardAOE1");
+    AOE1Desc.WorldMatrix = XMMatrixTranslation(vPos.x, vPos.y, vPos.z);
+
+     if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_Obj"),
+        ENUM_CLASS(m_eLevelID), strLayerTag, &AOE1Desc)))
+        return E_FAIL;
+     
+    CEffect_Obj::DESC AOE2Desc{};
+    AOE2Desc.eLevelID = m_eLevelID;
+    AOE2Desc.strParticeFilePath = TEXT("../Bin/DataFiles/Effect/Wizard/Wizard_AOE2.Effect_Ex");
+    AOE2Desc.strParticleTextureTag = TEXT("Prototype_Component_Texture_Twinkle");
+    AOE2Desc.strParticleBufferTag = TEXT("Prototype_Component_VIBuffer_WizardAOE2");
+    AOE2Desc.WorldMatrix = XMMatrixTranslation(vPos.x, vPos.y, vPos.z);
+
+     if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_Obj"),
+        ENUM_CLASS(m_eLevelID), strLayerTag, &AOE2Desc)))
+        return E_FAIL;
+     
+    CEffect_Obj::DESC AOE3Desc{};
+    AOE3Desc.eLevelID = m_eLevelID;
+    AOE3Desc.strParticeFilePath = TEXT("../Bin/DataFiles/Effect/Wizard/Wizard_AOE3.Effect_Ex");
+    AOE3Desc.strParticleTextureTag = TEXT("Prototype_Component_Texture_Twinkle");
+    AOE3Desc.strParticleBufferTag = TEXT("Prototype_Component_VIBuffer_WizardAOE3");
+    AOE3Desc.WorldMatrix = XMMatrixTranslation(vPos.x, vPos.y, vPos.z);
+
+     if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_Obj"),
+        ENUM_CLASS(m_eLevelID), strLayerTag, &AOE3Desc)))
+        return E_FAIL;
+
+
+
+    return S_OK;
+}
+
 HRESULT CWizard_Support_AOE::Ready_Components(void* pArg)
 {
     //if (FAILED(__super::Ready_Components(pArg))) // 나중에 추가 
     //    return E_FAIL;
-
-    /* For.Com_Shader */
-    if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxMesh"),
-        TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
-        return E_FAIL;
 
     CBounding_AABB::DESC	AABBDesc{};
     AABBDesc.vExtents = _float3(3.5f, 0.2f, 3.5f);
