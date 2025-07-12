@@ -164,6 +164,7 @@
     <ClInclude Include="..\public\Blob.h" />
     <ClInclude Include="..\Public\BlobState.h" />
     <ClInclude Include="..\public\Body_Blob.h" />
+    <ClInclude Include="..\public\Body_Bridge.h" />
     <ClInclude Include="..\Public\Body_Bush.h" />
     <ClInclude Include="..\Public\Body_CheckPoint.h" />
     <ClInclude Include="..\Public\Body_Chest.h" />
@@ -177,6 +178,7 @@
     <ClInclude Include="..\Public\Body_WizardSupport.h" />
     <ClInclude Include="..\Public\Body_WizardSword.h" />
     <ClInclude Include="..\public\Boss.h" />
+    <ClInclude Include="..\public\Bridge.h" />
     <ClInclude Include="..\public\Bullet.h" />
     <ClInclude Include="..\public\Bullet_FireCracker.h" />
     <ClInclude Include="..\public\Bush.h" />
@@ -306,6 +308,7 @@
     <ClCompile Include="..\private\Blob.cpp" />
     <ClCompile Include="..\Private\BlobState.cpp" />
     <ClCompile Include="..\private\Body_Blob.cpp" />
+    <ClCompile Include="..\private\Body_Bridge.cpp" />
     <ClCompile Include="..\Private\Body_Bush.cpp" />
     <ClCompile Include="..\Private\Body_CheckPoint.cpp" />
     <ClCompile Include="..\Private\Body_Chest.cpp" />
@@ -319,6 +322,7 @@
     <ClCompile Include="..\Private\Body_WizardSupport.cpp" />
     <ClCompile Include="..\Private\Body_WizardSword.cpp" />
     <ClCompile Include="..\private\Boss.cpp" />
+    <ClCompile Include="..\private\Bridge.cpp" />
     <ClCompile Include="..\private\Bullet.cpp" />
     <ClCompile Include="..\private\Bullet_FireCracker.cpp" />
     <ClCompile Include="..\private\Bush.cpp" />

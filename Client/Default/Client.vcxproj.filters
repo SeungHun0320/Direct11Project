@@ -511,6 +511,12 @@
     <Filter Include="02.GameObjects\09.Effect\01. MonsterEffect\AOE">
       <UniqueIdentifier>{7a814b10-d6aa-4b06-bba9-901b9cd445cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\05.Environment_Objects\05.Bridge">
+      <UniqueIdentifier>{96439549-7115-4d20-8d40-eaa69ddedfba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05.Environment_Objects\05.Bridge\Body">
+      <UniqueIdentifier>{84f72ed5-094b-4072-9349-aae8e12d1b69}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -932,6 +938,12 @@
     </ClInclude>
     <ClInclude Include="..\public\Effect_Mesh_Firecracker_Smoke.h">
       <Filter>02.GameObjects\09.Effect\03. BulletEffect\FirecrackersEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Bridge.h">
+      <Filter>02.GameObjects\05.Environment_Objects\05.Bridge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Body_Bridge.h">
+      <Filter>02.GameObjects\05.Environment_Objects\05.Bridge\Body</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1397,6 +1409,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Effect_Mesh_Firecracker_Smoke.cpp">
       <Filter>02.GameObjects\09.Effect\03. BulletEffect\FirecrackersEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Bridge.cpp">
+      <Filter>02.GameObjects\05.Environment_Objects\05.Bridge</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Body_Bridge.cpp">
+      <Filter>02.GameObjects\05.Environment_Objects\05.Bridge\Body</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

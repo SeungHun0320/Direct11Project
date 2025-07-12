@@ -96,9 +96,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ ID
 		return E_FAIL;
 
 	/* 통맵을 여러번 렌더타겟을 나눠서 그리니까 프레임이 너무 박살나서 피킹은 우선 생성에서 제외했음,, */
-	//m_pPixelPicking = CPixelPicking::Create(*ppDeviceOut, *ppContextOut, EngineDesc.hWnd);
-	//if (nullptr == m_pPixelPicking)
-	//	return E_FAIL;
+	/* 후처리 쉐이더에서 GPU를 안썼기때문에 프레임이 박살나던거였음 */
+	m_pPixelPicking = CPixelPicking::Create(*ppDeviceOut, *ppContextOut, EngineDesc.hWnd);
+	if (nullptr == m_pPixelPicking)
+		return E_FAIL;
 
 	m_pShadow = CShadow::Create(*ppDeviceOut, *ppContextOut);
 	if (nullptr == m_pShadow)
@@ -113,6 +114,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ ID
 
 void CGameInstance::Update_Engine(_float fTimeDelta)
 {
+	/* 맵언맵하면서 프레임 박살남,, */
 	//m_pPixelPicking->Update();
 
 	m_pInputDevice->Update();

@@ -64,6 +64,9 @@
 #include "Body_Chest.h"
 #include "Chest.h"
 
+#include "Body_Bridge.h"
+#include "Bridge.h"
+
 /* 아이템들 */
 #include "Item_Berry.h"
 #include "Item_BlueBerry.h"
@@ -336,6 +339,12 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Environment_Objects/TUNIC_Checkpoint/TUNIC_Checkpoint.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
+	/*For.Prototype_Component_Model_Bridge*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Bridge"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Environment_Objects/Bridge/Drawbridge.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
 	/*For.Prototype_Component_Model_Chest*/
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Chest"),
@@ -520,6 +529,16 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_CheckPoint"),
 		CCheckPoint::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+	/* For.Prototype_GameObject_Body_Bridge */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Body_Bridge"),
+		CBody_Bridge::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	/* For.Prototype_GameObject_Bridge */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Bridge"),
+		CBridge::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
 	/* For.Prototype_GameObject_Body_Chest */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Body_Chest"),
@@ -1298,6 +1317,12 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Environment_Objects/TUNIC_Checkpoint/TUNIC_Checkpoint.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
+	/*For.Prototype_Component_Model_Bridge*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Bridge"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Environment_Objects/Bridge/Drawbridge.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
 	/*For.Prototype_Component_Model_Chest*/
  	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Chest"),
@@ -1364,7 +1389,6 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Wizard_Candleabra"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::ANIM, TEXT("../Bin/Resources/Models/Anim/Monster/Wizard/Candleabra/Wizard_Candleabra.Model"), PreTransformMatrix))))
 		return E_FAIL;
-
 
 	/*For.Prototype_Component_Model_Wizard_Sword*/
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
@@ -1467,6 +1491,15 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 	/* For.Prototype_GameObject_CheckPoint */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_CheckPoint"),
 		CCheckPoint::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Body_Bridge */
+ 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Body_Bridge"),
+		CBody_Bridge::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	/* For.Prototype_GameObject_Bridge */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Bridge"),
+		CBridge::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Body_Chest */

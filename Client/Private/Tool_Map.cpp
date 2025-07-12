@@ -57,7 +57,7 @@ void CTool_Map::Add_ListBoxName()
 {	
 	/* 이게 진짜 맞나요? */
 	vector<_wstring> EnvironmentFilters = {
-		L"Grass", L"Bush", L"CheckPoint"
+		L"Grass", L"Bush", L"CheckPoint", L"Bridge"
 	};
 
 	vector<_wstring> ItemFilters = {
@@ -572,6 +572,10 @@ HRESULT CTool_Map::Environment_ListBox()
 
 	case GRASS:
 		m_strName = TEXT("Grass");
+		break;
+
+	case BRIDGE:
+		m_strName = TEXT("Bridge");
 		break;
 
 	default:

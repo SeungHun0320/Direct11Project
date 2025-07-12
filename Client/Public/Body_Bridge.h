@@ -1,21 +1,20 @@
 #pragma once
-
 #include "Client_Defines.h"
 #include "Body_Environment_Object.h"
 
 BEGIN(Client)
 
-class CBody_CheckPoint final : public CBody_Environment_Object
+class CBody_Bridge final : public CBody_Environment_Object
 {
 public:
-	typedef struct tagBodyCheckPointDesc : public CBody_Environment_Object::DESC
+	typedef struct tagBodyBridgeDesc : public CBody_Environment_Object::DESC
 	{
 
 	}DESC;
 private:
-	CBody_CheckPoint(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CBody_CheckPoint(const CBody_CheckPoint& Prototype);
-	virtual ~CBody_CheckPoint() = default;
+	CBody_Bridge(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CBody_Bridge(const CBody_Bridge& Prototype);
+	virtual ~CBody_Bridge() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -29,7 +28,7 @@ private:
 	virtual HRESULT Ready_Components(void* pArg)override;
 
 public:
-	static CBody_CheckPoint* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CBody_Bridge* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
 };

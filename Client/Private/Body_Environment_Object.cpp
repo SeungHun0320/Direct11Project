@@ -39,7 +39,8 @@ LIFE CBody_Environment_Object::Update(_float fTimeDelta)
 {
     XMStoreFloat4x4(&m_CombinedWorldMatrix, m_pTransformCom->Get_WorldMatrix() * XMLoadFloat4x4(m_pParentMatrix));
 
-    m_pColliderCom->Update(XMLoadFloat4x4(&m_CombinedWorldMatrix));
+    if (nullptr != m_pColliderCom)
+        m_pColliderCom->Update(XMLoadFloat4x4(&m_CombinedWorldMatrix));
 
     return LIFE::NONE;
 }
@@ -48,9 +49,8 @@ void CBody_Environment_Object::Late_Update(_float fTimeDelta)
 {
     m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_NONBLEND, this);
 #ifdef _DEBUG
-
-    m_pGameInstance->Add_DebugComponent(m_pColliderCom);
-
+    if(nullptr != m_pColliderCom)
+        m_pGameInstance->Add_DebugComponent(m_pColliderCom);
 #endif
 }
 
