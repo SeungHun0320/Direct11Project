@@ -517,6 +517,9 @@
     <Filter Include="02.GameObjects\05.Environment_Objects\05.Bridge\Body">
       <UniqueIdentifier>{84f72ed5-094b-4072-9349-aae8e12d1b69}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\10.Trigger">
+      <UniqueIdentifier>{518bf538-3014-400c-913a-f59f849b9f56}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -944,6 +947,9 @@
     </ClInclude>
     <ClInclude Include="..\public\Body_Bridge.h">
       <Filter>02.GameObjects\05.Environment_Objects\05.Bridge\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Trigger.h">
+      <Filter>02.GameObjects\10.Trigger</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1415,6 +1421,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Body_Bridge.cpp">
       <Filter>02.GameObjects\05.Environment_Objects\05.Bridge\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Trigger.cpp">
+      <Filter>02.GameObjects\10.Trigger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

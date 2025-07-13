@@ -88,24 +88,11 @@ void CPlayer::Clear_Target()
 		Safe_Release(m_pTarget);
 }
 
-void CPlayer::Change_Level()
+void CPlayer::Change_Level(LEVEL eLevelID)
 {
 	Clear_Target();
 
-	LEVEL eNextLevelID{};
-
-	switch (m_eLevelID)
-	{
-	case LEVEL::COURTYARD:
-		eNextLevelID = LEVEL::ARENA;
-		break;
-	case LEVEL::ARENA:
-		eNextLevelID = LEVEL::SHOP;
-		break;
-	case LEVEL::SHOP:
-		eNextLevelID = LEVEL::COURTYARD;
-		break;
-	}
+	LEVEL eNextLevelID = eLevelID;
 
 	m_pGameInstance->Change_Level(ENUM_CLASS(eNextLevelID));
 }
@@ -982,6 +969,16 @@ void CPlayer::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObjec
 			On_Hit(Bullet->Get_AttackValue(), Bullet->Get_StaggerValue(), fInvicibleDuration);
 		}
 	}
+	break;
+	case COLLIDER_ID::TRIGGER_ARENA:
+		Change_Level(LEVEL::ARENA);
+		break;
+	case COLLIDER_ID::TRIGGER_COURTYARD:
+		Change_Level(LEVEL::COURTYARD);
+		break;
+	case COLLIDER_ID::TRIGGER_SHOP:
+		Change_Level(LEVEL::SHOP);
+		break;
 	default:
 		break;
 	}

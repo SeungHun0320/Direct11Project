@@ -58,7 +58,7 @@ public: /* 레벨 관련 */
 	virtual void Set_Level(LEVEL eLevelID);
 	void Set_SavePosition();
 	void Clear_Target();
-	void Change_Level();
+	void Change_Level(LEVEL eLevelID);
 
 public:
 	virtual HRESULT Initialize_Prototype() override;

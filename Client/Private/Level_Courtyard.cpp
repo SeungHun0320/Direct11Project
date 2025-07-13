@@ -10,12 +10,11 @@
 
 #include "Player.h"
 
-
-#include "SpiderTank.h"
-
 #include "Chest.h"
 #include "Item.h"
 #include "Monster.h"
+
+#include "Trigger.h"
 
 #include "Effect_Obj.h"
 
@@ -77,10 +76,12 @@ void CLevel_Courtyard::Update(_float fTimeDelta)
 
 	if (m_iNextLevel)
 	{
+		LEVEL eLevelID = static_cast<LEVEL>(m_iNextLevel);
+
 		m_pGameInstance->Clear_Lights();
 		m_pGameInstance->Clear_Colliders();
 		m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
-			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::ARENA));
+			CLevel_Loading::Create(m_pDevice, m_pContext, eLevelID));
 	}
 }
 
@@ -375,6 +376,34 @@ HRESULT CLevel_Courtyard::Load_Map(const _wstring& strMapFileTag)
 			return E_FAIL;
 	}
 
+	_uint iNumTriggers{};
+	LoadFile.read(reinterpret_cast<_char*>(&iNumTriggers), sizeof(_uint));
+
+	for (_uint i = 0; i < iNumTriggers; i++)
+	{
+		_int iLoadLength{};
+		_float4x4 WorldMatrix{};
+
+		CTrigger::DESC tDesc{}; 
+		tDesc.eLevelID = CurLevel;
+
+		LoadFile.read(reinterpret_cast<_char*>(&iLoadLength), sizeof(_int));
+		tDesc.strName.resize(iLoadLength);
+		LoadFile.read(reinterpret_cast<_char*>(tDesc.strName.data()), sizeof(_tchar) * iLoadLength);
+		LoadFile.read(reinterpret_cast<_char*>(&WorldMatrix), sizeof(_float4x4));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fSpeedPerSec), sizeof(_float));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fRotationPerSec), sizeof(_float));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.eColliderID), sizeof(COLLIDER_ID));
+
+		tDesc.WorldMatrix = XMLoadFloat4x4(&WorldMatrix);
+
+		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + tDesc.strName,
+			ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Trigger"), &tDesc)))
+			return E_FAIL;
+
+	}
+
+
 	LoadFile.close();
 	return S_OK;
 }
@@ -457,6 +486,7 @@ void CLevel_Courtyard::Check_Collision()
 	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::PAWN), ENUM_CLASS(COLLIDER_GROUP::ENVIRONMENT));
 	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::PAWN), ENUM_CLASS(COLLIDER_GROUP::MONSTER));
 	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::PAWN), ENUM_CLASS(COLLIDER_GROUP::ITEM));
+	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::PAWN), ENUM_CLASS(COLLIDER_GROUP::TRIGGER));
 
 	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::WEAPON), ENUM_CLASS(COLLIDER_GROUP::MONSTER));
 	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::WEAPON), ENUM_CLASS(COLLIDER_GROUP::ENVIRONMENT));

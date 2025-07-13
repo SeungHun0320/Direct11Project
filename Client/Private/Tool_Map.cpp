@@ -13,6 +13,9 @@
 #include "Bush.h"
 #include "Chest.h"
 
+/* 트리거 */
+#include "Trigger.h"
+
 /* 아이템 */
 #include "Item.h"
 
@@ -213,6 +216,23 @@ void CTool_Map::Update(_float fTimeDelta)
 
 			Add_Modify_ListBox(m_MonsterNames, tDesc.strName);
 		}
+		else if (m_bLists[TRIGGER])
+		{
+			// 여기서 트리거 Desc 만들어서 생성
+			CTrigger::DESC tDesc = {};
+			tDesc.eLevelID = LEVEL::TOOLS;
+			tDesc.fRotationPerSec = m_fRotationPerSec;
+			tDesc.fSpeedPerSec = m_fSpeedPerSec;
+			tDesc.strName = m_strName;
+			tDesc.eColliderID = m_eColID;
+			tDesc.WorldMatrix = XMMatrixTranslation(vInitPos.x, vInitPos.y, vInitPos.z);
+
+			if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_") + tDesc.strName,
+				ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Trigger"), &tDesc)))
+				return;
+
+			Add_Modify_ListBox(m_Triggers, tDesc.strName);
+		}
 	}
 }
 
@@ -290,6 +310,14 @@ HRESULT CTool_Map::Render_UI()
 			Seleted_List(ENEMY);
 			m_strLayerTag = TEXT("Layer_Monster");
 			Monster_ListBox();
+
+			ImGui::EndTabItem();
+		}
+		if (ImGui::BeginTabItem(u8"트리거"))
+		{
+			Seleted_List(TRIGGER);
+			m_strLayerTag = TEXT("Layer_Trigger");
+			Trigger_ListBox();
 
 			ImGui::EndTabItem();
 		}
@@ -373,17 +401,17 @@ HRESULT CTool_Map::Craete_Map(MAP iMapIdx, const _wstring& strLayerTag)
 
 	switch (iMapIdx)
 	{
-	case MAP::COURTYARD:
+	case MAP::MAP_COURTYARD:
 		m_strMapFileTag = "Courtyard.Map";
 		strName = TEXT("Courtyard");
 		break;
 
-	case MAP::ARENA:
+	case MAP::MAP_ARENA:
 		m_strMapFileTag = "Arena.Map";
 		strName = TEXT("Arena");
 		break;
 
-	case MAP::SHOP:
+	case MAP::MAP_SHOP:
 		m_strMapFileTag = "Shop.Map";
 		strName = TEXT("Shop");
 		break;
@@ -736,6 +764,40 @@ HRESULT CTool_Map::Monster_ListBox()
 	return S_OK;
 }
 
+HRESULT CTool_Map::Trigger_ListBox()
+{
+	static _int iCurrentObjIndex = { -1 }, iOldObjType = { -1 };
+
+	const _char* szTriggers[] =
+	{ u8"앞마당 이동 트리거", u8"아레나 이동 트리거", u8"상점 이동 트리거" };
+
+	ImGui::Text(u8"상자 종류");
+	ImGui::ListBox(u8"##ChestTypes", &iCurrentObjIndex, szTriggers, IM_ARRAYSIZE(szTriggers));
+
+	/* 바꾸삼 바꿨음 */
+	switch (iCurrentObjIndex)
+	{
+	case TRIGGER_COURTYARD:
+		m_eColID = COLLIDER_ID::TRIGGER_COURTYARD;
+		break;
+
+	case TRIGGER_ARENA:
+		m_eColID = COLLIDER_ID::TRIGGER_ARENA;
+		break;
+
+	case TRIGGER_SHOP:
+		m_eColID = COLLIDER_ID::TRIGGER_SHOP;
+		break;
+
+	default:
+		break;
+	}
+
+	m_strName = TEXT("Trigger");
+
+	return S_OK;
+}
+
 void CTool_Map::Created_Menu()
 {
 	if (ImGui::Begin(u8"하이~ 어 라키"))
@@ -757,6 +819,12 @@ void CTool_Map::Created_Menu()
 			if (ImGui::BeginTabItem(u8"적"))
 			{
 				Created_Monster_ListBox();
+
+				ImGui::EndTabItem();
+			}
+			if (ImGui::BeginTabItem(u8"트리거"))
+			{
+				Created_Trigger_ListBox();
 
 				ImGui::EndTabItem();
 			}
@@ -877,6 +945,41 @@ HRESULT CTool_Map::Created_Environment_ListBox()
 	}
 
 	Created_Delete(iCurrentObjIndex, m_EnvironmentNames);
+
+	return S_OK;
+}
+
+HRESULT CTool_Map::Created_Trigger_ListBox()
+{
+	static _int iCurrentObjIndex = { -1 }, iOldObjType = { -1 };
+
+	// 리스트박스 출력
+	ImGui::Text(u8"트리~거");
+	if (ImGui::BeginListBox("##TriggerListBox", ImVec2(150, 500)))
+	{
+		for (_uint i = 0; i < m_Triggers.size(); ++i)
+		{
+			_bool bSelected = (iCurrentObjIndex == i);
+			if (ImGui::Selectable(m_Triggers[i].c_str(), bSelected))
+			{
+				iCurrentObjIndex = i;
+
+				CGameObject* pGameObject = m_pGameInstance->Find_Object(ENUM_CLASS(LEVEL::TOOLS), TEXT("Layer_Trigger"), i);
+				if (nullptr == pGameObject)
+					return E_FAIL;
+
+				if (nullptr != m_pModifyObject)
+					Safe_Release(m_pModifyObject);
+
+				m_pModifyObject = pGameObject;
+				Safe_AddRef(m_pModifyObject);
+				m_bFirst = true;
+			}
+		}
+		ImGui::EndListBox();
+	}
+
+	Created_Delete(iCurrentObjIndex, m_Triggers);
 
 	return S_OK;
 }
@@ -1123,6 +1226,7 @@ HRESULT CTool_Map::Save_Map(const _string& strMapPath)
 			_wstring strPrototype = pObject->Get_Name();
 			_uint    iNumPartObjects = dynamic_cast<CContainerObject*>(pObject)->Get_NumPartObjects();
 			iSaveLength = static_cast<_int>(strPrototype.length());
+
 			
 			OutFile.write(reinterpret_cast<const _char*>(&iSaveLength), sizeof(_int));
 			OutFile.write(reinterpret_cast<const _char*>(strPrototype.c_str()), sizeof(_tchar) * iSaveLength);
@@ -1130,6 +1234,44 @@ HRESULT CTool_Map::Save_Map(const _string& strMapPath)
 			OutFile.write(reinterpret_cast<const _char*>(&fSpeedPerSec), sizeof(_float));
 			OutFile.write(reinterpret_cast<const _char*>(&fRotationPerSec), sizeof(_float));
 			OutFile.write(reinterpret_cast<const _char*>(&iNumPartObjects), sizeof(_uint));
+
+
+		}
+	}
+	/* 트리거 저장 */
+	list<CGameObject*>* pTriggerList = m_pGameInstance->Find_ObjectList(ENUM_CLASS(LEVEL::TOOLS), TEXT("Layer_Trigger"));
+	if (nullptr == pTriggerList)
+	{
+		/* SR때 이거 하나 추가 안해서 고생함,, */
+		OutFile.write(reinterpret_cast<const _char*>(&iZero), sizeof(_uint));
+	}
+	else
+	{
+		/* 트리거 갯수 저장 */
+		_uint iNumTriggers = static_cast<_uint>(pTriggerList->size());
+		OutFile.write(reinterpret_cast<const _char*>(&iNumTriggers), sizeof(_uint));
+
+		for (auto& pObject : *pTriggerList)
+		{
+			CTransform* pTransform = static_cast<CTransform*>(pObject->Get_Component(TEXT("Com_Transform")));
+			if (nullptr == pTransform)
+				return E_FAIL;
+
+			/* 문자열 저장용 */
+			_int iSaveLength = {};
+			_float4x4 WorldMatrix = *pTransform->Get_WorldMatrix_Float4x4();
+			_float fSpeedPerSec = pTransform->Get_SpeedPerSec();
+			_float fRotationPerSec = pTransform->Get_RotationPerSec();
+			_wstring strPrototype = pObject->Get_Name();
+			COLLIDER_ID eColliderID = dynamic_cast<CTrigger*>(pObject)->Get_Collider_ID();
+			iSaveLength = static_cast<_int>(strPrototype.length());
+
+			OutFile.write(reinterpret_cast<const _char*>(&iSaveLength), sizeof(_int));
+			OutFile.write(reinterpret_cast<const _char*>(strPrototype.c_str()), sizeof(_tchar) * iSaveLength);
+			OutFile.write(reinterpret_cast<const _char*>(&WorldMatrix), sizeof(_float4x4));
+			OutFile.write(reinterpret_cast<const _char*>(&fSpeedPerSec), sizeof(_float));
+			OutFile.write(reinterpret_cast<const _char*>(&fRotationPerSec), sizeof(_float));
+			OutFile.write(reinterpret_cast<const _char*>(&eColliderID), sizeof(COLLIDER_ID));
 
 		}
 	}
@@ -1191,19 +1333,19 @@ HRESULT CTool_Map::Load_Map(const _string& strMapPath)
 		if (tDesc.strName == L"Courtyard")
 		{
 			m_strMapFileTag = "Courtyard.Map";
-			m_eCurrentMap = COURTYARD;
+			m_eCurrentMap = MAP_COURTYARD;
 		}
 
 		else if (tDesc.strName == L"Arena")
 		{
 			m_strMapFileTag = "Arena.Map";
-			m_eCurrentMap = ARENA;
+			m_eCurrentMap = MAP_ARENA;
 		}
 
 		else if (tDesc.strName == L"Shop")
 		{
 			m_strMapFileTag = "Shop.Map";
-			m_eCurrentMap = SHOP;
+			m_eCurrentMap = MAP_SHOP;
 		}
 
 		
@@ -1326,49 +1468,39 @@ HRESULT CTool_Map::Load_Map(const _string& strMapPath)
 		Add_Modify_ListBox(m_MonsterNames, tDesc.strName);
 	}
 
+	_uint iNumTriggers{};
+	LoadFile.read(reinterpret_cast<_char*>(&iNumTriggers), sizeof(_uint));
+
+	for (_uint i = 0; i < iNumTriggers; i++)
+	{
+		_int iLoadLength{};
+		_float4x4 WorldMatrix{};
+
+		CTrigger::DESC tDesc{};
+		tDesc.eLevelID = LEVEL::TOOLS;
+
+		LoadFile.read(reinterpret_cast<_char*>(&iLoadLength), sizeof(_int));
+		tDesc.strName.resize(iLoadLength);
+		LoadFile.read(reinterpret_cast<_char*>(tDesc.strName.data()), sizeof(_tchar) * iLoadLength);
+		LoadFile.read(reinterpret_cast<_char*>(&WorldMatrix), sizeof(_float4x4));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fSpeedPerSec), sizeof(_float));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fRotationPerSec), sizeof(_float));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.eColliderID), sizeof(COLLIDER_ID));
+
+		tDesc.WorldMatrix = XMLoadFloat4x4(&WorldMatrix);
+
+		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_") + tDesc.strName,
+			ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Trigger"), &tDesc)))
+			return E_FAIL;
+
+		Add_Modify_ListBox(m_Triggers, tDesc.strName);
+	}
+
 	LoadFile.close();
 	MSG_BOX("파일 로드 성공");
 
 	return S_OK;
 }
-
-//HRESULT CTool_Map::Craete_Camera(const _wstring& strLayerTag)
-//{
-//	CCamera_Free::DESC tDesc = {};
-//
-//	tDesc.eLevelID = LEVEL::TOOLS;
-//	tDesc.fSensor = 0.1f;
-//
-//	tDesc.vEye = _float3(0.f, 20.f, -15.f);
-//	tDesc.vAt = _float3(0.f, 0.f, 0.f);
-//	tDesc.fFov = XMConvertToRadians(60.f);
-//	tDesc.fNear = 0.1f;
-//	tDesc.fFar = 3000.f;
-//	tDesc.fSpeedPerSec = 30.f;
-//	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
-//	tDesc.strName = TEXT("Camera_Free");
-//
-//	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_") + tDesc.strName,
-//		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
-//		return E_FAIL;
-//
-//	return S_OK;
-//}
-//
-//HRESULT CTool_Map::Create_Sky(const _wstring& strLayerTag)
-//{
-//	CSky::DESC tSkyDesc = {};
-//	tSkyDesc.eLevelID = LEVEL::TOOLS;
-//	tSkyDesc.fSpeedPerSec = 0.f;
-//	tSkyDesc.fRotationPerSec = 0.f;
-//	tSkyDesc.strName = TEXT("Sky");
-//
-//	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::TOOLS), TEXT("Prototype_GameObject_") + tSkyDesc.strName,
-//		ENUM_CLASS(tSkyDesc.eLevelID), strLayerTag, &tSkyDesc)))
-//		return E_FAIL;
-//
-//	return S_OK;
-//}
 
 CTool_Map* CTool_Map::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {

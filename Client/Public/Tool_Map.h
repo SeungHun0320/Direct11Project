@@ -12,12 +12,13 @@ BEGIN(Client)
 class CTool_Map final : public CTool
 {
 public:
-	enum MAP { COURTYARD, ARENA, SHOP, MAP_END };
+	enum MAP { MAP_COURTYARD, MAP_ARENA, MAP_SHOP, MAP_END };
 	enum ENVIRONMENT_MODEL { BUSH, CHECKPOINT, GRASS, BRIDGE, MODEL_END };
 	enum ITEM_MODEL { BERRY, BLUEBERRY, COIN_QUESTION, FIRE_CRACKER, POTION, IM_END };
-	enum ENEMY_MODEL { BLOB, CANDLEABRA, SUPPORT, SWORD, EM_END };
+	enum ENEMY_MODEL { BLOB, CANDLEABRA, SUPPORT, SWORD, EM_END }; 
+	enum TRIGGER_TYPE { TRIGGER_COURTYARD, TRIGGER_ARENA, TRIGGER_SHOP, TRIGGER_END};
 	enum MODE { CREATE, MODIFY, NORMAL, MODE_END };
-	enum LIST { ENVIRONMENT, ITEM, CHEST, ENEMY, LIST_END };
+	enum LIST { ENVIRONMENT, ITEM, CHEST, ENEMY, TRIGGER, LIST_END };
 private:
 	CTool_Map(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	~CTool_Map() = default;
@@ -45,6 +46,7 @@ private: /* 애님 메쉬 리스트 박스용 벡터 */
 	vector<_string> m_EnvironmentNames;
 	vector<_string> m_ChestNames;
 	vector<_string> m_MonsterNames;
+	vector<_string> m_Triggers;
 
 private: /* 오브젝트 제어용 변수들 */
 	_bool   m_bAllScale = { false };
@@ -66,6 +68,9 @@ private: /* 상자가 쓸 아이템 종류 */
 
 private: /* 아이템이 쓸 아이템 종류 */
 	ITEM_TYPE m_eItemType{};
+
+private: /* 트리거가 쓸 콜라이더 정보 */
+	COLLIDER_ID m_eColID{};
 
 private:
 	ImGuizmo::OPERATION m_eGizmoOp = { ImGuizmo::TRANSLATE };
@@ -99,6 +104,7 @@ private: /* 리스트 박스들 */
 	HRESULT Item_ListBox();
 	HRESULT Chest_ListBox();
 	HRESULT Monster_ListBox();
+	HRESULT Trigger_ListBox();
 
 private: /* 애님메쉬 제어용 함수들 */
 	void Created_Menu();
@@ -106,6 +112,7 @@ private: /* 애님메쉬 제어용 함수들 */
 	HRESULT Created_Chest_ListBox();
 	HRESULT Created_Monster_ListBox();
 	HRESULT Created_Environment_ListBox();
+	HRESULT Created_Trigger_ListBox();
 	HRESULT Created_Delete(_uint _iCurrentObjIndex, vector<_string>& vecNames);
 
 private: /* 모드 바꾸는 아임구이 버튼 */

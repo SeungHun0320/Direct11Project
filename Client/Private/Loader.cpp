@@ -84,10 +84,15 @@
 #include "Effect_Hit.h"
 #include "Effect_Mesh_Smoke.h"
 
+/* 전역 그림자 */
+#include "GlobalShadow.h"
+
+/* 트리거 */
+#include "Trigger.h"
+
 /* 툴 용 */
 #include "Particle_Tool.h"
 
-#include "GlobalShadow.h"
 
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -436,7 +441,6 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Trinket_Coin/TrinketCoin.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
-	
 	/*For.Prototype_Component_Model_AlertEffect*/
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_AlertEffect"),
@@ -683,10 +687,11 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 		CGlobalShadow::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	///* For.Prototype_GameObject_Effect */
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Effect"),
-	//	CEffect::Create(m_pGraphic_Device))))
-	//	return E_FAIL;
+	/*For.Prototype_GameObject_Trigger */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Trigger"),
+		CTrigger::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
@@ -1031,6 +1036,11 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 		CGlobalShadow::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/*For.Prototype_GameObject_Trigger */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Trigger"),
+		CTrigger::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
 	m_isFinished = true;
@@ -1170,6 +1180,10 @@ HRESULT CLoader::Loading_For_Shop(LEVEL eLevelID)
 		CGlobalShadow::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/*For.Prototype_GameObject_Trigger */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Trigger"),
+		CTrigger::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
@@ -1630,6 +1644,10 @@ HRESULT CLoader::Loading_For_Tools(LEVEL eLevelID)
 		CParticle_Tool::Craete(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/*For.Prototype_GameObject_Trigger */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Trigger"),
+		CTrigger::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 

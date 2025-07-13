@@ -68,10 +68,12 @@ void CLevel_Arena::Update(_float fTimeDelta)
 
 	if (m_iNextLevel)
 	{
+		LEVEL eLevelID = static_cast<LEVEL>(m_iNextLevel);
+
 		m_pGameInstance->Clear_Lights();
 		m_pGameInstance->Clear_Colliders();
 		m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
-			CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL::SHOP));
+			CLevel_Loading::Create(m_pDevice, m_pContext, eLevelID));
 	}
 }
 
@@ -409,6 +411,7 @@ void CLevel_Arena::Check_Collision()
 
 	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::PAWN), ENUM_CLASS(COLLIDER_GROUP::ENVIRONMENT));
 	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::PAWN), ENUM_CLASS(COLLIDER_GROUP::ITEM));
+	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::PAWN), ENUM_CLASS(COLLIDER_GROUP::TRIGGER));
 
 	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::WEAPON), ENUM_CLASS(COLLIDER_GROUP::MONSTER));
 	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::WEAPON), ENUM_CLASS(COLLIDER_GROUP::ENVIRONMENT));
