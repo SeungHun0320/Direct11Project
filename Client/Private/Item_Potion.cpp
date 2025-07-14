@@ -63,9 +63,12 @@ HRESULT CItem_Potion::Ready_Components(void* pArg)
 
 HRESULT CItem_Potion::Ready_PartObjects()
 {
+    /* 공통적인 파트 오브젝트 생성 */
+    if (FAILED(__super::Ready_PartObjects()))
+        return E_FAIL;
+
     // 각자 바디 생성
     CBody_Item::DESC	BodyDesc{};
-
     BodyDesc.eLevelID = m_eLevelID;
     BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
     BodyDesc.strPrototypeModelTag = TEXT("Prototype_Component_Model_Potion");

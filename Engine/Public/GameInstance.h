@@ -37,6 +37,7 @@ public:
 public:
 	HRESULT Change_Level(_uint iLevelIndex, class CLevel* pNewLevel);
 	void Change_Level(_uint iLevelIndex);
+	const _uint Get_PreviousLevelIndex() const;
 	void Respawn_Objects();
 #pragma endregion
 

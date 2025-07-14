@@ -222,6 +222,10 @@ void CGameInstance::Change_Level(_uint iLevelIndex)
 {
 	m_pLevel_Manager->Change_Level(iLevelIndex);
 }
+const _uint CGameInstance::Get_PreviousLevelIndex() const
+{
+	return m_pLevel_Manager->Get_PreviousLevelIndex();
+}
 void CGameInstance::Respawn_Objects()
 {
 	m_pLevel_Manager->Respawn_Objects();

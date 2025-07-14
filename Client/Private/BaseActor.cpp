@@ -45,7 +45,7 @@ void CBaseActor::Priority_Update(_float fTimeDelta)
 
 LIFE CBaseActor::Update(_float fTimeDelta)
 {
-	if (LEVEL::TOOLS != m_eLevelID)
+	if (LEVEL::TOOLS != m_eLevelID && nullptr != m_pNavigationCom)
 	{
 		m_pTransformCom->Set_State(Engine::STATE::POSITION, m_pNavigationCom->SetUp_Height(m_pTransformCom->Get_State(Engine::STATE::POSITION)));
 	}

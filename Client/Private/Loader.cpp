@@ -12,6 +12,10 @@
 /* 몬스터들 */
 #include "SpiderTank.h"
 #include "Body_SpiderTank.h"
+
+#include "Merchant.h"
+#include "Body_Merchant.h"
+
 // 총알 추가
 #include "Bullet_SpiderTankOrb.h"
 #include "Bullet_SpiderTank.h"
@@ -54,16 +58,12 @@
 /* 지형(각종 환경오브젝트 / 상호작용 오브젝트 ) */
 #include "Body_Grass.h"
 #include "Grass.h"
-
 #include "Body_Bush.h"
 #include "Bush.h"
-
 #include "Body_CheckPoint.h"
 #include "CheckPoint.h"
-
 #include "Body_Chest.h"
 #include "Chest.h"
-
 #include "Body_Bridge.h"
 #include "Bridge.h"
 
@@ -436,7 +436,7 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 		return E_FAIL;
 
 	/*For.Prototype_Component_Model_Trinket_Coin*/
-	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	PreTransformMatrix = XMMatrixScaling(0.015f, 0.015f, 0.015f);
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Trinket_Coin"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Trinket_Coin/TrinketCoin.Model"), PreTransformMatrix))))
 		return E_FAIL;
@@ -1056,7 +1056,36 @@ HRESULT CLoader::Loading_For_Shop(LEVEL eLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_SpaceKeyBoard"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GameUI/SpaceKeyBoard.png")))))
 		return E_FAIL;
+	
+	/* For.Prototype_Component_Texture_Direction*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_Direction"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Shop/Direction.png")))))
+		return E_FAIL;
+	
+	/* For.Prototype_Component_Texture_Money*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_Money"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Shop/Money.png")))))
+		return E_FAIL;
+	
+	/* For.Prototype_Component_Texture_UI_Box*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_UI_Box"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Shop/UI_box.png")))))
+		return E_FAIL;
+	
+	/* For.Prototype_Component_Texture_UI_SelectNormal*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_UI_SelectNormal"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Shop/UI_selectionframe_normal.png")))))
+		return E_FAIL;
+	
+	/* For.Prototype_Component_Texture_UI_SelectSelect*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_UI_SelectSelect"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Shop/UI_selectionframe_selected.png")))))
+		return E_FAIL;
 
+	/*For.Prototype_Component_Texture_Sky*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_Sky"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/SkyBox/Sky_%d.dds"), 5))))
+		return E_FAIL;
 
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
@@ -1066,6 +1095,12 @@ HRESULT CLoader::Loading_For_Shop(LEVEL eLevelID)
 	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Shop"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Map/Shop/Shop.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_Merchant*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Merchant"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::ANIM, TEXT("../Bin/Resources/Models/Anim/Monster/ShopKeeper/merchant.Model"), PreTransformMatrix))))
 		return E_FAIL;
 
 	/*For.Prototype_Component_Model_Coin*/
@@ -1105,7 +1140,7 @@ HRESULT CLoader::Loading_For_Shop(LEVEL eLevelID)
 		return E_FAIL;
 
 	/*For.Prototype_Component_Model_Trinket_Coin*/
-	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	PreTransformMatrix = XMMatrixScaling(0.015f, 0.015f, 0.015f);
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Model_Trinket_Coin"),
 		CModel::Create(m_pDevice, m_pContext, MODEL::NONANIM, TEXT("../Bin/Resources/Models/NonAnim/Item/Trinket_Coin/TrinketCoin.Model"), PreTransformMatrix))))
 		return E_FAIL;
@@ -1128,6 +1163,15 @@ HRESULT CLoader::Loading_For_Shop(LEVEL eLevelID)
 	/* For.Prototype_GameObject_Shop */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Shop"),
 		CShop::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Body_Merchant */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Body_Merchant"),
+		CBody_Merchant::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	/* For.Prototype_GameObject_Merchant */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Merchant"),
+		CMerchant::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Item_Berry */
@@ -1174,6 +1218,12 @@ HRESULT CLoader::Loading_For_Shop(LEVEL eLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_UI2D_Reward"),
 		CUI2D_Reward::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+	/* For.Prototype_GameObject_Sky */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Sky"),
+		CSky::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
 	/*For.Prototype_GameObject_GlobalShadow */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_GlobalShadow"),

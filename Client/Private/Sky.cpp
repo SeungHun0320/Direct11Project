@@ -53,9 +53,17 @@ HRESULT CSky::Render()
     if (FAILED(Bind_ShaderResources()))
         return E_FAIL;
 
-    if (FAILED(m_pShaderCom->Begin(0)))
-        return E_FAIL;
-
+    if (LEVEL::SHOP == m_eLevelID || LEVEL::ARENA == m_eLevelID)
+    {
+        if (FAILED(m_pShaderCom->Begin(1)))
+            return E_FAIL;
+    }
+    else
+    {
+        if (FAILED(m_pShaderCom->Begin(0)))
+            return E_FAIL;
+    }
+       
     if (FAILED(m_pVIBufferCom->Bind_Buffers()))
         return E_FAIL;
 

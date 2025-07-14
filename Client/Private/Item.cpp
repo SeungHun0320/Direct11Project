@@ -1,6 +1,7 @@
 #include "Item.h"
 
 #include "GameInstance.h"
+#include "UI3D_Interaction.h"
 
 CItem::CItem(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CContainerObject{ pDevice, pContext }
@@ -33,6 +34,8 @@ HRESULT CItem::Initialize(void* pArg)
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
 
+	m_pTransformCom->Set_RotationPerSec(1.f);
+
 	return S_OK;
 }
 
@@ -46,12 +49,19 @@ LIFE CItem::Update(_float fTimeDelta)
 	if (m_bDead)
 		return LIFE::DEAD;
 
+	m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta);
+
 	return 	__super::Update(fTimeDelta);
 }
 
 void CItem::Late_Update(_float fTimeDelta)
 {
+	if (!m_pGameInstance->isIn_WorldSpace(m_pTransformCom->Get_State(STATE::POSITION), 3.f))
+		return;
+
 	__super::Late_Update(fTimeDelta);
+
+	m_isCollision = false;
 }
 
 HRESULT CItem::Render()
@@ -61,10 +71,29 @@ HRESULT CItem::Render()
 
 void CItem::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
 {
+	COLLIDER_ID eColliderID = static_cast<COLLIDER_ID>(OtherColliderID);
+
+	if (CI_PLAYER(eColliderID))
+		m_isCollision = true;
 }
 
 HRESULT CItem::Ready_Components(void* pArg)
 {
+	return S_OK;
+}
+
+HRESULT CItem::Ready_PartObjects()
+{
+	CUI3D_Interaction::DESC InteractionDesc{};
+
+	InteractionDesc.pParentLevelID = &m_eLevelID;
+	InteractionDesc.iNumPartObjects = CUI3D_Interaction::PART_END;
+	InteractionDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	InteractionDesc.pParentIsCollisioned = &m_isCollision;
+
+	if (FAILED(__super::Add_PartObject(PART_INTERACTION, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_UI3D_Interaction"), &InteractionDesc)))
+		return E_FAIL;
+
 	return S_OK;
 }
 

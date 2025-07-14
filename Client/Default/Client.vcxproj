@@ -171,6 +171,7 @@
     <ClInclude Include="..\public\Body_Environment_Object.h" />
     <ClInclude Include="..\public\Body_Grass.h" />
     <ClInclude Include="..\public\Body_Item.h" />
+    <ClInclude Include="..\public\Body_Merchant.h" />
     <ClInclude Include="..\public\Body_Wizard.h" />
     <ClInclude Include="..\Public\Body_WizardCandleabra.h" />
     <ClInclude Include="..\public\Body_Player.h" />
@@ -213,6 +214,8 @@
     <ClInclude Include="..\public\Effect_Potion.h" />
     <ClInclude Include="..\public\Effect_Mesh_Smoke.h" />
     <ClInclude Include="..\Public\GlobalShadow.h" />
+    <ClInclude Include="..\public\Merchant.h" />
+    <ClInclude Include="..\public\MerchantState.h" />
     <ClInclude Include="..\public\Particle_Tool.h" />
     <ClInclude Include="..\public\Tool_Effect.h" />
     <ClInclude Include="..\public\Environment_Object.h" />
@@ -316,6 +319,7 @@
     <ClCompile Include="..\private\Body_Environment_Object.cpp" />
     <ClCompile Include="..\private\Body_Grass.cpp" />
     <ClCompile Include="..\private\Body_Item.cpp" />
+    <ClCompile Include="..\private\Body_Merchant.cpp" />
     <ClCompile Include="..\private\Body_Wizard.cpp" />
     <ClCompile Include="..\Private\Body_WizardCandleabra.cpp" />
     <ClCompile Include="..\private\Body_Player.cpp" />
@@ -354,6 +358,8 @@
     <ClCompile Include="..\private\Effect_Potion.cpp" />
     <ClCompile Include="..\private\Effect_Mesh_Smoke.cpp" />
     <ClCompile Include="..\Private\GlobalShadow.cpp" />
+    <ClCompile Include="..\private\Merchant.cpp" />
+    <ClCompile Include="..\private\MerchantState.cpp" />
     <ClCompile Include="..\private\Particle_Tool.cpp" />
     <ClCompile Include="..\private\Tool_Effect.cpp" />
     <ClCompile Include="..\private\Environment_Object.cpp" />

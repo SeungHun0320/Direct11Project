@@ -95,7 +95,17 @@ HRESULT CLevel_Courtyard::Render()
 HRESULT CLevel_Courtyard::Ready_Layer_Pawn(const _wstring& strLayerTag)
 {
 	//이 레벨의 플레이어 생성위치
-	_float3 vInitPosition = { -0.f, 0.f, -100.f };
+	_float3 vInitPosition{};
+
+	if (ENUM_CLASS(LEVEL::ARENA) == m_pGameInstance->Get_PreviousLevelIndex())
+		vInitPosition = _float3(-0.f, 2.f, -5.f);
+	else if (ENUM_CLASS(LEVEL::SHOP) == m_pGameInstance->Get_PreviousLevelIndex())
+		vInitPosition = _float3(30.f, 0.f, -28.f);
+	else
+		vInitPosition = _float3(-32.f, -2.f, -123.f);
+
+	/* 테스트용 */
+	//vInitPosition = _float3(-0.f, 0.f, -100.f);
 
 	// 플레이어가 있는지 체크하고 있으면 위치만 변경해줌.
 	auto pPlayer = GET_PLAYER;

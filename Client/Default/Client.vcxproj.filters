@@ -85,9 +85,6 @@
     <Filter Include="01.Levels\03.Shop">
       <UniqueIdentifier>{761424b8-9ac0-46f5-b977-1d3a3173d8c7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\07.Item">
-      <UniqueIdentifier>{29546516-6976-45a7-a29a-c550732e34b0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\05.Environment_Objects\04.Chest">
       <UniqueIdentifier>{226a477c-3d92-46e4-a670-4e0c14407949}</UniqueIdentifier>
     </Filter>
@@ -259,9 +256,6 @@
     <Filter Include="02.GameObjects\03.Actor\Player\Part\Weapon">
       <UniqueIdentifier>{18702f0a-a4ac-44c0-97b7-a8b65d047a6b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\08.Bullet">
-      <UniqueIdentifier>{11dec82b-3c18-4060-8509-a17eb0649034}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\01.BackGround\00.BackGround">
       <UniqueIdentifier>{517eb494-a7a3-40c2-95e0-858f13d8d0a9}</UniqueIdentifier>
     </Filter>
@@ -319,56 +313,11 @@
     <Filter Include="02.GameObjects\00.UI\02.PlayerState\Inventory\InventorySlot">
       <UniqueIdentifier>{25e3c154-73fa-45bb-9325-174189bc2105}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\07.Item\Item_Coin">
-      <UniqueIdentifier>{3ded3f23-5700-41a7-aa86-f86b998f6c13}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\00.UI\05.Interaction\Interaction">
       <UniqueIdentifier>{0f64821a-138b-4819-a1d5-6a29ea7f70fc}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\00.UI\05.Interaction\Reward">
       <UniqueIdentifier>{2b7a1a83-a94f-4a92-9e87-a932228a710c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\07.Item\Part">
-      <UniqueIdentifier>{b7500f4a-0632-4bce-8ee3-67ec502f0707}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\07.Item\Part\Body">
-      <UniqueIdentifier>{83d99c17-d5f7-43e7-a5dc-39173297ca00}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\07.Item\Item_FireCracker">
-      <UniqueIdentifier>{a81821d6-6bfa-4cd0-8ecc-0fa79a074ec2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\07.Item\Item_Potion">
-      <UniqueIdentifier>{a571c6be-22e7-47f9-9a1f-a49c66907190}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\07.Item\Item_Berry">
-      <UniqueIdentifier>{b15f0150-0360-4ef3-b674-9c9a14a532c0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\07.Item\Item_BlueBerry">
-      <UniqueIdentifier>{58292ed8-7e31-4afb-882f-77217467dd4a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\07.Item\Item_CoinQuestion">
-      <UniqueIdentifier>{a2e69508-b52d-4925-95d3-c04c9075562a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\08.Bullet\Monster">
-      <UniqueIdentifier>{8118d390-521a-4127-b71f-a2a5e2a715ad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\08.Bullet\Monster\AOE">
-      <UniqueIdentifier>{c4583f94-c4b6-4e0c-82ce-10e48078896c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\08.Bullet\Monster\AOE\Wizard_Support_AOE">
-      <UniqueIdentifier>{271a6fa9-c1e0-41a8-a6f8-063d041af411}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\08.Bullet\Monster\Bullet_SpiderTank">
-      <UniqueIdentifier>{3f9f217f-02ba-4c43-8adb-14e5ff7e8739}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\08.Bullet\Monster\Bullet_SpiderTank\SpiderTankLager">
-      <UniqueIdentifier>{b514cfb1-0800-433d-82b6-29278d9e79ef}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\08.Bullet\Monster\Bullet_SpiderTank\SpiderTankBullet">
-      <UniqueIdentifier>{96ef8008-4030-4f1d-8d2e-860dc8c5c8bc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\08.Bullet\Monster\Bullet_SpiderTank\SpiderTankOrb">
-      <UniqueIdentifier>{6fbd672e-4e82-4602-bd80-1008054f24cf}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\03.Actor\Monsters\00.Boss">
       <UniqueIdentifier>{dbc32e9b-e215-4745-8fe0-80dda19bc6fb}</UniqueIdentifier>
@@ -394,12 +343,6 @@
     <Filter Include="02.GameObjects\03.Actor\Monsters\00.Boss\SpiderTank\State\Hit">
       <UniqueIdentifier>{fbfa5d7e-89fb-4953-b8a6-b9fd443e1cf0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\08.Bullet\FireCracker">
-      <UniqueIdentifier>{6831186f-2c18-4420-9b45-339fab66a288}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\09.Effect">
-      <UniqueIdentifier>{eee4e22f-c3c8-4afa-a8af-c8b06b6b04e1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="96.Tools\02.Effect">
       <UniqueIdentifier>{5868739f-792b-4de4-ba1c-c316d319e6ac}</UniqueIdentifier>
     </Filter>
@@ -418,98 +361,8 @@
     <Filter Include="02.GameObjects\00.UI\Container\Part\UI\UI_Animation">
       <UniqueIdentifier>{0bdab430-8299-40cb-933c-9e326aa6dd1d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\09.Effect\Container">
-      <UniqueIdentifier>{e12a4bae-ab34-4f41-a319-2d6b32f06f74}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\09.Effect\00. PlayerEffect">
-      <UniqueIdentifier>{f6cf795a-2865-4d21-8fbe-13ad9f5fe1fd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\09.Effect\00. PlayerEffect\Dash">
-      <UniqueIdentifier>{947ccac5-bda5-4d9c-bc0c-800cb5f8bdbe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\09.Effect\00. PlayerEffect\Potion">
-      <UniqueIdentifier>{17ace755-ab52-4a68-be2f-577614ffb9a6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\09.Effect\Tool">
-      <UniqueIdentifier>{8bef012a-9106-4f5d-ad48-51ead1f69cb5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\09.Effect\Object">
-      <UniqueIdentifier>{63e40982-b4c1-491c-997d-8dd3a222c3bf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\09.Effect\00. PlayerEffect\Weapon">
-      <UniqueIdentifier>{b4acc136-7955-4647-a16e-4cc76e549048}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\09.Effect\00. PlayerEffect\Weapon\Dagger">
-      <UniqueIdentifier>{9eff0183-8fc2-497b-b7a8-5d14ee3d1b58}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\09.Effect\01. MonsterEffect">
-      <UniqueIdentifier>{bf2698eb-548d-4619-ad26-babfa987ca40}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\09.Effect\01. MonsterEffect\Hit">
-      <UniqueIdentifier>{6f100656-c6de-4694-9c0e-ece069d1d42a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\09.Effect\01. MonsterEffect\Smoke">
-      <UniqueIdentifier>{44b7d267-1bf0-4909-ac2c-e57c073e49f2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\09.Effect\Container\Mesh">
-      <UniqueIdentifier>{93f108b9-1efa-4aff-b7f3-88016e3bcf73}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\09.Effect\Container\Mesh\Part">
-      <UniqueIdentifier>{508f9651-dbab-49f0-bf87-52710ca9cad0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\09.Effect\Container\Particle">
-      <UniqueIdentifier>{17207b02-ad10-4d7a-aada-de00f4ff1512}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\09.Effect\Container\Mesh\Object">
-      <UniqueIdentifier>{c5fc8667-d751-4cef-b446-6d9dc16f7b68}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\09.Effect\Container\Mesh\Anim">
-      <UniqueIdentifier>{d8732637-a604-45f8-b052-c6a35d6eb6b4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\09.Effect\02. BossEffect">
-      <UniqueIdentifier>{ba41d300-b1aa-429d-bf3f-b12d0d42b7de}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\09.Effect\02. BossEffect\BossSteam">
-      <UniqueIdentifier>{c4c1e5d0-72c6-4097-beb4-e2e38e94de3c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\09.Effect\02. BossEffect\BossBullet">
-      <UniqueIdentifier>{3209dcb8-c96c-4fb7-985f-98bb9d41b004}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\09.Effect\02. BossEffect\BossLager">
-      <UniqueIdentifier>{8ec4a34f-470a-4ec6-b456-d6a8e820b79a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03.Shadow">
       <UniqueIdentifier>{d8da6f82-3e06-434d-93d3-8a67e153d9c6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\09.Effect\02. BossEffect\BossBullet\Mesh_Muzzle">
-      <UniqueIdentifier>{e226863a-bd9a-4647-b58f-9f58eb1777c6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\09.Effect\02. BossEffect\BossSwing">
-      <UniqueIdentifier>{493be362-47a1-484a-a635-fa0ec13e8689}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\09.Effect\02. BossEffect\BossLager\Effect_Mesh_BossLager">
-      <UniqueIdentifier>{17e24efb-4648-4dc3-b7ef-bea3e5502cfa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\09.Effect\Container\Mesh\Anim\Part">
-      <UniqueIdentifier>{5d8c14fb-5d14-4b15-93eb-39cd14150518}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\09.Effect\Container\Mesh\Anim\Obj">
-      <UniqueIdentifier>{714a64c4-4ae1-4858-9505-dbbc09cab17a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\09.Effect\Container\Mesh\Anim\Obj\Explosion">
-      <UniqueIdentifier>{73cb196a-b0b7-416d-bcc4-1299dd9d65da}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\09.Effect\Container\Mesh\Anim\Part\Ice">
-      <UniqueIdentifier>{2b8fe5b8-6789-47c7-902c-26f649358a2e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\09.Effect\03. BulletEffect">
-      <UniqueIdentifier>{13964a11-980c-44d8-b990-67a3e7dd0bbe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\09.Effect\03. BulletEffect\FirecrackersEffect">
-      <UniqueIdentifier>{303a970d-0fcd-4564-bc13-e9d7bfc4fccb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\09.Effect\01. MonsterEffect\AOE">
-      <UniqueIdentifier>{7a814b10-d6aa-4b06-bba9-901b9cd445cd}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\05.Environment_Objects\05.Bridge">
       <UniqueIdentifier>{96439549-7115-4d20-8d40-eaa69ddedfba}</UniqueIdentifier>
@@ -517,8 +370,170 @@
     <Filter Include="02.GameObjects\05.Environment_Objects\05.Bridge\Body">
       <UniqueIdentifier>{84f72ed5-094b-4072-9349-aae8e12d1b69}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\10.Trigger">
+    <Filter Include="02.GameObjects\06.Item">
+      <UniqueIdentifier>{29546516-6976-45a7-a29a-c550732e34b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Item\Item_Coin">
+      <UniqueIdentifier>{3ded3f23-5700-41a7-aa86-f86b998f6c13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Item\Part">
+      <UniqueIdentifier>{b7500f4a-0632-4bce-8ee3-67ec502f0707}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Item\Part\Body">
+      <UniqueIdentifier>{83d99c17-d5f7-43e7-a5dc-39173297ca00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Item\Item_FireCracker">
+      <UniqueIdentifier>{a81821d6-6bfa-4cd0-8ecc-0fa79a074ec2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Item\Item_Potion">
+      <UniqueIdentifier>{a571c6be-22e7-47f9-9a1f-a49c66907190}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Item\Item_Berry">
+      <UniqueIdentifier>{b15f0150-0360-4ef3-b674-9c9a14a532c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Item\Item_BlueBerry">
+      <UniqueIdentifier>{58292ed8-7e31-4afb-882f-77217467dd4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Item\Item_CoinQuestion">
+      <UniqueIdentifier>{a2e69508-b52d-4925-95d3-c04c9075562a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Bullet">
+      <UniqueIdentifier>{11dec82b-3c18-4060-8509-a17eb0649034}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Bullet\Monster">
+      <UniqueIdentifier>{8118d390-521a-4127-b71f-a2a5e2a715ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Bullet\Monster\AOE">
+      <UniqueIdentifier>{c4583f94-c4b6-4e0c-82ce-10e48078896c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Bullet\Monster\AOE\Wizard_Support_AOE">
+      <UniqueIdentifier>{271a6fa9-c1e0-41a8-a6f8-063d041af411}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Bullet\Monster\Bullet_SpiderTank">
+      <UniqueIdentifier>{3f9f217f-02ba-4c43-8adb-14e5ff7e8739}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Bullet\Monster\Bullet_SpiderTank\SpiderTankLager">
+      <UniqueIdentifier>{b514cfb1-0800-433d-82b6-29278d9e79ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Bullet\Monster\Bullet_SpiderTank\SpiderTankBullet">
+      <UniqueIdentifier>{96ef8008-4030-4f1d-8d2e-860dc8c5c8bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Bullet\Monster\Bullet_SpiderTank\SpiderTankOrb">
+      <UniqueIdentifier>{6fbd672e-4e82-4602-bd80-1008054f24cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Bullet\FireCracker">
+      <UniqueIdentifier>{6831186f-2c18-4420-9b45-339fab66a288}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Effect">
+      <UniqueIdentifier>{eee4e22f-c3c8-4afa-a8af-c8b06b6b04e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Effect\Container">
+      <UniqueIdentifier>{e12a4bae-ab34-4f41-a319-2d6b32f06f74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Effect\Container\Mesh">
+      <UniqueIdentifier>{93f108b9-1efa-4aff-b7f3-88016e3bcf73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Effect\Container\Mesh\Part">
+      <UniqueIdentifier>{508f9651-dbab-49f0-bf87-52710ca9cad0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Effect\Container\Mesh\Object">
+      <UniqueIdentifier>{c5fc8667-d751-4cef-b446-6d9dc16f7b68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Effect\Container\Mesh\Anim">
+      <UniqueIdentifier>{d8732637-a604-45f8-b052-c6a35d6eb6b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Effect\Container\Mesh\Anim\Part">
+      <UniqueIdentifier>{5d8c14fb-5d14-4b15-93eb-39cd14150518}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Effect\Container\Mesh\Anim\Part\Ice">
+      <UniqueIdentifier>{2b8fe5b8-6789-47c7-902c-26f649358a2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Effect\Container\Mesh\Anim\Obj">
+      <UniqueIdentifier>{714a64c4-4ae1-4858-9505-dbbc09cab17a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Effect\Container\Mesh\Anim\Obj\Explosion">
+      <UniqueIdentifier>{73cb196a-b0b7-416d-bcc4-1299dd9d65da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Effect\Container\Particle">
+      <UniqueIdentifier>{17207b02-ad10-4d7a-aada-de00f4ff1512}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Effect\00. PlayerEffect">
+      <UniqueIdentifier>{f6cf795a-2865-4d21-8fbe-13ad9f5fe1fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Effect\00. PlayerEffect\Dash">
+      <UniqueIdentifier>{947ccac5-bda5-4d9c-bc0c-800cb5f8bdbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Effect\00. PlayerEffect\Potion">
+      <UniqueIdentifier>{17ace755-ab52-4a68-be2f-577614ffb9a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Effect\00. PlayerEffect\Weapon">
+      <UniqueIdentifier>{b4acc136-7955-4647-a16e-4cc76e549048}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Effect\00. PlayerEffect\Weapon\Dagger">
+      <UniqueIdentifier>{9eff0183-8fc2-497b-b7a8-5d14ee3d1b58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Effect\Tool">
+      <UniqueIdentifier>{8bef012a-9106-4f5d-ad48-51ead1f69cb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Effect\Object">
+      <UniqueIdentifier>{63e40982-b4c1-491c-997d-8dd3a222c3bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Effect\01. MonsterEffect">
+      <UniqueIdentifier>{bf2698eb-548d-4619-ad26-babfa987ca40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Effect\01. MonsterEffect\Hit">
+      <UniqueIdentifier>{6f100656-c6de-4694-9c0e-ece069d1d42a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Effect\01. MonsterEffect\Smoke">
+      <UniqueIdentifier>{44b7d267-1bf0-4909-ac2c-e57c073e49f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Effect\01. MonsterEffect\AOE">
+      <UniqueIdentifier>{7a814b10-d6aa-4b06-bba9-901b9cd445cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Effect\02. BossEffect">
+      <UniqueIdentifier>{ba41d300-b1aa-429d-bf3f-b12d0d42b7de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Effect\02. BossEffect\BossSteam">
+      <UniqueIdentifier>{c4c1e5d0-72c6-4097-beb4-e2e38e94de3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Effect\02. BossEffect\BossBullet">
+      <UniqueIdentifier>{3209dcb8-c96c-4fb7-985f-98bb9d41b004}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Effect\02. BossEffect\BossBullet\Mesh_Muzzle">
+      <UniqueIdentifier>{e226863a-bd9a-4647-b58f-9f58eb1777c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Effect\02. BossEffect\BossLager">
+      <UniqueIdentifier>{8ec4a34f-470a-4ec6-b456-d6a8e820b79a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Effect\02. BossEffect\BossLager\Effect_Mesh_BossLager">
+      <UniqueIdentifier>{17e24efb-4648-4dc3-b7ef-bea3e5502cfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Effect\02. BossEffect\BossSwing">
+      <UniqueIdentifier>{493be362-47a1-484a-a635-fa0ec13e8689}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Effect\03. BulletEffect">
+      <UniqueIdentifier>{13964a11-980c-44d8-b990-67a3e7dd0bbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08.Effect\03. BulletEffect\FirecrackersEffect">
+      <UniqueIdentifier>{303a970d-0fcd-4564-bc13-e9d7bfc4fccb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\09.Trigger">
       <UniqueIdentifier>{518bf538-3014-400c-913a-f59f849b9f56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Monsters\03.Merchant">
+      <UniqueIdentifier>{d44b33a0-8b0c-44e1-af8c-ba8efa13731d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Monsters\03.Merchant\Body">
+      <UniqueIdentifier>{4201cce7-c8f5-4564-9d1b-1d1a69d6bde0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Actor\Monsters\03.Merchant\State">
+      <UniqueIdentifier>{195d7b29-33cc-4390-9b04-bcae446fa2d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\05.Interaction\ShopUI">
+      <UniqueIdentifier>{e2faa798-cc6a-4a76-96c8-4594bba0d0c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.UI\05.Interaction\NewFilter1">
+      <UniqueIdentifier>{c9c0fc12-aae1-4154-b88a-2cd73bc3df73}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -661,7 +676,7 @@
       <Filter>02.GameObjects\05.Environment_Objects\04.Chest</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Item.h">
-      <Filter>02.GameObjects\07.Item</Filter>
+      <Filter>02.GameObjects\06.Item</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState.h">
       <Filter>02.GameObjects\03.Actor\Player\State</Filter>
@@ -739,16 +754,16 @@
       <Filter>02.GameObjects\03.Actor\Monsters\00.Boss\SpiderTank\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Bullet.h">
-      <Filter>02.GameObjects\08.Bullet</Filter>
+      <Filter>02.GameObjects\07.Bullet</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Bullet_SpiderTankOrb.h">
-      <Filter>02.GameObjects\08.Bullet\Monster\Bullet_SpiderTank\SpiderTankOrb</Filter>
+      <Filter>02.GameObjects\07.Bullet\Monster\Bullet_SpiderTank\SpiderTankOrb</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Bullet_SpiderTank.h">
-      <Filter>02.GameObjects\08.Bullet\Monster\Bullet_SpiderTank\SpiderTankBullet</Filter>
+      <Filter>02.GameObjects\07.Bullet\Monster\Bullet_SpiderTank\SpiderTankBullet</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Bullet_Monster.h">
-      <Filter>02.GameObjects\08.Bullet\Monster</Filter>
+      <Filter>02.GameObjects\07.Bullet\Monster</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Camera_CutScene.h">
       <Filter>02.GameObjects\02.Camera\Camera_CutScene</Filter>
@@ -775,13 +790,13 @@
       <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Wizard_Support_AOE.h">
-      <Filter>02.GameObjects\08.Bullet\Monster\AOE\Wizard_Support_AOE</Filter>
+      <Filter>02.GameObjects\07.Bullet\Monster\AOE\Wizard_Support_AOE</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Bullet_Monster_AOE.h">
-      <Filter>02.GameObjects\08.Bullet\Monster\AOE</Filter>
+      <Filter>02.GameObjects\07.Bullet\Monster\AOE</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Bullet_SpiderTankLager.h">
-      <Filter>02.GameObjects\08.Bullet\Monster\Bullet_SpiderTank\SpiderTankLager</Filter>
+      <Filter>02.GameObjects\07.Bullet\Monster\Bullet_SpiderTank\SpiderTankLager</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BaseActor.h">
       <Filter>02.GameObjects\03.Actor</Filter>
@@ -838,40 +853,40 @@
       <Filter>02.GameObjects\00.UI\05.Interaction\Reward</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Body_Item.h">
-      <Filter>02.GameObjects\07.Item\Part\Body</Filter>
+      <Filter>02.GameObjects\06.Item\Part\Body</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Item_Coin.h">
-      <Filter>02.GameObjects\07.Item\Item_Coin</Filter>
+      <Filter>02.GameObjects\06.Item\Item_Coin</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Item_FireCracker.h">
-      <Filter>02.GameObjects\07.Item\Item_FireCracker</Filter>
+      <Filter>02.GameObjects\06.Item\Item_FireCracker</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Item_Potion.h">
-      <Filter>02.GameObjects\07.Item\Item_Potion</Filter>
+      <Filter>02.GameObjects\06.Item\Item_Potion</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Item_Berry.h">
-      <Filter>02.GameObjects\07.Item\Item_Berry</Filter>
+      <Filter>02.GameObjects\06.Item\Item_Berry</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Item_BlueBerry.h">
-      <Filter>02.GameObjects\07.Item\Item_BlueBerry</Filter>
+      <Filter>02.GameObjects\06.Item\Item_BlueBerry</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Item_CoinQuestion.h">
-      <Filter>02.GameObjects\07.Item\Item_CoinQuestion</Filter>
+      <Filter>02.GameObjects\06.Item\Item_CoinQuestion</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Bullet_FireCracker.h">
-      <Filter>02.GameObjects\08.Bullet\FireCracker</Filter>
+      <Filter>02.GameObjects\07.Bullet\FireCracker</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Effect_Obj.h">
-      <Filter>02.GameObjects\09.Effect\Object</Filter>
+      <Filter>02.GameObjects\08.Effect\Object</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Effect_Part.h">
-      <Filter>02.GameObjects\09.Effect\Container\Particle</Filter>
+      <Filter>02.GameObjects\08.Effect\Container\Particle</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Tool_Effect.h">
       <Filter>96.Tools\02.Effect</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Particle_Tool.h">
-      <Filter>02.GameObjects\09.Effect\Tool</Filter>
+      <Filter>02.GameObjects\08.Effect\Tool</Filter>
     </ClInclude>
     <ClInclude Include="..\public\UI.h">
       <Filter>02.GameObjects\00.UI\Container\Part\UI</Filter>
@@ -883,64 +898,64 @@
       <Filter>02.GameObjects\00.UI\02.PlayerState\Sweat</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Effect_Mesh_Dodge.h">
-      <Filter>02.GameObjects\09.Effect\00. PlayerEffect\Dash</Filter>
+      <Filter>02.GameObjects\08.Effect\00. PlayerEffect\Dash</Filter>
     </ClInclude>
     <ClInclude Include="..\public\EffectContainerPart.h">
-      <Filter>02.GameObjects\09.Effect\Container</Filter>
+      <Filter>02.GameObjects\08.Effect\Container</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Effect_Potion.h">
-      <Filter>02.GameObjects\09.Effect\00. PlayerEffect\Potion</Filter>
+      <Filter>02.GameObjects\08.Effect\00. PlayerEffect\Potion</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Effect_Dagger.h">
-      <Filter>02.GameObjects\09.Effect\00. PlayerEffect\Weapon\Dagger</Filter>
+      <Filter>02.GameObjects\08.Effect\00. PlayerEffect\Weapon\Dagger</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Effect_Hit.h">
-      <Filter>02.GameObjects\09.Effect\01. MonsterEffect\Hit</Filter>
+      <Filter>02.GameObjects\08.Effect\01. MonsterEffect\Hit</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Effect_Mesh_Smoke.h">
-      <Filter>02.GameObjects\09.Effect\01. MonsterEffect\Smoke</Filter>
+      <Filter>02.GameObjects\08.Effect\01. MonsterEffect\Smoke</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Effect_Part_Mesh.h">
-      <Filter>02.GameObjects\09.Effect\Container\Mesh\Part</Filter>
+      <Filter>02.GameObjects\08.Effect\Container\Mesh\Part</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Effect_Obj_Mesh.h">
-      <Filter>02.GameObjects\09.Effect\Container\Mesh\Object</Filter>
+      <Filter>02.GameObjects\08.Effect\Container\Mesh\Object</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Effect_AnimMesh_Ice.h">
-      <Filter>02.GameObjects\09.Effect\Container\Mesh\Anim\Part\Ice</Filter>
+      <Filter>02.GameObjects\08.Effect\Container\Mesh\Anim\Part\Ice</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Effect_BossSteam.h">
-      <Filter>02.GameObjects\09.Effect\02. BossEffect\BossSteam</Filter>
+      <Filter>02.GameObjects\08.Effect\02. BossEffect\BossSteam</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Effect_BossBullet.h">
-      <Filter>02.GameObjects\09.Effect\02. BossEffect\BossBullet</Filter>
+      <Filter>02.GameObjects\08.Effect\02. BossEffect\BossBullet</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\GlobalShadow.h">
       <Filter>03.Shadow</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Effect_Mesh_BossMuzzle.h">
-      <Filter>02.GameObjects\09.Effect\02. BossEffect\BossBullet\Mesh_Muzzle</Filter>
+      <Filter>02.GameObjects\08.Effect\02. BossEffect\BossBullet\Mesh_Muzzle</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Effect_BossSwing.h">
-      <Filter>02.GameObjects\09.Effect\02. BossEffect\BossSwing</Filter>
+      <Filter>02.GameObjects\08.Effect\02. BossEffect\BossSwing</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Effect_BossLager.h">
-      <Filter>02.GameObjects\09.Effect\02. BossEffect\BossLager</Filter>
+      <Filter>02.GameObjects\08.Effect\02. BossEffect\BossLager</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Effect_Mesh_BossLager.h">
-      <Filter>02.GameObjects\09.Effect\02. BossEffect\BossLager\Effect_Mesh_BossLager</Filter>
+      <Filter>02.GameObjects\08.Effect\02. BossEffect\BossLager\Effect_Mesh_BossLager</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Effect_AnimMesh_Explosion.h">
-      <Filter>02.GameObjects\09.Effect\Container\Mesh\Anim\Obj\Explosion</Filter>
+      <Filter>02.GameObjects\08.Effect\Container\Mesh\Anim\Obj\Explosion</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Effect_Part_AnimMesh.h">
-      <Filter>02.GameObjects\09.Effect\Container\Mesh\Anim\Part</Filter>
+      <Filter>02.GameObjects\08.Effect\Container\Mesh\Anim\Part</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Effect_Obj_AnimMesh.h">
-      <Filter>02.GameObjects\09.Effect\Container\Mesh\Anim\Obj</Filter>
+      <Filter>02.GameObjects\08.Effect\Container\Mesh\Anim\Obj</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Effect_Mesh_Firecracker_Smoke.h">
-      <Filter>02.GameObjects\09.Effect\03. BulletEffect\FirecrackersEffect</Filter>
+      <Filter>02.GameObjects\08.Effect\03. BulletEffect\FirecrackersEffect</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Bridge.h">
       <Filter>02.GameObjects\05.Environment_Objects\05.Bridge</Filter>
@@ -949,7 +964,16 @@
       <Filter>02.GameObjects\05.Environment_Objects\05.Bridge\Body</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Trigger.h">
-      <Filter>02.GameObjects\10.Trigger</Filter>
+      <Filter>02.GameObjects\09.Trigger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Merchant.h">
+      <Filter>02.GameObjects\03.Actor\Monsters\03.Merchant</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Body_Merchant.h">
+      <Filter>02.GameObjects\03.Actor\Monsters\03.Merchant\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MerchantState.h">
+      <Filter>02.GameObjects\03.Actor\Monsters\03.Merchant\State</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1081,7 +1105,7 @@
       <Filter>02.GameObjects\05.Environment_Objects\04.Chest</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Item.cpp">
-      <Filter>02.GameObjects\07.Item</Filter>
+      <Filter>02.GameObjects\06.Item</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Die.cpp">
       <Filter>02.GameObjects\03.Actor\Player\State\Die</Filter>
@@ -1219,16 +1243,16 @@
       <Filter>02.GameObjects\03.Actor\Monsters\00.Boss\SpiderTank\State\Hit</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Bullet.cpp">
-      <Filter>02.GameObjects\08.Bullet</Filter>
+      <Filter>02.GameObjects\07.Bullet</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Bullet_SpiderTankOrb.cpp">
-      <Filter>02.GameObjects\08.Bullet\Monster\Bullet_SpiderTank\SpiderTankOrb</Filter>
+      <Filter>02.GameObjects\07.Bullet\Monster\Bullet_SpiderTank\SpiderTankOrb</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Bullet_SpiderTank.cpp">
-      <Filter>02.GameObjects\08.Bullet\Monster\Bullet_SpiderTank\SpiderTankBullet</Filter>
+      <Filter>02.GameObjects\07.Bullet\Monster\Bullet_SpiderTank\SpiderTankBullet</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Bullet_Monster.cpp">
-      <Filter>02.GameObjects\08.Bullet\Monster</Filter>
+      <Filter>02.GameObjects\07.Bullet\Monster</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Camera_CutScene.cpp">
       <Filter>02.GameObjects\02.Camera\Camera_CutScene</Filter>
@@ -1249,13 +1273,13 @@
       <Filter>02.GameObjects\03.Actor\Monsters\02.Wizard</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Wizard_Support_AOE.cpp">
-      <Filter>02.GameObjects\08.Bullet\Monster\AOE\Wizard_Support_AOE</Filter>
+      <Filter>02.GameObjects\07.Bullet\Monster\AOE\Wizard_Support_AOE</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Bullet_SpiderTankLager.cpp">
-      <Filter>02.GameObjects\08.Bullet\Monster\Bullet_SpiderTank\SpiderTankLager</Filter>
+      <Filter>02.GameObjects\07.Bullet\Monster\Bullet_SpiderTank\SpiderTankLager</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Bullet_Monster_AOE.cpp">
-      <Filter>02.GameObjects\08.Bullet\Monster\AOE</Filter>
+      <Filter>02.GameObjects\07.Bullet\Monster\AOE</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Weapon_Player.cpp">
       <Filter>02.GameObjects\03.Actor\Player\Part\Weapon</Filter>
@@ -1312,40 +1336,40 @@
       <Filter>02.GameObjects\00.UI\05.Interaction\Reward</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Body_Item.cpp">
-      <Filter>02.GameObjects\07.Item\Part\Body</Filter>
+      <Filter>02.GameObjects\06.Item\Part\Body</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Item_Coin.cpp">
-      <Filter>02.GameObjects\07.Item\Item_Coin</Filter>
+      <Filter>02.GameObjects\06.Item\Item_Coin</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Item_FireCracker.cpp">
-      <Filter>02.GameObjects\07.Item\Item_FireCracker</Filter>
+      <Filter>02.GameObjects\06.Item\Item_FireCracker</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Item_Potion.cpp">
-      <Filter>02.GameObjects\07.Item\Item_Potion</Filter>
+      <Filter>02.GameObjects\06.Item\Item_Potion</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Item_Berry.cpp">
-      <Filter>02.GameObjects\07.Item\Item_Berry</Filter>
+      <Filter>02.GameObjects\06.Item\Item_Berry</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Item_BlueBerry.cpp">
-      <Filter>02.GameObjects\07.Item\Item_BlueBerry</Filter>
+      <Filter>02.GameObjects\06.Item\Item_BlueBerry</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Item_CoinQuestion.cpp">
-      <Filter>02.GameObjects\07.Item\Item_CoinQuestion</Filter>
+      <Filter>02.GameObjects\06.Item\Item_CoinQuestion</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Bullet_FireCracker.cpp">
-      <Filter>02.GameObjects\08.Bullet\FireCracker</Filter>
+      <Filter>02.GameObjects\07.Bullet\FireCracker</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Effect_Obj.cpp">
-      <Filter>02.GameObjects\09.Effect\Object</Filter>
+      <Filter>02.GameObjects\08.Effect\Object</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Effect_Part.cpp">
-      <Filter>02.GameObjects\09.Effect\Container\Particle</Filter>
+      <Filter>02.GameObjects\08.Effect\Container\Particle</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Tool_Effect.cpp">
       <Filter>96.Tools\02.Effect</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Particle_Tool.cpp">
-      <Filter>02.GameObjects\09.Effect\Tool</Filter>
+      <Filter>02.GameObjects\08.Effect\Tool</Filter>
     </ClCompile>
     <ClCompile Include="..\private\UI.cpp">
       <Filter>02.GameObjects\00.UI\Container\Part\UI</Filter>
@@ -1357,64 +1381,64 @@
       <Filter>02.GameObjects\00.UI\02.PlayerState\Sweat</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Effect_Mesh_Dodge.cpp">
-      <Filter>02.GameObjects\09.Effect\00. PlayerEffect\Dash</Filter>
+      <Filter>02.GameObjects\08.Effect\00. PlayerEffect\Dash</Filter>
     </ClCompile>
     <ClCompile Include="..\private\EffectContainerPart.cpp">
-      <Filter>02.GameObjects\09.Effect\Container</Filter>
+      <Filter>02.GameObjects\08.Effect\Container</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Effect_Potion.cpp">
-      <Filter>02.GameObjects\09.Effect\00. PlayerEffect\Potion</Filter>
+      <Filter>02.GameObjects\08.Effect\00. PlayerEffect\Potion</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Effect_Dagger.cpp">
-      <Filter>02.GameObjects\09.Effect\00. PlayerEffect\Weapon\Dagger</Filter>
+      <Filter>02.GameObjects\08.Effect\00. PlayerEffect\Weapon\Dagger</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Effect_Hit.cpp">
-      <Filter>02.GameObjects\09.Effect\01. MonsterEffect\Hit</Filter>
+      <Filter>02.GameObjects\08.Effect\01. MonsterEffect\Hit</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Effect_Mesh_Smoke.cpp">
-      <Filter>02.GameObjects\09.Effect\01. MonsterEffect\Smoke</Filter>
+      <Filter>02.GameObjects\08.Effect\01. MonsterEffect\Smoke</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Effect_Part_Mesh.cpp">
-      <Filter>02.GameObjects\09.Effect\Container\Mesh\Part</Filter>
+      <Filter>02.GameObjects\08.Effect\Container\Mesh\Part</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Effect_Obj_Mesh.cpp">
-      <Filter>02.GameObjects\09.Effect\Container\Mesh\Object</Filter>
+      <Filter>02.GameObjects\08.Effect\Container\Mesh\Object</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Effect_AnimMesh_Ice.cpp">
-      <Filter>02.GameObjects\09.Effect\Container\Mesh\Anim\Part\Ice</Filter>
+      <Filter>02.GameObjects\08.Effect\Container\Mesh\Anim\Part\Ice</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Effect_BossSteam.cpp">
-      <Filter>02.GameObjects\09.Effect\02. BossEffect\BossSteam</Filter>
+      <Filter>02.GameObjects\08.Effect\02. BossEffect\BossSteam</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Effect_BossBullet.cpp">
-      <Filter>02.GameObjects\09.Effect\02. BossEffect\BossBullet</Filter>
+      <Filter>02.GameObjects\08.Effect\02. BossEffect\BossBullet</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\GlobalShadow.cpp">
       <Filter>03.Shadow</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Effect_Mesh_BossMuzzle.cpp">
-      <Filter>02.GameObjects\09.Effect\02. BossEffect\BossBullet\Mesh_Muzzle</Filter>
+      <Filter>02.GameObjects\08.Effect\02. BossEffect\BossBullet\Mesh_Muzzle</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Effect_BossSwing.cpp">
-      <Filter>02.GameObjects\09.Effect\02. BossEffect\BossSwing</Filter>
+      <Filter>02.GameObjects\08.Effect\02. BossEffect\BossSwing</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Effect_BossLager.cpp">
-      <Filter>02.GameObjects\09.Effect\02. BossEffect\BossLager</Filter>
+      <Filter>02.GameObjects\08.Effect\02. BossEffect\BossLager</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Effect_Mesh_BossLager.cpp">
-      <Filter>02.GameObjects\09.Effect\02. BossEffect\BossLager\Effect_Mesh_BossLager</Filter>
+      <Filter>02.GameObjects\08.Effect\02. BossEffect\BossLager\Effect_Mesh_BossLager</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Effect_AnimMesh_Explosion.cpp">
-      <Filter>02.GameObjects\09.Effect\Container\Mesh\Anim\Obj\Explosion</Filter>
+      <Filter>02.GameObjects\08.Effect\Container\Mesh\Anim\Obj\Explosion</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Effect_Part_AnimMesh.cpp">
-      <Filter>02.GameObjects\09.Effect\Container\Mesh\Anim\Part</Filter>
+      <Filter>02.GameObjects\08.Effect\Container\Mesh\Anim\Part</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Effect_Obj_AnimMesh.cpp">
-      <Filter>02.GameObjects\09.Effect\Container\Mesh\Anim\Obj</Filter>
+      <Filter>02.GameObjects\08.Effect\Container\Mesh\Anim\Obj</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Effect_Mesh_Firecracker_Smoke.cpp">
-      <Filter>02.GameObjects\09.Effect\03. BulletEffect\FirecrackersEffect</Filter>
+      <Filter>02.GameObjects\08.Effect\03. BulletEffect\FirecrackersEffect</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Bridge.cpp">
       <Filter>02.GameObjects\05.Environment_Objects\05.Bridge</Filter>
@@ -1423,7 +1447,16 @@
       <Filter>02.GameObjects\05.Environment_Objects\05.Bridge\Body</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Trigger.cpp">
-      <Filter>02.GameObjects\10.Trigger</Filter>
+      <Filter>02.GameObjects\09.Trigger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Merchant.cpp">
+      <Filter>02.GameObjects\03.Actor\Monsters\03.Merchant</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Body_Merchant.cpp">
+      <Filter>02.GameObjects\03.Actor\Monsters\03.Merchant\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MerchantState.cpp">
+      <Filter>02.GameObjects\03.Actor\Monsters\03.Merchant\State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

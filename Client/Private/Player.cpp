@@ -81,11 +81,11 @@ void CPlayer::Set_SavePosition()
 
 void CPlayer::Clear_Target()
 {
-	if (nullptr != m_pTargetTransform)
-		Safe_Release(m_pTargetTransform);
-
 	if (nullptr != m_pTarget)
 		Safe_Release(m_pTarget);
+
+	if (nullptr != m_pTargetTransform)
+		Safe_Release(m_pTargetTransform);
 }
 
 void CPlayer::Change_Level(LEVEL eLevelID)
@@ -329,13 +329,13 @@ void CPlayer::LockOff()
 {
 	if (m_isTarget)
 	{
-		if (nullptr != m_pTargetTransform)
-			Safe_Release(m_pTargetTransform);
-
 		m_pTarget->Set_IsLockOnTarget(false);
 
 		if (nullptr != m_pTarget)
 			Safe_Release(m_pTarget);
+
+		if (nullptr != m_pTargetTransform)
+			Safe_Release(m_pTargetTransform);
 
 		m_isTarget = false;
 	}
@@ -501,6 +501,9 @@ void CPlayer::LookTarget(_float fTimeDelta)
 
 void CPlayer::Change_States_ByInteract()
 {
+	if (CI_ITEM(m_eCurInteractID))
+		return;
+
 	switch (m_eCurInteractID)
 	{
 	case COLLIDER_ID::CHEST:
@@ -873,6 +876,14 @@ void CPlayer::Key_Input(_float fTimeDelta)
 	}
 	if (KEY_DOWN(DIK_F2))
 		Use_Mana(25.f);
+	if (KEY_DOWN(DIK_F3))
+	{
+		_float3 vTmp;
+		XMStoreFloat3(&vTmp, m_pTransformCom->Get_State(STATE::POSITION));
+#ifdef _CONSOL
+		printf("ÂïÀº ÇÃ·¹ÀÌ¾î ÁÂÇ¥ : { %.2f, %.2f, %.2f }\n", vTmp.x, vTmp.y, vTmp.z);
+#endif
+	}
 
 	//if (KEY_DOWN(DIK_LCONTROL))
 	//	Change_States(STATES::LADDER);
@@ -943,7 +954,7 @@ void CPlayer::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObjec
 		}
 	}
 
-	if (CI_ENVIRONMENT(eColliderID))
+	if (CI_ENVIRONMENT(eColliderID) || CI_ITEM(eColliderID))
 		m_eCurInteractID = eColliderID;
 
 	switch (eColliderID)

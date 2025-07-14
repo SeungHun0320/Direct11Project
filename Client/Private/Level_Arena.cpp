@@ -14,6 +14,8 @@
 #include "SpiderTank.h"
 #include "Sky.h"
 
+#include "Trigger.h"
+
 #include "GlobalShadow.h"
 
 #define CurLevel LEVEL::ARENA
@@ -87,7 +89,10 @@ HRESULT CLevel_Arena::Render()
 HRESULT CLevel_Arena::Ready_Layer_Pawn(const _wstring& strLayerTag)
 {
 	//이 레벨의 플레이어 생성위치
-	_float3 vInitPosition = { 0.f, 8.f, 190.f };
+	_float3 vInitPosition{};
+
+	/* 테스트용 */
+	vInitPosition = _float3(0.f, 8.f, 190.f);
 
 	// 플레이어가 있는지 체크하고 있으면 위치만 변경해줌.
 	auto pPlayer = GET_PLAYER;
@@ -331,6 +336,33 @@ HRESULT CLevel_Arena::Load_Map(const _wstring& strMapFileTag)
 		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + tDesc.strName,
 			ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Monster"), &tDesc)))
 			return E_FAIL;
+	}
+
+	_uint iNumTriggers{};
+	LoadFile.read(reinterpret_cast<_char*>(&iNumTriggers), sizeof(_uint));
+
+	for (_uint i = 0; i < iNumTriggers; i++)
+	{
+		_int iLoadLength{};
+		_float4x4 WorldMatrix{};
+
+		CTrigger::DESC tDesc{};
+		tDesc.eLevelID = CurLevel;
+
+		LoadFile.read(reinterpret_cast<_char*>(&iLoadLength), sizeof(_int));
+		tDesc.strName.resize(iLoadLength);
+		LoadFile.read(reinterpret_cast<_char*>(tDesc.strName.data()), sizeof(_tchar) * iLoadLength);
+		LoadFile.read(reinterpret_cast<_char*>(&WorldMatrix), sizeof(_float4x4));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fSpeedPerSec), sizeof(_float));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fRotationPerSec), sizeof(_float));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.eColliderID), sizeof(COLLIDER_ID));
+
+		tDesc.WorldMatrix = XMLoadFloat4x4(&WorldMatrix);
+
+		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + tDesc.strName,
+			ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Trigger"), &tDesc)))
+			return E_FAIL;
+
 	}
 
 	LoadFile.close();

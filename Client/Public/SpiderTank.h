@@ -81,7 +81,7 @@ public: /* 상태로 넘겨줄 함수들 */
 
 	_float Compute_AngleToPlayer();
 	_float Compute_LookSppedByAngle(_float fAngle);
-	_bool Is_TargetOnRight();
+	_bool  Is_TargetOnRight();
 
 	/* 공격 관련 */
 	HRESULT Shot_Bullet();
@@ -93,9 +93,9 @@ public: /* 상태로 넘겨줄 함수들 */
 	const _bool Get_isUseLager() const { return m_isUseLager; }
 	void        Set_isUseLager(_bool isUseLager) { m_isUseLager = isUseLager; }
 
-	void AttackCoolDownAcc(_float fTimeDelta) {	m_fAttackCoolDown += fTimeDelta; }
+	void  AttackCoolDownAcc(_float fTimeDelta) {	m_fAttackCoolDown += fTimeDelta; }
 	_bool Is_AttackCoolDownReady(_float fAttackDelay) {	return m_fAttackCoolDown >= fAttackDelay; }
-	void Reset_AttackCoolDown() { m_fAttackCoolDown = 0.f; }
+	void  Reset_AttackCoolDown() { m_fAttackCoolDown = 0.f; }
 
 	_uint Get_Sequence() { return m_iSequence; }
 	void  Add_Sequence() { ++m_iSequence; }

@@ -6,10 +6,14 @@
 #include "Camera_Free.h"
 #include "Camera_TPS.h"
 
+#include "Sky.h"
+
 #include "Shop.h"
 #include "Chest.h"
 #include "Item.h"
-#include "Monster.h"
+#include "Merchant.h"
+
+#include "Trigger.h"
 
 #define CurLevel LEVEL::SHOP
 
@@ -21,7 +25,13 @@ CLevel_Shop::CLevel_Shop(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 HRESULT CLevel_Shop::Initialize()
 {
+	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_Pawn(TEXT("Layer_Pawn"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
@@ -76,7 +86,7 @@ HRESULT CLevel_Shop::Render()
 HRESULT CLevel_Shop::Ready_Layer_Pawn(const _wstring& strLayerTag)
 {
 	//이 레벨의 플레이어 생성위치
-	_float3 vInitPosition = { 5.f, 5.f, -40.f };
+	_float3 vInitPosition = { 5.5f, 5.f, -30.f };
 
 	// 플레이어가 있는지 체크하고 있으면 위치만 변경해줌.
 	auto pPlayer = GET_PLAYER;
@@ -117,7 +127,7 @@ HRESULT CLevel_Shop::Ready_Layer_Camera(const _wstring& strLayerTag)
 
 	tDesc.eLevelID = CurLevel;
 	tDesc.fSensor = 1.5f;
-	tDesc.vOffset = _float3(-11.f, 15.f, -11.f);
+	tDesc.vOffset = _float3(-12.f, 16.5f, -12.f);
 	tDesc.fDeadZoneX = 2.5f;
 	tDesc.fDeadZoneZ = 2.5f;
 	tDesc.pTarget = pPlayer;
@@ -126,7 +136,7 @@ HRESULT CLevel_Shop::Ready_Layer_Camera(const _wstring& strLayerTag)
 	tDesc.vAt = _float3(vPos.x, vPos.y, vPos.z);
 	tDesc.fFov = XMConvertToRadians(60.f);
 	tDesc.fNear = 0.1f;
-	tDesc.fFar = 1000.f;
+	tDesc.fFar = 100.f;
 
 	tDesc.fSpeedPerSec = 30.f;
 	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
@@ -137,6 +147,41 @@ HRESULT CLevel_Shop::Ready_Layer_Camera(const _wstring& strLayerTag)
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Camera(ENUM_CLASS(CurLevel), strLayerTag, tDesc.strName)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Shop::Ready_Layer_Monster(const _wstring& strLayerTag)
+{
+	CMonster::DESC tDesc = {};
+
+	tDesc.eLevelID = CurLevel;
+	tDesc.fSpeedPerSec = 20.f;
+	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
+	tDesc.strName = TEXT("Merchant");
+	tDesc.WorldMatrix = XMMatrixTranslation(5.f, -30.f, 8.5f);
+	tDesc.iNumPartObjects = CMerchant::PART_END;
+
+	m_MonsterDescs.push_back(tDesc);
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + tDesc.strName,
+		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Shop::Ready_Layer_BackGround(const _wstring& strLayerTag)
+{
+	CSky::DESC tSkyDesc = {};
+	tSkyDesc.eLevelID = CurLevel;
+	tSkyDesc.fSpeedPerSec = 0.f;
+	tSkyDesc.fRotationPerSec = 0.f;
+	tSkyDesc.strName = TEXT("Sky");
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + tSkyDesc.strName,
+		ENUM_CLASS(tSkyDesc.eLevelID), strLayerTag, &tSkyDesc)))
 		return E_FAIL;
 
 	return S_OK;
@@ -282,6 +327,32 @@ HRESULT CLevel_Shop::Load_Map(const _wstring& strMapFileTag)
 		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + tDesc.strName,
 			ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Monster"), &tDesc)))
 			return E_FAIL;
+	}
+	_uint iNumTriggers{};
+	LoadFile.read(reinterpret_cast<_char*>(&iNumTriggers), sizeof(_uint));
+
+	for (_uint i = 0; i < iNumTriggers; i++)
+	{
+		_int iLoadLength{};
+		_float4x4 WorldMatrix{};
+
+		CTrigger::DESC tDesc{};
+		tDesc.eLevelID = CurLevel;
+
+		LoadFile.read(reinterpret_cast<_char*>(&iLoadLength), sizeof(_int));
+		tDesc.strName.resize(iLoadLength);
+		LoadFile.read(reinterpret_cast<_char*>(tDesc.strName.data()), sizeof(_tchar) * iLoadLength);
+		LoadFile.read(reinterpret_cast<_char*>(&WorldMatrix), sizeof(_float4x4));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fSpeedPerSec), sizeof(_float));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.fRotationPerSec), sizeof(_float));
+		LoadFile.read(reinterpret_cast<_char*>(&tDesc.eColliderID), sizeof(COLLIDER_ID));
+
+		tDesc.WorldMatrix = XMLoadFloat4x4(&WorldMatrix);
+
+		if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + tDesc.strName,
+			ENUM_CLASS(tDesc.eLevelID), TEXT("Layer_Trigger"), &tDesc)))
+			return E_FAIL;
+
 	}
 
 	LoadFile.close();

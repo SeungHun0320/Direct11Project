@@ -3,13 +3,6 @@
 #include "Client_Defines.h"
 #include "BaseActor.h"
 
-
-BEGIN(Engine)
-class CCollider;
-class CShader;
-class CModel;
-END
-
 BEGIN(Client)
 
 class CMonster abstract : public CBaseActor

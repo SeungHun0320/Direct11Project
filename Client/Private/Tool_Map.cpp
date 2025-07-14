@@ -426,6 +426,7 @@ HRESULT CTool_Map::Craete_Map(MAP iMapIdx, const _wstring& strLayerTag)
 		m_pGameInstance->Layer_Clear(ENUM_CLASS(LEVEL::TOOLS), TEXT("Layer_Map"));
 		m_pGameInstance->Layer_Clear(ENUM_CLASS(LEVEL::TOOLS), TEXT("Layer_Item"));
 		m_pGameInstance->Layer_Clear(ENUM_CLASS(LEVEL::TOOLS), TEXT("Layer_Chest"));
+		m_pGameInstance->Layer_Clear(ENUM_CLASS(LEVEL::TOOLS), TEXT("Layer_Trigger"));
 		m_pGameInstance->Layer_Clear(ENUM_CLASS(LEVEL::TOOLS), TEXT("Layer_Monster"));
 		m_pGameInstance->Layer_Clear(ENUM_CLASS(LEVEL::TOOLS), TEXT("Layer_Environment_Object"));
 		pMap->Set_Dead(true);
@@ -1294,6 +1295,7 @@ HRESULT CTool_Map::Load_Map(const _string& strMapPath)
 	m_pGameInstance->Layer_Clear(ENUM_CLASS(LEVEL::TOOLS), TEXT("Layer_Chest"));
 	m_pGameInstance->Layer_Clear(ENUM_CLASS(LEVEL::TOOLS), TEXT("Layer_Monster"));
 	m_pGameInstance->Layer_Clear(ENUM_CLASS(LEVEL::TOOLS), TEXT("Layer_Environment_Object"));
+	m_pGameInstance->Layer_Clear(ENUM_CLASS(LEVEL::TOOLS), TEXT("Layer_Trigger"));
 
 	Safe_Release(m_pModifyObject);
 	Safe_Release(m_pMap);

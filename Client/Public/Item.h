@@ -37,16 +37,19 @@ public:
 
 protected:
 	LEVEL	  m_eLevelID = { LEVEL::LEVEL_END };
-
 	ITEM_TYPE m_eItemType = { ITEM_TYPE::IT_END };
+
 	_int	  m_iPrice = {};
+
+protected:
+	_bool	  m_isCollision = { false };
 
 protected:
 	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner) override;
 
 protected:
 	virtual HRESULT Ready_Components(void* pArg);
-	virtual HRESULT Ready_PartObjects() { return S_OK; };
+	virtual HRESULT Ready_PartObjects();
 
 public:
 	virtual CGameObject* Clone(void* pArg) PURE;
