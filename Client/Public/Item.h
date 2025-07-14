@@ -8,7 +8,7 @@ BEGIN(Client)
 class CItem : public CContainerObject
 {
 public:
-	enum PART {PART_BODY, PART_INTERACTION, PART_PRICE, PART_UISHOP, PART_REWARD, PART_END};
+	enum PART {PART_BODY, PART_INTERACTION, PART_PURCHASE, PART_UISHOP, PART_REWARD, PART_END};
 
 public:
 	typedef struct tagItemDesc : public CContainerObject::DESC
@@ -23,9 +23,11 @@ protected:
 	virtual ~CItem() = default;
 
 public: /* ¸ÊÅø ½È¾î */
-	ITEM_TYPE Get_ItemType() const {
-		return m_eItemType;
-	}
+	ITEM_TYPE Get_ItemType() const { return m_eItemType; }
+
+public:
+	void Open_DealWindow(_bool isDeal);
+	void Close_DealWindow(_bool isDeal);
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -43,6 +45,10 @@ protected:
 
 protected:
 	_bool	  m_isCollision = { false };
+	_bool     m_isDeal = { false };
+
+protected:
+	void Subscribe_Events();
 
 protected:
 	virtual void On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner) override;

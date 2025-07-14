@@ -532,7 +532,7 @@
     <Filter Include="02.GameObjects\00.UI\05.Interaction\ShopUI">
       <UniqueIdentifier>{e2faa798-cc6a-4a76-96c8-4594bba0d0c1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.UI\05.Interaction\NewFilter1">
+    <Filter Include="02.GameObjects\00.UI\05.Interaction\Price">
       <UniqueIdentifier>{c9c0fc12-aae1-4154-b88a-2cd73bc3df73}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -974,6 +974,9 @@
     </ClInclude>
     <ClInclude Include="..\public\MerchantState.h">
       <Filter>02.GameObjects\03.Actor\Monsters\03.Merchant\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UI2D_Purchase.h">
+      <Filter>02.GameObjects\00.UI\05.Interaction\Price</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1457,6 +1460,9 @@
     </ClCompile>
     <ClCompile Include="..\private\MerchantState.cpp">
       <Filter>02.GameObjects\03.Actor\Monsters\03.Merchant\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI2D_Purchase.cpp">
+      <Filter>02.GameObjects\00.UI\05.Interaction\Price</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -28,6 +28,7 @@
 /* ¥W, */
 #include "Monster.h"
 #include "Bullet_Monster.h"
+#include "UI2D_Purchase.h"
 
 CPlayer::CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CBaseActor{pDevice, pContext}
@@ -502,7 +503,11 @@ void CPlayer::LookTarget(_float fTimeDelta)
 void CPlayer::Change_States_ByInteract()
 {
 	if (CI_ITEM(m_eCurInteractID))
+	{
+		CGameInstance::Get_Instance()->Publish_Event(TEXT("Open_Deal"), true);
+		m_isDeal = true;
 		return;
+	}
 
 	switch (m_eCurInteractID)
 	{
@@ -725,9 +730,9 @@ _bool CPlayer::IsMoveKeyPressed()
 
 void CPlayer::Subscribe_Events()
 {
-	Delegate<> InvenPotionDele;
-	InvenPotionDele.Bind<CPlayer, &CPlayer::Equip_Shield>(this);
-	m_pGameInstance->Subscribe_Event(TEXT("Equip_Shield"), InvenPotionDele);
+	Delegate<> InvenShiledDele;
+	InvenShiledDele.Bind<CPlayer, &CPlayer::Equip_Shield>(this);
+	m_pGameInstance->Subscribe_Event(TEXT("Equip_Shield"), InvenShiledDele);
 }
 
 void CPlayer::Equip_Shield()
@@ -827,6 +832,22 @@ void CPlayer::Respawn()
 
 void CPlayer::Key_Input(_float fTimeDelta)
 {
+	if (m_isDeal)
+	{
+		if (KEY_DOWN(DIK_LEFT) || KEY_DOWN(DIK_RIGHT))
+		{
+			m_pGameInstance->Publish_Event(TEXT("Choose_PurchaseUI"), CUI2D_Purchase::PART_BUY_BUTTON);
+			m_pGameInstance->Publish_Event(TEXT("Choose_PurchaseUI"), CUI2D_Purchase::PART_CANCEL_BUTTON);
+		}
+
+		if (KEY_DOWN(DIK_RETURN))
+		{
+			CGameInstance::Get_Instance()->Publish_Event(TEXT("Close_Deal"), false);
+			m_isDeal = false;
+		}
+	}
+
+
 	if (KEY_DOWN(DIK_TAB))
 	{
 		m_isOnInven = !m_isOnInven;
@@ -897,7 +918,7 @@ void CPlayer::On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDura
 	m_fHp -= fDamage;
 	m_fStaggerGage -= fStaggerValue;
 	m_isHit = true;
-	m_pGameInstance->Shake_Camera(ENUM_CLASS(m_eLevelID), TEXT("Camera_TPS"), 0.2f, 0.2f);
+	m_pGameInstance->Shake_Camera(ENUM_CLASS(m_eLevelID), TEXT("Camera_TPS"), 0.4f, 0.2f);
 
 	if (0 >= m_fHp)
 	{

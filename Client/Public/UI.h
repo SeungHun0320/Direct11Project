@@ -34,8 +34,11 @@ protected:
 
 public:
 	_bool Get_Visible() const { return m_isVisible; }
-	void Set_Visible(_bool isVisible){	m_isVisible = isVisible;	}
+	void Set_Visible(_bool isVisible){	m_isVisible = isVisible; }
+
+	const _uint Get_TextureIndex() const { return m_iTextureIndex; }
 	void Set_TextureIndex(_uint iTextureIdx) { m_iTextureIndex = iTextureIdx; }
+	void Set_ButtonTextureIndex();
 
 public:
 	virtual HRESULT Initialize_Prototype(UI_TYPE eType);
@@ -46,9 +49,9 @@ public:
 	virtual HRESULT Render() override;
 
 public:
-	void Set_PositionY(_float fY, _float fYOffset = 0.f);
+	void	Set_PositionY(_float fY, _float fYOffset = 0.f);
 	_vector Get_State(STATE eState);
-	void Set_State(STATE eState, _fvector vState);
+	void	Set_State(STATE eState, _fvector vState);
 
 protected:
 	CShader*		   m_pShaderCom   = { nullptr };

@@ -12,6 +12,11 @@ CUI::CUI(const CUI& Prototype)
 {
 }
 
+void CUI::Set_ButtonTextureIndex()
+{
+	m_iTextureIndex == 0 ? m_iTextureIndex = 1 : m_iTextureIndex = 0;
+}
+
 HRESULT CUI::Initialize_Prototype(UI_TYPE eType)
 {
 	m_eType = eType;

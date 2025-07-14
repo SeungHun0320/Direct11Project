@@ -2,6 +2,7 @@
 
 #include "GameInstance.h"
 #include "UI3D_Interaction.h"
+#include "UI2D_Purchase.h"
 
 CItem::CItem(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CContainerObject{ pDevice, pContext }
@@ -11,6 +12,18 @@ CItem::CItem(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 CItem::CItem(const CItem& Prototype)
 	: CContainerObject(Prototype)
 {
+}
+
+void CItem::Open_DealWindow(_bool isDeal)
+{
+	if (!m_isDeal && m_isCollision)
+		m_isDeal = isDeal;
+}
+
+void CItem::Close_DealWindow(_bool isDeal)
+{
+	if (m_isDeal && m_isCollision)
+		m_isDeal = isDeal;
 }
 
 HRESULT CItem::Initialize_Prototype()
@@ -33,6 +46,8 @@ HRESULT CItem::Initialize(void* pArg)
 
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
+
+	Subscribe_Events();
 
 	m_pTransformCom->Set_RotationPerSec(1.f);
 
@@ -69,6 +84,17 @@ HRESULT CItem::Render()
 	return S_OK;
 }
 
+void CItem::Subscribe_Events()
+{
+	Delegate<_bool> OpenDealDele;
+	OpenDealDele.Bind<CItem, &CItem::Open_DealWindow>(this);
+	m_pGameInstance->Subscribe_Event(TEXT("Open_Deal"), OpenDealDele);
+
+	Delegate<_bool> CloseDealDele;
+	CloseDealDele.Bind<CItem, &CItem::Close_DealWindow>(this);
+	m_pGameInstance->Subscribe_Event(TEXT("Close_Deal"), CloseDealDele);
+}
+
 void CItem::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject* pOwner)
 {
 	COLLIDER_ID eColliderID = static_cast<COLLIDER_ID>(OtherColliderID);
@@ -92,6 +118,21 @@ HRESULT CItem::Ready_PartObjects()
 	InteractionDesc.pParentIsCollisioned = &m_isCollision;
 
 	if (FAILED(__super::Add_PartObject(PART_INTERACTION, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_UI3D_Interaction"), &InteractionDesc)))
+		return E_FAIL;
+
+	/* 나중에 꼭 없애라 */
+	if (LEVEL::SHOP != m_eLevelID)
+		return S_OK;
+
+	CUI2D_Purchase::DESC PurchaseDesc{};
+
+	PurchaseDesc.pParentLevelID = &m_eLevelID;
+	PurchaseDesc.iNumPartObjects = CUI2D_Purchase::PART_END;
+	PurchaseDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	PurchaseDesc.pParentPrice = &m_iPrice;
+	PurchaseDesc.pParentisDeal = &m_isDeal;
+
+	if (FAILED(__super::Add_PartObject(PART_PURCHASE, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_UI2D_Purchase"), &PurchaseDesc)))
 		return E_FAIL;
 
 	return S_OK;

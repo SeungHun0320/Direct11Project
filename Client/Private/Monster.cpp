@@ -99,7 +99,7 @@ void CMonster::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObje
 	COLLIDER_ID eColliderID = static_cast<COLLIDER_ID>(OtherColliderID);
 
 	if (CI_WEAPON(eColliderID))
-		m_pGameInstance->Shake_Camera(ENUM_CLASS(m_eLevelID), TEXT("Camera_TPS"), 0.15f, 0.1f);
+		m_pGameInstance->Shake_Camera(ENUM_CLASS(m_eLevelID), TEXT("Camera_TPS"), 0.4f, 0.2f);
 
 	if (CI_MONSTER(eColliderID))
 	{

@@ -77,6 +77,7 @@
 #include "Body_Item.h"
 
 #include "UI3D_Interaction.h"
+#include "UI2D_Purchase.h"
 #include "UI2D_Reward.h"
 
 /* 파티클들 */
@@ -1072,14 +1073,9 @@ HRESULT CLoader::Loading_For_Shop(LEVEL eLevelID)
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Shop/UI_box.png")))))
 		return E_FAIL;
 	
-	/* For.Prototype_Component_Texture_UI_SelectNormal*/
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_UI_SelectNormal"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Shop/UI_selectionframe_normal.png")))))
-		return E_FAIL;
-	
-	/* For.Prototype_Component_Texture_UI_SelectSelect*/
-	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_UI_SelectSelect"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Shop/UI_selectionframe_selected.png")))))
+	/* For.Prototype_Component_Texture_UI_SelectionFrame*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_UI_SelectionFrame"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Shop/UI_selectionframe_%d.png"), 2))))
 		return E_FAIL;
 
 	/*For.Prototype_Component_Texture_Sky*/
@@ -1212,6 +1208,11 @@ HRESULT CLoader::Loading_For_Shop(LEVEL eLevelID)
 	/*For.Prototype_GameObject_UI3D_Interaction */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_UI3D_Interaction"),
 		CUI3D_Interaction::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/*For.Prototype_GameObject_UI2D_Purchase */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_UI2D_Purchase"),
+		CUI2D_Purchase::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/*For.Prototype_GameObject_UI2D_Reward */

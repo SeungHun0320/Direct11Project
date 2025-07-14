@@ -23,7 +23,7 @@ HRESULT CItem_CoinQuestion::Initialize(void* pArg)
     if (FAILED(__super::Initialize(pArg)))
         return E_FAIL;
 
-    m_iPrice = 100;
+    m_iPrice = 555;
 
     return S_OK;
 }

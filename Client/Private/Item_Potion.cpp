@@ -23,7 +23,7 @@ HRESULT CItem_Potion::Initialize(void* pArg)
     if (FAILED(__super::Initialize(pArg)))
         return E_FAIL;
 
-    m_iPrice = 100;
+    m_iPrice = 300;
 
     return S_OK;
 }

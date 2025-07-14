@@ -94,6 +94,8 @@ void CWizard::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObjec
 {
 	COLLIDER_ID eColliderID = static_cast<COLLIDER_ID>(OtherColliderID);
 
+	__super::On_Collision(MyColliderID, OtherColliderID, pOwner);
+
 	if (CI_WEAPON(eColliderID))
 	{
 		if (CPlayer* pPlayer = dynamic_cast<CPlayer*>(pOwner))

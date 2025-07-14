@@ -54,11 +54,7 @@ HRESULT CLevel_Shop::Initialize()
 
 void CLevel_Shop::Update(_float fTimeDelta)
 {
-	if (KEY_DOWN(DIK_RETURN))
-	{
-		Change_Level(ENUM_CLASS(LEVEL::LOGO));
-	}
-	else if (KEY_DOWN(DIK_ESCAPE))
+	if (KEY_DOWN(DIK_ESCAPE))
 	{
 		PostQuitMessage(0);
 	}

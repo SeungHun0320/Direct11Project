@@ -135,6 +135,10 @@ public: /* 인벤토리 관련 */
 	void Use_Coin_Question();
 	void Use_FireCracker();
 
+public: /* 상점 관련 */
+	void Set_isDeal(_bool isDeal) { m_isDeal = isDeal; }
+
+
 public: /* 키입력에 따른 방향을 결정해주는 함수 */
 	_vector Get_InputDirection();
 	_vector Get_InputDirectionEx();
@@ -215,6 +219,9 @@ private: /* 인벤 켰음? / 무기 타입 */
 	_bool  m_isOnInven = { false };
 	WEAPON_TYPE m_eWeaponType = { WEAPON_TYPE::WT_END };
 	_bool  m_isAttacked = { false };
+
+private: /* 상점 관련 */
+	_bool m_isDeal = { false };
 
 private: /* 현재 충돌한 상호작용 오브젝트의 콜라이더 아이디 */
 	COLLIDER_ID m_eCurInteractID = { COLLIDER_ID::CI_END };

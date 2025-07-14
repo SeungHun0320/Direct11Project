@@ -264,6 +264,7 @@
     <ClInclude Include="..\public\UI.h" />
     <ClInclude Include="..\public\UI2D_PlayerHPBar.h" />
     <ClInclude Include="..\public\UI2D_PlayerSPBar.h" />
+    <ClInclude Include="..\public\UI2D_Purchase.h" />
     <ClInclude Include="..\public\UI2D_Reward.h" />
     <ClInclude Include="..\public\UI3D_Interaction.h" />
     <ClInclude Include="..\public\UI3D_LockOn.h" />
@@ -433,6 +434,7 @@
     <ClCompile Include="..\private\Terrain.cpp" />
     <ClCompile Include="..\private\Tool.cpp" />
     <ClCompile Include="..\private\UI.cpp" />
+    <ClCompile Include="..\private\UI2D_Purchase.cpp" />
     <ClCompile Include="..\private\UI2D_Reward.cpp" />
     <ClCompile Include="..\private\UI3D_Interaction.cpp" />
     <ClCompile Include="..\private\UI3D_PlayerSweat.cpp" />

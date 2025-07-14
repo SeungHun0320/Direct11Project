@@ -23,7 +23,7 @@ HRESULT CItem_BlueBerry::Initialize(void* pArg)
     if (FAILED(__super::Initialize(pArg)))
         return E_FAIL;
 
-    m_iPrice = 100;
+    m_iPrice = 102;
 
     return S_OK;
 }

@@ -26,7 +26,7 @@ HRESULT CInventory::Initialize(void* pArg)
     m_pParentIsOnInven = pDesc->pParentIsOnInven;
     
     /* 코인 */
-    m_iCoin = 0;
+    m_iCoin = 1000;
 
     /* 포션 */
     m_iNumPotion = 2;
