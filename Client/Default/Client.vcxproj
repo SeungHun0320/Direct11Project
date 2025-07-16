@@ -214,6 +214,7 @@
     <ClInclude Include="..\public\Effect_Potion.h" />
     <ClInclude Include="..\public\Effect_Mesh_Smoke.h" />
     <ClInclude Include="..\Public\GlobalShadow.h" />
+    <ClInclude Include="..\public\LoadingScene.h" />
     <ClInclude Include="..\public\Merchant.h" />
     <ClInclude Include="..\public\MerchantState.h" />
     <ClInclude Include="..\public\Particle_Tool.h" />
@@ -359,6 +360,7 @@
     <ClCompile Include="..\private\Effect_Potion.cpp" />
     <ClCompile Include="..\private\Effect_Mesh_Smoke.cpp" />
     <ClCompile Include="..\Private\GlobalShadow.cpp" />
+    <ClCompile Include="..\private\LoadingScene.cpp" />
     <ClCompile Include="..\private\Merchant.cpp" />
     <ClCompile Include="..\private\MerchantState.cpp" />
     <ClCompile Include="..\private\Particle_Tool.cpp" />

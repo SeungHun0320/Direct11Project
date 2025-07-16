@@ -116,6 +116,7 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 {
 	/* 맵언맵하면서 프레임 박살남,, */
 	//m_pPixelPicking->Update();
+	m_pSound_Device->Update();
 
 	m_pInputDevice->Update();
 	m_pObject_Manager->Priority_Update(fTimeDelta);

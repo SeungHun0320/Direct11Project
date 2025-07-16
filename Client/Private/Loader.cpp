@@ -6,8 +6,34 @@
 #include "Camera_Free.h"
 #include "BackGround.h"
 #include "Terrain.h"
-//#include "Effect.h"
 #include "Sky.h"
+
+#include "Player.h"
+#include "Body_Player.h"
+#include "Weapon_Player.h"
+#include "Inventory.h"
+#include "Bullet_FireCracker.h"
+
+#include "UI2D_PlayerHPBar.h"
+#include "UI2D_PlayerSPBar.h"
+#include "UI2D_PlayerMPBar.h"
+#include "UI2D_PlayerPotion.h"
+#include "UI2D_PlayerItemSlots.h"
+#include "UI2D_Inventory.h"
+#include "UI2D_InventorySlot.h"
+
+#include "Effect_Part.h"
+#include "Effect_Mesh_Dodge.h"
+#include "Effect_Potion.h"
+#include "Effect_Dagger.h"
+#include "Effect_AnimMesh_Ice.h"
+#include "Effect_AnimMesh_Explosion.h"
+#include "Effect_Mesh_Firecracker_Smoke.h"
+
+#include "UI.h"
+#include "UI_Animation.h"
+#include "UI_Sprite.h"
+#include "UI3D_PlayerSweat.h"
 
 /* 몬스터들 */
 #include "SpiderTank.h"
@@ -39,6 +65,7 @@
 #include "Wizard_Support.h"
 #include "Body_WizardSupport.h"
 #include "Part_WizardStaff.h"
+
 //총알 추가
 #include "Wizard_Support_AOE.h"
 
@@ -143,6 +170,7 @@ HRESULT CLoader::Loading()
 	switch (m_eNextLevelID)
 	{
 	case LEVEL::LOGO:
+		hr = Loading_For_Static(LEVEL::STATIC);
 		hr = Loading_For_Logo(LEVEL::LOGO);
 		break;
 
@@ -176,6 +204,502 @@ HRESULT CLoader::Loading()
 	return S_OK;
 }
 
+
+HRESULT CLoader::Loading_For_Static(LEVEL eLevelID)
+{
+	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
+	/*-------------------------------------------포션----------------------------------------------------*/
+#pragma region POTION
+
+	/* For.Prototype_Component_Texture_Potion*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Potion"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/Potion/Potion_%d.png"), 2))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_PKeyBoard*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_PKeyBoard"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GameUI/PKeyBoard.png")))))
+		return E_FAIL;
+
+#pragma endregion
+
+	/*-------------------------------------------상태바----------------------------------------------------*/
+
+#pragma region PLAYERSTAT
+
+	/* For.Prototype_Component_Texture_HexBar_Back*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_HexBar_Back"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/HexBar_Back.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_HexBar_Notch*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_HexBar_Notch"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/HexBar_Notch.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_PlayerHP */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_PlayerHP"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/HP/HPBar.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_PlayerHPCap*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_PlayerHPCap"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/HP/HPCap.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_PlayerStamina */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_PlayerStamina"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/Stamina/StaminaBar.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_PlayerStaminaCap*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_PlayerStaminaCap"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/Stamina/StaminaCap.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_PlayerMana */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_PlayerMana"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/Mana/ManaBar.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_PlayerManaCap*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_PlayerManaCap"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/Mana/ManaCap.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Sweat*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Sweat"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/Player/sweat.png")))))
+		return E_FAIL;
+
+#pragma endregion
+
+	/* ----------------------------------------------인벤토리 관련------------------------------------------------------- */
+
+#pragma region INVENTORY
+
+	/* For.Prototype_Component_Texture_ItemSlot*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_ItemSlot"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/PlayerStat/Inventory/ItemSlot.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_UIMask*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_UIMask"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Inventory/UI_Fauxmask.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_TABKeyBoard*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_TABKeyBoard"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Inventory/TABKeyBoard.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_UIMoneyText*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_UIMoneyText"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Inventory/UI_MoneyText.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_UIPassiveItemText*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_UIPassiveItemText"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Inventory/UI_PassiveItemText.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_UIUseItemText*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_UIUseItemText"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Inventory/UI_UseItemText.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_UIWeaponText*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_UIWeaponText"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Inventory/UI_WeaponText.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_UIDivider*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_UIDivider"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Inventory/UI_Divider.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_UIDivider*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_UILine"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Inventory/UI_Line.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_UIHexagon*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_UIHexagon"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Inventory/Hexagon_Backing.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_UICoinIcon*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_UICoinIcon"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Inventory/CoinIcon.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Item_Backing*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Item_Backing"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Inventory/Inven_Backing.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_UIItems*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_UIItems"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Inventory/Inven_Item_%d.png"), 9))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_UISelector*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_UISelector"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Inventory/UI_selector.png")))))
+		return E_FAIL;
+
+#pragma endregion
+
+	/* ----------------------------------------------이펙트 관련------------------------------------------------------- */
+
+#pragma	region EFFECT
+
+	/* For.Prototype_Component_Texture_CrossLine*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_CrossLine"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/Player/twinkle particle star.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_SpinningDiamond*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_SpinningDiamond"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/Player/spinning diamond.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_RingSpikes*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_RingSpikes"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/Player/icedagger_ring_spikes.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_NoNormal*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_NoNormal"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/NoNormal.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Starburst*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Starburst"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/Upgrade UI_starburst.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_HexParticle*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_HexParticle"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/hex bokeh particle.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Noise*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Noise"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/Noise.png")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Trail*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Trail"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/Player/fox sword trail.png")))))
+		return E_FAIL;
+
+#pragma endregion
+
+#pragma region SHADOW
+	/* For.Prototype_Component_Texture_Shadow*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Texture_Shadow"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/forest cookie texture.png")))))
+		return E_FAIL;
+
+#pragma endregion
+
+	lstrcpy(m_szLoadingText, TEXT("콜라이더을(를) 로딩중입니다."));
+	/* For.Prototype_Component_Collider_AABB */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_AABB"),
+		CCollider::Create(m_pDevice, m_pContext, COLLIDER::AABB))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Collider_OBB */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_OBB"),
+		CCollider::Create(m_pDevice, m_pContext, COLLIDER::OBB))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Collider_Sphere */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Collider_Sphere"),
+		CCollider::Create(m_pDevice, m_pContext, COLLIDER::SPHERE))))
+		return E_FAIL;
+
+	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
+	/* For.Prototype_Component_VIBuffer_Cube*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_Cube"),
+		CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_Trail*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_Trail"),
+		CVIBuffer_Trail::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	_matrix		PreTransformMatrix = XMMatrixIdentity();
+
+	/* For.Prototype_Component_Model_Particle_Instance_Dodge*/
+	CVIBuffer_Mesh_Particle_Instance::DESC DashDesc{};
+	DashDesc.iNumInstance = 30;
+	DashDesc.isLoop = false;
+	DashDesc.vCenter = _float3(0.f, 0.25f, 0.f);
+	DashDesc.vPivot = _float3(0.f, 0.f, 0.f);
+	DashDesc.vRange = _float3(1.f, 1.f, 1.f);
+	DashDesc.vSize = _float2(1.3f, 2.f);
+	DashDesc.vLifeTime = _float2(0.8f, 1.f);
+	DashDesc.vSpeed = _float2(0.5f, 1.f);
+
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Particle_Instance_Dodge"),
+		CModel_Particle_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Models/NonAnim/Effect/Dash/Dash.Model"), &DashDesc, PreTransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_Particle_Instance_Explosion*/
+	CVIBuffer_Mesh_Particle_Instance::DESC ExploDesc{};
+	ExploDesc.iNumInstance = 30;
+	ExploDesc.isLoop = false;
+	ExploDesc.vCenter = _float3(0.f, 0.25f, 0.f);
+	ExploDesc.vPivot = _float3(0.f, -1.5f, 0.f);
+	ExploDesc.vRange = _float3(2.f, 2.f, 2.f);
+	ExploDesc.vSize = _float2(0.5f, 3.f);
+	ExploDesc.vLifeTime = _float2(0.8f, 1.2f);
+	ExploDesc.vSpeed = _float2(3.f, 4.f);
+
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Particle_Instance_Explosion"),
+		CModel_Particle_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Models/NonAnim/Effect/Dash/Dash.Model"), &ExploDesc, PreTransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_PotionLine */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_PotionLine"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/Potion/PotionLine.Effect")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_Confetti */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_Confetti"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/Potion/Confetti.Effect")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_HealthSpell */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_HealthSpell"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/Potion/HealthSpell.Effect")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_IceSwirl */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_IceSwirl"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/Dagger/IceSwirl.Effect")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_IceStardust */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_IceStardust"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/Dagger/IceStardust.Effect")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_FirecrackersDiamond */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_VIBuffer_FirecrackersDiamond"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/Firecrackers/FirecrackersDiamond.Effect")))))
+		return E_FAIL;
+
+	/*-----------------------------------------플레이어-----------------------------------------------------*/
+
+/*For.Prototype_Component_Model_Fox*/    /* 야우 확인용 */
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Fox"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::ANIM, TEXT("../Bin/Resources/Models/Anim/Fox/_Fox.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_IceBlast*/
+	PreTransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_IceBlast"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::ANIM, TEXT("../Bin/Resources/Models/Anim/Effect/IceBlast/IceBlast.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_Firecracker_Explosion*/
+	PreTransformMatrix = XMMatrixScaling(0.001f, 0.001f, 0.001f);
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Model_Firecracker_Explosion"),
+		CModel::Create(m_pDevice, m_pContext, MODEL::ANIM, TEXT("../Bin/Resources/Models/Anim/Effect/Explosion/Firecracker_Explosion.Model"), PreTransformMatrix))))
+		return E_FAIL;
+
+	lstrcpy(m_szLoadingText, TEXT("셰이더을(를) 로딩중입니다."));
+	/* For.Prototype_Component_Shader_VtxNorTex */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxNorTex"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxNorTex.hlsl"), VTXNORTEX::Elements, VTXNORTEX::iNumElements))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Shader_VtxMesh */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxMesh"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxMesh.hlsl"), VTXMESH::Elements, VTXMESH::iNumElements))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Shader_VtxMeshInstance */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxMeshInstance"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxMeshInstance.hlsl"), VTXMESH_INSTANCE::Elements, VTXMESH_INSTANCE::iNumElements))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Shader_VtxMeshParticleInstance */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxMeshParticleInstance"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxMeshParticleInstance.hlsl"), VTXMESH_PARTICLE_INSTANCE::Elements, VTXMESH_PARTICLE_INSTANCE::iNumElements))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Shader_VtxAnimMesh */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxAnimMesh"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxAnimMesh.hlsl"), VTXANIMMESH::Elements, VTXANIMMESH::iNumElements))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Shader_VtxCube */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxCube"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxCube.hlsl"), VTXCUBE::Elements, VTXCUBE::iNumElements))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Shader_VtxPointInstance */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Shader_VtxPointInstance"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPointInstance.hlsl"), VTXPOINT_PARTICLE_INSTANCE::Elements, VTXPOINT_PARTICLE_INSTANCE::iNumElements))))
+		return E_FAIL;
+
+
+	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
+	/* For.Prototype_Component_Sound_Player*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Sound_Player"),
+		CSoundController::Create("../Bin/Resources/Sounds/Player/"))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Sound_Player*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Sound_Firecracker"),
+		CSoundController::Create("../Bin/Resources/Sounds/Firecracker/"))))
+		return E_FAIL;
+
+
+	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
+	/*For.Prototype_GameObject_Player */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Player"),
+		CPlayer::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/*For.Prototype_GameObject_Body_Player */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Body_Player"),
+		CBody_Player::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/*For.Prototype_GameObject_Weapon_Player */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Weapon_Player"),
+		CWeapon_Player::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/*--------------------------------------------플레이어UI(컨테이너파트)--------------------------------------------------*/
+
+	/*For.Prototype_GameObject_UI2D_PlayerHPBar */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerHPBar"),
+		CUI2D_PlayerHPBar::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/*For.Prototype_GameObject_UI2D_PlayerStaminaBar */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerStaminaBar"),
+		CUI2D_PlayerSPBar::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/*For.Prototype_GameObject_UI2D_PlayerManaBar */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerManaBar"),
+		CUI2D_PlayerMPBar::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/*For.Prototype_GameObject_UI2D_PlayerHPBar */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerPotion"),
+		CUI2D_PlayerPotion::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/*For.Prototype_GameObject_UI2D_PlayerItemSlots */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_PlayerItemSlots"),
+		CUI2D_PlayerItemSlots::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/*For.Prototype_GameObject_UI2D_Inventory */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_Inventory"),
+		CUI2D_Inventory::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/*For.Prototype_GameObject_UI2D_InventorySlot */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_InventorySlot"),
+		CUI2D_InventorySlot::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/*For.Prototype_GameObject_Inventory */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Inventory"),
+		CInventory::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/*--------------------------------------------UI(파트오브젝트)--------------------------------------------------*/
+
+	/*For.Prototype_GameObject_UI */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D"),
+		CUI::Create(m_pDevice, m_pContext, UI_TYPE::UI2D))))
+		return E_FAIL;
+
+	/*For.Prototype_GameObject_UI3D */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI3D"),
+		CUI::Create(m_pDevice, m_pContext, UI_TYPE::UI3D))))
+		return E_FAIL;
+
+	/*For.Prototype_GameObject_UI2D_Animation */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI2D_Animation"),
+		CUI_Animation::Create(m_pDevice, m_pContext, UI_TYPE::UI2D))))
+		return E_FAIL;
+
+	/*For.Prototype_GameObject_UI3D_Animation */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI3D_Animation"),
+		CUI_Animation::Create(m_pDevice, m_pContext, UI_TYPE::UI3D))))
+		return E_FAIL;
+
+	/*For.Prototype_GameObject_UI3D_PlayerSweat */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_UI3D_PlayerSweat"),
+		CUI3D_PlayerSweat::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/*--------------------------------------------폭탄(총알)--------------------------------------------------*/
+
+	/*For.Prototype_GameObject_Bullet_FireCracker */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Bullet_FireCracker"),
+		CBullet_FireCracker::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/*---------------------------------------------이펙트(파티클)----------------------------------------------------*/
+
+	/* For.Prototype_GameObject_Dodge */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Dodge"),
+		CEffect_Mesh_Dodge::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Effect_Potion */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_Potion"),
+		CEffect_Potion::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Effect_Dagger */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_Dagger"),
+		CEffect_Dagger::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Effect_AnimMesh_IceBlast */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_AnimMesh_IceBlast"),
+		CEffect_AnimMesh_Ice::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Effect_AnimMesh_Explosion */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_AnimMesh_Explosion"),
+		CEffect_AnimMesh_Explosion::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Effect_Firecracker_Smoke*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_Firecracker_Smoke"),
+		CEffect_Mesh_Firecracker_Smoke::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Effect_Part */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_Part"),
+		CEffect_Part::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Effect_Obj */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_Obj"),
+		CEffect_Obj::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
+	return S_OK;
+}
 
 HRESULT CLoader::Loading_For_Logo(LEVEL eLevelID)
 {
@@ -269,6 +793,11 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/Player/twinkle particle star.png")))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_CrossCircle*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Texture_CrossCircle"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effect/cross circle.png")))))
+		return E_FAIL;
+
 
 	lstrcpy(m_szLoadingText, TEXT("버퍼을(를) 로딩중입니다."));
 	/* For.Prototype_Component_VIBuffer_Terrain */
@@ -304,6 +833,11 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 	/* For.Prototype_Component_VIBuffer_WizardAOE3 */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_VIBuffer_WizardAOE3"),
 		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/Wizard/Wizard_AOE3.Effect")))))
+		return E_FAIL;
+	
+	/* For.Prototype_Component_VIBuffer_WizardAOE4 */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_VIBuffer_WizardAOE4"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/Wizard/Wizard_AOE4.Effect")))))
 		return E_FAIL;
 
 
@@ -485,7 +1019,10 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 
 
 	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
-
+	/* For.Prototype_Component_Sound_Blob*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Sound_Blob"),
+		CSoundController::Create("../Bin/Resources/Sounds/Blob/"))))
+		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
 	/* For.Prototype_GameObject_Terrain */
@@ -814,6 +1351,16 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 	/* For.Prototype_Component_VIBuffer_BossBulletMuzzle */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_VIBuffer_BossBulletMuzzle"),
 		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/SpiderTank/BossBulletMuzzle.Effect")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_BossBulletDead0 */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_VIBuffer_BossBulletDead0"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/SpiderTank/BossBulletDead0.Effect")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_BossBulletDead1 */
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_VIBuffer_BossBulletDead1"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effect/SpiderTank/BossBulletDead1.Effect")))))
 		return E_FAIL;
 
 

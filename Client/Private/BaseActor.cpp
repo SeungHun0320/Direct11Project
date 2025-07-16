@@ -33,6 +33,8 @@ HRESULT CBaseActor::Initialize(void* pArg)
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
 
+	Ready_SoundVolume();
+
 	return S_OK;
 }
 
@@ -62,6 +64,11 @@ void CBaseActor::Late_Update(_float fTimeDelta)
 HRESULT CBaseActor::Render()
 {
 	return S_OK;
+}
+
+void CBaseActor::Play_Sound(const _string& strTag)
+{
+	m_pSoundCom->Play(strTag);
 }
 
 void CBaseActor::Update_InvicibleTime(_float fTimeDelta)
@@ -103,4 +110,5 @@ void CBaseActor::Free()
 	__super::Free();
 
 	Safe_Release(m_pNavigationCom);
+	Safe_Release(m_pSoundCom);
 }

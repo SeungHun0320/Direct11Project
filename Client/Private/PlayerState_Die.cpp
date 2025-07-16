@@ -12,6 +12,8 @@ void CPlayerState_Die::Enter(_float fTimeDelta)
 
 	m_fTimeAcc = 0.f;
 	m_fDuration = 1.6f;
+
+	m_pOwner->Play_Sound("Death");
 }
 
 void CPlayerState_Die::Execute(_float fTimeDelta)

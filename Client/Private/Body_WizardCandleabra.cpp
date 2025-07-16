@@ -24,6 +24,7 @@ HRESULT CBody_WizardCandleabra::Initialize(void* pArg)
     if (FAILED(__super::Initialize(pArg)))
         return E_FAIL;
 
+    m_vEmissiveColor = _float4(0.74f, 0.08f, 0.08f, 1.f);
 
     return S_OK;
 }

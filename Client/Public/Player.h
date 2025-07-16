@@ -216,9 +216,9 @@ private: /* 먹는 타입 */
 	_byte m_byEatType = {};
 
 private: /* 인벤 켰음? / 무기 타입 */
-	_bool  m_isOnInven = { false };
+	_bool		m_isOnInven = { false };
 	WEAPON_TYPE m_eWeaponType = { WEAPON_TYPE::WT_END };
-	_bool  m_isAttacked = { false };
+	_bool		m_isAttacked = { false };
 
 private: /* 상점 관련 */
 	_bool m_isDeal = { false };
@@ -264,6 +264,7 @@ private: /* 애니 관련 */
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;
 	virtual HRESULT Ready_PartObjects() override;
+	virtual void    Ready_SoundVolume() override;
 	HRESULT Ready_States();
 
 public:

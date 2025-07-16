@@ -33,6 +33,9 @@ void CBridge::Priority_Update(_float fTimeDelta)
 
 LIFE CBridge::Update(_float fTimeDelta)
 {
+	if (m_bDead)
+		return LIFE::DEAD;
+
 	return 	__super::Update(fTimeDelta);
 }
 

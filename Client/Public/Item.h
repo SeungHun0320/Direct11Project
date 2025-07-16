@@ -8,7 +8,7 @@ BEGIN(Client)
 class CItem : public CContainerObject
 {
 public:
-	enum PART {PART_BODY, PART_INTERACTION, PART_PURCHASE, PART_UISHOP, PART_REWARD, PART_END};
+	enum PART {PART_BODY, PART_INTERACTION, PART_PURCHASE, PART_REWARD, PART_END};
 
 public:
 	typedef struct tagItemDesc : public CContainerObject::DESC
@@ -46,6 +46,7 @@ protected:
 protected:
 	_bool	  m_isCollision = { false };
 	_bool     m_isDeal = { false };
+	_bool     m_isSell = { false };
 
 protected:
 	void Subscribe_Events();

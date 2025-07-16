@@ -89,6 +89,15 @@ void CUI2D_Purchase::ChooseButton(PART ePart)
     }
 }
 
+const _int CUI2D_Purchase::Get_ButtonIndex(PART ePart)
+{
+    if (CUI* pPart = dynamic_cast<CUI*>(m_PartObjects[ENUM_CLASS(ePart)]))
+        return pPart->Get_TextureIndex();
+
+    return 0;
+}
+
+
 void CUI2D_Purchase::Subscribe_Events() 
 {
     Delegate<PART> DealButtonDele;
@@ -196,4 +205,6 @@ CGameObject* CUI2D_Purchase::Clone(void* pArg)
 void CUI2D_Purchase::Free()
 {
     __super::Free();
+
+    m_pGameInstance->Unsubscribe_Event<PART>(this);
 }

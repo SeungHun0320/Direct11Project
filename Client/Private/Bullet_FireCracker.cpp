@@ -31,8 +31,8 @@ HRESULT CBullet_FireCracker::Initialize(void* pArg)
         return E_FAIL;
 
     m_fDeadTime = 1.f;
-    m_fAttack = 15.f;
-    m_fStaggerValue = 10.f;
+    m_fAttack = 40.f;
+    m_fStaggerValue = 30.f;
 
     m_pTransformCom->Scaling(0.75f, 0.75f, 0.75f);
     m_pTransformCom->LookDir(XMVectorSetW(XMLoadFloat3(&m_vDir), 0.f));
@@ -42,6 +42,8 @@ HRESULT CBullet_FireCracker::Initialize(void* pArg)
 
     for (_uint i = 0; i < m_pModelCom->Get_NumMeshes(); i++)
         m_pModelCom->Set_MeshVisible(i, false);
+
+    m_pSoundCom->SetVolume(0.3f);
 
     return S_OK;
 }
@@ -62,7 +64,10 @@ LIFE CBullet_FireCracker::Update(_float fTimeDelta)
     {
         m_fExplosionTime += fTimeDelta;
 
-        if (0.5f <= m_fExplosionTime)
+        if (0.6f <= m_fExplosionTime)
+            m_pExplosionCollider->Set_Active(false);
+
+        if (2.f <= m_fExplosionTime)
             return LIFE::DEAD;
 
         if (!m_isExplosion)
@@ -127,6 +132,19 @@ void CBullet_FireCracker::Thrown(_float fTimeDelta)
 
 HRESULT CBullet_FireCracker::Explosion()
 {
+    switch (rand() % 3)
+    {
+    case 0:
+        m_pSoundCom->Play("Firecracker_xpl_00");
+        break;
+    case 1:
+        m_pSoundCom->Play("Firecracker_xpl_01");
+        break;
+    case 2:
+        m_pSoundCom->Play("Firecracker_xpl_02");
+        break;
+    }
+
     CBounding_Sphere::DESC	ColDesc{};
 
     ColDesc.vCenter = _float3(0.f, 0.f, 0.f);
@@ -175,6 +193,7 @@ HRESULT CBullet_FireCracker::Explosion()
     for (_uint i = 0; i < m_pModelCom->Get_NumMeshes(); i++)
         m_pModelCom->Set_MeshVisible(i, true);
 
+
     return S_OK;
 }
 
@@ -182,7 +201,7 @@ void CBullet_FireCracker::On_Collision(_uint MyColliderID, _uint OtherColliderID
 {
     COLLIDER_ID eColliderID = static_cast<COLLIDER_ID>(OtherColliderID);
 
-    if (CI_MONSTER(eColliderID) || CI_ENVIRONMENT(eColliderID))
+    if (CI_MONSTER(eColliderID))
         Set_Dead(true);
 }
 
@@ -214,7 +233,10 @@ HRESULT CBullet_FireCracker::Ready_Components(void* pArg)
             return E_FAIL;
     }
 
-    return S_OK;
+    /* Com_Sound */
+    if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Sound_Firecracker"),
+        TEXT("Com_Sound"), reinterpret_cast<CComponent**>(&m_pSoundCom))))
+        return E_FAIL;
 
     return S_OK;
 }

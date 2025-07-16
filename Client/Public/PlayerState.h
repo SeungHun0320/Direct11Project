@@ -62,6 +62,9 @@ public: // CPlayerState을(를) 통해 상속됨
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
 
+private:
+	_float m_fWalkSoundTimer{};
+
 public:
 	virtual void Free() override;
 };
@@ -94,6 +97,9 @@ public:	// CPlayerState을(를) 통해 상속됨
 	void Enter(_float fTimeDelta) override;
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
+
+private:
+	_float m_fSprintSoundTimer{};
 
 public:
 	virtual void Free()override;
@@ -130,13 +136,13 @@ protected:
 	void Check_ComboKey();
 
 protected:
-	_uint  m_iMaxCombo = {};
+	_uint  m_iMaxCombo{};
 	WEAPON_TYPE m_eWeaponType{};
 
-	_bool  m_isAttackCombo = {};
+	_bool  m_isAttackCombo{false};
 	_float3 m_vInputDir{};
 
-	_float m_fAttackStartTime = {};
+	_float m_fAttackStartTime{};
 
 public:
 	virtual void Free() override {};
@@ -152,6 +158,9 @@ public: // CPlayerState을(를) 통해 상속됨
 	void Enter(_float fTimeDelta) override;
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
+
+private:
+	_bool m_isAttacked{false};
 
 public:
 	virtual void Free() override;
@@ -295,6 +304,9 @@ public: // CPlayerState을(를) 통해 상속됨
 	void Enter(_float fTimeDelta) override;
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
+
+private:
+	_bool m_isUseSound{ false };
 
 public:
 	virtual void Free() override;

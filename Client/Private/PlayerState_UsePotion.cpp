@@ -12,6 +12,7 @@ void CPlayerState_UsePotion::Enter(_float fTimeDelta)
 {
 	m_fDuration = 1.9f;
 	m_fTimeAcc = 0.f;
+	m_isUseSound = false;
 
 	for (_uint i = 0; i < CPlayer::MESHES_END; i++)
 	{
@@ -30,6 +31,21 @@ void CPlayerState_UsePotion::Enter(_float fTimeDelta)
 void CPlayerState_UsePotion::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
+
+	if (0.5f <= m_fTimeAcc && !m_isUseSound)
+	{
+		switch (rand() % 2)
+		{
+		case 0:
+			m_pOwner->Play_Sound("Heal0");
+			break;
+		case 1:
+			m_pOwner->Play_Sound("Heal1");
+			break;
+		}
+
+		m_isUseSound = true;
+	}
 
 	if (1.f <= m_fTimeAcc && !m_pOwner->Get_isUsePotion())
 	{
@@ -60,6 +76,7 @@ void CPlayerState_UsePotion::Exit()
 	m_fDuration = 0.f;
 	m_fTimeAcc = 0.f;
 	m_pOwner->Set_isUsePotion(false);
+	m_isUseSound = false;
 }
 
 void CPlayerState_UsePotion::Free()

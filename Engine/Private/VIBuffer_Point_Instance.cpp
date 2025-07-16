@@ -265,6 +265,8 @@ HRESULT CVIBuffer_Point_Instance::Initialize_Prototype(const _wstring& strPartic
 			0.f
 		);
 
+		m_fMaxLifeTime = max(m_fMaxLifeTime, m_pVertexInstances[i].vLifeTime.x);
+
 		m_pVertexInstances[i].fMaxFrame = tDesc.vFrameXY.x * tDesc.vFrameXY.y;
 		m_pVertexInstances[i].vFrameXY = tDesc.vFrameXY;
 		m_pVertexInstances[i].fFrameSpeed = m_pGameInstance->Compute_Random(tDesc.vFrameSpeed.x, tDesc.vFrameSpeed.y);

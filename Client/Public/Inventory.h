@@ -58,7 +58,7 @@ public: /* 코인 */
 	_int Get_Coin() const { return m_iCoin; }
 	void Add_Coin(_int iPrice) { m_iCoin += iPrice;	}
 	void Use_Coin(_int iPrice) { m_iCoin -= iPrice; }
-	void Buy_ShopItem(ITEM_TYPE eType, _int iPrice);
+	void Buy_ShopItem(ITEM_TYPE eType, _int iPrice, _bool* pSell);
 
 public: /* 포션 */
 	_int Get_CurPotion() const { return m_iCurNumPotion; } /* 사용가능한 */

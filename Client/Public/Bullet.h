@@ -8,6 +8,7 @@ class CCollider;
 class CModel;
 class CShader;
 class CNavigation;
+class CSoundController;
 END
 
 BEGIN(Client)
@@ -54,9 +55,10 @@ protected:
 	_float m_fDeadTime = {};
 
 protected:
-	CCollider* m_pColliderCom = { nullptr };
-	CShader* m_pShaderCom = { nullptr };
-	CModel* m_pModelCom = { nullptr };
+	CSoundController*	m_pSoundCom = { nullptr };
+	CCollider*			m_pColliderCom = { nullptr };
+	CShader*			m_pShaderCom = { nullptr };
+	CModel*				m_pModelCom = { nullptr };
 
 protected:
 	virtual HRESULT Craete_SmokeEffect();

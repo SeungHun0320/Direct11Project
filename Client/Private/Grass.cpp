@@ -57,6 +57,12 @@ void CGrass::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObject
 {
 	COLLIDER_ID eColliderID = static_cast<COLLIDER_ID>(OtherColliderID);
 
+	if (CI_MONSTER_ATTACK(eColliderID))
+		Set_Dead(true);
+
+	if (CI_MONSTER_BULLET(eColliderID))
+		Set_Dead(true);
+
 	switch (eColliderID)
 	{
 	case COLLIDER_ID::SWORD:

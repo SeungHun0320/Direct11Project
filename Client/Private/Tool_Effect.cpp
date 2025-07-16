@@ -117,6 +117,8 @@ void CTool_Effect::Adjust_ParticleDesc()
 	ImGui::Checkbox(u8"¼ÒÇÁÆ® ºí·»µå", &m_isSoft);
 	ImGui::SameLine();
 	ImGui::Checkbox(u8"¸¶½ºÅ©", &m_isMask);
+	ImGui::SameLine();
+	ImGui::Checkbox(u8"ºôº¸µå »©±â", &m_isBillboard);
 
 	if (m_isSprite && !m_isSoft)
 		m_ePass = EFFECT_PASS::SPRITE;
@@ -129,6 +131,9 @@ void CTool_Effect::Adjust_ParticleDesc()
 
 	if(m_isMask)
 		m_ePass = EFFECT_PASS::MASK;
+
+	if (m_isBillboard)
+		m_ePass = EFFECT_PASS::NO_BILLBOARD;
 
 	m_pParticleTool->Change_Pass(m_ePass);
 

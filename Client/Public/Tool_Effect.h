@@ -64,6 +64,7 @@ private:
 	_bool   m_isSprite = { false };
 	_bool   m_isSoft = { false };
 	_bool   m_isMask = { false };
+	_bool   m_isBillboard = { false };
 
 private:
 	vector<_string> m_ProtoTextureNames;

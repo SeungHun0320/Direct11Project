@@ -13,6 +13,19 @@ void CPlayerState_Parry::Enter(_float fTimeDelta)
 	m_fDuration = 1.1f;
 
 	m_pOwner->Set_Collider_Active(WEAPON_TYPE::SHILED);
+
+	switch (rand() % 3)
+	{
+	case 0:
+		m_pOwner->Play_Sound("Parry0");
+		break;
+	case 1:
+		m_pOwner->Play_Sound("Parry1");
+		break;
+	case 2:
+		m_pOwner->Play_Sound("Parry2");
+		break;
+	}
 }
 
 void CPlayerState_Parry::Execute(_float fTimeDelta)

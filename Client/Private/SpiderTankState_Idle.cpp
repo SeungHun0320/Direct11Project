@@ -30,6 +30,7 @@ void CSpiderTankState_Sleep::Execute(_float fTimeDelta)
 		if (m_pOwner->Find_Player())
 		{
 			m_pOwner->Change_States(CSpiderTank::STATES::WAKE_UP);
+			m_pOwner->Change_Camera(CAM_MODE::BOSS);
 		}
 
 		m_fTimeAcc = 0.f;
@@ -69,7 +70,6 @@ void CSpiderTankState_WakeUp::Execute(_float fTimeDelta)
 
 	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CSpiderTank::PART_BODY, fTimeDelta))
 	{
-		m_pOwner->Change_Camera(CAM_MODE::BOSS);
 		m_pOwner->Set_isInBattle(true);
 		m_pOwner->Change_States(CSpiderTank::STATES::IDLE);
 	}

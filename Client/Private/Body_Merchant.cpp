@@ -22,6 +22,7 @@ HRESULT CBody_Merchant::Initialize(void* pArg)
     
     m_pParentLevelID = pDesc->pParentLevelID;
     m_pParentisFind = pDesc->pParentisFind;
+    m_vEmissiveColor = _float4(0.91f, 0.1f, 1.f, 1.f);
 
     if (FAILED(__super::Initialize(pArg)))
         return E_FAIL;
@@ -68,8 +69,16 @@ HRESULT CBody_Merchant::Render()
 
         m_pModelCom->Bind_Bone_Matrices(m_pShaderCom, "g_BoneMatrices", i);
 
-        if (FAILED(m_pShaderCom->Begin(0)))
-            return E_FAIL;
+        if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_EmissiveTexture", i, TEX_TYPE::EMISSIVE, 0)))
+        {
+            if (FAILED(m_pShaderCom->Begin(0)))
+                return E_FAIL;
+        }
+        else
+        {
+            if (FAILED(m_pShaderCom->Begin(5)))
+                return E_FAIL;
+        }
 
         if (FAILED(m_pModelCom->Render(i)))
             return E_FAIL;
@@ -139,6 +148,11 @@ HRESULT CBody_Merchant::Bind_ShaderResources()
     if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::PROJ))))
         return E_FAIL;
     if (FAILED(m_pShaderCom->Bind_RawValue("g_fFar", m_pGameInstance->Get_Far_Ptr(), sizeof(_float))))
+        return E_FAIL;
+    if (FAILED(m_pShaderCom->Bind_RawValue("g_vEmissiveColor", &m_vEmissiveColor, sizeof(_float4))))
+        return E_FAIL;
+    _float fRatio{};
+    if (FAILED(m_pShaderCom->Bind_RawValue("g_fEmissiveRatio", &fRatio, sizeof(_float))))
         return E_FAIL;
 
     return S_OK;

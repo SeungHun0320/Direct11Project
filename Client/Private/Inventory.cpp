@@ -29,8 +29,8 @@ HRESULT CInventory::Initialize(void* pArg)
     m_iCoin = 1000;
 
     /* Æ÷¼Ç */
-    m_iNumPotion = 2;
-    m_iCurNumPotion = 2;
+    m_iNumPotion = 0;
+    m_iCurNumPotion = 0;
 
     if (FAILED(__super::Initialize(pArg)))
         return E_FAIL;
@@ -68,7 +68,7 @@ void CInventory::Subscribe_Events()
     InvenItemDele.Bind<CInventory, &CInventory::Acquire_Item>(this);
     m_pGameInstance->Subscribe_Event(TEXT("Acquire_Item"), InvenItemDele);
 
-    Delegate<ITEM_TYPE, _int> BuyShopItemDele;
+    Delegate<ITEM_TYPE, _int, _bool*> BuyShopItemDele;
     BuyShopItemDele.Bind<CInventory, &CInventory::Buy_ShopItem>(this);
     m_pGameInstance->Subscribe_Event(TEXT("Buy_ShopItem"), BuyShopItemDele);
 
@@ -103,13 +103,18 @@ void CInventory::Acquire_Item(ITEM_TYPE eType)
     }
 }
 
-void CInventory::Buy_ShopItem(ITEM_TYPE eType, _int iPrice)
+void CInventory::Buy_ShopItem(ITEM_TYPE eType, _int iPrice, _bool* pSell)
 {
     if (iPrice > m_iCoin)
+    {
+        (*pSell) = false;
         return;
-
+    }
+       
     Use_Coin(iPrice);
     Acquire_Item(eType);
+    (*pSell) = true;
+    m_pGameInstance->Publish_Event(TEXT("Sucsess_Deal"), true);
 }
 
 _bool CInventory::Add_Potion(_int iCount)
@@ -319,4 +324,7 @@ CGameObject* CInventory::Clone(void* pArg)
 void CInventory::Free()
 {
     __super::Free();
+
+    m_pGameInstance->Unsubscribe_Event<ITEM_TYPE>(this);
+    m_pGameInstance->Unsubscribe_Event<ITEM_TYPE, _int, _bool*>(this);
 }

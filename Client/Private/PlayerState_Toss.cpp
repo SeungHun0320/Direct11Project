@@ -26,6 +26,26 @@ void CPlayerState_WindUp::Enter(_float fTimeDelta)
 	}
 
 	m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::WINDUP, false);
+
+
+	switch (rand() % 5)
+	{
+	case 0:
+		m_pOwner->Play_Sound("Firecracker_fizzle_00");
+		break;
+	case 1:
+		m_pOwner->Play_Sound("Firecracker_fizzle_01");
+		break;
+	case 2:
+		m_pOwner->Play_Sound("Firecracker_fizzle_02");
+		break;
+	case 3:
+		m_pOwner->Play_Sound("Firecracker_fizzle_03");
+		break;
+	case 4:
+		m_pOwner->Play_Sound("Firecracker_fizzle_04");
+		break;
+	}
 }
 
 void CPlayerState_WindUp::Execute(_float fTimeDelta)
@@ -34,6 +54,7 @@ void CPlayerState_WindUp::Execute(_float fTimeDelta)
 
 	if (0.1f <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta))
 	{
+		m_pOwner->Play_Sound("Firecracker_fuse");
 		m_pOwner->Change_States(CPlayer::STATES::TOSS);
 	}
 	else
@@ -71,6 +92,19 @@ void CPlayerState_Toss::Enter(_float fTimeDelta)
 	m_isToss = false;
 
 	m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::TOSS, false, 0.3f);
+
+	switch (rand() % 3)
+	{
+	case 0:
+		m_pOwner->Play_Sound("Firecracker_toss_00");
+		break;
+	case 1:
+		m_pOwner->Play_Sound("Firecracker_toss_01");
+		break;
+	case 2:
+		m_pOwner->Play_Sound("Firecracker_toss_02");
+		break;
+	}
 }
 
 void CPlayerState_Toss::Execute(_float fTimeDelta)

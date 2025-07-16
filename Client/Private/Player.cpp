@@ -70,10 +70,10 @@ void CPlayer::Set_SavePosition()
 		XMStoreFloat3(&m_vSavePosition, XMVectorSet(-40.f, -2.f, -123.f, 1.f));
 		break;
 	case LEVEL::ARENA:
-		XMStoreFloat3(&m_vSavePosition, XMVectorSet(-0.f, -4.f, 35.f, 1.f));
+		XMStoreFloat3(&m_vSavePosition, XMVectorSet(0.5f, -4.f, 41.f, 1.f));
 		break;
 	case LEVEL::SHOP:
-		XMStoreFloat3(&m_vSavePosition, XMVectorSet(6.f, 4.f, -41.f, 1.f));
+		XMStoreFloat3(&m_vSavePosition, XMVectorSet(5.5f, 5.f, -30.f, 1.f));
 		break;
 	default:
 		break;
@@ -143,6 +143,7 @@ HRESULT CPlayer::Initialize(void* pArg)
 	Subscribe_Events();
 
 	Change_States(STATES::WAKE_UP);
+
 	return S_OK;
 }
 
@@ -687,7 +688,7 @@ _vector CPlayer::Get_State(STATE eState)
 
 _bool CPlayer::KeyDown(_ubyte eKeyID)
 {
-	if (m_isOnInven)
+	if (m_isOnInven || m_isDeal)
 		return false;
 
 	return KEY_DOWN(eKeyID);
@@ -695,7 +696,7 @@ _bool CPlayer::KeyDown(_ubyte eKeyID)
 
 _bool CPlayer::KeyPressing(_ubyte eKeyID)
 {
-	if (m_isOnInven)
+	if (m_isOnInven || m_isDeal)
 		return false;
 
 	return KEY_PRESSING(eKeyID);
@@ -703,7 +704,7 @@ _bool CPlayer::KeyPressing(_ubyte eKeyID)
 
 _bool CPlayer::KeyUp(_ubyte eKeyID)
 {
-	if (m_isOnInven)
+	if (m_isOnInven || m_isDeal)
 		return false;
 
 	return KEY_UP(eKeyID);
@@ -711,7 +712,7 @@ _bool CPlayer::KeyUp(_ubyte eKeyID)
 
 _bool CPlayer::IsAnyMoveKeyPressed() const
 {
-	if (m_isOnInven)
+	if (m_isOnInven || m_isDeal)
 		return false;
 
 	return KEY_PRESSING(DIK_W) || KEY_PRESSING(DIK_A) ||
@@ -721,7 +722,7 @@ _bool CPlayer::IsAnyMoveKeyPressed() const
 
 _bool CPlayer::IsMoveKeyPressed()
 {
-	if (m_isOnInven)
+	if (m_isOnInven || m_isDeal)
 		return false;
 
 	return KEY_PRESSING(DIK_W) || KEY_PRESSING(DIK_A) ||
@@ -764,7 +765,10 @@ void CPlayer::Use_Stamina(_float fStamina)
 	m_fStaminaDelayTimeAcc = 0.f;
 
 	if (0 >= m_fStamina)
+	{
 		m_fStaminaDelayTime = 2.f;
+		m_fStamina = 0.f;
+	}
 	else
 		m_fStaminaDelayTime = 1.f;
 }
@@ -842,13 +846,12 @@ void CPlayer::Key_Input(_float fTimeDelta)
 
 		if (KEY_DOWN(DIK_RETURN))
 		{
-			CGameInstance::Get_Instance()->Publish_Event(TEXT("Close_Deal"), false);
+			m_pGameInstance->Publish_Event(TEXT("Close_Deal"), false);
 			m_isDeal = false;
 		}
 	}
 
-
-	if (KEY_DOWN(DIK_TAB))
+	if (KEY_DOWN(DIK_TAB) && !m_isDeal)
 	{
 		m_isOnInven = !m_isOnInven;
 	}
@@ -919,6 +922,7 @@ void CPlayer::On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDura
 	m_fStaggerGage -= fStaggerValue;
 	m_isHit = true;
 	m_pGameInstance->Shake_Camera(ENUM_CLASS(m_eLevelID), TEXT("Camera_TPS"), 0.4f, 0.2f);
+	m_pSoundCom->Play("Hurt");
 
 	if (0 >= m_fHp)
 	{
@@ -998,7 +1002,7 @@ void CPlayer::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameObjec
 	{
 		if (CBullet* Bullet = dynamic_cast<CBullet*>(pOwner))
 		{
-			On_Hit(Bullet->Get_AttackValue(), Bullet->Get_StaggerValue(), fInvicibleDuration);
+			On_Hit(Bullet->Get_AttackValue() / 2.5f, Bullet->Get_StaggerValue(), fInvicibleDuration);
 		}
 	}
 	break;
@@ -1044,6 +1048,11 @@ _float CPlayer::Compute_InvincibleTime(COLLIDER_ID eColliderID)
 HRESULT CPlayer::Ready_Components(void* pArg)
 {
 	if (FAILED(__super::Ready_Components(pArg)))
+		return E_FAIL;
+
+	/* Com_Sound */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Sound_Player"),
+		TEXT("Com_Sound"), reinterpret_cast<CComponent**>(&m_pSoundCom))))
 		return E_FAIL;
 
 	return S_OK;
@@ -1216,6 +1225,19 @@ HRESULT CPlayer::Ready_PartObjects()
 	return S_OK;
 }
 
+void CPlayer::Ready_SoundVolume()
+{
+	m_pSoundCom->SetVolume(0.25f);
+	m_pSoundCom->SetVolume("FootStep", 0.1f);
+	m_pSoundCom->SetVolume("Hurt", 0.1f);
+	m_pSoundCom->SetVolume("Firecracker_fizzle_00", 0.05f);
+	m_pSoundCom->SetVolume("Firecracker_fizzle_01", 0.05f);
+	m_pSoundCom->SetVolume("Firecracker_fizzle_02", 0.05f);
+	m_pSoundCom->SetVolume("Firecracker_fizzle_03", 0.05f);
+	m_pSoundCom->SetVolume("Firecracker_fizzle_04", 0.05f);
+	m_pSoundCom->SetVolume("Firecracker_fuse", 0.05f);
+}
+
 HRESULT CPlayer::Ready_States()
 {
 	m_pStates[ENUM_CLASS(STATES::IDLE)]       = new CPlayerState_Idle(this);
@@ -1288,8 +1310,8 @@ void CPlayer::Free()
 	Safe_Release(m_pCurState);
 	Safe_Release(m_pAttackStrategy);
 
-	Safe_Release(m_pTargetTransform);
 	Safe_Release(m_pTarget);
+	Safe_Release(m_pTargetTransform);
 
 	for (_uint i = 0; i < ENUM_CLASS(STATES::STATES_END); i++)
 		Safe_Release(m_pStates[i]);

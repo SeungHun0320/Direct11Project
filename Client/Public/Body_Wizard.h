@@ -50,6 +50,10 @@ protected:
 	CModel* m_pModelCom = { nullptr };
 
 protected:
+	_float4 m_vEmissiveColor = {};
+	_float  m_fEmissiveRatio = {};
+
+protected:
 	const _float4x4* m_pSocketMatrix = { nullptr };
 
 protected:

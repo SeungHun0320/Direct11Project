@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "UI3D_Interaction.h"
 #include "UI2D_Purchase.h"
+#include "UI2D_Reward.h"
 
 CItem::CItem(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CContainerObject{ pDevice, pContext }
@@ -24,6 +25,11 @@ void CItem::Close_DealWindow(_bool isDeal)
 {
 	if (m_isDeal && m_isCollision)
 		m_isDeal = isDeal;
+
+	_int iSelectedIdx = dynamic_cast<CUI2D_Purchase*>(m_PartObjects[PART_PURCHASE])->Get_ButtonIndex(CUI2D_Purchase::PART_BUY_BUTTON);
+
+	if (1 == iSelectedIdx && m_isCollision)
+		m_pGameInstance->Publish_Event(TEXT("Buy_ShopItem"), m_eItemType, m_iPrice, &m_isSell);
 }
 
 HRESULT CItem::Initialize_Prototype()
@@ -135,10 +141,23 @@ HRESULT CItem::Ready_PartObjects()
 	if (FAILED(__super::Add_PartObject(PART_PURCHASE, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_UI2D_Purchase"), &PurchaseDesc)))
 		return E_FAIL;
 
+	CUI2D_Reward::DESC RewardDesc{};
+
+	RewardDesc.pParentLevelID = &m_eLevelID;
+	RewardDesc.iNumPartObjects = CUI2D_Reward::PART_END;
+	RewardDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	RewardDesc.pParentIsOpen = &m_isSell;
+	RewardDesc.pParentItemType = &m_eItemType;
+
+	if (FAILED(__super::Add_PartObject(PART_REWARD, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_UI2D_Reward"), &RewardDesc)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
 void CItem::Free()
 {
 	__super::Free();
+
+	m_pGameInstance->Unsubscribe_Event<_bool>(this);
 }

@@ -124,6 +124,9 @@ _vector CNavigation::SetUp_Height(_fvector vWorldPos)
 	/* 로컬로 변환 후에 */
 	_vector		vLocalPos = XMVector3TransformCoord(vWorldPos, XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_WorldMatrix)));
 
+	if (-1 == m_iIndex)
+		return XMVector3TransformCoord(vLocalPos, XMLoadFloat4x4(&m_WorldMatrix));
+
 	/* 셀의 높이값을 갖고와서 적용 후*/
 	vLocalPos = XMVectorSetY(vLocalPos, m_Cells[m_iIndex]->Compute_Height(vLocalPos));
 

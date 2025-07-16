@@ -10,6 +10,10 @@
 
 #include "GameInstance.h"
 
+#include "LoadingScene.h"
+
+#define CurLevel LEVEL::LOADING
+
 CLevel_Loading::CLevel_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 		: CLevel { pDevice, pContext }
 {
@@ -22,6 +26,8 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevelID)
 
 	/* 로딩레벨 자체에 필요한 객체를 생성한다. */
 	/* 배경, 로딩바, 버튼, font */
+	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
+		return E_FAIL;
 
 	/* 로딩의 역할(다음레벨에 필요한 자원(Resource)(텍스쳐, 모델, 사운드 등등등 )을 생성하는)을 
 	수행할 로더객체를 생성한다. */
@@ -34,7 +40,7 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevelID)
 
 void CLevel_Loading::Update(_float fTimeDelta)
 {
-	if (KEY_DOWN(DIK_SPACE))
+	//if (KEY_DOWN(DIK_SPACE))
 	{
 		if (true == m_pLoader->isFinished())
 		{
@@ -72,6 +78,23 @@ void CLevel_Loading::Update(_float fTimeDelta)
 HRESULT CLevel_Loading::Render()
 {
 	m_pLoader->Output_LoadingText();
+
+	return S_OK;
+}
+
+HRESULT CLevel_Loading::Ready_Layer_BackGround(const _wstring& strLayerTag)
+{
+	CLoadingScene::DESC tDesc{};
+	tDesc.fSizeX = g_iWinSizeX;
+	tDesc.fSizeY = g_iWinSizeY;
+	tDesc.fX = g_iWinSizeX * 0.5f;
+	tDesc.fY = g_iWinSizeY * 0.5f;
+	tDesc.eLevelID = CurLevel;
+	tDesc.strName = TEXT("LoadingScene");
+
+	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_") + tDesc.strName,
+		ENUM_CLASS(tDesc.eLevelID), strLayerTag, &tDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }

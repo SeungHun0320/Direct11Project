@@ -34,6 +34,10 @@ public: /* 상태패턴 관련 함수들 */
 	void Change_States(STATES eStates);
 	_vector Get_State(STATE eState);
 
+public:
+	const _bool Get_isSell() const { return m_isSell; }
+	void Set_isSell(_bool isSell) { m_isSell = isSell; }
+
 public: /* 상태로 넘겨줄 함수들 */
 	/* 애니메이션 관련 */
 	_bool Play_Animation(PART ePart, _float fTimeDelta);
@@ -52,6 +56,9 @@ private:
 	STATES m_ePreState{ STATES::STATES_END };
 	class CMerchantState* m_pCurState = { nullptr };
 	class CMerchantState* m_pStates[ENUM_CLASS(STATES::STATES_END)] = { nullptr };
+
+private:
+	_bool m_isSell = { false };
 
 private:
 	virtual HRESULT Ready_Components(void* pArg) override;

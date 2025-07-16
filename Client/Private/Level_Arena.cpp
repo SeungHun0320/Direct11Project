@@ -89,10 +89,10 @@ HRESULT CLevel_Arena::Render()
 HRESULT CLevel_Arena::Ready_Layer_Pawn(const _wstring& strLayerTag)
 {
 	//이 레벨의 플레이어 생성위치
-	_float3 vInitPosition{};
+	_float3 vInitPosition = { _float3(0.5f, -4.f, 41.f) };
 
 	/* 테스트용 */
-	vInitPosition = _float3(0.f, 8.f, 190.f);
+	//vInitPosition = _float3(0.f, 8.f, 190.f);
 
 	// 플레이어가 있는지 체크하고 있으면 위치만 변경해줌.
 	auto pPlayer = GET_PLAYER;
@@ -456,6 +456,8 @@ void CLevel_Arena::Check_Collision()
 	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::MONSTER), ENUM_CLASS(COLLIDER_GROUP::MONSTER));
 	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::MONSTER_ATTACK), ENUM_CLASS(COLLIDER_GROUP::PAWN));
 	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::MONSTER_BULLET), ENUM_CLASS(COLLIDER_GROUP::PAWN));
+	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::MONSTER_ATTACK), ENUM_CLASS(COLLIDER_GROUP::ENVIRONMENT));
+	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::MONSTER_BULLET), ENUM_CLASS(COLLIDER_GROUP::ENVIRONMENT));
 }
 
 

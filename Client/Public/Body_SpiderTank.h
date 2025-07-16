@@ -20,6 +20,7 @@ public:
 	typedef struct tagBodySpiderTankDesc : public CPartObject::DESC
 	{
 		LEVEL eLevelID;
+		const _bool* pParentisInBattle{ nullptr };
 	}DESC;
 
 private:
@@ -57,9 +58,12 @@ private:
 
 private:
 	const _float4x4* m_pColMatrix[CSpiderTank::COL_END] = {nullptr};
+	const _bool*     m_pParentisInBattle{ nullptr };
 
 private:
-	LEVEL m_eLevelID = { LEVEL::LEVEL_END };
+	LEVEL   m_eLevelID = { LEVEL::LEVEL_END };
+	_float  m_fEmissiveRatio = {};
+	_float4 m_vEmissiveColor = {};
 
 private:
 	HRESULT Ready_Components(void* pArg);

@@ -448,6 +448,7 @@ HRESULT CSpiderTank::Ready_PartObjects()
 
 	BodyDesc.eLevelID = m_eLevelID;
 	BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	BodyDesc.pParentisInBattle = &m_isInBattle;
 	BodyDesc.pOwner = this;
 
 	if (FAILED(__super::Add_PartObject(PART_BODY, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Body_SpiderTank"), &BodyDesc)))

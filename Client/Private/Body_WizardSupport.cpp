@@ -24,6 +24,8 @@ HRESULT CBody_WizardSupport::Initialize(void* pArg)
     if (FAILED(__super::Initialize(pArg)))
         return E_FAIL;
 
+    m_vEmissiveColor = _float4(0.74f, 0.19f, 0.f, 1.f);
+
     return S_OK;
 }
 

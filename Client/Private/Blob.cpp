@@ -29,7 +29,7 @@ HRESULT CBlob::Initialize_Prototype()
 
 HRESULT CBlob::Initialize(void* pArg)
 {
-	m_fDetectDistance = 5.f;
+	m_fDetectDistance = 7.5f;
 	m_fChaseStopDistance = 10.f;
 
 	/* 공격력 */
@@ -37,7 +37,7 @@ HRESULT CBlob::Initialize(void* pArg)
 	m_fStaggerValue = 5.f;
 
 	/* 체력 */
-	m_fHp = 100.f;
+	m_fHp = 40.f;
 	m_fMaxHp = m_fHp;
 
 	/* 그로기 */
@@ -230,6 +230,12 @@ HRESULT CBlob::Ready_Components(void* pArg)
 	if (FAILED(__super::Ready_Components(pArg)))
 		return E_FAIL;
 
+	/* Com_Sound */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Sound_Blob"),
+		TEXT("Com_Sound"), reinterpret_cast<CComponent**>(&m_pSoundCom))))
+		return E_FAIL;
+
+
 	return S_OK;
 }
 
@@ -283,6 +289,11 @@ HRESULT CBlob::Ready_States()
 	}
 
 	return S_OK;
+}
+
+void CBlob::Ready_SoundVolume()
+{
+	m_pSoundCom->SetVolume(0.2f);
 }
 
 CBlob* CBlob::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

@@ -42,9 +42,6 @@ HRESULT CLevel_Courtyard::Initialize()
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
-	//if (FAILED(Ready_Layer_Effect(TEXT("Layer_Effect"))))
-	//	return E_FAIL;
-
 	if (FAILED(Load_Map(TEXT("Courtyard.Map"))))
 		return E_FAIL;
 
@@ -216,21 +213,6 @@ HRESULT CLevel_Courtyard::Ready_Layer_BackGround(const _wstring& strLayerTag)
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_") + tSkyDesc.strName,
 		ENUM_CLASS(tSkyDesc.eLevelID), strLayerTag, &tSkyDesc)))
-		return E_FAIL;
-
-	return S_OK;
-}
-
-HRESULT CLevel_Courtyard::Ready_Layer_Effect(const _wstring& strLayerTag)
-{
-	CEffect_Obj::DESC SnowDesc{};
-	SnowDesc.eLevelID = CurLevel;
-	SnowDesc.strName = TEXT("Particle_Snow");
-	SnowDesc.strParticleBufferTag = TEXT("Prototype_Component_VIBuffer_Snow");
-	SnowDesc.strParticleTextureTag = TEXT("Prototype_Component_Texture_Snow");
-
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(CurLevel), TEXT("Prototype_GameObject_Snow"),
-		ENUM_CLASS(CurLevel), strLayerTag, &SnowDesc)))
 		return E_FAIL;
 
 	return S_OK;
@@ -509,6 +491,8 @@ void CLevel_Courtyard::Check_Collision()
 	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::MONSTER), ENUM_CLASS(COLLIDER_GROUP::MONSTER));
 	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::MONSTER_ATTACK), ENUM_CLASS(COLLIDER_GROUP::PAWN));
 	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::MONSTER_BULLET), ENUM_CLASS(COLLIDER_GROUP::PAWN));
+	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::MONSTER_ATTACK), ENUM_CLASS(COLLIDER_GROUP::ENVIRONMENT));
+	m_pGameInstance->Intersect(ENUM_CLASS(COLLIDER_GROUP::MONSTER_BULLET), ENUM_CLASS(COLLIDER_GROUP::ENVIRONMENT));
 
 
 }

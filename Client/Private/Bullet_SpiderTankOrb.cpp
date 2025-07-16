@@ -36,18 +36,23 @@ HRESULT CBullet_SpiderTankOrb::Initialize(void* pArg)
 	m_fAttack = 20.f;
 	m_fStaggerValue = 10.f;
 
+	if (FAILED(Create_Steam()))
+		return E_FAIL;
+
 	return S_OK;
 }
 
 void CBullet_SpiderTankOrb::Priority_Update(_float fTimeDelta)
 {
-	
+	m_pPartObject->Priority_Update(fTimeDelta);
 }
 
 LIFE CBullet_SpiderTankOrb::Update(_float fTimeDelta)
 {
 	if (m_bDead)
 		Craete_SmokeEffect();
+
+	m_pPartObject->Update(fTimeDelta);
 
 	if (!m_bGrounded)
 	{
@@ -80,6 +85,7 @@ void CBullet_SpiderTankOrb::Late_Update(_float fTimeDelta)
 	if (!m_pGameInstance->isIn_WorldSpace(m_pTransformCom->Get_State(STATE::POSITION), 1.f))
 		return;
 
+	m_pPartObject->Late_Update(fTimeDelta);
 	m_pGameInstance->Add_RenderGroup(RENDERGROUP::RG_DEPTH_NONLIGHT, this);
 
 }
@@ -116,6 +122,24 @@ HRESULT CBullet_SpiderTankOrb::Craete_SmokeEffect()
 
 	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_") + ExplosionDesc.strName,
 		ENUM_CLASS(m_eLevelID), TEXT("Layer_Effect"), &ExplosionDesc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CBullet_SpiderTankOrb::Create_Steam()
+{
+	CEffect_BossSteam::DESC SteamDesc{};
+
+	SteamDesc.pParentLevelID = &m_eLevelID;
+	SteamDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
+	SteamDesc.strParticeFilePath = TEXT("../Bin/DataFiles/Effect/SpiderTank/BossBombSteam.Effect_Ex");
+	SteamDesc.strParticleBufferTag = TEXT("Prototype_Component_VIBuffer_BossBombSteam");
+	SteamDesc.strParticleTextureTag = TEXT("Prototype_Component_Texture_SteamMask");
+	SteamDesc.pParentisInBattle = &m_isShoot;
+	SteamDesc.eOrientation = CEffect_Part::PARTICLE_ORIENTATION::LOCAL;
+
+	if (FAILED(Add_PartObject(ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Effect_BossSteam"), &SteamDesc)))
 		return E_FAIL;
 
 	return S_OK;
@@ -161,18 +185,13 @@ HRESULT CBullet_SpiderTankOrb::Ready_Components(void* pArg)
 		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &ColDesc)))
 		return E_FAIL;
 
-	CEffect_BossSteam::DESC SteamDesc{};
+	return S_OK;
+}
 
-	SteamDesc.pParentLevelID = &m_eLevelID;
-	SteamDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrix_Float4x4();
-	SteamDesc.strParticeFilePath = TEXT("../Bin/DataFiles/Effect/SpiderTank/BossBombSteam.Effect_Ex");
-	SteamDesc.strParticleBufferTag = TEXT("Prototype_Component_VIBuffer_BossBombSteam");
-	SteamDesc.strParticleTextureTag = TEXT("Prototype_Component_Texture_SteamMask");
-	SteamDesc.pParentisInBattle = &m_isShoot;
-	SteamDesc.eOrientation = CEffect_Part::PARTICLE_ORIENTATION::LOCAL;
-
-	if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_Effect_BossSteam"),
-		ENUM_CLASS(m_eLevelID), TEXT("Layer_Effect"), &SteamDesc)))
+HRESULT CBullet_SpiderTankOrb::Add_PartObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, void* pArg)
+{
+	m_pPartObject = dynamic_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::TYPE_GAMEOBJECT, iPrototypeLevelIndex, strPrototypeTag, pArg));
+	if (nullptr == m_pPartObject)
 		return E_FAIL;
 
 	return S_OK;
@@ -208,4 +227,5 @@ void CBullet_SpiderTankOrb::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pPartObject);
 }

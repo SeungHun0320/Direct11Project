@@ -31,6 +31,9 @@ HRESULT CRenderer::Initialize()
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Normal"),	m_iOriginWidth, m_iOriginHeight, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Emissive"), m_iOriginWidth, m_iOriginHeight, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Shade"), m_iOriginWidth, m_iOriginHeight, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 	
@@ -70,6 +73,8 @@ HRESULT CRenderer::Initialize()
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_GameObjects"), TEXT("Target_Depth"))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_GameObjects"), TEXT("Target_PickPos"))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_GameObjects"), TEXT("Target_Emissive"))))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Lights"), TEXT("Target_Shade"))))
@@ -115,6 +120,8 @@ HRESULT CRenderer::Initialize()
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Depth"), fRTWidth * 0.5f, fRTHeight * 2.5f, fRTWidth, fRTHeight)))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Emissive"), fRTWidth * 0.5f, fRTHeight * 3.5f, fRTWidth, fRTHeight)))
+		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Shade"), fRTWidth * 1.5f, fRTHeight * 0.5f, fRTWidth, fRTHeight)))
 		return E_FAIL;
@@ -127,7 +134,7 @@ HRESULT CRenderer::Initialize()
 	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Shadow"), ViewportDesc.Width - (fRTWidth * 0.5f), fRTHeight * 0.5f, fRTWidth, fRTHeight)))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Effects"), fRTWidth * 0.5f, fRTHeight * 3.5f, fRTWidth, fRTHeight)))
+	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Effects"), fRTWidth * 1.5f, fRTHeight * 2.5f, fRTWidth, fRTHeight)))
 		return E_FAIL;
 
 #endif
@@ -337,6 +344,8 @@ HRESULT CRenderer::Render_BackBuffer()
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(TEXT("Target_Diffuse"), "g_DiffuseTexture", m_pShader)))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(TEXT("Target_Emissive"), "g_EmissiveTexture", m_pShader)))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(TEXT("Target_Shade"), "g_ShadeTexture", m_pShader)))
 		return E_FAIL;

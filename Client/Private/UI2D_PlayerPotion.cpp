@@ -56,7 +56,8 @@ void CUI2D_PlayerPotion::Late_Update(_float fTimeDelta)
 	_int iCurNumPotion = m_pInventory->Get_CurPotion();
 	_int iNumPotion = m_pInventory->Get_NumPotion();
 
-	Set_UIVisible(iNumPotion - 1, true);
+	if(0 != iNumPotion)
+		Set_UIVisible(iNumPotion - 1, true);
 
 	for (_int i = 0; i < iNumPotion; i++)
 		Set_TextureIndex(i, i < iCurNumPotion ? 0 : 1);

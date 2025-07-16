@@ -22,6 +22,9 @@ HRESULT CBody_SpiderTank::Initialize(void* pArg)
 	DESC* pDesc = static_cast<DESC*>(pArg);
 
 	m_eLevelID = pDesc->eLevelID;
+	m_pParentisInBattle = pDesc->pParentisInBattle;
+
+	m_vEmissiveColor = _float4(1.f, 0.28f, 0.28f, 1.f);
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -43,6 +46,8 @@ void CBody_SpiderTank::Priority_Update(_float fTimeDelta)
 
 LIFE CBody_SpiderTank::Update(_float fTimeDelta)
 {
+	m_fEmissiveRatio += fTimeDelta * 0.1f;
+
 	XMStoreFloat4x4(&m_CombinedWorldMatrix, m_pTransformCom->Get_WorldMatrix() * XMLoadFloat4x4(m_pParentMatrix));
 
 
@@ -83,11 +88,26 @@ HRESULT CBody_SpiderTank::Render()
 				return E_FAIL;
 		}
 
-		
 		m_pModelCom->Bind_Bone_Matrices(m_pShaderCom, "g_BoneMatrices", i);
 
-		if (FAILED(m_pShaderCom->Begin(1)))
-			return E_FAIL;
+		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, "g_EmissiveTexture", i, TEX_TYPE::EMISSIVE, 0)))
+		{
+			if (FAILED(m_pShaderCom->Begin(1)))
+				return E_FAIL;
+		}
+		else
+		{
+			if (!(*m_pParentisInBattle))
+			{
+				if (FAILED(m_pShaderCom->Begin(1)))
+					return E_FAIL;
+			}
+			else
+			{
+				if (FAILED(m_pShaderCom->Begin(5)))
+					return E_FAIL;
+			}
+		}
 
 		if (FAILED(m_pModelCom->Render(i)))
 			return E_FAIL;
@@ -229,6 +249,10 @@ HRESULT CBody_SpiderTank::Bind_ShaderResources()
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_Transform_Float4x4(D3DTS::PROJ))))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_fFar", m_pGameInstance->Get_Far_Ptr(), sizeof(_float))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_fEmissiveRatio", &m_fEmissiveRatio, sizeof(_float))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_vEmissiveColor", &m_vEmissiveColor, sizeof(_float4))))
 		return E_FAIL;
 
 	return S_OK;

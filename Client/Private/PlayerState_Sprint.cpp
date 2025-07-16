@@ -19,6 +19,13 @@ void CPlayerState_Sprint::Execute(_float fTimeDelta)
 {
 	m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta);
 
+	m_fSprintSoundTimer += fTimeDelta;
+	if (0.25f <= m_fSprintSoundTimer)
+	{
+		m_pOwner->Play_Sound("FootStep");
+		m_fSprintSoundTimer = 0.f;
+	}
+
 	m_pOwner->Move(m_pOwner->Get_InputDirectionEx(), fTimeDelta, SPEED);
 
 	if (m_pOwner->KeyDown(DIK_SPACE))

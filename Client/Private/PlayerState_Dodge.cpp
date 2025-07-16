@@ -16,12 +16,29 @@ void CPlayerState_Dodge::Enter(_float fTimeDelta)
 		m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::DODGE, false, 0.1f);
 		m_fDuration = 0.7f;
 		m_pOwner->Set_Collider_Active(CPlayer::PART_BODY, false);
+		switch (rand() % 3)
+		{
+		case 0:
+			m_pOwner->Play_Sound("DodgeRoll0");
+			break;
+		case 1:
+			m_pOwner->Play_Sound("DodgeRoll1");
+			break;
+		case 2:
+			m_pOwner->Play_Sound("DodgeRoll2");
+			break;
+		case 3:
+			m_pOwner->Play_Sound("DodgeRoll3");
+			break;
+		}
+
 	}
 	else
 	{
 		m_pOwner->Set_isNoStamina(true);
 		m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::FAIL_DODGE, false, 0.1f);
-		m_fDuration = 0.75f;  
+		m_fDuration = 0.75f;
+		m_pOwner->Play_Sound("Dodge_NoStamina");
 	}
 
 	m_fTimeAcc = 0.f;

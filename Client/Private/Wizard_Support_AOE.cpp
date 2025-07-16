@@ -92,6 +92,17 @@ HRESULT CWizard_Support_AOE::Ready_Effects(const _wstring& strLayerTag)
      if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_Obj"),
         ENUM_CLASS(m_eLevelID), strLayerTag, &AOE3Desc)))
         return E_FAIL;
+     
+    CEffect_Obj::DESC AOE4Desc{};
+    AOE4Desc.eLevelID = m_eLevelID;
+    AOE4Desc.strParticeFilePath = TEXT("../Bin/DataFiles/Effect/Wizard/Wizard_AOE4.Effect_Ex");
+    AOE4Desc.strParticleTextureTag = TEXT("Prototype_Component_Texture_CrossCircle");
+    AOE4Desc.strParticleBufferTag = TEXT("Prototype_Component_VIBuffer_WizardAOE4");
+    AOE4Desc.WorldMatrix = XMMatrixRotationX(XMConvertToRadians(90.f)) * XMMatrixTranslation(vPos.x, vPos.y + 0.1f, vPos.z);
+
+     if (FAILED(m_pGameInstance->Add_GameObject(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_GameObject_Effect_Obj"),
+        ENUM_CLASS(m_eLevelID), strLayerTag, &AOE4Desc)))
+        return E_FAIL;
 
 
 

@@ -31,12 +31,12 @@ public:
 	virtual void Late_Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
+public:
+	const _int Get_ButtonIndex(PART ePart);
+
 private:
 	const _int*  m_pParentPrice = { nullptr };
 	const _bool* m_pParentisDeal = { nullptr };
-
-private:
-	_int m_iTextureIndex{};
 
 private:
 	void ChooseButton(PART ePart);

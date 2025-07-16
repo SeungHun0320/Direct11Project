@@ -26,7 +26,6 @@ public:
 
 		LEVEL*               pParentLevelID = { nullptr };
 		PARTICLE_ORIENTATION eOrientation = { WORLD };
-
 	}DESC;
 
 protected:
@@ -55,6 +54,9 @@ protected:
 	_float4		m_vColor = {};
 	LEVEL*		m_pParentLevelID = { nullptr };
 	_float4x4   m_ParentMatrix = {};
+
+protected:
+	_float m_fTimeAcc = {};
 
 protected:
 	EFFECT_PASS m_ePass = { EFFECT_PASS::PASS_END };

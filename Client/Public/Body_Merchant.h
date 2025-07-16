@@ -44,6 +44,9 @@ private:
 	const LEVEL* m_pParentLevelID = { nullptr };
 	const _bool* m_pParentisFind = { nullptr };
 
+private:
+	_float4 m_vEmissiveColor = {};
+
 protected:
 	virtual HRESULT Ready_Components(void* pArg);
 	HRESULT Bind_ShaderResources();

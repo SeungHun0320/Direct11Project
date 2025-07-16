@@ -12,6 +12,7 @@ void CPlayerState_CoinFlip::Enter(_float fTimeDelta)
 	m_fTimeAcc  = 0.f;
 
 	m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::COIN_FLIP, false, 0.1f);
+	m_pOwner->Play_Sound("CoinFlip");
 }
 
 void CPlayerState_CoinFlip::Execute(_float fTimeDelta)

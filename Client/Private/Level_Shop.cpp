@@ -123,7 +123,7 @@ HRESULT CLevel_Shop::Ready_Layer_Camera(const _wstring& strLayerTag)
 
 	tDesc.eLevelID = CurLevel;
 	tDesc.fSensor = 1.5f;
-	tDesc.vOffset = _float3(-12.f, 16.5f, -12.f);
+	tDesc.vOffset = _float3(-14.5f, 16.5f, -14.5f);
 	tDesc.fDeadZoneX = 2.5f;
 	tDesc.fDeadZoneZ = 2.5f;
 	tDesc.pTarget = pPlayer;
@@ -156,7 +156,7 @@ HRESULT CLevel_Shop::Ready_Layer_Monster(const _wstring& strLayerTag)
 	tDesc.fSpeedPerSec = 20.f;
 	tDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	tDesc.strName = TEXT("Merchant");
-	tDesc.WorldMatrix = XMMatrixTranslation(5.f, -30.f, 8.5f);
+	tDesc.WorldMatrix = XMMatrixTranslation(5.f, -30.f, 13.f);
 	tDesc.iNumPartObjects = CMerchant::PART_END;
 
 	m_MonsterDescs.push_back(tDesc);
@@ -361,12 +361,45 @@ HRESULT CLevel_Shop::Ready_Lights()
 
 	LightDesc.eType = LIGHT_DESC::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.fAmbient = 0.4f;
-	LightDesc.vSpecular = _float4(0.3f, 0.3f, 0.3f, 1.f);
+	LightDesc.vDiffuse = _float4(0.3f, 0.3f, 0.3f, 1.f);
+	LightDesc.fAmbient = 0.2f;
+	LightDesc.vSpecular = _float4(0.f, 0.f, 0.f, 1.f);
 
 	if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
 		return E_FAIL;
+
+	LightDesc.eType = LIGHT_DESC::TYPE_POINT;
+	LightDesc.vPosition = _float4(-5.f, 8.f, 20.f, 1.f);
+	LightDesc.fRange = 22.5f;
+	LightDesc.vDiffuse = _float4(0.4f, 0.72f, 1.f, 1.f);
+	LightDesc.fAmbient = 1.f;
+	LightDesc.vSpecular = _float4(0.7f, 0.95f, 1.f, 1.f);
+
+	if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
+		return E_FAIL;
+
+	LightDesc.eType = LIGHT_DESC::TYPE_POINT;
+	LightDesc.vPosition = _float4(15.f, 8.f, 20.f, 1.f);
+	LightDesc.fRange = 22.5f;
+	LightDesc.vDiffuse = _float4(1.f, 0.41f, 0.68f, 1.f);
+	LightDesc.fAmbient = 1.f;
+	LightDesc.vSpecular = _float4(1.f, 0.75f, 0.9f, 1.f);
+
+	if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
+		return E_FAIL;
+
+	for (_uint i = 0; i < 5; i++)
+	{
+		LightDesc.eType = LIGHT_DESC::TYPE_POINT;
+		LightDesc.vPosition = _float4((-2.f) + i * 5.f, 3.f, -0.5f, 1.f);
+		LightDesc.fRange = 5.f;
+		LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+		LightDesc.fAmbient = 1.f;
+		LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
+
+		if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
+			return E_FAIL;
+	}
 
 	return S_OK;
 }

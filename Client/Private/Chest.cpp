@@ -148,7 +148,6 @@ HRESULT CChest::Ready_PartObjects()
 	if (FAILED(__super::Add_PartObject(PART_INTERACTION, ENUM_CLASS(m_eLevelID), TEXT("Prototype_GameObject_UI3D_Interaction"), &InteractionDesc)))
 		return E_FAIL;
 
-
 	/* 코인은 유아이 안뜨게 */
 	if (ITEM_TYPE::COIN == m_eType)
 		return S_OK;

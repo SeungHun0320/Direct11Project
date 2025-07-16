@@ -53,9 +53,35 @@ void CPlayerState_Attack1::Enter(_float fTimeDelta)
 
     m_fTimeAcc = 0.f;
     m_fAttackStartTime = 0.3f;
+    m_isAttacked = false;
 
     XMStoreFloat3(&m_vInputDir, m_pOwner->Get_State(STATE::LOOK));
 	m_pOwner->Change_Animation(CPlayer::PART_BODY, eCombo, false, 0.1f);
+
+    switch (m_eWeaponType)
+    {
+    case WEAPON_TYPE::STICK:
+    {
+        _string RandomNum = to_string(rand() % 5);
+        m_pOwner->Play_Sound("Stick_0" + RandomNum);
+    }
+        break;
+    case WEAPON_TYPE::SWORD:
+    {
+        _string RandomNum = to_string(rand() % 3);
+        m_pOwner->Play_Sound("Sword_com0_0" + RandomNum);
+    }
+        break;
+    case WEAPON_TYPE::DAGGER:
+    {
+        _string RandomNum = to_string(rand() % 3);
+        m_pOwner->Play_Sound("Dagger_Charge" + RandomNum);
+    }
+        break;
+    default:
+        break;
+    }
+
 }
 
 void CPlayerState_Attack1::Execute(_float fTimeDelta)
@@ -70,8 +96,15 @@ void CPlayerState_Attack1::Execute(_float fTimeDelta)
     {
         m_pOwner->Set_Collider_Active(m_eWeaponType);
         m_pOwner->Set_isAttacked();
-    }
-      
+
+        if (WEAPON_TYPE::DAGGER == m_eWeaponType && !m_isAttacked)
+        {
+            _string RandomNum = to_string(rand() % 3);
+            m_pOwner->Play_Sound("Dagger_Burst" + RandomNum);
+            m_isAttacked = true;
+        }
+
+    } 
     if (WEAPON_TYPE::STICK == m_eWeaponType)
     {
         if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta))
@@ -166,6 +199,7 @@ void CPlayerState_Attack1::Exit()
     XMStoreFloat3(&m_vInputDir, XMVectorZero());
     m_pOwner->Set_Collider_Active(m_eWeaponType, false);
     m_pOwner->Set_isDaggerAttack(false);
+    m_isAttacked = false;
 }
 
 void CPlayerState_Attack1::Free()
@@ -198,6 +232,24 @@ void CPlayerState_Attack2::Enter(_float fTimeDelta)
 
     XMStoreFloat3(&m_vInputDir, m_pOwner->Get_State(STATE::LOOK));
 	m_pOwner->Change_Animation(CPlayer::PART_BODY, eCombo, false, 0.1f);
+
+    switch (m_eWeaponType)
+    {
+    case WEAPON_TYPE::STICK:
+    {
+        _string RandomNum = to_string(rand() % 5);
+        m_pOwner->Play_Sound("Stick_windup_0" + RandomNum);
+    }
+    break;
+    case WEAPON_TYPE::SWORD:
+    {
+        _string RandomNum = to_string(rand() % 3);
+        m_pOwner->Play_Sound("Sword_com1_0" + RandomNum);
+    }
+    break;
+    default:
+        break;
+    }
 
 }
 
@@ -304,6 +356,18 @@ void CPlayerState_Attack3::Enter(_float fTimeDelta)
 
     XMStoreFloat3(&m_vInputDir, m_pOwner->Get_State(STATE::LOOK));
 	m_pOwner->Change_Animation(CPlayer::PART_BODY, eCombo, false, 0.1f);
+
+    switch (m_eWeaponType)
+    {
+    case WEAPON_TYPE::SWORD:
+    {
+        _string RandomNum = to_string(rand() % 3);
+        m_pOwner->Play_Sound("Sword_com2_0" + RandomNum);
+    }
+    break;
+    default:
+        break;
+    }
 }
 
 void CPlayerState_Attack3::Execute(_float fTimeDelta)

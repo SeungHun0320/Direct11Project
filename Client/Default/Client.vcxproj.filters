@@ -487,9 +487,6 @@
     <Filter Include="02.GameObjects\08.Effect\01. MonsterEffect\Smoke">
       <UniqueIdentifier>{44b7d267-1bf0-4909-ac2c-e57c073e49f2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\08.Effect\01. MonsterEffect\AOE">
-      <UniqueIdentifier>{7a814b10-d6aa-4b06-bba9-901b9cd445cd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\08.Effect\02. BossEffect">
       <UniqueIdentifier>{ba41d300-b1aa-429d-bf3f-b12d0d42b7de}</UniqueIdentifier>
     </Filter>
@@ -529,11 +526,11 @@
     <Filter Include="02.GameObjects\03.Actor\Monsters\03.Merchant\State">
       <UniqueIdentifier>{195d7b29-33cc-4390-9b04-bcae446fa2d9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.UI\05.Interaction\ShopUI">
-      <UniqueIdentifier>{e2faa798-cc6a-4a76-96c8-4594bba0d0c1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\00.UI\05.Interaction\Price">
       <UniqueIdentifier>{c9c0fc12-aae1-4154-b88a-2cd73bc3df73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.BackGround\03.LoadingScene">
+      <UniqueIdentifier>{7400e8fd-008d-4ac7-acf0-475a5ac77af6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -977,6 +974,9 @@
     </ClInclude>
     <ClInclude Include="..\public\UI2D_Purchase.h">
       <Filter>02.GameObjects\00.UI\05.Interaction\Price</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\LoadingScene.h">
+      <Filter>02.GameObjects\01.BackGround\03.LoadingScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1463,6 +1463,9 @@
     </ClCompile>
     <ClCompile Include="..\private\UI2D_Purchase.cpp">
       <Filter>02.GameObjects\00.UI\05.Interaction\Price</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\LoadingScene.cpp">
+      <Filter>02.GameObjects\01.BackGround\03.LoadingScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

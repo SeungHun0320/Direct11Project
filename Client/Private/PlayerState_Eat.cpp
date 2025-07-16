@@ -22,6 +22,15 @@ void CPlayerState_Eat::Enter(_float fTimeDelta)
 	}
 
 	m_byEatType = m_pOwner->Get_EatType();
+	switch (m_byEatType)
+	{
+	case 1:
+		m_pOwner->Play_Sound("BerryHP");
+		break;
+	case 2:
+		m_pOwner->Play_Sound("BerryMP");
+		break;
+	}
 
 	m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::EAT, false, 0.2f);
 }

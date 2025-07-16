@@ -26,6 +26,9 @@ private:
 	virtual ~CVIBuffer_Point_Instance() = default;
 
 public:
+	const _float Get_MaxLifeTime() const { return m_fMaxLifeTime; }
+
+public:
 	virtual HRESULT Initialize_Prototype(const DESC* pArg);
 	virtual HRESULT Initialize_Prototype(const _wstring& strParticleFilePath);
 	virtual HRESULT Initialize(void* pArg);
@@ -43,6 +46,7 @@ private:
 	/* 파티클이 생성되는 시작점? */
 	_float3					    m_vPivot = {};
 	_bool                       m_isLoop = { false };
+	_float						m_fMaxLifeTime = {};
 
 
 public:

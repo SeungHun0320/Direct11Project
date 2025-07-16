@@ -23,7 +23,7 @@ HRESULT CMerchant::Initialize(void* pArg)
 {
     DESC* pDesc = static_cast<DESC*>(pArg);
 
-    m_fDetectDistance = 36.f;
+    m_fDetectDistance = 40.f;
     m_fChaseStopDistance = 10.f;
 
     /* °ø°Ý·Â */
@@ -41,6 +41,11 @@ HRESULT CMerchant::Initialize(void* pArg)
         return E_FAIL;
 
     Change_States(STATES::HIDDEN);
+
+
+    Delegate<_bool> MerchantDealDele;
+    MerchantDealDele.Bind<CMerchant, &CMerchant::Set_isSell>(this);
+    m_pGameInstance->Subscribe_Event(TEXT("Sucsess_Deal"), MerchantDealDele);
 
     m_pTransformCom->Rotation(XMConvertToRadians(0.f), XMConvertToRadians(180.f), XMConvertToRadians(0.f));
 
@@ -121,8 +126,12 @@ void CMerchant::Go_Right(_float fTimeDelta, _float fSpeed)
 
 void CMerchant::Go_Up(_float fTimeDelta, _float fSpeed)
 {
+    _float fY = XMVectorGetY(m_pTransformCom->Get_State(STATE::POSITION));
+
     m_pTransformCom->Set_SpeedPerSec(fSpeed);
-    m_pTransformCom->Go_Up(fTimeDelta);
+    if(-3.f >= fY)
+        m_pTransformCom->Go_Up(fTimeDelta);
+
 }
 
 _bool CMerchant::is_TargetOnRight()

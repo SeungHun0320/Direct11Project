@@ -18,6 +18,13 @@ void CPlayerState_Move::Enter(_float fTimeDelta)
 void CPlayerState_Move::Execute(_float fTimeDelta)
 {
 	m_pOwner->Play_Animation(CPlayer::PART_BODY, fTimeDelta);
+	
+	m_fWalkSoundTimer += fTimeDelta;
+	if (0.35f <= m_fWalkSoundTimer)
+	{
+		m_pOwner->Play_Sound("FootStep");
+		m_fWalkSoundTimer = 0.f;
+	}
 
 	if (m_pOwner->IsLockOn())
 	{

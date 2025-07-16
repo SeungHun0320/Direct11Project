@@ -12,6 +12,7 @@ void CPlayerState_WakeUp::Enter(_float fTimeDelta)
 	m_fTimeAcc  = 0.f;
 
 	m_pOwner->Change_Animation(CPlayer::PART_BODY, CPlayer::ANIM_STATES::WAKE_UP, false);
+	m_pOwner->Play_Sound("WakeUp");
 }
 
 void CPlayerState_WakeUp::Execute(_float fTimeDelta)

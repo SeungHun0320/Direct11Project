@@ -5,6 +5,7 @@
 
 BEGIN(Engine)
 class CCollider;
+class CSoundController;
 class CNavigation;
 END
 
@@ -56,9 +57,14 @@ public: /* 충돌 관련 */
 	_bool Get_IsBlocked() const {
 		return m_isBlocked;
 	}
+
+public:
+	void Play_Sound(const _string& strTag);
 	
 protected:
 	CNavigation* m_pNavigationCom = { nullptr };
+	/* 사운드,,!! */
+	CSoundController* m_pSoundCom = { nullptr };
 
 protected:
 	LEVEL m_eLevelID = { LEVEL::LEVEL_END };
@@ -93,7 +99,7 @@ protected:
 protected:
 	virtual HRESULT Ready_Components(void* pArg);
 	virtual HRESULT Ready_PartObjects() { return S_OK; };
-
+	virtual void    Ready_SoundVolume() {}
 
 public:
 	virtual CGameObject* Clone(void* pArg) PURE;

@@ -41,7 +41,22 @@ LIFE CEffect_BossSteam::Update(_float fTimeDelta)
     if (!(*m_pParentisInBattle))
         return LIFE::NONE;
 
-    __super::Update(fTimeDelta);
+    switch (m_eMoveType)
+    {
+    case EFFECT_MOVE::DROP:
+        m_pVIBufferCom->Drop(fTimeDelta);
+        break;
+    case EFFECT_MOVE::SPREAD:
+        m_pVIBufferCom->Spread(fTimeDelta);
+        break;
+    case EFFECT_MOVE::CHASE:
+        _matrix ParentMatrix = XMLoadFloat4x4(m_pParentMatrix);
+        m_pVIBufferCom->MoveTrail(XMVectorSetW(ParentMatrix.r[3], 0.f), fTimeDelta);
+        break;
+    default:
+        break;
+
+    }
 
     XMStoreFloat4x4(&m_CombinedWorldMatrix,
         XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrix_Float4x4()) * XMLoadFloat4x4(m_pParentMatrix));
