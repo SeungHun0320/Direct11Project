@@ -1,6 +1,8 @@
 #include "Wizard_SupportState.h"
 #include "Wizard_Support.h"
 
+#include "GameInstance.h"
+
 /* --------------------------
 		   아이들
 ------------------------- */
@@ -27,6 +29,9 @@ void CWizard_SupportState_Idle::Execute(_float fTimeDelta)
 	{
 		if (m_pOwner->Find_Player())
 		{
+			_string RandomNum = to_string(rand() % 5);
+			m_pOwner->Play_Sound("Aggro_" + RandomNum);
+
 			// 거리가 가깝다면
 			if(6.f >= m_pOwner->Get_DistanceToPlayer())
 				m_pOwner->Change_States(CWizard_Support::STATES::TELEPORT);
@@ -139,6 +144,8 @@ void CWizard_SupportState_Dead::Enter(_float fTimeDelta)
 	m_fTimeAcc = 0.f;
 
 	m_pOwner->Change_Animation(CWizard_Support::PART_BODY, CWizard_Support::DEAD, false, 0.2f);
+	_string RandomNum = to_string(rand() % 3);
+	m_pOwner->Play_Sound("Death_" + RandomNum);
 }
 
 void CWizard_SupportState_Dead::Execute(_float fTimeDelta)
@@ -175,9 +182,12 @@ void CWizard_SupportState_Casting::Enter(_float fTimeDelta)
 
 	m_fDuration = 1.f;
 	m_fCastingTime = 5.f;
-	m_IsCasting = false;
+	m_isCasting = false;
 	XMStoreFloat3(&m_vTargetDir, m_pOwner->Get_TargetPosition());
 	m_pOwner->Change_Animation(CWizard_Support::PART_BODY, CWizard_Support::CASTING_START, false, 0.3f);
+
+	_string strRandomNum = to_string(rand() % 5);
+	m_pOwner->Play_Sound("Attack_Vo_" + strRandomNum);
 }
 
 void CWizard_SupportState_Casting::Execute(_float fTimeDelta)
@@ -189,15 +199,22 @@ void CWizard_SupportState_Casting::Execute(_float fTimeDelta)
 
 	m_pOwner->Play_Animation(CWizard_Support::PART_BODY, fTimeDelta);
 
-	if (m_fDuration <= m_fTimeAcc && !m_IsCasting)
+	if (m_fDuration <= m_fTimeAcc && !m_isCasting)
 	{
+		_string strRandomNum = to_string(rand() % 3);
+		m_pOwner->Play_Sound("Attack_M_" + strRandomNum);
+		strRandomNum = to_string(rand() % 6);
+		m_pOwner->Play_Sound("Attack_St_" + strRandomNum);
 		m_pOwner->Change_Animation(CWizard_Support::PART_BODY, CWizard_Support::CASTING, true, 0.1f);
 		m_pOwner->Casting();
-		m_IsCasting = true;
+		m_isCasting = true;
 	}
 
-	if (m_IsCasting && m_fCastingTime <= m_fCastingTimeAcc)
+	if (m_isCasting && m_fCastingTime <= m_fCastingTimeAcc)
 	{
+		_string strRandomNum = to_string(rand() % 3);
+		m_pOwner->Play_Sound("Attack_Impact_" + strRandomNum);
+
 		// 캐스팅 거리보다 멀다면.
 		if (m_pOwner->Get_CastingDistance() <= m_pOwner->Get_DistanceToPlayer())
 			m_pOwner->Change_States(CWizard_Support::STATES::MOVE);
@@ -214,7 +231,7 @@ void CWizard_SupportState_Casting::Exit()
 	m_fCastingTime = 0.f;
 	m_fCastingTimeAcc = 0.f;
 	XMStoreFloat3(&m_vTargetDir, m_pOwner->Get_TargetPosition());
-	m_IsCasting = false;
+	m_isCasting = false;
 }
 
 void CWizard_SupportState_Casting::Free()
@@ -233,6 +250,8 @@ CWizard_SupportState_Teleport::CWizard_SupportState_Teleport(CWizard_Support* pO
 void CWizard_SupportState_Teleport::Enter(_float fTimeDelta)
 {
 	m_pOwner->Change_Animation(CWizard_Support::PART_BODY, CWizard_Support::TELEPORT, false, 0.2f);
+	_string strRandomNum = to_string(rand() % 3);
+	m_pOwner->Play_Sound("Teleport_In_" + strRandomNum);
 }
 
 void CWizard_SupportState_Teleport::Execute(_float fTimeDelta)
@@ -240,16 +259,21 @@ void CWizard_SupportState_Teleport::Execute(_float fTimeDelta)
 	/* 랜덤한 거리로 이동*/
 	if (m_pOwner->Play_Animation(CWizard_Support::PART_BODY, fTimeDelta))
 	{
+		_float fRandomX = CGameInstance::Get_Instance()->Compute_Random(-3.f, 3.f);
+		_float fRandomZ = CGameInstance::Get_Instance()->Compute_Random(-3.f, 3.f);
+
 		/* 개 똥 코드 감사합니다.*/
 		/* 나중에 디스크립션이던가 해갖고 랜덤위치 넣어줘야할듯 */
 		m_pOwner->Set_State(STATE::POSITION, m_pOwner->Get_State(STATE::POSITION)
-			+ XMVectorSet(1.f, 0.f, -10.f, 0.f));
+			+ XMVectorSet(fRandomX, 0.f, fRandomZ, 0.f));
 		m_pOwner->Change_States(CWizard_Support::STATES::IDLE);
 	}
 }
 
 void CWizard_SupportState_Teleport::Exit()
 {
+	_string strRandomNum = to_string(rand() % 3);
+	m_pOwner->Play_Sound("Teleport_Out_" + strRandomNum);
 }
 
 void CWizard_SupportState_Teleport::Free()

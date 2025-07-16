@@ -96,9 +96,11 @@ public: // CWizard_SwordState을(를) 통해 상속됨
 	void Exit() override;
 
 private:
-	_byte m_byRandom{};
+	_byte   m_byRandom{};
 	_float3 m_vTargetPos{};
-	_float m_fAttackStartTime{};
+	_float  m_fAttackStartTime{};
+	_bool   m_isFirstAttacked{ false };
+	_bool   m_isSecondAttacked{ false };
 
 public:
 	virtual void Free() override;
@@ -148,6 +150,9 @@ public: // CWizard_SwordState을(를) 통해 상속됨
 	void Enter(_float fTimeDelta) override;
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
+
+private:
+	_bool  m_isDeath{ false };
 
 public:
 	virtual void Free() override;

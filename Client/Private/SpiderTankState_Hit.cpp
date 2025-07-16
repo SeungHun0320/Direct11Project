@@ -90,12 +90,13 @@ CSpiderTankState_Dead::CSpiderTankState_Dead(CSpiderTank* pOwner)
 
 void CSpiderTankState_Dead::Enter(_float fTimeDelta)
 {
-	m_fDuration = 5.25f;
 	m_fDuration = 10.f;
 	m_fTimeAcc = 0.f;
 
 	m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::DEAD_START, false, 0.2f);
-	m_pOwner->Set_Dead(true);
+
+	m_pOwner->Play_Sound("Death");
+	m_pOwner->Play_Sound("Death_Vo");
 }
 
 void CSpiderTankState_Dead::Execute(_float fTimeDelta)
@@ -104,10 +105,13 @@ void CSpiderTankState_Dead::Execute(_float fTimeDelta)
 
 	m_pOwner->Play_Animation(CSpiderTank::PART_BODY, fTimeDelta);
 
+	if(4.5f <= m_fTimeAcc)
+		m_pOwner->Set_isInBattle(false);
+
 	if (m_fDuration <= m_fTimeAcc)
 	{
 		m_pOwner->Change_Camera(CAM_MODE::TPS);
-		m_pOwner->Set_isInBattle(false);
+		m_pOwner->Set_Dead(true);
 	}
 		
 }

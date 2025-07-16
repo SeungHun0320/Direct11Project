@@ -101,6 +101,7 @@ public: // CSpiderTankState을(를) 통해 상속됨
 
 private:
 	_float3 m_vMovePos{};
+	_float  m_fWalkSoundTimer{};
 
 public:
 	virtual void Free() override;
@@ -120,6 +121,7 @@ public: // CSpiderTankState을(를) 통해 상속됨
 
 private:
 	_float3 m_vMoveDir{};
+	_float  m_fWalkSoundTimer{};
 
 public:
 	virtual void Free() override;
@@ -137,6 +139,9 @@ public: // CSpiderTankState을(를) 통해 상속됨
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
 
+private:
+	_float m_fTurnTimer{};
+
 public:
 	virtual void Free() override;
 
@@ -152,6 +157,9 @@ public: // CSpiderTankState을(를) 통해 상속됨
 	void Enter(_float fTimeDelta) override;
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
+
+private:
+	_float m_fTurnTimer{};
 
 public:
 	virtual void Free() override;
@@ -231,6 +239,7 @@ public: // CSpiderTankState을(를) 통해 상속됨
 
 private:
 	_float m_fAttackStartTime{};
+	_bool  m_isAttacked{ false };
 
 public:
 	virtual void Free() override;
@@ -254,6 +263,7 @@ public: // CSpiderTankState을(를) 통해 상속됨
 private:
 	ARM	   m_eArm{ ARM_END };
 	_float m_fAttackStartTime{};
+	_bool  m_isAttacked{ false };
 
 public:
 	virtual void Free() override;
@@ -273,9 +283,9 @@ public: // CSpiderTankState을(를) 통해 상속됨
 	void Exit() override;
 
 private:
-	_bool m_bBlendStarted = {false};
+	_bool   m_bBlendStarted = {false};
 	_float3 m_vMoveDir{};
-	_float m_fAttackStartTime{};
+	_float  m_fAttackStartTime{};
 
 public:
 	virtual void Free() override;
@@ -314,6 +324,7 @@ public: // CSpiderTankState을(를) 통해 상속됨
 private:
 	_float m_fShotTime{};
 	_float m_fReloadTime{};
+	_float m_fTurnTimer{};
 
 public:
 	virtual void Free() override;

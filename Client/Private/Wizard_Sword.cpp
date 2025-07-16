@@ -141,12 +141,16 @@ void CWizard_Sword::On_Hit(_float fDamage, _float fStaggerValue, _float fInvicib
 	{
 		m_fHp = 0.f;
 		Change_States(STATES::DEAD);
+		_string strRandomVoiceNum = to_string(rand() % 5);
+		m_pSoundCom->Play("Death_Vo_" + strRandomVoiceNum);
 	}
 	else
 	{
 		m_fInvicibleTime = fInvicibleDuration;
 		m_isInvincible = true;
 		Change_States(STATES::HIT);
+		_string strRandomNum = to_string(rand() % 7);
+		m_pSoundCom->Play("Hurt_" + strRandomNum);
 	}
 }
 
@@ -158,6 +162,11 @@ void CWizard_Sword::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGam
 HRESULT CWizard_Sword::Ready_Components(void* pArg)
 {
 	if (FAILED(__super::Ready_Components(pArg)))
+		return E_FAIL;
+
+	/* Com_Sound */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Sound_WizardSword"),
+		TEXT("Com_Sound"), reinterpret_cast<CComponent**>(&m_pSoundCom))))
 		return E_FAIL;
 
 	return S_OK;
@@ -227,6 +236,25 @@ HRESULT CWizard_Sword::Ready_States()
 	}
 
 	return S_OK;
+}
+
+void CWizard_Sword::Ready_SoundVolume()
+{
+	m_pSoundCom->SetVolume(0.2f);
+	m_pSoundCom->SetVolume("AttackBackHand_Fire_0", 0.1f);
+	m_pSoundCom->SetVolume("AttackBackHand_Fire_1", 0.1f);
+	m_pSoundCom->SetVolume("AttackBackHand_Fire_2", 0.1f);
+	m_pSoundCom->SetVolume("AttackBackHand_Main_0", 0.3f);
+	m_pSoundCom->SetVolume("AttackBackHand_Main_1", 0.3f);
+	m_pSoundCom->SetVolume("AttackBackHand_Main_2", 0.3f);
+
+	m_pSoundCom->SetVolume("AttackForeHand_Fire_0", 0.1f);
+	m_pSoundCom->SetVolume("AttackForeHand_Fire_1", 0.1f);
+	m_pSoundCom->SetVolume("AttackForeHand_Fire_2", 0.1f);
+	m_pSoundCom->SetVolume("AttackForeHand_Main_0", 0.3f);
+	m_pSoundCom->SetVolume("AttackForeHand_Main_1", 0.3f);
+	m_pSoundCom->SetVolume("AttackForeHand_Main_2", 0.3f);
+
 }
 
 CWizard_Sword* CWizard_Sword::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

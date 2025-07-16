@@ -140,12 +140,16 @@ void CWizard_Candleabra::On_Hit(_float fDamage, _float fStaggerValue, _float fIn
 	{
 		m_fHp = 0.f;
 		Change_States(STATES::DEAD);
+		_string strRandomVoiceNum = to_string(rand() % 5);
+		m_pSoundCom->Play("Death_Vo_" + strRandomVoiceNum);
 	}
 	else
 	{
 		m_fInvicibleTime = fInvicibleDuration;
 		m_isInvincible = true;
 		Change_States(STATES::HIT);
+		_string strRandomNum = to_string(rand() % 6);
+		m_pSoundCom->Play("Hurt_" + strRandomNum);
 	}
 }
 
@@ -157,6 +161,11 @@ void CWizard_Candleabra::On_Collision(_uint MyColliderID, _uint OtherColliderID,
 HRESULT CWizard_Candleabra::Ready_Components(void* pArg)
 {
 	if (FAILED(__super::Ready_Components(pArg)))
+		return E_FAIL;
+
+	/* Com_Sound */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Sound_WizardCandleabra"),
+		TEXT("Com_Sound"), reinterpret_cast<CComponent**>(&m_pSoundCom))))
 		return E_FAIL;
 
 	return S_OK;
@@ -237,6 +246,11 @@ HRESULT CWizard_Candleabra::Ready_States()
 	}
 
 	return S_OK;
+}
+
+void CWizard_Candleabra::Ready_SoundVolume()
+{
+	m_pSoundCom->SetVolume(0.2f);
 }
 
 CWizard_Candleabra* CWizard_Candleabra::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

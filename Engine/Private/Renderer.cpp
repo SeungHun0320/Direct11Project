@@ -142,6 +142,29 @@ HRESULT CRenderer::Initialize()
 	return S_OK;
 }
 
+void CRenderer::Update(_float fTimeDelta)
+{
+	if (m_byFadeFlag)
+	{
+		if (m_fFadeTimeAcc >= m_fFadeTimeLimit * 2.f)
+		{
+			m_byFadeFlag = 0;
+		}
+
+		m_fFadeTimeAcc += fTimeDelta;
+		float prevAlpha = m_fFadeAlpha;
+
+		
+		printf("FadeAlpha: %f\n", m_fFadeAlpha);
+
+		m_fFadeAlpha = m_fFadeTimeAcc / m_fFadeTimeLimit * 2.f;
+		if (2 == m_byFadeFlag) // 페이드 인일시 반전
+			m_fFadeAlpha = 2.f - m_fFadeAlpha;
+
+		m_fFadeAlpha = clamp(m_fFadeAlpha, 0.f, 1.f);
+	}
+}
+
 HRESULT CRenderer::Add_RenderGroup(RENDERGROUP eRenderGroup, CGameObject* pRenderObject)
 {
 	if (eRenderGroup >=	RENDERGROUP::RG_END ||
@@ -206,6 +229,12 @@ HRESULT CRenderer::Draw()
 	if (FAILED(Render_UI()))
 		return E_FAIL;
 	
+	if (m_byFadeFlag)
+	{
+		if (FAILED(Redner_FadeInOut()))
+			return E_FAIL;
+	}
+
 #ifdef _DEBUG
 	//if (FAILED(Render_Debug()))
 	//	return E_FAIL;
@@ -539,6 +568,26 @@ HRESULT CRenderer::Render_Final()
 	if (FAILED(m_pVIBuffer->Render()))
 		return E_FAIL;
 
+
+	return S_OK;
+}
+
+HRESULT CRenderer::Redner_FadeInOut()
+{
+	if (FAILED(m_pShader->Bind_RawValue("g_fAlpha", &m_fFadeAlpha, sizeof(_float))))
+		return E_FAIL;
+	if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", &m_WorldMatrix)))
+		return E_FAIL;
+	if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
+		return E_FAIL;
+	if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+		return E_FAIL;
+
+	/* 페이드 시간에 따라 검은화면을 랜더해줘야함*/
+	m_pShader->Begin(7);
+
+	m_pVIBuffer->Bind_Buffers();
+	m_pVIBuffer->Render();
 
 	return S_OK;
 }

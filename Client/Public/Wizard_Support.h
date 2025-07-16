@@ -64,6 +64,7 @@ private:
 	virtual HRESULT Ready_Components(void* pArg) override;
 	virtual HRESULT Ready_PartObjects() override;
 	virtual HRESULT Ready_States() override;
+	virtual void Ready_SoundVolume() override;
 
 public:
 	static CWizard_Support* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

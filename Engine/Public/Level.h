@@ -31,6 +31,8 @@ protected:
 
 protected:
 	_uint					m_iNextLevel{};
+	_bool                   m_isChangeLevel = { false };
+	_float					m_fChangeLevelTimeAcc{};
 
 protected:
 	virtual HRESULT Load_Map(const _wstring& strMapFileTag) { return S_OK; };

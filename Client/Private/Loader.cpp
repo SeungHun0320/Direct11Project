@@ -558,8 +558,13 @@ HRESULT CLoader::Loading_For_Static(LEVEL eLevelID)
 		CSoundController::Create("../Bin/Resources/Sounds/Player/"))))
 		return E_FAIL;
 
-	/* For.Prototype_Component_Sound_Player*/
+	/* For.Prototype_Component_Sound_Firecracker */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Sound_Firecracker"),
+		CSoundController::Create("../Bin/Resources/Sounds/Firecracker/"))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Sound_Inventory*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Sound_Inventory"),
 		CSoundController::Create("../Bin/Resources/Sounds/Firecracker/"))))
 		return E_FAIL;
 
@@ -1024,6 +1029,19 @@ HRESULT CLoader::Loading_For_Courtyard(LEVEL eLevelID)
 		CSoundController::Create("../Bin/Resources/Sounds/Blob/"))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Sound_WizardCandleabra*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Sound_WizardCandleabra"),
+		CSoundController::Create("../Bin/Resources/Sounds/Wizard/Candleabra/"))))
+		return E_FAIL;
+	/* For.Prototype_Component_Sound_WizardSupport*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Sound_WizardSupport"),
+		CSoundController::Create("../Bin/Resources/Sounds/Wizard/Support/"))))
+		return E_FAIL;
+	/* For.Prototype_Component_Sound_WizardSword*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Sound_WizardSword"),
+		CSoundController::Create("../Bin/Resources/Sounds/Wizard/Sword/"))))
+		return E_FAIL;
+
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
 	/* For.Prototype_GameObject_Terrain */
 	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_GameObject_Terrain"),
@@ -1459,7 +1477,14 @@ HRESULT CLoader::Loading_For_Arena(LEVEL eLevelID)
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
-
+	/* For.Prototype_Component_Sound_SpiderTank*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Sound_SpiderTank"),
+		CSoundController::Create("../Bin/Resources/Sounds/SpiderTank/"))))
+		return E_FAIL;
+	/* For.Prototype_Component_Sound_SpiderTankOrb*/
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_CLASS(eLevelID), TEXT("Prototype_Component_Sound_SpiderTankOrb"),
+		CSoundController::Create("../Bin/Resources/Sounds/SpiderTankOrb/"))))
+		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
 	/* For.Prototype_GameObject_Camera_TPS */

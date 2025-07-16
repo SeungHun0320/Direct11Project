@@ -12,8 +12,16 @@ private:
 
 public:
 	HRESULT Initialize();
+	void Update(_float fTimeDelta);
 	HRESULT Add_RenderGroup(RENDERGROUP eRenderGroup, class CGameObject* pRenderObject);
 	HRESULT Draw();
+
+	void Start_Fade(_bool isIn, _float fTime) {
+		m_fFadeAlpha = (_float)isIn;
+		m_byFadeFlag = isIn + 1;
+		m_fFadeTimeLimit = fTime;
+		m_fFadeTimeAcc = 0;
+	}
 
 #ifdef _DEBUG
 public: /* 디버그용 컴포넌트를 디버그용 렌더러쪽에 넣어준다. */
@@ -33,6 +41,12 @@ private: /* 렌더 타겟을 나눴을때 그려주기 위한 직교투영 백그라운드 */
 	_float4x4					m_WorldMatrix{}, m_ViewMatrix{}, m_ProjMatrix{};
 	ID3D11DepthStencilView*     m_pShadowDSV = { nullptr };
 	_uint						m_iOriginWidth{}, m_iOriginHeight{};
+
+private:
+	_float m_fFadeAlpha = {};
+	_float m_fFadeTimeLimit = {};
+	_float m_fFadeTimeAcc = {};
+	_byte  m_byFadeFlag = {};
 
 private:
 	list<class CGameObject*>	m_RenderObjects[ENUM_CLASS(RENDERGROUP::RG_END)];
@@ -55,6 +69,8 @@ private:
 
 	HRESULT Render_Blur();
 	HRESULT Render_Final();
+
+	HRESULT Redner_FadeInOut();
 
 #ifdef _DEBUG
 private:

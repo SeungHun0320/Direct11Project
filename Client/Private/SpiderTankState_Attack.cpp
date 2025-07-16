@@ -17,6 +17,9 @@ void CSpiderTankState_Lager::Enter(_float fTimeDelta)
 	m_isShot = false;
 	m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::LAGER, false, 0.3f);
 
+	_string RandomNum = to_string(rand() % 3);
+	m_pOwner->Play_Sound("Beam_" + RandomNum);
+
 }
 
 void CSpiderTankState_Lager::Execute(_float fTimeDelta)
@@ -66,6 +69,10 @@ void CSpiderTankState_SpawnMob::Enter(_float fTimeDelta)
 	m_fDuration = 2.f;
 	m_fTimeAcc = 0.f;
 	m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::SPAWNMOB, false, 0.3f);
+
+	m_pOwner->Play_Sound("Depoloy_Add");
+	m_pOwner->Play_Sound("Depoloy_Add_Vo");
+
 }
 
 void CSpiderTankState_SpawnMob::Execute(_float fTimeDelta)
@@ -115,7 +122,8 @@ void CSpiderTankState_FastAttack::Enter(_float fTimeDelta)
 	else
 		m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::MID_ATTACK, false, 0.2f);
 
-
+	m_pOwner->Play_Sound("MeleeBasicForward");
+	m_pOwner->Play_Sound("MeleeBasicForward_Vo");
 }
 
 void CSpiderTankState_FastAttack::Execute(_float fTimeDelta)
@@ -168,15 +176,19 @@ void CSpiderTankState_Swing::Enter(_float fTimeDelta)
 
 	_float fDot = XMVectorGetX(XMVector3Dot(vRight, vDir));
 
-	if (-0.2f <= fDot)
+	if (-0.1f <= fDot)
 	{
 		m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::R_SWING, false, 0.2f);
 		m_eArm = RIGHT;
+		m_pOwner->Play_Sound("Swipe_Right");
+		m_pOwner->Play_Sound("Swipe_Right_Vo");
 	}
 	else
 	{
 		m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::L_SWING, false, 0.2f);
 		m_eArm = LEFT;
+		m_pOwner->Play_Sound("Swipe_Left");
+		m_pOwner->Play_Sound("Swipe_Left_Vo");
 	}
 
 	m_fAttackStartTime = 0.75f;
@@ -246,6 +258,9 @@ void CSpiderTankState_FullSwing::Enter(_float fTimeDelta)
 	m_pOwner->LookAtYaw(vDir, 0.5f);
 
 	m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::FULLSWING, false, 0.4f);
+
+	m_pOwner->Play_Sound("FullSwing_Vo");
+	m_pOwner->Play_Sound("FullSwing");
 }
 
 void CSpiderTankState_FullSwing::Execute(_float fTimeDelta)
@@ -253,7 +268,10 @@ void CSpiderTankState_FullSwing::Execute(_float fTimeDelta)
 	m_fTimeAcc += fTimeDelta;
 
 	if (m_fAttackStartTime <= m_fTimeAcc)
+	{
 		m_pOwner->Set_Active(CSpiderTank::RIGHT_ARM);
+	}
+
 
 	if (3.f <= m_fTimeAcc && !m_bBlendStarted)
 	{
@@ -303,6 +321,9 @@ void CSpiderTankState_ReadyShot::Enter(_float fTimeDelta)
 	m_fTimeAcc = 0.f;
 
 	m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::READY_SHOT, false, 0.2f);
+
+	m_pOwner->Play_Sound("GunsOn");
+	m_pOwner->Play_Sound("GunsOn_Vo");
 }
 
 void CSpiderTankState_ReadyShot::Execute(_float fTimeDelta)
@@ -349,6 +370,14 @@ void CSpiderTankState_Shot::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 	m_fShotTime += fTimeDelta;
+
+	m_fTurnTimer += fTimeDelta;
+
+	if (0.4f <= m_fTurnTimer)
+	{
+		m_pOwner->Play_Sound("FootStep_Turn");
+		m_fTurnTimer = 0.f;
+	}
 
 	_vector vPos = m_pOwner->Get_State(STATE::POSITION);
 	_vector vTarget = m_pOwner->Get_TargetPosition();
@@ -416,6 +445,9 @@ void CSpiderTankState_EndShot::Enter(_float fTimeDelta)
 	m_fTimeAcc = 0.f;
 
 	m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::END_SHOT, true, 0.2f);
+
+	m_pOwner->Play_Sound("GunsOff");
+	m_pOwner->Play_Sound("GunsOff_Vo");
 }
 
 void CSpiderTankState_EndShot::Execute(_float fTimeDelta)
@@ -454,6 +486,9 @@ void CSpiderTankState_ReadyBomb::Enter(_float fTimeDelta)
 	m_fTimeAcc = 0.f;
 
 	m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::READY_BOMB, false, 0.3f);
+
+	m_pOwner->Play_Sound("Depoloy_Missile_SetUp");
+	m_pOwner->Play_Sound("Depoloy_Missile_SetUp_Vo");
 }
 
 void CSpiderTankState_ReadyBomb::Execute(_float fTimeDelta)
@@ -493,7 +528,7 @@ void CSpiderTankState_ShotBomb::Enter(_float fTimeDelta)
 	m_fTimeAcc = 0.f;
 
 	m_iShotCount = 0;
-	m_fReloadTime = 0.5f;
+	m_fReloadTime = 0.49f;
 	m_fShotTime = 0.f;
 
 	m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::SHOT_BOMB, true, 0.3f);
@@ -547,6 +582,9 @@ void CSpiderTankState_EndBomb::Enter(_float fTimeDelta)
 	m_fTimeAcc = 0.f;
 
 	m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::END_BOMB, false, 0.3f);
+
+	m_pOwner->Play_Sound("Depoloy_Missile_Done");
+	m_pOwner->Play_Sound("Depoloy_Missile_Done_Vo");
 }
 
 void CSpiderTankState_EndBomb::Execute(_float fTimeDelta)

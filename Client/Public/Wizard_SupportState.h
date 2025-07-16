@@ -63,7 +63,7 @@ public: // CWizard_SupportState을(를) 통해 상속됨
 	void Exit() override;
 
 private:
-	_bool  m_IsCasting = { false };
+	_bool  m_isCasting = { false };
 	_float m_fCastingTimeAcc = {};
 	_float m_fCastingTime = {};
 	_float3 m_vTargetDir{};

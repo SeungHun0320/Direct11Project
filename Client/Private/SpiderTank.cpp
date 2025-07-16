@@ -98,6 +98,9 @@ LIFE CSpiderTank::Update(_float fTimeDelta)
 		m_pCurState->Execute(fTimeDelta);
 	}
 
+	if (KEY_DOWN(DIK_1))
+		Change_States(STATES::DEAD);
+
 	return LIFE::NONE;
 }
 
@@ -254,6 +257,10 @@ _bool CSpiderTank::Is_TargetOnRight()
 
 HRESULT CSpiderTank::Shot_Bullet()
 {
+	_string strRandomNum = to_string(rand() % 8);
+	m_pSoundCom->Play("GunsFire_" + strRandomNum);
+
+
 	CBullet_SpiderTank::DESC BulletDesc{};
 
 	BulletDesc.eLevelID = m_eLevelID;
@@ -304,6 +311,9 @@ HRESULT CSpiderTank::Shot_Bullet()
 
 HRESULT CSpiderTank::Shot_Bomb()
 {
+	_string strRandomNum = to_string(rand() % 3);
+	m_pSoundCom->Play("Missile_Fire_" + strRandomNum);
+
 	CBullet_SpiderTankOrb::DESC tDesc{};
 	_float3 vPos{};
 
@@ -327,6 +337,7 @@ HRESULT CSpiderTank::Shot_Bomb()
 
 HRESULT CSpiderTank::Shot_Lager()
 {
+
 	_float3 vPos{};
 	CBullet_SpiderTankLager::DESC tDesc{};
 
@@ -375,7 +386,7 @@ const _float4x4* CSpiderTank::Get_BoneMatrix(const _string& strBoneName)
 
 void CSpiderTank::On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDuration)
 {
-	if (m_isInvincible || m_bDead)
+	if (m_isInvincible || STATES::DEAD == m_eCurState)
 		return;
 
 	m_fHp -= fDamage;
@@ -395,6 +406,9 @@ void CSpiderTank::On_Hit(_float fDamage, _float fStaggerValue, _float fInvicible
 			m_fStaggerGage = m_fMaxStaggerGage;
 			m_isStagger = false;
 			Change_States(STATES::KNOCKBACK);
+
+			_string strRandomNum = to_string(rand() % 6);
+			m_pSoundCom->Play("Finch_" + strRandomNum);
 		}
 		else if (m_fStaggerGage <= m_fMaxStaggerGage * 0.7f && !m_isStagger)
 		{
@@ -437,6 +451,11 @@ void CSpiderTank::On_Collision(_uint MyColliderID, _uint OtherColliderID, CGameO
 HRESULT CSpiderTank::Ready_Components(void* pArg)
 {
 	if (FAILED(__super::Ready_Components(pArg)))
+		return E_FAIL;
+
+	/* Com_Sound */
+	if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Sound_SpiderTank"),
+		TEXT("Com_Sound"), reinterpret_cast<CComponent**>(&m_pSoundCom))))
 		return E_FAIL;
 
 	return S_OK;
@@ -556,6 +575,16 @@ HRESULT CSpiderTank::Ready_States()
 	}
 
 	return S_OK;
+}
+
+void CSpiderTank::Ready_SoundVolume()
+{
+	m_pSoundCom->SetVolume(0.3f);
+	m_pSoundCom->SetVolume("Movement_Loop", 0.05f);
+	m_pSoundCom->Set_Loop("Movement_Loop");
+	m_pSoundCom->SetVolume("Beam_0", 0.4f);
+	m_pSoundCom->SetVolume("Beam_1", 0.4f);
+	m_pSoundCom->SetVolume("Beam_2", 0.4f);
 }
 
 CSpiderTank* CSpiderTank::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

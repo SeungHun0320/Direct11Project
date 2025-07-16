@@ -269,20 +269,36 @@ void CInventory::Key_Input()
         return;
 
     if (KEY_DOWN(DIK_UP))
+    {
         Move_Selector(+1);
+    }
     if (KEY_DOWN(DIK_DOWN))
+    {
         Move_Selector(-1);
+    }
     if (KEY_DOWN(DIK_LEFT))
+    {
         Move_Selector(-1);
+    }
     if (KEY_DOWN(DIK_RIGHT))
+    {
         Move_Selector(+1);
+    }
+
 
     if (KEY_DOWN(DIK_J))
+    {
         Register_QuickSlot(QSLOT_J);
-    if(KEY_DOWN(DIK_K))
+    }
+    if (KEY_DOWN(DIK_K))
+    {
         Register_QuickSlot(QSLOT_K);
-    if(KEY_DOWN(DIK_L))
+    }
+    if (KEY_DOWN(DIK_L))
+    {
         Register_QuickSlot(QSLOT_L);
+    }
+
 }
 
 void CInventory::Move_Selector(_uint iSlotIndex)
@@ -293,6 +309,11 @@ void CInventory::Move_Selector(_uint iSlotIndex)
 
 HRESULT CInventory::Ready_Components(void* pArg)
 {
+    /* Com_Sound */
+    if (FAILED(__super::Add_Component(ENUM_CLASS(LEVEL::STATIC), TEXT("Prototype_Component_Sound_Inventory"),
+        TEXT("Com_Sound"), reinterpret_cast<CComponent**>(&m_pSoundCom))))
+        return E_FAIL;
+
     return S_OK;
 }
 
@@ -324,6 +345,8 @@ CGameObject* CInventory::Clone(void* pArg)
 void CInventory::Free()
 {
     __super::Free();
+
+    Safe_Release(m_pSoundCom);
 
     m_pGameInstance->Unsubscribe_Event<ITEM_TYPE>(this);
     m_pGameInstance->Unsubscribe_Event<ITEM_TYPE, _int, _bool*>(this);

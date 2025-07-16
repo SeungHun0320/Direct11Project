@@ -25,9 +25,6 @@ HRESULT CBullet_Monster::Initialize(void* pArg)
 	if (nullptr != m_pTargetTransform)
 		Safe_AddRef(m_pTargetTransform);
 
-
-
-
 	return S_OK;
 }
 

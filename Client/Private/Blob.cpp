@@ -190,12 +190,16 @@ void CBlob::On_Hit(_float fDamage, _float fStaggerValue, _float fInvicibleDurati
 		m_fHp = 0.f;
 		m_bDead = true;
 		Change_States(STATES::HIT);
+		_string strRandomNum = to_string(rand() % 4);
+		m_pSoundCom->Play("Death" + strRandomNum);
 	}
 	else
 	{
 		m_fInvicibleTime = fInvicibleDuration;
 		m_isInvincible = true;
 		Change_States(STATES::HIT);
+		_string strRandomNum = to_string(rand() % 3);
+		m_pSoundCom->Play("Hurt" + strRandomNum);
 	};
 }
 
@@ -234,7 +238,6 @@ HRESULT CBlob::Ready_Components(void* pArg)
 	if (FAILED(__super::Add_Component(ENUM_CLASS(m_eLevelID), TEXT("Prototype_Component_Sound_Blob"),
 		TEXT("Com_Sound"), reinterpret_cast<CComponent**>(&m_pSoundCom))))
 		return E_FAIL;
-
 
 	return S_OK;
 }

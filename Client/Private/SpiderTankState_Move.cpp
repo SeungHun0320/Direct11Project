@@ -22,6 +22,14 @@ void CSpiderTankState_Forward::Enter(_float fTimeDelta)
 void CSpiderTankState_Forward::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
+	m_fWalkSoundTimer += fTimeDelta;
+	if (0.9f <= m_fWalkSoundTimer)
+	{
+		_string strRandomNum = to_string(rand() % 10);
+		m_pOwner->Play_Sound("FootStep_" + strRandomNum);
+		m_fWalkSoundTimer = 0.f;
+	}
+
 	m_pOwner->AttackCoolDownAcc(fTimeDelta);
 
 	m_pOwner->Play_Animation(CSpiderTank::PART_BODY, fTimeDelta);
@@ -94,6 +102,14 @@ void CSpiderTankState_Backward::Enter(_float fTimeDelta)
 void CSpiderTankState_Backward::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
+	m_fWalkSoundTimer += fTimeDelta;
+	if (0.9f <= m_fWalkSoundTimer)
+	{
+		_string strRandomNum = to_string(rand() % 10);
+		m_pOwner->Play_Sound("FootStep_" + strRandomNum);
+		m_fWalkSoundTimer = 0.f;
+	}
+
 	m_pOwner->AttackCoolDownAcc(fTimeDelta);
 
 	m_pOwner->Play_Animation(CSpiderTank::PART_BODY, fTimeDelta);
@@ -166,6 +182,14 @@ void CSpiderTankState_TurnRight::Enter(_float fTimeDelta)
 void CSpiderTankState_TurnRight::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
+	m_fTurnTimer += fTimeDelta;
+
+	if (0.4f <= m_fTurnTimer)
+	{
+		m_pOwner->Play_Sound("FootStep_Turn");
+		m_fTurnTimer = 0.f;
+	}
+
 	m_pOwner->AttackCoolDownAcc(fTimeDelta);
 
 	m_pOwner->Play_Animation(CSpiderTank::PART_BODY, fTimeDelta);
@@ -224,6 +248,14 @@ void CSpiderTankState_TurnLeft::Enter(_float fTimeDelta)
 void CSpiderTankState_TurnLeft::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
+	m_fTurnTimer += fTimeDelta;
+
+	if (0.4f <= m_fTurnTimer)
+	{
+		m_pOwner->Play_Sound("FootStep_Turn");
+		m_fTurnTimer = 0.f;
+	}
+
 	m_pOwner->AttackCoolDownAcc(fTimeDelta);
 
 	m_pOwner->Play_Animation(CSpiderTank::PART_BODY, fTimeDelta);
@@ -284,6 +316,7 @@ void CSpiderTankState_Reverse::Enter(_float fTimeDelta)
 	XMStoreFloat3(&m_vMoveDir, vDir);
 
 	m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::REVERSE, false, 0.1f);
+	m_pOwner->Play_Sound("BackStep");
 }
 
 void CSpiderTankState_Reverse::Execute(_float fTimeDelta)

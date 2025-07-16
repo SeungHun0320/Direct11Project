@@ -61,6 +61,9 @@ void CWizard_CandleabraState_Detected::Enter(_float fTimeDelta)
 	m_fDuration = 1.8f;
 	m_fChaseDistance = 10.f;
 	m_pOwner->Change_Animation(CWizard_Candleabra::PART_BODY, CWizard_Candleabra::DETECTED, false, 0.2f);
+
+	_string strRandomNum = to_string(rand() % 5);
+	m_pOwner->Play_Sound("Aggro_Vo_" + strRandomNum);
 }
 
 void CWizard_CandleabraState_Detected::Execute(_float fTimeDelta)
@@ -160,18 +163,30 @@ void CWizard_CandleabraState_Attack::Enter(_float fTimeDelta)
 	m_fTimeAcc = 0.f;
 	m_fDuration = 1.1f;
 	m_fChaseDistance = 10.f;
+	m_isAttacked = false;
 	XMStoreFloat3(&m_vTargetPos, m_pOwner->Get_TargetPosition());
 	m_pOwner->Change_Animation(CWizard_Candleabra::PART_BODY, CWizard_Candleabra::ATTACK, false, 0.2f);
 
 	m_fAttackStartTime = 0.5f;
+
+	_string strRandomNum = to_string(rand() % 5);
+	m_pOwner->Play_Sound("Attack_Main_Vo_" + strRandomNum);
 }
 
 void CWizard_CandleabraState_Attack::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 
-	if(m_fAttackStartTime <= m_fTimeAcc)
+	if (m_fAttackStartTime <= m_fTimeAcc && !m_isAttacked)
+	{
 		m_pOwner->Set_Active(CWizard_Candleabra::PART_CANDLEABRA);
+		_string strRandomNum = to_string(rand() % 3);
+		m_pOwner->Play_Sound("Attack_Main_" + strRandomNum);
+		m_pOwner->Play_Sound("Attack_Fire_" + strRandomNum);
+
+		m_isAttacked = true;
+	}
+		
 
 	m_pOwner->LookAt(XMVectorSetW(XMLoadFloat3(&m_vTargetPos), 1.f), fTimeDelta, 1.f);
 
@@ -195,6 +210,7 @@ void CWizard_CandleabraState_Attack::Exit()
 	m_fChaseDistance = 0.f;
 	m_fDuration = 0.f;
 	m_fAttackStartTime = 0.f;
+	m_isAttacked = false;
 	XMStoreFloat3(&m_vTargetPos, XMVectorZero());
 	m_pOwner->Set_Active(CWizard_Candleabra::PART_CANDLEABRA, false);
 }
@@ -299,6 +315,8 @@ void CWizard_CandleabraState_Dead::Enter(_float fTimeDelta)
 	m_fTimeAcc = 0.f;
 
 	m_pOwner->Change_Animation(CWizard_Candleabra::PART_BODY, CWizard_Candleabra::DEAD, false, 0.2f);
+	_string strRandomNum = to_string(rand() % 3);
+	m_pOwner->Play_Sound("Death_" + strRandomNum);
 }
 
 void CWizard_CandleabraState_Dead::Execute(_float fTimeDelta)

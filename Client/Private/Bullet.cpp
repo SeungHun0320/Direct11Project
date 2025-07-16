@@ -40,14 +40,13 @@ void CBullet::Priority_Update(_float fTimeDelta)
 
 LIFE CBullet::Update(_float fTimeDelta)
 {
-	m_fTimeAcc += fTimeDelta;
-
 	if (m_bDead)
 		return LIFE::DEAD;
 
-	if (m_fDeadTime <= m_fTimeAcc)
-		Set_Dead(true);
+	m_fTimeAcc += fTimeDelta;
 
+	if (m_fDeadTime <= m_fTimeAcc) 
+		Set_Dead(true);
 
 	return LIFE::NONE;
 }

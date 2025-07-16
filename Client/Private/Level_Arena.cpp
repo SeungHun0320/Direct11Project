@@ -46,6 +46,8 @@ HRESULT CLevel_Arena::Initialize()
 	if (FAILED(Ready_Lights()))
 		return E_FAIL;
 
+	m_pGameInstance->Start_Fade(TRUE, 1.f);
+
 	m_pGameInstance->Set_CameraMode(ENUM_CLASS(CurLevel), TEXT("Camera_TPS"), ENUM_CLASS(CAM_MODE::TPS));
 
 	m_pBGM = m_pGameInstance->Get_Single_Sound("Fortress_Boss");
@@ -68,14 +70,26 @@ void CLevel_Arena::Update(_float fTimeDelta)
 
 	Check_Collision();
 
+
 	if (m_iNextLevel)
 	{
 		LEVEL eLevelID = static_cast<LEVEL>(m_iNextLevel);
 
-		m_pGameInstance->Clear_Lights();
-		m_pGameInstance->Clear_Colliders();
-		m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
-			CLevel_Loading::Create(m_pDevice, m_pContext, eLevelID));
+		m_fChangeLevelTimeAcc += fTimeDelta;
+
+		if (!m_isChangeLevel)
+		{
+			m_pGameInstance->Start_Fade(FALSE, 1.f);
+			m_isChangeLevel = true;
+		}
+
+		if (1.f <= m_fChangeLevelTimeAcc)
+		{
+			m_pGameInstance->Clear_Lights();
+			m_pGameInstance->Clear_Colliders();
+			m_pGameInstance->Change_Level(ENUM_CLASS(LEVEL::LOADING),
+				CLevel_Loading::Create(m_pDevice, m_pContext, eLevelID));
+		}
 	}
 }
 
@@ -92,7 +106,7 @@ HRESULT CLevel_Arena::Ready_Layer_Pawn(const _wstring& strLayerTag)
 	_float3 vInitPosition = { _float3(0.5f, -4.f, 41.f) };
 
 	/* 테스트용 */
-	//vInitPosition = _float3(0.f, 8.f, 190.f);
+	vInitPosition = _float3(0.f, 8.f, 190.f);
 
 	// 플레이어가 있는지 체크하고 있으면 위치만 변경해줌.
 	auto pPlayer = GET_PLAYER;

@@ -199,6 +199,7 @@ void CPlayerState_Attack1::Exit()
     XMStoreFloat3(&m_vInputDir, XMVectorZero());
     m_pOwner->Set_Collider_Active(m_eWeaponType, false);
     m_pOwner->Set_isDaggerAttack(false);
+    m_pOwner->Set_isAttacked(false);
     m_isAttacked = false;
 }
 
@@ -325,6 +326,7 @@ void CPlayerState_Attack2::Exit()
     m_iMaxCombo = 0;
     XMStoreFloat3(&m_vInputDir, XMVectorZero());
     m_pOwner->Set_Collider_Active(m_eWeaponType, false);
+    m_pOwner->Set_isAttacked(false);
 }
 
 void CPlayerState_Attack2::Free()
@@ -414,6 +416,7 @@ void CPlayerState_Attack3::Exit()
     m_fTimeAcc = 0.f;
     XMStoreFloat3(&m_vInputDir, XMVectorZero());
     m_pOwner->Set_Collider_Active(m_eWeaponType, false);
+    m_pOwner->Set_isAttacked(false);
 }
 
 void CPlayerState_Attack3::Free()

@@ -62,6 +62,8 @@ void CSpiderTankState_WakeUp::Enter(_float fTimeDelta)
 	m_fTimeAcc = 0.f;
 
 	m_pOwner->Change_Animation(CSpiderTank::PART_BODY, CSpiderTank::WAKE_UP, false, 0.5f);
+	m_pOwner->Play_Sound("Awake");
+	m_pOwner->Play_Sound("Awake_Vo");
 }
 
 void CSpiderTankState_WakeUp::Execute(_float fTimeDelta)
@@ -78,6 +80,7 @@ void CSpiderTankState_WakeUp::Execute(_float fTimeDelta)
 
 void CSpiderTankState_WakeUp::Exit()
 {
+	m_pOwner->Play_Sound("Movement_Loop");
 	m_fDuration = 0.f;
 	m_fTimeAcc = 0.f;
 }

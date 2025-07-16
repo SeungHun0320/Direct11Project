@@ -132,6 +132,7 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 
 
 	m_pLevel_Manager->Update(fTimeDelta);
+	m_pRenderer->Update(fTimeDelta);
 }
 
 HRESULT CGameInstance::Begin_Draw()
@@ -294,6 +295,11 @@ void CGameInstance::Layer_Clear(_uint iLevelIndex, const _wstring& strLayerTag)
 HRESULT CGameInstance::Add_RenderGroup(RENDERGROUP eRenderGroup, CGameObject* pRenderObject)
 {
 	return m_pRenderer->Add_RenderGroup(eRenderGroup, pRenderObject);
+}
+
+void CGameInstance::Start_Fade(_bool isIn, _float fTime)
+{
+	m_pRenderer->Start_Fade(isIn, fTime);
 }
 
 #ifdef _DEBUG

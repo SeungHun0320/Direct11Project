@@ -99,6 +99,9 @@ void CWizard_SwordState_Detected::Enter(_float fTimeDelta)
 	m_fTimeAcc = 0.f;
 	m_fDuration = 1.8f;
 	m_pOwner->Change_Animation(CWizard_Sword::PART_BODY, CWizard_Sword::DETECTED, false, 0.2f);
+	_string strRandomNum = to_string(rand() % 5);
+	m_pOwner->Play_Sound("Aggro_Vo_" + strRandomNum);
+
 }
 
 void CWizard_SwordState_Detected::Execute(_float fTimeDelta)
@@ -140,6 +143,8 @@ CWizard_SwordState_Attack::CWizard_SwordState_Attack(CWizard_Sword* pOwner)
 void CWizard_SwordState_Attack::Enter(_float fTimeDelta)
 {
 	m_byRandom = rand() % 2;
+	m_isFirstAttacked = false;
+	m_isSecondAttacked = false;
 	XMStoreFloat3(&m_vTargetPos, m_pOwner->Get_TargetPosition());
 
 	if (1 == m_byRandom)
@@ -147,12 +152,14 @@ void CWizard_SwordState_Attack::Enter(_float fTimeDelta)
 		m_pOwner->Change_Animation(CWizard_Sword::PART_BODY, CWizard_Sword::ATTACK1, false, 0.3f);
 		m_fDuration = 2.f;
 	}
-
 	else
 	{
 		m_pOwner->Change_Animation(CWizard_Sword::PART_BODY, CWizard_Sword::ATTACK2, false, 0.2f);
 		m_fDuration = 3.f;
 	}
+
+	_string strRandomNum = to_string(rand() % 5);
+	m_pOwner->Play_Sound("AttackBackHand_Vo_" + strRandomNum);
 
 	m_fAttackStartTime = 1.f;
 }
@@ -161,8 +168,27 @@ void CWizard_SwordState_Attack::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 
-	if(m_fAttackStartTime <= m_fTimeAcc)
+	if (m_fAttackStartTime <= m_fTimeAcc && !m_isFirstAttacked)
+	{
 		m_pOwner->Set_Active();
+
+		_string strRandomNum = to_string(rand() % 3);
+		m_pOwner->Play_Sound("AttackBackHand_Fire_" + strRandomNum);
+		m_pOwner->Play_Sound("AttackBackHand_Main_" + strRandomNum);
+		m_isFirstAttacked = true;
+	}
+
+
+	if (0 == m_byRandom && m_fAttackStartTime + 1.f <= m_fTimeAcc && !m_isSecondAttacked)
+	{
+		_string strRandomNum = to_string(rand() % 5);
+		m_pOwner->Play_Sound("AttackForeHand_Vo_" + strRandomNum);
+		strRandomNum = to_string(rand() % 3);
+		m_pOwner->Play_Sound("AttackForeHand_Fire_" + strRandomNum);
+		m_pOwner->Play_Sound("AttackForeHand_Main_" + strRandomNum);
+		m_isSecondAttacked = true;
+	}
+		
 
 	if (m_fDuration <= m_fTimeAcc || m_pOwner->Play_Animation(CWizard_Sword::PART_BODY, fTimeDelta))
 	{
@@ -184,6 +210,8 @@ void CWizard_SwordState_Attack::Exit()
 	m_fDuration = 0.f;
 	m_fTimeAcc = 0.f;
 	m_pOwner->Set_Active(false);
+	m_isFirstAttacked = false;
+	m_isSecondAttacked = false;
 }
 
 void CWizard_SwordState_Attack::Free()
@@ -300,6 +328,13 @@ void CWizard_SwordState_Dead::Execute(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 
+	if (0.4f <= m_fTimeAcc && !m_isDeath)
+	{
+		_string strRandomNum = to_string(rand() % 3);
+		m_pOwner->Play_Sound("Death_" + strRandomNum);
+		m_isDeath = true;
+	}
+
 	if (m_pOwner->Play_Animation(CWizard_Sword::PART_BODY, fTimeDelta))
 		m_pOwner->Set_Dead(true);
 }
@@ -308,6 +343,7 @@ void CWizard_SwordState_Dead::Exit()
 {
 	m_fDuration = 5.f;
 	m_fTimeAcc = 0.f;
+	m_isDeath = false;
 }
 
 void CWizard_SwordState_Dead::Free()

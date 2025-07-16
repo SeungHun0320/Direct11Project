@@ -28,6 +28,9 @@ void CBlobState_Idle::Execute(_float fTimeDelta)
     {
         if (m_pOwner->Find_Player())
         {
+            _string strRandomNum = to_string(rand() % 3);
+            m_pOwner->Play_Sound("Aggro" + strRandomNum);
+
             if (4.f <= m_pOwner->Get_DistanceToPlayer())
                 m_pOwner->Change_States(CBlob::STATES::ATTACK);
 
@@ -64,17 +67,27 @@ void CBlobState_Attack::Enter(_float fTimeDelta)
     m_fTimeAcc = 0.f;
 
     m_iAttackCount = 0;
+    m_isAttacked = false;
 
     m_pOwner->Change_Animation(CBlob::PART_BODY, CBlob::ANIM_TYPE::ATTACK, false, 0.2f);
 
+
+    _string RandomVoiceNum = to_string(rand() % 4);
+
+    m_pOwner->Play_Sound("AttackVoice" + RandomVoiceNum);
 }
 
 void CBlobState_Attack::Execute(_float fTimeDelta)
 {
     m_fTimeAcc += fTimeDelta;
 
-    if (m_fDuration <= m_fTimeAcc)
+    if (m_fDuration <= m_fTimeAcc && !m_isAttacked)
+    {
+        _string RandomAttackNum = to_string(rand() % 3);
+        m_pOwner->Play_Sound("Attack" + RandomAttackNum);
         m_pOwner->Set_Active();
+        m_isAttacked = true;
+    }
 
     if (m_pOwner->Play_Animation(CBlob::PART_BODY, fTimeDelta))
     {
@@ -94,6 +107,7 @@ void CBlobState_Attack::Exit()
     m_fTimeAcc = 0.f;
     m_iAttackCount = 0;
     m_pOwner->Set_Active(false);
+    m_isAttacked = false;
 }
 
 void CBlobState_Attack::Free()
@@ -121,6 +135,14 @@ void CBlobState_Jump::Enter(_float fTimeDelta)
 void CBlobState_Jump::Execute(_float fTimeDelta)
 {
     m_fTimeAcc += fTimeDelta;
+    m_fJumpTimer += fTimeDelta;
+
+    if (m_fDuration <= m_fJumpTimer)
+    {
+        _string RandomAttackNum = to_string(rand() % 4);
+        m_pOwner->Play_Sound("Hop" + RandomAttackNum);
+        m_fJumpTimer = 0.f;
+    }
 
     m_pOwner->Play_Animation(CBlob::PART_BODY, fTimeDelta);
 

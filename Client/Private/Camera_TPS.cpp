@@ -311,11 +311,12 @@ void CCamera_TPS::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pTargetTransformCom);
 	Safe_Release(m_pTarget);
+	Safe_Release(m_pTargetTransformCom);
 
-	Safe_Release(m_pBossTransformCom);
 	Safe_Release(m_pBoss);
+	Safe_Release(m_pBossTransformCom);
+
 
 	m_pGameInstance->Unsubscribe_Event<>(this);             
 	m_pGameInstance->Unsubscribe_Event<_wstring>(this);

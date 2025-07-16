@@ -101,9 +101,10 @@ public: // CWizard_Candleabra을(를) 통해 상속됨
 	void Exit() override;
 
 private:
-	_float m_fChaseDistance{};
+	_float	m_fChaseDistance{};
 	_float3 m_vTargetPos{};
-	_float m_fAttackStartTime{};
+	_float	m_fAttackStartTime{};
+	_bool   m_isAttacked{ false };
 
 public:
 	virtual void Free() override;

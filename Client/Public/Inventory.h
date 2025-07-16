@@ -3,6 +3,11 @@
 #include "Client_Defines.h"
 #include "PartObject.h"
 
+BEGIN(Engine)
+class CSoundController;
+END
+
+
 BEGIN(Client)
 
 class CInventory final : public CPartObject
@@ -94,6 +99,9 @@ public: /* Äü½½·Ô °ü·Ã */
 
 	void Register_QuickSlot(_uint iQuickSlotIndex);
 	
+private:
+	CSoundController* m_pSoundCom = { nullptr };
+
 private:
 	LEVEL* m_pLevelID = { nullptr };
 

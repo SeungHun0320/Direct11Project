@@ -64,6 +64,7 @@ public: // CBlobState을(를) 통해 상속됨
 
 private:
 	_uint m_iAttackCount = {};
+	_bool m_isAttacked = {false};
 
 public:
 	virtual void Free() override;
@@ -79,6 +80,9 @@ public: // CBlobState을(를) 통해 상속됨
 	void Enter(_float fTimeDelta) override;
 	void Execute(_float fTimeDelta) override;
 	void Exit() override;
+
+private:
+	_float m_fJumpTimer{};
 
 public:
 	virtual void Free() override;
